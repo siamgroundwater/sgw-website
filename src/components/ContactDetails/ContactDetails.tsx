@@ -179,7 +179,7 @@ export default function ContactDetails({
           {methods.map((method) => {
             const isCopied = copiedId === method.id
             return (
-              <article className="contact-card" key={method.id}>
+              <article className={`contact-card${method.external ? ' contact-card--social' : ''}`} key={method.id}>
                 <a
                   href={method.href}
                   className="contact-card-link"

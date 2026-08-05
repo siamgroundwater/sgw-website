@@ -86,6 +86,7 @@ export default function CustomerHistorySection({
           height={1663}
           sizes="(width <= 760px) 94vw, 1160px"
           className={styles.logoImage}
+          loading="lazy"
         />
       </div>
 

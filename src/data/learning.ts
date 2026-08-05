@@ -23,7 +23,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-calculator-tools',
     title: 'เครื่องมือคำนวณระบบน้ำบาดาลเบื้องต้น',
-    eyebrow: 'Planning tools',
+    eyebrow: 'เครื่องมือวางแผน',
     description:
       'ประเมินอัตราสูบที่ระบบต้องรองรับจากความต้องการใช้น้ำ ชั่วโมงสูบ และน้ำสำรอง เพื่อใช้เตรียมข้อมูลก่อนสำรวจและออกแบบจริง',
     audience: 'เจ้าของโครงการ ฝ่ายวิศวกรรม ฝ่ายซ่อมบำรุง และฝ่ายจัดซื้อ',
@@ -45,7 +45,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-basics-thailand',
     title: 'ความรู้พื้นฐานเรื่องน้ำบาดาลในประเทศไทย',
-    eyebrow: 'Groundwater basics',
+    eyebrow: 'พื้นฐานน้ำบาดาล',
     description:
       'ทำความเข้าใจชั้นน้ำบาดาล คุณภาพน้ำ การสำรวจ การเจาะ และการสูบทดสอบก่อนตัดสินใจลงทุน',
     audience: 'ผู้เริ่มต้นศึกษา เจ้าของกิจการ และผู้รับผิดชอบระบบน้ำ',
@@ -79,7 +79,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-case-studies-problems',
     title: 'กรณีศึกษา: เมื่อระบบน้ำบาดาลเริ่มมีปัญหา',
-    eyebrow: 'Problem diagnosis',
+    eyebrow: 'วิเคราะห์ปัญหา',
     description:
       'แนวทางอ่านอาการน้ำขุ่น ทรายเข้าบ่อ ปริมาณน้ำลด และเครื่องสูบเสียซ้ำ โดยเริ่มจากข้อมูลก่อนตัดสินใจซ่อม',
     audience: 'ฝ่ายซ่อมบำรุง ผู้จัดการโรงงาน โรงแรม รีสอร์ท และผู้ดูแลบ่อ',
@@ -112,7 +112,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-law-regulation-thailand',
     title: 'กฎหมายน้ำบาดาลและใบอนุญาตที่โครงการควรรู้',
-    eyebrow: 'Law & compliance',
+    eyebrow: 'กฎหมายและข้อกำหนด',
     description:
       'ภาพรวมการเตรียมขออนุญาตเจาะและใช้น้ำบาดาล พร้อมแหล่งข้อมูลทางการที่ควรตรวจสอบก่อนดำเนินงาน',
     audience: 'เจ้าของโครงการ ฝ่ายกฎหมาย วิศวกร ที่ปรึกษา และผู้รับเหมา',
@@ -161,7 +161,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-faq-thailand',
     title: 'คำถามที่พบบ่อยเรื่องน้ำบาดาล',
-    eyebrow: 'Frequently asked questions',
+    eyebrow: 'คำถามที่พบบ่อย',
     description:
       'คำตอบเบื้องต้นสำหรับคำถามด้านปริมาณน้ำ คุณภาพน้ำ ค่าใช้จ่าย และการดูแลบ่อ',
     audience: 'ผู้บริหารโครงการ ฝ่ายจัดซื้อ วิศวกร และผู้สนใจทั่วไป',
@@ -195,7 +195,7 @@ export const learningArticles: LearningArticle[] = [
   {
     slug: 'groundwater-guide-factory-hotel-resort',
     title: 'คู่มือวางแผนน้ำบาดาลสำหรับโรงงาน โรงแรม และรีสอร์ท',
-    eyebrow: 'Owner’s guide',
+    eyebrow: 'คู่มือผู้ประกอบการ',
     description:
       'ลำดับการตัดสินใจตั้งแต่สำรวจความต้องการใช้น้ำ เลือกตำแหน่งเจาะ ไปจนถึงแผนสำรองและการบำรุงรักษา',
     audience: 'เจ้าของกิจการ ผู้อำนวยการโรงงาน ผู้จัดการโรงแรม และทีมวิศวกรรม',

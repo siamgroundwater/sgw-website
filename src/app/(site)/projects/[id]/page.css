@@ -29,6 +29,10 @@
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
 }
 
+.project-detail-card > .project-detail-media {
+  border-top: 1px solid rgba(165, 243, 252, 0.16);
+}
+
 .project-detail-content {
   width: 100%;
   min-width: 0;
@@ -59,11 +63,10 @@
 }
 
 .project-detail-facts div {
-  min-height: 7rem;
-  padding: 1.15rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025));
+  min-height: auto;
+  padding: 0.9rem 1rem;
+  border-left: 2px solid rgba(103, 232, 249, 0.35);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .project-detail-facts dt {

@@ -96,7 +96,7 @@ color: rgba(255, 255, 255, 0.76);
 
 .embedWrap {
   width: fit-content;
-  min-height: 620px;
+  min-height: 480px;
   display: flex;
   align-items: center;
   align-self: center;
@@ -111,7 +111,7 @@ color: rgba(255, 255, 255, 0.76);
 
 .facebookFrame {
   width: 100%;
-height: 620px;
+height: 480px;
   display: block;
   border: 0;
   background: #fff;
@@ -120,7 +120,7 @@ height: 620px;
 .socialPlaceholder,
 .linePanel {
   width: 100%;
-  min-height: 620px;
+  min-height: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -250,11 +250,11 @@ height: 620px;
 
   .embedWrap,
   .socialPlaceholder {
-    min-height: 560px;
+    min-height: 440px;
   }
 
   .facebookFrame {
-    height: 560px;
+    height: 440px;
   }
 
   .primaryButton,

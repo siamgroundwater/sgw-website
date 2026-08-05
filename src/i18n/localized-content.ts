@@ -744,7 +744,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       commitment: '“รู้จักใช้อย่างชาญฉลาด แหล่งน้ำของชาติไม่เสียหาย น้ำบาดาลมีคุณค่า ควรพัฒนาอย่างอนุรักษ์”',
     },
     learning: {
-      eyebrow: 'Groundwater Learning Center – Thailand',
+      eyebrow: 'ศูนย์การเรียนรู้น้ำบาดาล ประเทศไทย',
       title: 'ศูนย์การเรียนรู้ เรื่องน้ำบาดาล',
       intro: 'ความรู้เชิงปฏิบัติสำหรับเจ้าของโครงการ วิศวกร และผู้ดูแลระบบน้ำบาดาลในประเทศไทย',
       audienceTitle: 'เหมาะสำหรับ',

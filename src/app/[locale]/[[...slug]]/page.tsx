@@ -4,9 +4,11 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
   ArrowLeft,
+  ArrowRight,
   Download,
   MapPin,
   MessageCircle,
+  PlayCircle,
 } from 'lucide-react'
 import ContactDetails from '@/components/ContactDetails/ContactDetails'
 import GroundwaterCalculator from '@/components/GroundwaterCalculator/GroundwaterCalculator'
@@ -20,6 +22,7 @@ import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlid
 import ServiceDetailPage from '@/components/ServiceDetailPage/ServiceDetailPage'
 import SocialMediaSection from '@/components/home/SocialMediaSection'
 import CustomerHistorySection from '@/components/home/CustomerHistorySection'
+import CompanyVideoSection from '@/components/home/CompanyVideoSection'
 import Hero from '@/app/(site)/home/hero'
 import Services from '@/app/(site)/services/services'
 import HomeMap from '@/app/(site)/home/map/map'
@@ -73,6 +76,28 @@ const staticRouteSegments: string[][] = [
   ...LEARNING_SLUGS.map((slug) => ['learn', slug]),
   ...projects.map((project) => ['projects', String(project._id)]),
 ]
+
+const aboutVideoLabel: Record<LocalizedLocale, string> = {
+  th: 'ชมวิดีโอแนะนำบริษัท',
+  en: 'Watch our company video',
+  zh: '观看公司介绍视频',
+  ja: '会社紹介動画を見る',
+}
+
+const aboutAwardLabels: Record<LocalizedLocale, [string, string, string]> = {
+  th: [
+    'รางวัลคุณภาพยอดเยี่ยม',
+    'รางวัลสถานประกอบการดีเด่น',
+    'รางวัลคุณภาพยอดเยี่ยม',
+  ],
+  en: [
+    'Outstanding Quality Award',
+    'Outstanding Establishment Award',
+    'Outstanding Quality Award',
+  ],
+  zh: ['卓越质量奖', '优秀企业奖', '卓越质量奖'],
+  ja: ['優秀品質賞', '優良事業所賞', '優秀品質賞'],
+}
 
 export const dynamicParams = false
 
@@ -198,29 +223,43 @@ function LocalizedHome({
         }}
       />
       <Services locale={locale} copy={content} />
+      <CompanyVideoSection locale={locale} />
       <HomeMap
         locale={locale}
         title={content.home.projectsTitle}
         projectCopy={content.projects}
       />
-      <ProjectsSection locale={locale} copy={content.projects} />
+      <ProjectsSection locale={locale} copy={content.projects} featured />
       <CustomerHistorySection locale={locale} />
       <SocialMediaSection locale={locale} />
     </main>
   )
 }
 
-function LocalizedAbout({ content }: { locale: LocalizedLocale; content: LocalizedContent }) {
+function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   const awards = [
     { src: '/images/about/award/award-1.png', width: 138, height: 328 },
     { src: '/images/about/award/award-2.png', width: 358, height: 326 },
     { src: '/images/about/award/award-3.png', width: 244, height: 344 },
   ]
+  const awardLabels = aboutAwardLabels[locale]
 
   return (
     <main className="about-container">
       <section className="about-hero">
+        <p className="about-eyebrow">{content.about.eyebrow}</p>
         <h1 className="about-title">{content.about.title}</h1>
+        <p className="about-hero-intro">{content.about.intro}</p>
+        <div className="about-hero-actions">
+          <Link href={localePath('/services', locale)}>
+            {content.services.title}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+          <Link href={`${localePath('/', locale)}#company-video`}>
+            <PlayCircle aria-hidden="true" />
+            {aboutVideoLabel[locale]}
+          </Link>
+        </div>
       </section>
 
       <HeroSlide />
@@ -228,7 +267,6 @@ function LocalizedAbout({ content }: { locale: LocalizedLocale; content: Localiz
       <section className="about-content">
         <div className="about-content-Introduction">
           <h2>{content.about.storyTitle}</h2>
-          <p className="text-indent">{content.about.intro}</p>
           {content.about.story.map((paragraph) => (
             <p className="text-indent" key={paragraph}>{paragraph}</p>
           ))}
@@ -237,20 +275,20 @@ function LocalizedAbout({ content }: { locale: LocalizedLocale; content: Localiz
         <section className="about-awards" aria-label={content.about.principlesTitle}>
           <div className="about-awards-slider-track">
             {awards.map((award, index) => {
-              const principle = content.about.principles[index]
+              const awardLabel = awardLabels[index]
               return (
                 <article key={award.src} className="about-award-card">
                   <div className="about-award-image-wrapper">
                     <Image
                       src={award.src}
-                      alt={principle.title}
+                      alt={awardLabel}
                       width={award.width}
                       height={award.height}
                       className="about-award-image"
-                      style={{ width: 'auto', height: '20rem' }}
+                      loading="lazy"
                     />
                   </div>
-                  <p className="about-award-caption">{principle.title}</p>
+                  <p className="about-award-caption">{awardLabel}</p>
                 </article>
               )
             })}
@@ -259,7 +297,7 @@ function LocalizedAbout({ content }: { locale: LocalizedLocale; content: Localiz
 
         <div className="about-founder">
           <div className="about-founder-image-wrapper">
-            <Image src="/images/personnel/MD.jpg" alt={content.about.teamTitle} width={320} height={400} className="about-founder-image" />
+            <Image src="/images/personnel/MD.jpg" alt={content.about.teamTitle} width={320} height={400} className="about-founder-image" loading="lazy" />
           </div>
           <div className="about-founder-text">
             <h2 className="about-founder-header">{content.about.principlesTitle}</h2>
@@ -270,7 +308,7 @@ function LocalizedAbout({ content }: { locale: LocalizedLocale; content: Localiz
           </div>
         </div>
 
-        <HomeTeam title={content.about.teamTitle} />
+        <HomeTeam title={content.about.teamTitle} locale={locale} />
       </section>
     </main>
   )
@@ -279,7 +317,7 @@ function LocalizedAbout({ content }: { locale: LocalizedLocale; content: Localiz
 function LocalizedServices({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   return (
     <main style={{ marginTop: '4rem' }}>
-      <Services locale={locale} copy={content} />
+      <Services locale={locale} copy={content} headingLevel="h1" />
     </main>
   )
 }
@@ -307,7 +345,7 @@ function LocalizedServiceDetail({
 function LocalizedProjects({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   return (
     <main className="projects-page" style={{ padding: '1rem' }}>
-      <ProjectsSection locale={locale} copy={content.projects} showHistoryMap />
+      <ProjectsSection locale={locale} copy={content.projects} showHistoryMap headingLevel="h1" />
     </main>
   )
 }
@@ -332,13 +370,6 @@ function LocalizedProjectDetail({ locale, content, id }: { locale: LocalizedLoca
         <span aria-current="page">{project.title}</span>
       </nav>
       <article className="project-detail-card">
-        <ProjectMediaSlider
-          images={project.localGalleryImages}
-          locale={locale}
-          projectNumber={project._id}
-          title={project.title}
-        />
-
         <div className="project-detail-content">
           <h1>{project.title}</h1>
           <p className="project-detail-lead">{project.location}</p>
@@ -405,6 +436,13 @@ function LocalizedProjectDetail({ locale, content, id }: { locale: LocalizedLoca
             </Link>
           </div>
         </div>
+
+        <ProjectMediaSlider
+          images={project.localGalleryImages}
+          locale={locale}
+          projectNumber={project._id}
+          title={project.title}
+        />
       </article>
     </main>
   )

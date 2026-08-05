@@ -10,6 +10,7 @@ import {
   Layers3,
   MapPin,
   MapPinned,
+  X,
 } from 'lucide-react'
 import 'leaflet/dist/leaflet.css'
 import { projects as projectRegistry, type Project } from '@/lib/projects'
@@ -112,9 +113,6 @@ const Marker = dynamic(
   () => import('react-leaflet').then((mod) => mod.Marker),
   { ssr: false }
 )
-const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
-  ssr: false,
-})
 const MarkerClusterGroup = dynamic(
   () => import('react-leaflet-cluster').then((mod) => mod.default),
   { ssr: false }
@@ -143,6 +141,8 @@ export default function HomeMap({
 }: HomeMapProps) {
   const [leafletReady, setLeafletReady] = useState(false)
   const [filter, setFilter] = useState<MapFilter>('all')
+  const [selectedProject, setSelectedProject] =
+    useState<MappableProject | null>(null)
   const copy = mapCopy[locale]
   const data = projects ?? projectRegistry
 
@@ -228,6 +228,14 @@ export default function HomeMap({
 
   const heading = title ?? 'ตัวอย่างผลงาน ทุกภูมิภาค ทั่วประเทศ'
 
+  const selectedPresentation =
+    selectedProject && projectCopy
+      ? getLocalizedProjectPresentation(selectedProject, projectCopy)
+      : undefined
+  const selectedDetailHref = selectedProject
+    ? localePath(`/projects/${selectedProject._id}`, locale)
+    : ''
+
   return (
     <section className="home-map-section" aria-labelledby="home-map-title">
       <div className="home-map-header">
@@ -263,7 +271,10 @@ export default function HomeMap({
           type="button"
           className={filter === 'all' ? 'is-active' : ''}
           aria-pressed={filter === 'all'}
-          onClick={() => setFilter('all')}
+          onClick={() => {
+            setFilter('all')
+            setSelectedProject(null)
+          }}
         >
           <Layers3 aria-hidden="true" />
           <span>{projectCopy?.all ?? 'ทั้งหมด'}</span>
@@ -274,7 +285,10 @@ export default function HomeMap({
             type="button"
             className={filter === category ? 'is-active' : ''}
             aria-pressed={filter === category}
-            onClick={() => setFilter(category)}
+            onClick={() => {
+              setFilter(category)
+              setSelectedProject(null)
+            }}
             key={category}
           >
             <span>{categoryLabel(category)}</span>
@@ -306,78 +320,87 @@ export default function HomeMap({
             <MarkerClusterGroup
               chunkedLoading
               iconCreateFunction={createClusterCustomIcon}
-              spiderfyOnEveryZoom={false}
+              spiderfyOnEveryZoom
+              zoomToBoundsOnClick={false}
               showCoverageOnHover={false}
               maxClusterRadius={34}
+              spiderfyDistanceMultiplier={1.35}
             >
-              {filteredProjects.map((project) => {
-                const presentation = projectCopy
-                  ? getLocalizedProjectPresentation(project, projectCopy)
-                  : undefined
-                const detailHref = localePath(
-                  `/projects/${project._id}`,
-                  locale
-                )
-
-                return (
-                  <Marker
-                    key={project._id}
-                    position={[project.lat, project.lng]}
-                  >
-                    <Popup minWidth={420}>
-                      <article className="home-map-popup">
-                        <Link
-                          href={detailHref}
-                          className="home-map-popup-image"
-                          aria-label={`${copy.viewProject}: ${project.title}`}
-                        >
-                          <Image
-                            src={project.localCoverImage}
-                            alt=""
-                            width={640}
-                            height={400}
-                            sizes="320px"
-                          />
-                        </Link>
-
-                        <div className="home-map-popup-content">
-                          <p className="home-map-popup-category">
-                            {presentation?.categoryLabel ??
-                              project.category.join(', ')}
-                          </p>
-                          <h3>
-                            <Link href={detailHref}>{project.title}</Link>
-                          </h3>
-
-                          <div className="home-map-popup-meta">
-                            <span>
-                              <MapPin aria-hidden="true" />
-                              {project.location}
-                            </span>
-                            {project.year && (
-                              <span>
-                                <CalendarDays aria-hidden="true" />
-                                {projectCopy?.yearLabel ?? 'ปีผลงาน'}{' '}
-                                {project.year}
-                              </span>
-                            )}
-                          </div>
-
-                          <Link
-                            href={detailHref}
-                            className="home-map-popup-action"
-                          >
-                            {projectCopy?.details ?? copy.viewProject}
-                            <ArrowRight aria-hidden="true" />
-                          </Link>
-                        </div>
-                      </article>
-                    </Popup>
-                  </Marker>
-                )
-              })}
+              {filteredProjects.map((project) => (
+                <Marker
+                  key={project._id}
+                  position={[project.lat, project.lng]}
+                  title={project.title}
+                  alt={project.title}
+                  eventHandlers={{
+                    click: () => setSelectedProject(project),
+                  }}
+                />
+              ))}
             </MarkerClusterGroup>
           </MapContainer>
+        )}
+
+        {selectedProject && (
+          <article
+            className="home-map-popup home-map-popup-overlay"
+            aria-label={`${copy.viewProject}: ${selectedProject.title}`}
+          >
+            <button
+              type="button"
+              className="home-map-popup-dismiss"
+              aria-label="Close project details"
+              onClick={() => setSelectedProject(null)}
+            >
+              <X aria-hidden="true" />
+            </button>
+
+            <Link
+              href={selectedDetailHref}
+              className="home-map-popup-image"
+              aria-label={`${copy.viewProject}: ${selectedProject.title}`}
+            >
+              <Image
+                src={selectedProject.localCoverImage}
+                alt=""
+                width={640}
+                height={400}
+                sizes="320px"
+              />
+            </Link>
+
+            <div className="home-map-popup-content">
+              <p className="home-map-popup-category">
+                {selectedPresentation?.categoryLabel ??
+                  selectedProject.category.join(', ')}
+              </p>
+              <h3>
+                <Link href={selectedDetailHref}>{selectedProject.title}</Link>
+              </h3>
+
+              <div className="home-map-popup-meta">
+                <span>
+                  <MapPin aria-hidden="true" />
+                  {selectedProject.location}
+                </span>
+                {selectedProject.year && (
+                  <span>
+                    <CalendarDays aria-hidden="true" />
+                    {projectCopy?.yearLabel && `${projectCopy.yearLabel} `}
+                    {selectedProject.year}
+                  </span>
+                )}
+              </div>
+
+              <Link
+                href={selectedDetailHref}
+                className="home-map-popup-action"
+              >
+                {projectCopy?.details ?? copy.viewProject}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+          </article>
         )}
 
         {leafletReady && filteredProjects.length === 0 && (

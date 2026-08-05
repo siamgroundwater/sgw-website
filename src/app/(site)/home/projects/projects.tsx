@@ -20,21 +20,25 @@ import './projects.css'
 type FilterCategory = 'all' | ProjectCategory
 type ItemsPerPage = 10 | 20 | 50 | 100 | 'all'
 
-const toolbarCopy: Record<LocalizedLocale, { maximum: string; items: string }> = {
-  th: { maximum: 'แสดงสูงสุด', items: 'รายการ' },
-  en: { maximum: 'Show up to', items: 'items' },
-  zh: { maximum: '最多显示', items: '项' },
-  ja: { maximum: '最大表示数', items: '件' },
+const toolbarCopy: Record<LocalizedLocale, { maximum: string; items: string; viewAll: string }> = {
+  th: { maximum: 'แสดงสูงสุด', items: 'รายการ', viewAll: 'ดูโครงการทั้งหมด' },
+  en: { maximum: 'Show up to', items: 'items', viewAll: 'View all projects' },
+  zh: { maximum: '最多显示', items: '项', viewAll: '查看全部项目' },
+  ja: { maximum: '最大表示数', items: '件', viewAll: 'すべての実績を見る' },
 }
 
 export default function ProjectsSection({
   locale,
   copy,
   showHistoryMap = false,
+  headingLevel = 'h2',
+  featured = false,
 }: {
   locale?: LocalizedLocale
   copy?: LocalizedContent['projects']
   showHistoryMap?: boolean
+  headingLevel?: 'h1' | 'h2'
+  featured?: boolean
 } = {}) {
   const [category, setCategory] = useState<FilterCategory>('all')
   const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(10)
@@ -44,8 +48,9 @@ export default function ProjectsSection({
       ? projects
       : projects.filter((project) => project.category.includes(category))
 
-  const displayedProjects =
-    itemsPerPage === 'all'
+  const displayedProjects = featured
+    ? filteredProjects.slice(0, 6)
+    : itemsPerPage === 'all'
       ? filteredProjects
       : filteredProjects.slice(0, itemsPerPage)
 
@@ -56,13 +61,14 @@ export default function ProjectsSection({
 
   const numberLocale = locale ? localeInfo[locale].htmlLang : 'th-TH'
   const controls = locale ? toolbarCopy[locale] : undefined
+  const Heading = headingLevel
 
   return (
     <section className="home-projects thirdBackground">
       <div className="projects-header">
-        <h2 className="elementor-heading-title elementor-size-default">
+        <Heading className="elementor-heading-title elementor-size-default">
           {copy?.title ?? 'ตัวอย่าง โครงการของเรา'}
-        </h2>
+        </Heading>
         {copy?.intro && <p className="projects-intro">{copy.intro}</p>}
 
         {showHistoryMap && (
@@ -100,7 +106,7 @@ export default function ProjectsSection({
             {controls?.items ?? 'โครงการ'}
           </div>
 
-          <div className="projects-page-size">
+          {!featured && <div className="projects-page-size">
             <label>
               {controls?.maximum ?? 'แสดงสูงสุด'}:{' '}
               <select
@@ -115,7 +121,7 @@ export default function ProjectsSection({
                 <option value="all">{copy?.all ?? 'ทั้งหมด'}</option>
               </select>
             </label>
-          </div>
+          </div>}
         </div>
       </div>
 
@@ -143,6 +149,7 @@ export default function ProjectsSection({
                   height={600}
                   sizes="(width <= 640px) 100vw, (width <= 1024px) 50vw, 25vw"
                   className="project-card-image"
+                  loading="lazy"
                 />
               </div>
 
@@ -169,6 +176,14 @@ export default function ProjectsSection({
           )
         })}
       </div>
+
+      {featured && locale && (
+        <div className="projects-view-all-wrap">
+          <Link href={localePath('/projects', locale)} className="projects-view-all">
+            {controls?.viewAll ?? copy?.all}
+          </Link>
+        </div>
+      )}
     </section>
   )
 }

@@ -10,7 +10,6 @@ import {
   Construction,
   Droplets,
   FileText,
-  Layers3,
   MapPinned,
   MessageCircle,
   ScanSearch,
@@ -19,6 +18,7 @@ import {
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
+import ServiceTabs from './ServiceTabs'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import {
   SERVICE_KEYS,
@@ -277,30 +277,15 @@ export default function ServiceDetailPage({
           <span aria-current="page">{service.title}</span>
         </nav>
 
-        <nav className="service-detail-tabs" aria-label={ui.chooseService}>
-          <span className="service-detail-tabs-label">
-            <Layers3 aria-hidden="true" />
-            {ui.chooseService}
-          </span>
-          <div className="service-detail-tabs-list">
-            {SERVICE_KEYS.map((key) => {
-              const TabIcon = serviceIcons[key]
-              const isActive = key === serviceKey
-
-              return (
-                <Link
-                  key={key}
-                  href={href(`/services/${key}`)}
-                  className={isActive ? 'is-active' : undefined}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <TabIcon aria-hidden="true" />
-                  {content.services.items[key].title}
-                </Link>
-              )
-            })}
-          </div>
-        </nav>
+        <ServiceTabs
+          activeKey={serviceKey}
+          label={ui.chooseService}
+          tabs={SERVICE_KEYS.map((key) => ({
+            key,
+            href: href(`/services/${key}`),
+            title: content.services.items[key].title,
+          }))}
+        />
 
         <header className="service-detail-hero">
           <div className="service-detail-hero-copy">

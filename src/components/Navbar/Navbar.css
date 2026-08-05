@@ -56,7 +56,7 @@
   justify-content: center;
   gap: 0.1rem;
   flex-wrap: nowrap;
-  font-weight: 600;
+  font-weight: 500;
   font-size: var(--fs-fluid-body);
 }
 
@@ -78,7 +78,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 0 0.55rem;
+  padding: 0 0.48rem;
   height: var(--nav-height);
   color: #f5f5f5;
   white-space: nowrap;
@@ -90,7 +90,7 @@
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: calc(100% - 1.1rem);
+  width: calc(100% - 0.96rem);
   height: 3px;
   border-radius: 999px 999px 0 0;
   background: #67e8f9;

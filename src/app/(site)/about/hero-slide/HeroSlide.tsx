@@ -302,7 +302,7 @@ export default function HeroSlide() {
               height={slide.height}
               className="about-hero-slide-image"
               sizes="(width <= 1080px) 100vw, 1080px"
-              priority
+              priority={slide.key === REAL_SLIDES[0].id}
             />
           </div>
         ))}

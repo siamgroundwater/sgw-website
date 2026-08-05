@@ -30,14 +30,17 @@ const SERVICE_META = {
 export default function Services({
   locale,
   copy,
+  headingLevel = 'h2',
 }: {
   locale?: LocalizedLocale
   copy?: LocalizedContent
+  headingLevel?: 'h1' | 'h2'
 } = {}) {
   const activeLocale = locale ?? 'th'
   const activeCopy = copy ?? localizedContent[activeLocale]
   const serviceHref = (href: string) =>
     locale ? localePath(href, activeLocale) : href
+  const Heading = headingLevel
 
   return (
     <section className="home-services" aria-labelledby="home-services-title">
@@ -49,11 +52,12 @@ export default function Services({
           height={900}
           className="home-services-illustration"
           sizes="(width <= 900px) 100vw, 44vw"
+          priority={headingLevel === 'h1'}
         />
       </div>
 
       <div className="home-services-content">
-        <h2 id="home-services-title">{activeCopy.services.title}</h2>
+        <Heading id="home-services-title">{activeCopy.services.title}</Heading>
 
         <div className="home-services-grid">
           {SERVICE_KEYS.map((serviceKey) => {
@@ -72,6 +76,7 @@ export default function Services({
                     alt=""
                     width={120}
                     height={120}
+                    loading="lazy"
                   />
                 </span>
                 <span className="home-service-text">{service.title}</span>

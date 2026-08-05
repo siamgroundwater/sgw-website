@@ -2,7 +2,7 @@
   width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 2rem;
   margin: 0 auto;
   padding: 3.25rem 0 5rem;
   color: #fff;
@@ -17,7 +17,7 @@
   overflow: hidden;
   padding: 1.5rem;
   border: 1px solid rgba(165, 243, 252, 0.2);
-  border-radius: 1.75rem;
+  border-radius: 1.25rem;
   background:
     radial-gradient(circle at 12% 12%, rgba(103, 232, 249, 0.15), transparent 34%),
     linear-gradient(145deg, rgba(9, 84, 91, 0.92), rgba(5, 31, 45, 0.98));
@@ -148,9 +148,9 @@ margin: 1.25rem auto 0;
 .groundwater-learning-start {
   width: 100%;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 1.25rem;
-  background: rgba(2, 24, 35, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0;
+  background: transparent;
   backdrop-filter: blur(0.75rem);
 }
 
@@ -207,8 +207,9 @@ display: block;
   gap: 0.7rem;
   min-width: 0;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.85rem;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.55rem;
   color: #fff;
   background: rgba(255, 255, 255, 0.045);
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
@@ -275,8 +276,8 @@ display: block;
   align-items: center;
   gap: 1.5rem;
   padding: 1.25rem;
-  border: 1px solid rgba(165, 243, 252, 0.18);
-  border-radius: 1.25rem;
+  border-left: 3px solid rgba(103, 232, 249, 0.45);
+  border-radius: 0.45rem;
   background: linear-gradient(135deg, rgba(12, 91, 96, 0.5), rgba(4, 39, 52, 0.7));
 }
 

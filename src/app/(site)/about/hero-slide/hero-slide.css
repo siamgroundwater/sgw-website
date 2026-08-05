@@ -5,7 +5,7 @@
 /* ────────────────────────────── */
 
 .about-hero-slider {
-margin: 2.5rem auto 3rem;
+margin: 1rem auto 2.5rem;
 }
 
 .about-hero-slider-track {
@@ -41,7 +41,7 @@ margin: 2.5rem auto 3rem;
 
 .about-hero-slide {
   flex: 0 0 100%;
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 16 / 6;
   scroll-snap-align: center;
 
   border-radius: 1.2rem;
@@ -103,7 +103,7 @@ margin: 2.5rem auto 3rem;
 
 @media (width <= 768px) {
   .about-hero-slide {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
     border-radius: 0.9rem;
   }
 }

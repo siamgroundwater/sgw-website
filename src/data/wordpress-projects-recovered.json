@@ -3150,8 +3150,8 @@
     "title": "LAYANA Resort & Spa",
     "year": 2017,
     "projectType": "resort",
-    "lat": null,
-    "lng": null,
+    "lat": 7.610676,
+    "lng": 99.033559,
     "location": "ตำบลเกาะลันตาใหญ่ อำเภอเกาะลันตา จังหวัดกระบี่",
     "workTypes": [
       "งานสำรวจน้ำบาดาล",
@@ -3198,8 +3198,8 @@
     "title": "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครราชสีมา",
     "year": 2018,
     "projectType": "factory",
-    "lat": null,
-    "lng": null,
+    "lat": 14.9417548,
+    "lng": 102.0544833,
     "location": "ตำบลปรุใหญ่ อำเภอเมือง จังหวัดนครราชสีมา",
     "workTypes": [
       "งานซ่อมบำรุงรักษาบ่อน้ำบาดาล",
@@ -3270,8 +3270,8 @@
     "title": "โรงแรม Trisara Phuket",
     "year": 2024,
     "projectType": "resort",
-    "lat": null,
-    "lng": null,
+    "lat": 8.0362329,
+    "lng": 98.2770225,
     "location": "ต.เชิงทะเล อ.ถลาง จ.ภูเก็ต",
     "workTypes": [
       "งานสำรวจศึกษาน้ำแร่",
@@ -3329,8 +3329,8 @@
     "title": "ROSEWOOD PHUKET",
     "year": 2024,
     "projectType": "resort",
-    "lat": null,
-    "lng": null,
+    "lat": 7.884639,
+    "lng": 98.275194,
     "location": "ต.ป่าตอง อ.กะทู้ จ.ภูเก็ต",
     "workTypes": [
       "งานสำรวจน้ำบาดาล"
@@ -3369,8 +3369,8 @@
     "title": "TRI VANANDA",
     "year": 2024,
     "projectType": "resort",
-    "lat": null,
-    "lng": null,
+    "lat": 8.0394277,
+    "lng": 98.3173431,
     "location": "ต.กษัตรี อ.ถลาง จ.ภูเก็ต",
     "workTypes": [
       "งานสำรวจน้ำบาดาล"
@@ -3411,8 +3411,8 @@
     "title": "Dusit Thani",
     "year": 2024,
     "projectType": "resort",
-    "lat": null,
-    "lng": null,
+    "lat": 12.6577773,
+    "lng": 99.9558783,
     "location": "ต.ชะอำ อ.ชะอำ จ.เพชรบุรี",
     "workTypes": [
       "งานสำรวจน้ำบาดาล"
@@ -3451,8 +3451,8 @@
     "title": "Villa Pason",
     "year": 2022,
     "projectType": "factory",
-    "lat": null,
-    "lng": null,
+    "lat": 16.7922865,
+    "lng": 101.0402002,
     "location": "ต.แคมป์สน อ.เขาค้อ จ.เพชรบูรณ์",
     "workTypes": [
       "งานสำรวจน้ำบาดาล",
@@ -3514,8 +3514,8 @@
     "title": "วัดอรัญพรหมาราม",
     "year": 2023,
     "projectType": "government",
-    "lat": null,
-    "lng": null,
+    "lat": 15.6960926,
+    "lng": 102.6301601,
     "location": "ต.วังไม้แดง อ.ประทาย จ.นครราชสีมา",
     "workTypes": [
       "งานสำรวจน้ำบาดาล",
@@ -3558,8 +3558,8 @@
     "title": "สิงห์คาเมดะ",
     "year": null,
     "projectType": "other",
-    "lat": null,
-    "lng": null,
+    "lat": 13.6158571,
+    "lng": 100.7691118,
     "location": "ต.บางโฉลง อ.บางพลี จ.สมุทรปราการ",
     "workTypes": [],
     "businessTypes": [],
@@ -3595,8 +3595,8 @@
     "title": "Port09 สวนทุเรียนนนท์",
     "year": 2023,
     "projectType": "agriculture",
-    "lat": null,
-    "lng": null,
+    "lat": 13.9733238,
+    "lng": 100.4046325,
     "location": "ต.ลำโพ อ.บางบัวทอง จ.นนทบุรี",
     "workTypes": [
       "งานเจาะบ่อน้ำแร่คุณภาพดี",
@@ -3654,8 +3654,8 @@
     "title": "โรงงาน ผลิตวงจรอิเล็คทรอนิคส์",
     "year": 2015,
     "projectType": "factory",
-    "lat": null,
-    "lng": null,
+    "lat": 13.8824532,
+    "lng": 100.5842785,
     "location": "แขวงตลาดบางเขน เขตหลักสี่ กรุงเทพฯ",
     "workTypes": [
       "งานเจาะบ่อน้ำบาดาล"
@@ -3708,8 +3708,8 @@
     "title": "โรงงานน้ำดื่ม สปริงเคิล SPRINKLE",
     "year": 2023,
     "projectType": "factory",
-    "lat": null,
-    "lng": null,
+    "lat": 14.2694633,
+    "lng": 100.7576479,
     "location": "ต.ชะแมบ อ.วังน้อย จ.พระนครศรีอยุธยา",
     "workTypes": [
       "งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา"
@@ -3748,8 +3748,8 @@
     "title": "นิเด็ค อีเล็คโทรนิคส์",
     "year": 2022,
     "projectType": "factory",
-    "lat": null,
-    "lng": null,
+    "lat": 14.0161496,
+    "lng": 100.7536089,
     "location": "ต.รังสิต อ.ธัญบุรี จ.ปทุมธานี",
     "workTypes": [
       "งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา"

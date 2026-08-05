@@ -97,6 +97,7 @@ export default function LegacyProjectMapSection({
           height={2560}
           sizes="(width <= 760px) 88vw, (width <= 1100px) 54vw, 600px"
           className={styles.mapImage}
+          priority
         />
         <span className={styles.openHint} aria-hidden="true">
           <ExternalLink />

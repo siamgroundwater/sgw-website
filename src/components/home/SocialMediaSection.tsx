@@ -8,7 +8,7 @@ import styles from './SocialMediaSection.module.css'
 
 const FACEBOOK_URL = 'https://www.facebook.com/siamgroundwater'
 const LINE_URL = 'https://line.me/R/ti/p/@sgw_th?from=page&searchId=sgw_th'
-const facebookHeight = 620
+const facebookHeight = 480
 
 const socialCopy: Record<
   LocalizedLocale,
@@ -97,14 +97,22 @@ export default function SocialMediaSection({
   }, [])
 
   useEffect(() => {
-    const loadFacebook = () => setShouldLoadFacebook(true)
-    if (document.readyState === 'complete') {
-      loadFacebook()
-      return
-    }
+    const element = facebookRef.current
+    if (!element) return
 
-    window.addEventListener('load', loadFacebook, { once: true })
-    return () => window.removeEventListener('load', loadFacebook)
+    if (typeof IntersectionObserver === 'undefined') return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        setShouldLoadFacebook(true)
+        observer.disconnect()
+      },
+      { rootMargin: '300px 0px' }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
   }, [])
 
   const facebookEmbedSrc = useMemo(() => {

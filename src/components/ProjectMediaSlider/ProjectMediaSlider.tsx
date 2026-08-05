@@ -112,7 +112,7 @@ export default function ProjectMediaSlider({
               width={1600}
               height={1200}
               sizes="calc(100vw - 2rem)"
-              priority={activeIndex === 0}
+              loading="lazy"
             />
           </figure>
         )}

@@ -5,7 +5,7 @@
 }
 
 .contact-header {
-margin: 0 auto 1.5rem;
+margin: 0 auto 1.25rem;
   text-align: center;
 }
 
@@ -42,5 +42,10 @@ margin: 0.65rem auto 0;
   .contact-page {
     width: calc(100% - 1rem);
     padding-top: 1.15rem;
+  }
+
+  .contact-title-main {
+    font-size: var(--fs-fluid-heading-md);
+    line-height: 1.22;
   }
 }

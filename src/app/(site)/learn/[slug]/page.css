@@ -119,8 +119,9 @@ font-size: var(--fs-fluid-heading-md);
 .learning-article-hero {
   margin-top: 1.25rem;
   padding: 1.5rem;
-  border: 1px solid rgba(103, 232, 249, 0.22);
-  border-radius: 1.4rem;
+  border: 0;
+  border-left: 3px solid rgba(103, 232, 249, 0.55);
+  border-radius: 0.5rem;
   background:
     radial-gradient(circle at 100% 0, rgba(45, 212, 191, 0.22), transparent 38%),
     rgba(7, 32, 46, 0.84);
@@ -150,7 +151,7 @@ margin-top: 1rem;
 .learning-article-audience {
   margin-top: 1.25rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
   color: rgba(255, 255, 255, 0.68);
 }
 
