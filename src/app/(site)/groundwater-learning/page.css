@@ -1,213 +1,472 @@
 .groundwater-learning-page {
-  padding: 4rem 1rem;
+  width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  color: #ffffff;
-}
-
-/* Centered max-width container for hero + body */
-.groundwater-learning-hero,
-.groundwater-learning-sections {
+  gap: 2.5rem;
   margin: 0 auto;
+  padding: 3.25rem 0 5rem;
+  color: #fff;
 }
 
-/* ---------- Hero ---------- */
-
-.groundwater-learning-hero-inner {
+.groundwater-learning-hero {
+  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  border: 1px solid rgba(165, 243, 252, 0.2);
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(103, 232, 249, 0.15), transparent 34%),
+    linear-gradient(145deg, rgba(9, 84, 91, 0.92), rgba(5, 31, 45, 0.98));
+  box-shadow: 0 30px 80px rgba(3, 20, 31, 0.3);
+}
+
+.groundwater-learning-hero::after {
+  position: absolute;
+  right: -7rem;
+  bottom: -9rem;
+  width: 25rem;
+  height: 25rem;
+  border: 1px solid rgba(103, 232, 249, 0.12);
+  border-radius: 46% 54% 65% 35%;
+  box-shadow:
+    0 0 0 2.5rem rgba(103, 232, 249, 0.035),
+    0 0 0 5rem rgba(103, 232, 249, 0.025);
+  content: '';
+  pointer-events: none;
+  transform: rotate(-14deg);
+}
+
+.groundwater-learning-hero-copy,
+.groundwater-learning-start {
+  position: relative;
+  z-index: 1;
+}
+
+.groundwater-learning-hero-copy {
+  width: 100%;
+display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1.2rem;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
 }
 
-.groundwater-learning-title-th {
-  font-size: clamp(1.9rem, 3vw, 2.4rem);
-  font-weight: 700;
-  line-height: 1.3;
+.groundwater-learning-eyebrow,
+.groundwater-learning-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.875rem;
+  color: #67e8f9;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.groundwater-learning-title-en {
-  font-size: 1rem;
-  font-weight: 500;
+.groundwater-learning-eyebrow svg,
+.groundwater-learning-section-kicker svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.groundwater-learning-hero h1 {
+margin: 0;
+  font-size: var(--fs-fluid-heading-lg);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .groundwater-learning-intro {
-  margin-top: 0.5rem;
-  line-height: 1.7;
-  color: #e0e3e8;
-  max-width: 48rem;
-  text-indent: 2rem;
+margin: 1.25rem auto 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: var(--fs-fluid-body);
+  line-height: 1.8;
 }
 
+.groundwater-learning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
 
-/* Audience box */
+.groundwater-learning-primary-action,
+.groundwater-learning-secondary-action {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 800;
+  line-height: 1.35;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.groundwater-learning-primary-action {
+  border: 1px solid #67e8f9;
+  color: #052c33;
+  background: #67e8f9;
+}
+
+.groundwater-learning-secondary-action {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.groundwater-learning-primary-action:hover,
+.groundwater-learning-secondary-action:hover {
+  transform: translateY(-2px);
+}
+
+.groundwater-learning-primary-action:hover {
+  background: #a5f3fc;
+}
+
+.groundwater-learning-secondary-action:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.groundwater-learning-primary-action svg,
+.groundwater-learning-secondary-action svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+}
+
+.groundwater-learning-start {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 1.25rem;
+  background: rgba(2, 24, 35, 0.55);
+  backdrop-filter: blur(0.75rem);
+}
+
+.groundwater-learning-start-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0.25rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.groundwater-learning-start-heading > span {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.8rem;
+  color: #052c33;
+  background: #67e8f9;
+}
+
+.groundwater-learning-start-heading svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.groundwater-learning-start-heading p {
+  margin: 0 0 0.2rem;
+  color: #67e8f9;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.groundwater-learning-start-heading strong {
+display: block;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.groundwater-learning-start-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.groundwater-learning-start-list > a {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) 1rem;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.85rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.045);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.groundwater-learning-start-list > a:hover {
+  transform: translateX(3px);
+  border-color: rgba(103, 232, 249, 0.45);
+  background: rgba(103, 232, 249, 0.08);
+}
+
+.groundwater-learning-start-list > a > svg {
+  width: 1rem;
+  height: 1rem;
+  color: #67e8f9;
+}
+
+.groundwater-learning-start-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.65rem;
+  color: #67e8f9;
+  background: rgba(103, 232, 249, 0.1);
+}
+
+.groundwater-learning-start-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.groundwater-learning-start-text {
+  min-width: 0;
+}
+
+.groundwater-learning-start-text small,
+.groundwater-learning-start-text strong {
+  display: block;
+}
+
+.groundwater-learning-start-text small {
+  overflow: hidden;
+  margin-bottom: 0.15rem;
+  color: #67e8f9;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.groundwater-learning-start-text strong {
+  display: block;
+  overflow: hidden;
+  max-height: 2.7em;
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+}
 
 .groundwater-learning-audience {
-  margin-top: 1.5rem;
-  padding: 1.25rem 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 60%),
-    rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(10px);
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.55fr) minmax(0, 1.45fr);
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(165, 243, 252, 0.18);
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, rgba(12, 91, 96, 0.5), rgba(4, 39, 52, 0.7));
 }
 
-.groundwater-learning-audience-label {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 0.3rem;
+.groundwater-learning-audience-heading {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.groundwater-learning-audience-heading > span {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.9rem;
+  color: #052c33;
+  background: #67e8f9;
+}
+
+.groundwater-learning-audience-heading svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.groundwater-learning-audience-heading p {
+  margin: 0 0 0.2rem;
+  color: #67e8f9;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.groundwater-learning-audience-heading h2 {
+  margin: 0;
+  font-size: var(--fs-fluid-heading-sm);
+  line-height: 1.2;
 }
 
 .groundwater-learning-audience ul {
-  margin: 0;
-  padding-left: 1.1rem;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #ecf0ff;
-}
-
-/* ---------- Sections grid ---------- */
-
-.groundwater-learning-sections-header {
-  margin-bottom: 1.5rem;
-}
-
-.groundwater-learning-sections-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-}
-
-.groundwater-learning-sections-description {
-  font-size: 0.95rem;
-  color: #cbd5f5;
-  max-width: 40rem;
-}
-
-/* Grid */
-
-.groundwater-learning-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* On larger screens */
-@media (min-width: 720px) {
-  .groundwater-learning-grid {
+.groundwater-learning-audience li {
+  display: grid;
+  grid-template-columns: 1.15rem minmax(0, 1fr);
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.groundwater-learning-audience li svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.15rem;
+  color: #67e8f9;
+}
+
+.groundwater-learning-cta {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(103, 232, 249, 0.3);
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, rgba(13, 111, 117, 0.7), rgba(5, 42, 55, 0.9));
+  box-shadow: 0 20px 55px rgba(3, 20, 31, 0.22);
+}
+
+.groundwater-learning-cta-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  color: #052c33;
+  background: #67e8f9;
+}
+
+.groundwater-learning-cta-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.groundwater-learning-cta h2 {
+  margin: 0;
+  font-size: var(--fs-fluid-heading-sm);
+  line-height: 1.25;
+}
+
+.groundwater-learning-cta p {
+  margin: 0.35rem 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+.groundwater-learning-cta > a {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: #052c33;
+  font-weight: 800;
+  background: #67e8f9;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.groundwater-learning-cta > a:hover {
+  transform: translateY(-2px);
+  background: #a5f3fc;
+}
+
+.groundwater-learning-cta > a svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (width <= 980px) {
+  .groundwater-learning-audience {
+    grid-template-columns: 1fr;
+  }
+
+  .groundwater-learning-start-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1040px) {
-  .groundwater-learning-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* Cards */
-
-.groundwater-learning-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.4rem 1.4rem 1.1rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.13), transparent 60%),
-    rgba(15, 23, 42, 0.95);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease;
-}
-
-.groundwater-learning-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.95);
-  border-color: rgba(56, 189, 248, 0.6);
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 60%),
-    rgba(15, 23, 42, 0.98);
-}
-
-.groundwater-learning-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.groundwater-learning-card-tag {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #a5b4fc;
-}
-
-.groundwater-learning-card-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.groundwater-learning-card-title a {
-  text-decoration: none;
-  color: #f9fafb;
-}
-
-.groundwater-learning-card-title a:hover {
-  text-decoration: underline;
-}
-
-.groundwater-learning-card-description {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #e5e7eb;
-}
-
-.groundwater-learning-card-footer {
-  margin-top: 0.9rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.groundwater-learning-card-link {
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: #38bdf8;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.groundwater-learning-card-link:hover .card-link-arrow {
-  transform: translateX(3px);
-}
-
-.card-link-arrow {
-  display: inline-block;
-  transition: transform 0.15s ease;
-}
-
-/* ---------- Small screens tweaks ---------- */
-
-@media (max-width: 640px) {
+@media (width <= 700px) {
   .groundwater-learning-page {
-    padding-top: 4.5rem;
-    padding-inline: 1.1rem;
+    width: calc(100% - 1.5rem);
+    gap: 2.75rem;
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
   }
 
-  .groundwater-learning-intro {
-    font-size: 0.94rem;
+  .groundwater-learning-hero {
+    padding: 1.25rem;
+    border-radius: 1.1rem;
+  }
+
+  .groundwater-learning-hero h1 {
+    font-size: var(--fs-fluid-heading-md);
+  }
+
+  .groundwater-learning-actions,
+  .groundwater-learning-primary-action,
+  .groundwater-learning-secondary-action {
+    width: 100%;
   }
 
   .groundwater-learning-audience {
-    padding: 1rem 1.1rem;
+    border-radius: 1rem;
+  }
+
+  .groundwater-learning-audience ul,
+  .groundwater-learning-start-list {
+    grid-template-columns: 1fr;
+  }
+
+  .groundwater-learning-cta {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+  }
+
+  .groundwater-learning-cta-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .groundwater-learning-cta > a {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .groundwater-learning-primary-action,
+  .groundwater-learning-secondary-action,
+  .groundwater-learning-start-list > a,
+  .groundwater-learning-cta > a {
+    transition: none;
   }
 }

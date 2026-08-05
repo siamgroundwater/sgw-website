@@ -5,7 +5,7 @@
 /* Title */
 .teams-title {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: var(--fs-2xl);
   margin: 4rem 0 2rem 0;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -57,17 +57,17 @@
 }
 
 .teams-group-title {
-  font-size: 1.2rem;
+  font-size: var(--fs-md);
   font-weight: 600;
 }
 
 .teams-group-summary {
-  font-size: 1rem;
+  font-size: var(--fs-sm);
   color: #464a51;
 }
 
 .teams-group-toggle-icon {
-  font-size: 1.2rem;
+  font-size: var(--fs-md);
   transform: translateY(4px) scale(2.5);
   transition: transform 0.2s ease;
 }
@@ -136,8 +136,7 @@
 
 .org-connector-horizontal {
   width: 80%;
-  max-width: 360px;
-  height: 2px;
+height: 2px;
   background: #d4d4d8;
   margin-bottom: 4px;
 }
@@ -152,8 +151,7 @@
   border: 1px solid #e5e7eb;
   padding: 8px 10px;
   min-width: 220px;
-  max-width: 260px;
-  box-sizing: border-box;
+box-sizing: border-box;
 }
 
 .org-person-card-leader {
@@ -198,7 +196,7 @@
 .org-person-title {
   text-align: center;
   margin: 0 0 4px;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   color: #4b5563;
 }
 
@@ -206,7 +204,7 @@
 .org-cert-list {
   margin: 0;
   padding-left: 18px;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: #4b5563;
 }
 

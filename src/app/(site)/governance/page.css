@@ -16,7 +16,7 @@
   gap: 0.4rem;
   padding: 0.5rem 1.5rem;
   border-radius: 999px;
-  font-size: 2rem;
+  font-size: var(--fs-3xl);
   letter-spacing: 0.2rem;
   text-transform: uppercase;
   border: 1px solid rgba(148, 163, 184, 0.6);
@@ -30,14 +30,14 @@
 
 .governance-title-th {
   margin-top: 1rem;
-  font-size: 1.1rem;
+  font-size: var(--fs-base);
   font-weight: 500;
   color: #d5dcff;
 }
 
 .governance-description {
   margin-top: 0.8rem;
-  font-size: 1rem;
+  font-size: var(--fs-sm);
   line-height: 1.8;
   color: #e8edff;
 }
@@ -78,8 +78,47 @@
   background-color: #020617; /* fallback while loading */
 }
 
-@media (max-width: 768px) {
+.governance-download-button {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #67e8f9;
+  border-radius: 0.8rem;
+  color: #052c33;
+  font-weight: 700;
+  background: #67e8f9;
+  box-shadow: 0 12px 28px rgba(3, 20, 31, 0.24);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.governance-download-button:hover {
+  border-color: #a5f3fc;
+  background: #a5f3fc;
+  transform: translateY(-2px);
+}
+
+.governance-download-button svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+}
+
+@media (width <= 768px) {
   .governance-eyebrow {
-    font-size: 1.8rem;
+    font-size: var(--fs-2xl);
+  }
+
+  .governance-download-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .governance-download-button {
+    transition: none;
   }
 }

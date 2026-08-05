@@ -1,70 +1,83 @@
-// src/app/(site)/home/services.tsx
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import { localePath, type LocalizedLocale } from '@/i18n/config'
+import {
+  localizedContent,
+  SERVICE_KEYS,
+  type LocalizedContent,
+} from '@/i18n/localized-content'
 import './services.css'
 
-const SERVICES = [
-  {
+const SERVICE_META = {
+  survey: {
     href: '/services/survey',
-    label: 'สำรวจศึกษาน้ำบาดาล น้ำแร่ น้ำพุร้อน EIA',
-    alt: 'สำรวจศึกษาน้ำบาดาล',
     image: '/images/logo/services/survey.png',
   },
-  {
+  drilling: {
     href: '/services/drilling',
-    label: 'เจาะบ่อน้ำบาดาล บ่อน้ำแร่ บ่อน้ำพุร้อน บ่อสูบลดระดับน้ำ',
-    alt: 'เจาะบ่อน้ำบาดาล',
     image: '/images/logo/services/well-drilling.png',
   },
-  {
+  maintenance: {
     href: '/services/maintenance',
-    label: 'ซ่อมบำรุงรักษาบ่อน้ำบาดาล และเครื่องสูบน้ำ',
-    alt: 'ซ่อมบำรุงรักษาบ่อน้ำบาดาล',
     image: '/images/logo/services/maintenance.png',
   },
-  {
+  consult: {
     href: '/services/consult',
-    label: 'แก้ไขโครงการที่เจาะน้ำบาดาลขึ้นมาใช้แล้วมีปัญหาและเสียหาย',
-    alt: 'แก้ไขปัญหาโครงการน้ำบาดาล',
     image: '/images/logo/services/consult.png',
   },
-]
+} as const
 
-export default function Services() {
+export default function Services({
+  locale,
+  copy,
+}: {
+  locale?: LocalizedLocale
+  copy?: LocalizedContent
+} = {}) {
+  const activeLocale = locale ?? 'th'
+  const activeCopy = copy ?? localizedContent[activeLocale]
+  const serviceHref = (href: string) =>
+    locale ? localePath(href, activeLocale) : href
+
   return (
-    <section className="home-services">
-      <div className="home-services-illustration">
+    <section className="home-services" aria-labelledby="home-services-title">
+      <div className="home-services-illustration-wrap">
         <Image
           src="/services/services-BG.png"
-          alt="บริการของเรา"
-          width={800}
-          height={600}
-          className="home-services-illustration-image"
-          priority
+          alt={activeCopy.services.title}
+          width={1200}
+          height={900}
+          className="home-services-illustration"
+          sizes="(width <= 900px) 100vw, 44vw"
         />
       </div>
 
       <div className="home-services-content">
-        <h2 className="home-services-title">บริการของเรา</h2>
+        <h2 id="home-services-title">{activeCopy.services.title}</h2>
 
         <div className="home-services-grid">
-          {SERVICES.map((service) => (
-            <Link
-              key={service.href}
-              href={service.href}
-              className="home-service-card"
-            >
-              <div className="home-service-icon">
-                <Image
-                  src={service.image}
-                  alt={service.alt}
-                  width={120}
-                  height={120}
-                />
-              </div>
-              <div className="home-service-text">{service.label}</div>
-            </Link>
-          ))}
+          {SERVICE_KEYS.map((serviceKey) => {
+            const service = activeCopy.services.items[serviceKey]
+            const meta = SERVICE_META[serviceKey]
+
+            return (
+              <Link
+                key={serviceKey}
+                href={serviceHref(meta.href)}
+                className="home-service-card"
+              >
+                <span className="home-service-icon" aria-hidden="true">
+                  <Image
+                    src={meta.image}
+                    alt=""
+                    width={120}
+                    height={120}
+                  />
+                </span>
+                <span className="home-service-text">{service.title}</span>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>

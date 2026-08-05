@@ -1,0 +1,104 @@
+.contact-form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.contact-form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.65;
+  cursor: pointer;
+}
+
+.contact-form-consent input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
+  accent-color: #2dd4bf;
+}
+
+.contact-form-consent a {
+  color: #a5f3fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-form-actions {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.contact-form-submit:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.contact-form-email-fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #a5f3fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-form-submit {
+  gap: 0.5rem;
+}
+
+.contact-form-submit svg,
+.contact-form-email-fallback svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+}
+
+.contact-form-spinner {
+  animation: contact-form-spin 900ms linear infinite;
+}
+
+@keyframes contact-form-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form-spinner {
+    animation: none;
+  }
+}
+
+.contact-form-status {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  line-height: 1.6;
+}
+
+.contact-form-status-success {
+  color: #d1fae5;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  background: rgba(6, 78, 59, 0.5);
+}
+
+.contact-form-status-error {
+  color: #fee2e2;
+  border: 1px solid rgba(248, 113, 113, 0.38);
+  background: rgba(127, 29, 29, 0.48);
+}
+
+.contact-form-status-submitting {
+  color: #cffafe;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  background: rgba(8, 51, 68, 0.5);
+}

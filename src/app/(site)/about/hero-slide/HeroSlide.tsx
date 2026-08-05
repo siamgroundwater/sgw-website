@@ -9,21 +9,29 @@ const REAL_SLIDES = [
   {
     id: 'about-slide-1',
     src: '/images/about/slide/about-slide-1.jpg',
+    width: 4608,
+    height: 3456,
     alt: 'ภาพรวมการทำงานของบริษัท สยามกราวด์วอเตอร์',
   },
   {
     id: 'about-slide-2',
     src: '/images/about/slide/about-slide-2.jpg',
+    width: 1299,
+    height: 974,
     alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
   },
   {
     id: 'about-slide-3',
     src: '/images/about/slide/about-slide-3.jpg',
+    width: 1920,
+    height: 420,
     alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
   },
   {
     id: 'about-slide-4',
     src: '/images/about/slide/about-slide-4.jpg',
+    width: 1280,
+    height: 280,
     alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
   },
 ]
@@ -40,6 +48,8 @@ function prefersReducedMotion() {
 type RenderSlide = {
   key: string
   src: string
+  width: number
+  height: number
   alt: string
   isClone?: boolean
 }
@@ -52,13 +62,23 @@ export default function HeroSlide() {
     {
       key: `clone-start-${REAL_SLIDES[n - 1].id}`,
       src: REAL_SLIDES[n - 1].src,
+      width: REAL_SLIDES[n - 1].width,
+      height: REAL_SLIDES[n - 1].height,
       alt: REAL_SLIDES[n - 1].alt,
       isClone: true,
     },
-    ...REAL_SLIDES.map((s) => ({ key: s.id, src: s.src, alt: s.alt })),
+    ...REAL_SLIDES.map((s) => ({
+      key: s.id,
+      src: s.src,
+      width: s.width,
+      height: s.height,
+      alt: s.alt,
+    })),
     {
       key: `clone-end-${REAL_SLIDES[0].id}`,
       src: REAL_SLIDES[0].src,
+      width: REAL_SLIDES[0].width,
+      height: REAL_SLIDES[0].height,
       alt: REAL_SLIDES[0].alt,
       isClone: true,
     },
@@ -254,7 +274,7 @@ export default function HeroSlide() {
       if (intervalRef.current) window.clearInterval(intervalRef.current)
       intervalRef.current = null
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className="about-hero-slider">
@@ -278,9 +298,10 @@ export default function HeroSlide() {
             <Image
               src={slide.src}
               alt={slide.alt}
-              width={1440}
-              height={810}
+              width={slide.width}
+              height={slide.height}
               className="about-hero-slide-image"
+              sizes="(width <= 1080px) 100vw, 1080px"
               priority
             />
           </div>

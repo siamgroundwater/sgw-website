@@ -1,5 +1,14 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
+import { Download } from 'lucide-react'
 import './page.css'
+
+export const metadata: Metadata = {
+  title: 'โครงการรักษ์น้ำบาดาล | Siam Groundwater',
+  description:
+    'แนวทางบริหารจัดการและอนุรักษ์ทรัพยากรน้ำบาดาลอย่างยั่งยืน โดยผู้เจาะ ผู้ใช้น้ำ และหน่วยงานภาครัฐมีส่วนร่วม',
+  alternates: { canonical: '/governance' },
+}
 
 export default function GovernancePage() {
   return (
@@ -28,6 +37,14 @@ export default function GovernancePage() {
             />
           </div>
         </div>
+        <a
+          className="governance-download-button"
+          href="/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png"
+          download="Poster_โครงการรักษ์น้ำบาดาล.png"
+        >
+          <Download aria-hidden="true" />
+          ดาวน์โหลดโปสเตอร์
+        </a>
       </section>
     </main>
   )

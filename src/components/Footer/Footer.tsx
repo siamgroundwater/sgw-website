@@ -1,25 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { ArrowUp, Mail, Phone, Printer } from 'lucide-react'
+import {
+  localeFromPathname,
+  localePath,
+  navigationCopy,
+} from '@/i18n/config'
 import './Footer.css'
 
 export default function Footer() {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
+  const locale = localeFromPathname(pathname)
+  const copy = navigationCopy[locale]
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300)
-    }
+    const handleScroll = () => setShowBackToTop(window.scrollY > 300)
 
     window.addEventListener('scroll', handleScroll)
     handleScroll()
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const handleBackToTop = () => {
@@ -34,35 +40,51 @@ export default function Footer() {
       itemType="https://schema.org/WPFooter"
     >
       <div className="footer-inner">
-        <div className="footer-row">
-          {/* Logo + company info */}
-          <div className="footer-info">
-            <Link href="/" className="footer-logo">
+        <div className="footer-main">
+          <div className="footer-brand">
+            <Link href={localePath('/', locale)} className="footer-logo">
               <Image
-                src="/images/logo/logo_SGW_white.svg" // TODO: update path
+                src="/images/logo/logo_SGW_white.svg"
                 alt="Siam Groundwater logo"
-                width={80}
-                height={80}
+                width={104}
+                height={104}
               />
             </Link>
 
-            <p>
-              <strong>บริษัท สยามกราวด์วอเตอร์ จำกัด</strong>
-              <br />
-              75 ซอยรามคำแหง 60 (สวนสน) แขวงหัวหมาก เขตบางกะปิ กรุงเทพฯ 10240
-            </p>
+            <div className="footer-brand-copy">
+              <strong>{copy.company}</strong>
+              <address>{copy.address}</address>
+            </div>
           </div>
 
-          {/* Contact + social */}
-          <div className="footer-contact">
-            <p>โทร 0-2735-0789</p>
-            <p>โทรสาร 0-2375-0791-2</p>
-            <p>
-              อีเมล{' '}
-              <a href="mailto:sgw_th@outlook.com" className="footer-link">
-                sgw_th@outlook.com
-              </a>
-            </p>
+          <div className="footer-contact-area">
+            <div className="footer-contact">
+              <p className="footer-contact-line">
+                <span className="footer-contact-icon">
+                  <Phone aria-hidden="true" />
+                </span>
+                <a href="tel:027350789" className="footer-link">
+                  {copy.phone} 0-2735-0789
+                </a>
+              </p>
+              <p className="footer-contact-line">
+                <span className="footer-contact-icon">
+                  <Printer aria-hidden="true" />
+                </span>
+                <span>{copy.fax} 0-2375-0791-2</span>
+              </p>
+              <p className="footer-contact-line">
+                <span className="footer-contact-icon">
+                  <Mail aria-hidden="true" />
+                </span>
+                <span>
+                  {copy.email}{' '}
+                  <a href="mailto:sgw_th@outlook.com" className="footer-link">
+                    sgw_th@outlook.com
+                  </a>
+                </span>
+              </p>
+            </div>
 
             <div className="footer-social">
               <a
@@ -73,10 +95,10 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/images/logo/logo_SGW_white.svg" // TODO: update path
+                  src="/images/logo/contact/LINE_icon.png"
                   alt="LINE"
-                  width={32}
-                  height={32}
+                  width={40}
+                  height={40}
                 />
               </a>
 
@@ -88,10 +110,10 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/images/logo/logo_SGW_white.svg" // TODO: update path
+                  src="/images/logo/contact/Facebook_icon.png"
                   alt="Facebook"
-                  width={32}
-                  height={32}
+                  width={40}
+                  height={40}
                 />
               </a>
             </div>
@@ -100,6 +122,9 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p>© {currentYear} SIAMGROUNDWATER CO., LTD.</p>
+          <Link href={localePath('/privacy', locale)} className="footer-link">
+            {copy.privacy}
+          </Link>
         </div>
       </div>
 
@@ -108,15 +133,10 @@ export default function Footer() {
           type="button"
           className="footer-back-to-top"
           onClick={handleBackToTop}
-          aria-label="Back to top"
+          aria-label={copy.backToTop}
         >
-          <span className="sr-only">Back to top</span>
-          <Image
-            src="/images/logo/logo_SGW_white.svg"
-            alt=""
-            width={36}
-            height={36}
-          />
+          <span className="sr-only">{copy.backToTop}</span>
+          <ArrowUp aria-hidden="true" className="footer-back-to-top-icon" />
         </button>
       )}
     </footer>

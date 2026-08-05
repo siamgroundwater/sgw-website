@@ -1,4 +1,9 @@
+📄 .env.example
+📁 .github
+  📁 workflows
+    📄 quality.yml
 📄 .gitignore
+📄 eslint.config.mjs
 📄 next-env.d.ts
 📄 next.config.ts
 📄 package-lock.json
@@ -11,51 +16,118 @@
       📄 th-Thailand.svg
       📄 zh-China.svg
   📁 images
+    📁 about
+      📁 award
+      📁 slide
     📁 BG
-      📄 about-us.jpg
       📄 under-water-1.png
       📄 under-water-2.png
       📄 under-water-3.png
       📄 under-water-5.png
+    📁 governance
+      📄 Poster_โครงการรักษ์น้ำบาดาล.png
     📁 logo
+      📁 contact
       📄 logo_SGW_white.svg
       📁 services
+    📁 map
+      📄 marker-icon-2x.png
+      📄 marker-icon.png
+      📄 marker-shadow.png
     📁 personnel
+      📄 Damrong.png
       📄 GM.png
+      📄 Kammee.png
       📄 MD.jpg
+      📄 Montree.png
+      📄 Nampol.png
       📄 Nee.png
       📄 Nooch.png
+      📄 Nu.png
       📄 Peak.png
+      📄 Somboon.png
+      📄 Somchai.png
+      📄 Somsak.png
+      📄 Suwit.png
       📄 Terng.png
       📄 Top.png
       📄 user.png
       📄 Wee.jpg
+      📄 Yeng.png
+    📁 services
+      📄 consult-hero.jpg
+      📁 survey
+  📄 og.png
   📁 services
     📄 services-BG-2.png
     📄 services-BG.png
 📄 README.md
 📁 scripts
-  📄 convertProjectsToNewShape.js
+  📄 convertProjectsToNewShape.cjs
   📄 file-structure.txt
-  📄 generate-tree.js
+  📄 generate-tree.cjs
 📁 src
   📁 app
     📁 (site)
       📁 about
+      📁 contact
       📄 favicon.ico
+      📁 governance
+      📁 groundwater-learning
       📁 home
       📄 layout.tsx
+      📁 learn
       📄 page.tsx
+      📁 privacy
+      📁 projects
+      📁 services
     📁 admin
+    📁 api
+      📁 contact
+    📄 global-not-found.tsx
+    📄 robots.ts
+    📄 sitemap.ts
+    📁 [locale]
       📄 layout.tsx
-      📄 page.tsx
+      📁 [[...slug]]
   📁 components
+    📁 ContactForm
+      📄 ContactForm.css
+      📄 ContactForm.tsx
     📁 Footer
       📄 Footer.css
       📄 Footer.tsx
+    📁 GroundwaterCalculator
+      📄 GroundwaterCalculator.css
+      📄 GroundwaterCalculator.tsx
+    📁 LanguageSwitcher
+      📄 LanguageSwitcher.tsx
+    📁 LocalizedProjectBrowser
+      📄 LocalizedProjectBrowser.css
+      📄 LocalizedProjectBrowser.tsx
     📁 Navbar
+      📁 mobile
       📄 Navbar.css
       📄 Navbar.tsx
+    📁 Slider
+      📄 Slider.css
+      📄 Slider.tsx
+  📁 data
+    📄 learning.ts
+  📁 i18n
+    📄 config.ts
+    📄 localized-content.ts
+    📄 projects.ts
+  📁 lib
+    📄 contact-validation.ts
+    📄 groundwater-calculator.ts
+    📄 projects.ts
   📁 styles
     📄 globals.css
+📁 tests
+  📄 calculator.test.mjs
+  📄 contact-validation.test.mjs
+  📄 content-integrity.test.mjs
+  📄 i18n.test.mjs
 📄 tsconfig.json
+📄 tsconfig.tsbuildinfo

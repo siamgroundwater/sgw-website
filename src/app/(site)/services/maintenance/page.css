@@ -1,7 +1,7 @@
 /* src/app/(site)/services/maintenance/page.css */
 
-/* Reuse the shared “service page” styling to keep everything consistent */
-@import "../survey/page.css";
+/* Reuse the shared service-page layout. */
+@import '../service-page.css';
 
 /* Optional: slightly different hero mood for maintenance (subtle, still minimal) */
 .serviceHero {

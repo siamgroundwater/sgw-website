@@ -2,53 +2,47 @@
 
 import { useState, type ChangeEvent } from 'react'
 import Link from 'next/link'
-import projectsData from '../projects.json'
+import Image from 'next/image'
+import {
+  PROJECT_CATEGORIES,
+  projects,
+  type ProjectCategory,
+} from '@/lib/projects'
+import { localeInfo, localePath, type LocalizedLocale } from '@/i18n/config'
+import type { LocalizedContent } from '@/i18n/localized-content'
+import {
+  PROJECT_CATEGORY_KEYS,
+  getLocalizedProjectPresentation,
+} from '@/i18n/projects'
+import LegacyProjectMapSection from '@/components/LegacyProjectMapSection/LegacyProjectMapSection'
 import './projects.css'
 
-// ---- Types ----
-type ProjectContent = {
-  image: string
-  text: string
-}
-
-type Project = {
-  _id: number
-  title: string
-  year: number
-  logo: string
-  projectType: string
-  lat: number
-  lng: number
-  coverImage: string
-  category: string[]
-  contents: ProjectContent[]
-}
-
-// Filter categories
-type FilterCategory =
-  | 'all'
-  | 'งานโครงการ'
-  | 'นิคม โรงงาน'
-  | 'อาหาร เครื่องดื่ม'
-  | 'โรงแรม รีสอร์ท'
-  | 'เกาะ'
-  | 'เหมืองแร่ พลังงาน'
-  | 'ฟาร์ม เกษตร ปศุสัตว์'
-  | 'วัด โรงเรียน'
-  | 'Dewatering'
-
+type FilterCategory = 'all' | ProjectCategory
 type ItemsPerPage = 10 | 20 | 50 | 100 | 'all'
 
-const projects = projectsData as Project[]
+const toolbarCopy: Record<LocalizedLocale, { maximum: string; items: string }> = {
+  th: { maximum: 'แสดงสูงสุด', items: 'รายการ' },
+  en: { maximum: 'Show up to', items: 'items' },
+  zh: { maximum: '最多显示', items: '项' },
+  ja: { maximum: '最大表示数', items: '件' },
+}
 
-export default function ProjectsSection() {
+export default function ProjectsSection({
+  locale,
+  copy,
+  showHistoryMap = false,
+}: {
+  locale?: LocalizedLocale
+  copy?: LocalizedContent['projects']
+  showHistoryMap?: boolean
+} = {}) {
   const [category, setCategory] = useState<FilterCategory>('all')
   const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(10)
 
   const filteredProjects =
     category === 'all'
       ? projects
-      : projects.filter((p) => p.category.includes(category))
+      : projects.filter((project) => project.category.includes(category))
 
   const displayedProjects =
     itemsPerPage === 'all'
@@ -57,129 +51,68 @@ export default function ProjectsSection() {
 
   const handleItemsPerPageChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value
-    if (value === 'all') {
-      setItemsPerPage('all')
-    } else {
-      setItemsPerPage(Number(value) as ItemsPerPage)
-    }
+    setItemsPerPage(value === 'all' ? 'all' : (Number(value) as ItemsPerPage))
   }
+
+  const numberLocale = locale ? localeInfo[locale].htmlLang : 'th-TH'
+  const controls = locale ? toolbarCopy[locale] : undefined
 
   return (
     <section className="home-projects thirdBackground">
       <div className="projects-header">
         <h2 className="elementor-heading-title elementor-size-default">
-          ตัวอย่าง โครงการของเรา
+          {copy?.title ?? 'ตัวอย่าง โครงการของเรา'}
         </h2>
+        {copy?.intro && <p className="projects-intro">{copy.intro}</p>}
+
+        {showHistoryMap && (
+          <LegacyProjectMapSection locale={locale ?? 'th'} />
+        )}
 
         <div className="projects-filter-buttons">
           <button
-            className={`filter-button ${
-              category === 'all' ? 'active' : ''
-            } filter-all`}
+            type="button"
+            className={`filter-button ${category === 'all' ? 'active' : ''} filter-all`}
             onClick={() => setCategory('all')}
           >
-            ทั้งหมด
+            {copy?.all ?? 'ทั้งหมด'}
           </button>
 
-          <button
-            className={`filter-button ${
-              category === 'งานโครงการ' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('งานโครงการ')}
-          >
-            งานโครงการ
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'นิคม โรงงาน' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('นิคม โรงงาน')}
-          >
-            นิคม โรงงาน
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'อาหาร เครื่องดื่ม' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('อาหาร เครื่องดื่ม')}
-          >
-            อาหาร เครื่องดื่ม
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'โรงแรม รีสอร์ท' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('โรงแรม รีสอร์ท')}
-          >
-            โรงแรม รีสอร์ท
-          </button>
-
-          <button
-            className={`filter-button ${category === 'เกาะ' ? 'active' : ''}`}
-            onClick={() => setCategory('เกาะ')}
-          >
-            เกาะ
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'เหมืองแร่ พลังงาน' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('เหมืองแร่ พลังงาน')}
-          >
-            เหมืองแร่ พลังงาน
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'ฟาร์ม เกษตร ปศุสัตว์' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('ฟาร์ม เกษตร ปศุสัตว์')}
-          >
-            ฟาร์ม เกษตร ปศุสัตว์
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'วัด โรงเรียน' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('วัด โรงเรียน')}
-          >
-            วัด โรงเรียน
-          </button>
-
-          <button
-            className={`filter-button ${
-              category === 'Dewatering' ? 'active' : ''
-            }`}
-            onClick={() => setCategory('Dewatering')}
-          >
-            Dewatering
-          </button>
+          {PROJECT_CATEGORIES.map((filterCategory, index) => (
+            <button
+              type="button"
+              key={filterCategory}
+              className={`filter-button ${
+                category === filterCategory ? 'active' : ''
+              }`}
+              onClick={() => setCategory(filterCategory)}
+            >
+              {copy?.categories[PROJECT_CATEGORY_KEYS[index]] ?? filterCategory}
+            </button>
+          ))}
         </div>
 
-        {/* toolbar: items-per-page + count */}
         <div className="projects-subheader">
           <div className="projects-count">
-            แสดง {displayedProjects.length.toLocaleString('th-TH')} /{' '}
-            {filteredProjects.length.toLocaleString('th-TH')} โครงการ
+            {copy?.showing ?? 'แสดง'}{' '}
+            {displayedProjects.length.toLocaleString(numberLocale)} /{' '}
+            {filteredProjects.length.toLocaleString(numberLocale)}{' '}
+            {controls?.items ?? 'โครงการ'}
           </div>
 
           <div className="projects-page-size">
             <label>
-              แสดงสูงสุด:{' '}
+              {controls?.maximum ?? 'แสดงสูงสุด'}:{' '}
               <select
                 value={itemsPerPage === 'all' ? 'all' : itemsPerPage}
                 onChange={handleItemsPerPageChange}
               >
-                <option value="10">10 รายการ</option>
-                <option value="20">20 รายการ</option>
-                <option value="50">50 รายการ</option>
-                <option value="100">100 รายการ</option>
-                <option value="all">ทั้งหมด</option>
+                {[10, 20, 50, 100].map((amount) => (
+                  <option key={amount} value={amount}>
+                    {amount} {controls?.items ?? 'รายการ'}
+                  </option>
+                ))}
+                <option value="all">{copy?.all ?? 'ทั้งหมด'}</option>
               </select>
             </label>
           </div>
@@ -187,45 +120,54 @@ export default function ProjectsSection() {
       </div>
 
       <div className="projects-grid display-posts-listing">
-        {displayedProjects.map((project) => (
-          <article key={project._id} className="listing-item project-card">
-            <div className="image project-card-image-wrapper">
-              <Link href={'#'} className="removeUnderLine">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={'/images/logo/logo_SGW_white.svg'}
+        {displayedProjects.map((project) => {
+          const presentation = copy
+            ? getLocalizedProjectPresentation(project, copy)
+            : undefined
+          const href = locale
+            ? localePath(`/projects/${project._id}`, locale)
+            : `/projects/${project._id}`
+
+          return (
+            <Link
+              key={project._id}
+              href={href}
+              className="listing-item project-card"
+              aria-label={`${copy?.details ?? 'ดูรายละเอียดโครงการ'} ${project.title}`}
+            >
+              <div className="image project-card-image-wrapper">
+                <Image
+                  src={project.localCoverImage}
                   alt={project.title}
                   width={800}
                   height={600}
+                  sizes="(width <= 640px) 100vw, (width <= 1024px) 50vw, 25vw"
                   className="project-card-image"
                 />
-              </Link>
-            </div>
+              </div>
 
-            <h4
-              className="Project-Title title SP-textHead5 removeUnderLine"
-              style={{ textAlign: 'center', marginBottom: 0 }}
-            >
-              {project.title}
-            </h4>
+              <h4
+                className="Project-Title title SP-textHead5 removeUnderLine"
+                style={{ textAlign: 'center', marginBottom: 0 }}
+              >
+                {project.title}
+              </h4>
 
-            <h5 className="project-date SP-textHead4">{project.year}</h5>
+              <div className="project-card-meta">
+                {project.year && <span>{project.year}</span>}
+                <span>{project.location}</span>
+              </div>
 
-            <p
-              className="project-type-of-work SP-textHead6"
-              style={{ textAlign: 'center' }}
-            >
-              {project.projectType}
-            </p>
+              <p className="project-type-of-work SP-textHead6" style={{ textAlign: 'center' }}>
+                {project.workTypes.join(' · ') || presentation?.typeLabel || project.projectTypeLabel}
+              </p>
 
-            <p
-              className="project-category SP-textHead6"
-              style={{ textAlign: 'center' }}
-            >
-              {project.category.join(' • ')}
-            </p>
-          </article>
-        ))}
+              <p className="project-category SP-textHead6" style={{ textAlign: 'center' }}>
+                {presentation?.categoryLabel ?? project.category.join(' • ')}
+              </p>
+            </Link>
+          )
+        })}
       </div>
     </section>
   )

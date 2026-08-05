@@ -1,0 +1,59 @@
+.privacy-page {
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+  padding: 4rem 0 6rem;
+}
+
+.privacy-eyebrow {
+  color: #67e8f9;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.privacy-page h1 {
+  margin-top: 0.75rem;
+  font-size: var(--fs-fluid-heading-lg);
+}
+
+.privacy-lead {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: var(--fs-base);
+  line-height: 1.85;
+}
+
+.privacy-page section {
+  margin-top: 1rem;
+  padding: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(7, 32, 46, 0.72);
+}
+
+.privacy-page section p {
+  margin-top: 0.6rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.8;
+}
+
+.privacy-page a {
+  color: #a5f3fc;
+}
+
+.privacy-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  font-weight: 700;
+}
+
+.privacy-back-link svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}

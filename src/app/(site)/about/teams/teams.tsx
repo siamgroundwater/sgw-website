@@ -28,7 +28,7 @@ type TeamGroup = {
 // Cast JSON into typed structure
 const TEAM_GROUPS = teamGroupsJson as TeamGroup[]
 
-export default function Teams() {
+export default function Teams({ title }: { title?: string } = {}) {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
     TEAM_GROUPS.forEach((group) => {
@@ -47,7 +47,7 @@ export default function Teams() {
 
   return (
     <section className="teams-section">
-      <h2 className="teams-title">ทีมงาน สยามกราวด์วอเตอร์</h2>
+      <h2 className="teams-title">{title ?? 'ทีมงาน สยามกราวด์วอเตอร์'}</h2>
 
       {/* Org-chart style groups */}
       <div className="teams-groups">
@@ -62,6 +62,8 @@ export default function Teams() {
                 type="button"
                 className="teams-group-toggle"
                 onClick={() => toggleGroup(group.id)}
+                aria-expanded={openGroups[group.id]}
+                aria-controls={`teams-group-body-${group.id}`}
               >
                 <div className="teams-group-toggle-inner">
                   <span className="teams-group-title">{group.label}</span>
@@ -80,7 +82,10 @@ export default function Teams() {
             </div>
 
             {openGroups[group.id] && (
-              <div className="teams-group-body">
+              <div
+                className="teams-group-body"
+                id={`teams-group-body-${group.id}`}
+              >
                 {group.teams.map((team) => {
                   const leader = team.people.find((p) => p.role === 'leader')
                   const members = team.people.filter((p) => p.role === 'member')

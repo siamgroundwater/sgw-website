@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Siam Groundwater website
 
-## Getting Started
+เว็บไซต์บริษัท สยามกราวด์วอเตอร์ จำกัด สำหรับนำเสนอบริการ ผลงาน ทีมงาน
+ศูนย์การเรียนรู้ และช่องทางติดต่อโครงการน้ำบาดาลทั่วประเทศไทย
 
-First, run the development server:
+## Requirements
+
+- Node.js 22
+- npm 10+
+
+## Local development
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
 
-## Learn More
+หรือรันทั้งหมดด้วย `npm run check`
 
-To learn more about Next.js, take a look at the following resources:
+## Contact form configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+แบบฟอร์มใช้ API route ภายในและส่งอีเมลผ่าน Resend โดยไม่บันทึกข้อความลงไฟล์
+หรือพิมพ์ข้อมูลส่วนบุคคลลง log
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. คัดลอก `.env.example` เป็น `.env.local`
+2. สร้าง API key และ verified sender domain ใน Resend
+3. กำหนด `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` และ `CONTACT_TO_EMAIL`
+4. ทดสอบแบบฟอร์มใน staging ก่อนเผยแพร่จริง
 
-## Deploy on Vercel
+หากยังไม่ได้ตั้งค่าอีเมล หน้าเว็บจะแสดงช่องทางอีเมลและโทรศัพท์แทนอย่างชัดเจน
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Content locations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Projects: `src/app/(site)/home/projects.json`
+- Learning articles: `src/data/learning.ts`
+- English, Chinese and Japanese copy: `src/i18n/localized-content.ts`
+- Locale configuration, navigation and route helpers: `src/i18n/config.ts`
+- Team structure: `src/app/(site)/about/teams/teams.json`
+
+## Languages and routes
+
+- Thai is the default language and keeps the existing unprefixed routes, such as `/services`.
+- English uses `/en`, Simplified Chinese uses `/zh`, and Japanese uses `/ja`.
+- The language switcher preserves the current page whenever the equivalent translated route exists.
+- Localized project details and learning articles are statically generated at build time.
+- Canonical URLs and `hreflang` alternatives are emitted in localized page metadata and `sitemap.xml`.
+
+ข้อมูลโครงการต้องมาจากข้อมูลที่ตรวจสอบแล้วเท่านั้น สคริปต์แปลงข้อมูลจะไม่สุ่มปี
+หรือหมวดหมู่ และไฟล์ทดสอบจะตรวจหา asset ที่หายก่อน build ใน CI
+
+## Deployment checklist
+
+- ตั้งค่า environment variables สำหรับ contact form
+- ตั้ง `NEXT_PUBLIC_SITE_URL` เป็น origin จริง หากไม่ใช่ `https://siamgroundwater.com`
+- ตรวจ `npm audit`
+- รัน `npm run check`
+- ทดสอบ `/robots.txt`, `/sitemap.xml`, แบบฟอร์ม และหน้าหลักบนมือถือ

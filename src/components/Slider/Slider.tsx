@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import Image from 'next/image'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import './Slider.css'
 
 export type Slide = {
@@ -88,7 +89,7 @@ export default function Slider({
 
     const id = window.setInterval(() => next(), intervalMs)
     return () => window.clearInterval(id)
-  }, [isHovering, intervalMs, total])
+  }, [isHovering, intervalMs, total]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onTransitionEnd = () => {
     if (!isLoop) return
@@ -146,7 +147,7 @@ export default function Slider({
                     src={s.src}
                     alt={s.alt}
                     fill
-                    sizes="(max-width: 768px) 92vw, 720px"
+                    sizes="(width <= 768px) 92vw, 720px"
                     priority={Boolean(s.priority)}
                   />
                 </div>
@@ -165,16 +166,7 @@ export default function Slider({
           onClick={prev}
           aria-label="Previous slide"
         >
-          <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true">
-            <path
-              d="M15 18l-6-6 6-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronLeft aria-hidden="true" size={44} strokeWidth={2.4} />
         </button>
 
         <button
@@ -183,16 +175,7 @@ export default function Slider({
           onClick={next}
           aria-label="Next slide"
         >
-          <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true">
-            <path
-              d="M9 6l6 6-6 6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronRight aria-hidden="true" size={44} strokeWidth={2.4} />
         </button>
       </div>
 
@@ -210,7 +193,8 @@ export default function Slider({
               className={`slider__dot ${active ? 'is-active' : ''}`}
               onClick={() => setIndex(isLoop ? i + 1 : i)}
               aria-label={`Go to slide ${i + 1}: ${s.caption}`}
-              aria-current={active ? 'true' : undefined}
+              aria-selected={active}
+              tabIndex={active ? 0 : -1}
               role="tab"
             />
           )

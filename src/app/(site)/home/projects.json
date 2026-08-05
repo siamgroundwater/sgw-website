@@ -1,1596 +1,1120 @@
 [
-  {
-    "_id": 1,
-    "title": "Intercontinental Phang Nga Bay Resort",
-    "year": 2018,
-    "logo": "/images/logo/logoImage1.svg",
-    "projectType": "resort",
-    "lat": 8.2382035,
-    "lng": 98.4410424,
-    "coverImage": "/images/projects/project-1.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-1.jpg",
-        "text": "Intercontinental Phang Nga Bay Resort – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-1.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 2,
-    "title": "โรงงานน้ำดื่ม SK FACTORY ปากซัน ลาว",
-    "year": 2020,
-    "logo": "/images/logo/logoImage2.svg",
-    "projectType": "factory",
-    "lat": 18.45078,
-    "lng": 103.6487821,
-    "coverImage": "/images/projects/project-2.jpg",
-    "category": [
-      "อาหาร เครื่องดื่ม",
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-2.jpg",
-        "text": "โรงงานน้ำดื่ม SK FACTORY ปากซัน ลาว – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-2.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 3,
-    "title": "โรงงานผลิตน้ำแร่เกรดพีเมี่ยม",
-    "year": 2013,
-    "logo": "/images/logo/logoImage3.svg",
-    "projectType": "factory",
-    "lat": 14.5898818,
-    "lng": 100.751974,
-    "coverImage": "/images/projects/project-3.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-3.jpg",
-        "text": "โรงงานผลิตน้ำแร่เกรดพีเมี่ยม – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-3.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 4,
-    "title": "โครงการแผนที่น้ำบาดาล (อีสานกลาง)",
-    "year": 2017,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 15.891624932018866,
-    "lng": 102.29134615100094,
-    "coverImage": "/images/projects/project-4.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-4.jpg",
-        "text": "โครงการแผนที่น้ำบาดาล (อีสานกลาง) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-4.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 5,
-    "title": "บริษัท เอ็นเอ็กซ์พี แมนูแฟคเจอริ่ง (ไทยแลนด์) จำกัด",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 13.8824532,
-    "lng": 100.5842785,
-    "coverImage": "/images/projects/project-5.jpg",
-    "category": [
-      "วัด โรงเรียน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-5.jpg",
-        "text": "บริษัท เอ็นเอ็กซ์พี แมนูแฟคเจอริ่ง (ไทยแลนด์) จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-5.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 6,
-    "title": "บริษัท อิเควเตอร์ โซลาร์ วัน จำกัด",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 12.8302805,
-    "lng": 99.9070152,
-    "coverImage": "/images/projects/project-6.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-6.jpg",
-        "text": "บริษัท อิเควเตอร์ โซลาร์ วัน จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-6.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 7,
-    "title": "Avani Resort & SPA - KhaoLak",
-    "year": 2018,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "resort",
-    "lat": 8.7634821,
-    "lng": 98.2655368,
-    "coverImage": "/images/projects/project-7.jpg",
-    "category": [
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-7.jpg",
-        "text": "Avani Resort & SPA - KhaoLak – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-7.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 8,
-    "title": "Kempinski Resort and Spa",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "resort",
-    "lat": 7.9056936,
-    "lng": 98.3677009,
-    "coverImage": "/images/projects/project-8.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-8.jpg",
-        "text": "Kempinski Resort and Spa – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-8.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 9,
-    "title": "Pattaya International Pigeon Race (สนามแข่งนกพิราบนานาชาติพัทยา)",
-    "year": 2012,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "other",
-    "lat": 12.9235396,
-    "lng": 101.0105,
-    "coverImage": "/images/projects/project-9.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์",
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-9.jpg",
-        "text": "Pattaya International Pigeon Race (สนามแข่งนกพิราบนานาชาติพัทยา) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-9.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 10,
-    "title": "น้ำพุร้อนเค็ม รีสอร์ท",
-    "year": 2011,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "resort",
-    "lat": 7.9051537,
-    "lng": 99.1079864,
-    "coverImage": "/images/projects/project-10.jpg",
-    "category": [
-      "เกาะ",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-10.jpg",
-        "text": "น้ำพุร้อนเค็ม รีสอร์ท – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-10.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 11,
-    "title": "องค์การบริหารส่วนตำบลคลองขลุง",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.208588,
-    "lng": 99.7094572,
-    "coverImage": "/images/projects/project-11.jpg",
-    "category": [
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-11.jpg",
-        "text": "องค์การบริหารส่วนตำบลคลองขลุง – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-11.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 12,
-    "title": "บริษัท กระเบื้องหลังคาเซรามิคไทย จำกัด",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.380561,
-    "lng": 100.8421311,
-    "coverImage": "/images/projects/project-12.jpg",
-    "category": [
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-12.jpg",
-        "text": "บริษัท กระเบื้องหลังคาเซรามิคไทย จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-12.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 13,
-    "title": "บริษัท กันกุล พาวเวอร์เจน จำกัด",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 16.0480602,
-    "lng": 100.7401483,
-    "coverImage": "/images/projects/project-13.jpg",
-    "category": [
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-13.jpg",
-        "text": "บริษัท กันกุล พาวเวอร์เจน จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-13.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 14,
-    "title": "บริษัท การ์เดียนอินดัสทรีส์ คอร์ป จำกัด",
-    "year": 2020,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.3699487,
-    "lng": 100.8397885,
-    "coverImage": "/images/projects/project-14.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-14.jpg",
-        "text": "บริษัท การ์เดียนอินดัสทรีส์ คอร์ป จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-14.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 15,
-    "title": "บริษัท กิจพูนชัย จำกัด",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.7648507,
-    "lng": 100.4577469,
-    "coverImage": "/images/projects/project-15.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-15.jpg",
-        "text": "บริษัท กิจพูนชัย จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-15.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 16,
-    "title": "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด",
-    "year": 2024,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 12.0913676,
-    "lng": 99.8464812,
-    "coverImage": "/images/projects/project-16.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-16.jpg",
-        "text": "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-16.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 17,
-    "title": "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด",
-    "year": 2024,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 12.0913676,
-    "lng": 99.8464812,
-    "coverImage": "/images/projects/project-17.jpg",
-    "category": [
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-17.jpg",
-        "text": "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-17.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 18,
-    "title": "บริษัท ช.การช่าง จำกัด (มหาชน)",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "train",
-    "lat": 13.7438643,
-    "lng": 100.4946614,
-    "coverImage": "/images/projects/project-18.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-18.jpg",
-        "text": "บริษัท ช.การช่าง จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-18.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 19,
-    "title": "บริษัท ช.การช่าง จำกัด (มหาชน)",
-    "year": 2010,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "train",
-    "lat": 13.7383192,
-    "lng": 100.4852881,
-    "coverImage": "/images/projects/project-19.jpg",
-    "category": [
-      "Dewatering",
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-19.jpg",
-        "text": "บริษัท ช.การช่าง จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-19.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 20,
-    "title": "บริษัท ซีพีเอฟ (ประเทศไทย) จำกัด (มหาชน)",
-    "year": 2020,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 16.2874963,
-    "lng": 102.7846621,
-    "coverImage": "/images/projects/project-20.jpg",
-    "category": [
-      "โรงแรม รีสอร์ท",
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-20.jpg",
-        "text": "บริษัท ซีพีเอฟ (ประเทศไทย) จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-20.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 21,
-    "title": "บริษัท ซีพีแรม จำกัด",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 16.3432235,
-    "lng": 102.7992019,
-    "coverImage": "/images/projects/project-21.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-21.jpg",
-        "text": "บริษัท ซีพีแรม จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-21.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 22,
-    "title": "บริษัท ทิปโก้ เอฟแอนด์บี จำกัด",
-    "year": 2023,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.3024468,
-    "lng": 100.8144588,
-    "coverImage": "/images/projects/project-22.jpg",
-    "category": [
-      "งานโครงการ",
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-22.jpg",
-        "text": "บริษัท ทิปโก้ เอฟแอนด์บี จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-22.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 23,
-    "title": "บริษัท ทิปโก้ฟูดส์ จำกัด",
-    "year": 2016,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 18.9041206,
-    "lng": 98.8295276,
-    "coverImage": "/images/projects/project-23.jpg",
-    "category": [
-      "Dewatering",
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-23.jpg",
-        "text": "บริษัท ทิปโก้ฟูดส์ จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-23.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 24,
-    "title": "บริษัท ทิปโก้ฟูดส์ จำกัด (มหาชน)",
-    "year": 2010,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 11.8735836,
-    "lng": 99.7866867,
-    "coverImage": "/images/projects/project-24.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-24.jpg",
-        "text": "บริษัท ทิปโก้ฟูดส์ จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-24.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 25,
-    "title": "บริษัท นิคอน (ประเทศไทย) จำกัด",
-    "year": 2020,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.3269677,
-    "lng": 100.645904,
-    "coverImage": "/images/projects/project-25.jpg",
-    "category": [
-      "นิคม โรงงาน",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-25.jpg",
-        "text": "บริษัท นิคอน (ประเทศไทย) จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-25.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 26,
-    "title": "บริษัท บริดจสโตน คาร์บอน แบล็ค จำกัด",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 12.8796232,
-    "lng": 101.3366563,
-    "coverImage": "/images/projects/project-26.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-26.jpg",
-        "text": "บริษัท บริดจสโตน คาร์บอน แบล็ค จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-26.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 27,
-    "title": "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด",
-    "year": 2017,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 15.4623335,
-    "lng": 101.7257623,
-    "coverImage": "/images/projects/project-27.jpg",
-    "category": [
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-27.jpg",
-        "text": "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-27.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 28,
-    "title": "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด",
-    "year": 2016,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 15.1305517,
-    "lng": 101.7374309,
-    "coverImage": "/images/projects/project-28.jpg",
-    "category": [
-      "Dewatering",
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-28.jpg",
-        "text": "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-28.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 29,
-    "title": "บริษัท บุญรอดบริวเวอรี่ จำกัด",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 19.987904,
-    "lng": 99.862536,
-    "coverImage": "/images/projects/project-29.jpg",
-    "category": [
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-29.jpg",
-        "text": "บริษัท บุญรอดบริวเวอรี่ จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-29.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 30,
-    "title": "บริษัท ปตท. จำกัด (มหาชน)",
-    "year": 2017,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "other",
-    "lat": 14.7321669,
-    "lng": 100.4554073,
-    "coverImage": "/images/projects/project-30.jpg",
-    "category": [
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-30.jpg",
-        "text": "บริษัท ปตท. จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-30.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 31,
-    "title": "บริษัท มิวกี้ เบย์ จำกัด",
-    "year": 2020,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "island, resort",
-    "lat": 9.7031288,
-    "lng": 100.0120321,
-    "coverImage": "/images/projects/project-31.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-31.jpg",
-        "text": "บริษัท มิวกี้ เบย์ จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-31.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 32,
-    "title": "บริษัท มีบรอม อินดัสเทรียล จำกัด",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.6681669,
-    "lng": 100.9471996,
-    "coverImage": "/images/projects/project-32.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์",
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-32.jpg",
-        "text": "บริษัท มีบรอม อินดัสเทรียล จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-32.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 33,
-    "title": "บริษัท ลานนาเกษตรอุตสาหกรรม จำกัด",
-    "year": 2024,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "agriculture",
-    "lat": 18.6760448,
-    "lng": 99.0524708,
-    "coverImage": "/images/projects/project-33.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-33.jpg",
-        "text": "บริษัท ลานนาเกษตรอุตสาหกรรม จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-33.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 34,
-    "title": "บริษัท วีนัสเธร็ด จำกัด",
-    "year": 2016,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 13.7797025,
-    "lng": 100.5972925,
-    "coverImage": "/images/projects/project-34.jpg",
-    "category": [
-      "วัด โรงเรียน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-34.jpg",
-        "text": "บริษัท วีนัสเธร็ด จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-34.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 35,
-    "title": "บริษัท สยามซานิทาริแวร์ อินดัสทรี จำกัด",
-    "year": 2023,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.4060519,
-    "lng": 100.9095137,
-    "coverImage": "/images/projects/project-35.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-35.jpg",
-        "text": "บริษัท สยามซานิทาริแวร์ อินดัสทรี จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-35.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 36,
-    "title": "บริษัท สยามโตชู จำกัด",
-    "year": 2010,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 13.6132686,
-    "lng": 100.9260324,
-    "coverImage": "/images/projects/project-36.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน",
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-36.jpg",
-        "text": "บริษัท สยามโตชู จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-36.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 37,
-    "title": "บริษัท สวัสดิ์ไพบูลย์ พอร์ต จำกัด",
-    "year": 2018,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.4369625,
-    "lng": 100.5967656,
-    "coverImage": "/images/projects/project-37.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-37.jpg",
-        "text": "บริษัท สวัสดิ์ไพบูลย์ พอร์ต จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-37.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 38,
-    "title": "บริษัท สหฟาร์ม จำกัด",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "agriculture",
-    "lat": 13.8891351,
-    "lng": 101.5720013,
-    "coverImage": "/images/projects/project-38.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-38.jpg",
-        "text": "บริษัท สหฟาร์ม จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-38.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 39,
-    "title": "บริษัท สหฟาร์ม จำกัด",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "agriculture",
-    "lat": 15.2275209,
-    "lng": 101.1256468,
-    "coverImage": "/images/projects/project-39.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-39.jpg",
-        "text": "บริษัท สหฟาร์ม จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-39.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 40,
-    "title": "บริษัท สหฟาร์ม จำกัด",
-    "year": 2011,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 15.1079455,
-    "lng": 101.024164,
-    "coverImage": "/images/projects/project-40.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-40.jpg",
-        "text": "บริษัท สหฟาร์ม จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-40.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 41,
-    "title": "บริษัท อัลเลโกร ไมโครซิสเตมส์ (ไทยแลนด์) จำกัด",
-    "year": 2019,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.35877,
-    "lng": 100.842127,
-    "coverImage": "/images/projects/project-41.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-41.jpg",
-        "text": "บริษัท อัลเลโกร ไมโครซิสเตมส์ (ไทยแลนด์) จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-41.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 42,
-    "title": "บริษัท อิตาเลียนไทย ดีเวล๊อปเมนต์ จำกัด (มหาชน)",
-    "year": 2012,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "train",
-    "lat": 13.74204,
-    "lng": 100.51021,
-    "coverImage": "/images/projects/project-42.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-42.jpg",
-        "text": "บริษัท อิตาเลียนไทย ดีเวล๊อปเมนต์ จำกัด (มหาชน) – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-42.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 43,
-    "title": "บริษัท เซรามิคอุตสาหกรรมไทย จำกัด",
-    "year": 2012,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.4086869,
-    "lng": 100.9106643,
-    "coverImage": "/images/projects/project-43.jpg",
-    "category": [
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-43.jpg",
-        "text": "บริษัท เซรามิคอุตสาหกรรมไทย จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-43.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 44,
-    "title": "บริษัท อี เอ โซล่า จำกัด",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 18.3884679,
-    "lng": 99.4231324,
-    "coverImage": "/images/projects/project-44.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-44.jpg",
-        "text": "บริษัท อี เอ โซล่า จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-44.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 45,
-    "title": "บริษัท เพียวเคมม์ จำกัด",
-    "year": 2011,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 13.696136,
-    "lng": 101.4547608,
-    "coverImage": "/images/projects/project-45.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-45.jpg",
-        "text": "บริษัท เพียวเคมม์ จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-45.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 46,
-    "title": "บริษัท เฟมีน่า เลซ ไดย์ เวิร์คส จำกัด",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 15.1637872,
-    "lng": 100.2484323,
-    "coverImage": "/images/projects/project-46.jpg",
-    "category": [
-      "งานโครงการ",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-46.jpg",
-        "text": "บริษัท เฟมีน่า เลซ ไดย์ เวิร์คส จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-46.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 47,
-    "title": "บริษัท เสริมสุข จำกัด ( มหาชน) โรงงานสุราษฎร์ธานี",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 9.0163422,
-    "lng": 99.1805054,
-    "coverImage": "/images/projects/project-47.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-47.jpg",
-        "text": "บริษัท เสริมสุข จำกัด ( มหาชน) โรงงานสุราษฎร์ธานี – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-47.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 48,
-    "title": "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครราชสีมา",
-    "year": 2022,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.9417548,
-    "lng": 102.0544833,
-    "coverImage": "/images/projects/project-48.jpg",
-    "category": [
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-48.jpg",
-        "text": "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครราชสีมา – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-48.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 49,
-    "title": "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครสวรรค์",
-    "year": 2014,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 15.6843183,
-    "lng": 100.114626,
-    "coverImage": "/images/projects/project-49.jpg",
-    "category": [
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-49.jpg",
-        "text": "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครสวรรค์ – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-49.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 50,
-    "title": "บริษัท โกลบอล ยูทิลิตี้ เซอร์วิส จำกัด",
-    "year": 2018,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 18.5919002,
-    "lng": 99.0444369,
-    "coverImage": "/images/projects/project-50.jpg",
-    "category": [
-      "นิคม โรงงาน",
-      "วัด โรงเรียน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-50.jpg",
-        "text": "บริษัท โกลบอล ยูทิลิตี้ เซอร์วิส จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-50.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 51,
-    "title": "บริษัท ไทยบอนเนต เทรดดิ้งโซน จำกัด",
-    "year": 2022,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 13.5482155,
-    "lng": 100.6842437,
-    "coverImage": "/images/projects/project-51.jpg",
-    "category": [
-      "เกาะ",
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-51.jpg",
-        "text": "บริษัท ไทยบอนเนต เทรดดิ้งโซน จำกัด – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-51.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 52,
-    "title": "วัดถ้ำกระบอก",
-    "year": 2016,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "other",
-    "lat": 14.7058965,
-    "lng": 100.8251277,
-    "coverImage": "/images/projects/project-52.jpg",
-    "category": [
-      "นิคม โรงงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-52.jpg",
-        "text": "วัดถ้ำกระบอก – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-52.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 53,
-    "title": "สถาบันบัณฑิตบริหารธุรกิจศศินทร์ แห่งจุฬาลงกรณ์มหาวิทยาลัย",
-    "year": 2023,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 8.240391,
-    "lng": 98.28271,
-    "coverImage": "/images/projects/project-53.jpg",
-    "category": [
-      "โรงแรม รีสอร์ท",
-      "เกาะ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-53.jpg",
-        "text": "สถาบันบัณฑิตบริหารธุรกิจศศินทร์ แห่งจุฬาลงกรณ์มหาวิทยาลัย – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-53.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 54,
-    "title": "สวนอุตสาหกรรมอินทรา",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "factory",
-    "lat": 14.9759258,
-    "lng": 100.3678748,
-    "coverImage": "/images/projects/project-54.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-54.jpg",
-        "text": "สวนอุตสาหกรรมอินทรา – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-54.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 55,
-    "title": "ห้างหุ้นส่วนจำกัด เอส.เจฟาร์มอินเตอร์พิกส์",
-    "year": 2011,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "agriculture",
-    "lat": 18.4963625,
-    "lng": 99.0540781,
-    "coverImage": "/images/projects/project-55.jpg",
-    "category": [
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-55.jpg",
-        "text": "ห้างหุ้นส่วนจำกัด เอส.เจฟาร์มอินเตอร์พิกส์ – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-55.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 56,
-    "title": "องค์การบริหารส่วนตำบลคลองขลุง",
-    "year": 2012,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.208588,
-    "lng": 99.7094572,
-    "coverImage": "/images/projects/project-56.jpg",
-    "category": [
-      "วัด โรงเรียน",
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-56.jpg",
-        "text": "องค์การบริหารส่วนตำบลคลองขลุง – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-56.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 57,
-    "title": "องค์การบริหารส่วนตำบลปางมะค่า",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.010791,
-    "lng": 99.792924,
-    "coverImage": "/images/projects/project-57.jpg",
-    "category": [
-      "โรงแรม รีสอร์ท",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-57.jpg",
-        "text": "องค์การบริหารส่วนตำบลปางมะค่า – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-57.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 58,
-    "title": "องค์การบริหารส่วนตำบลวังหามแห",
-    "year": 2010,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.0866234,
-    "lng": 99.6377541,
-    "coverImage": "/images/projects/project-58.jpg",
-    "category": [
-      "งานโครงการ",
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-58.jpg",
-        "text": "องค์การบริหารส่วนตำบลวังหามแห – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-58.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 59,
-    "title": "องค์การบริหารส่วนตำบลวังไทร",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.2189657,
-    "lng": 99.6203532,
-    "coverImage": "/images/projects/project-59.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์",
-      "อาหาร เครื่องดื่ม"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-59.jpg",
-        "text": "องค์การบริหารส่วนตำบลวังไทร – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-59.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 60,
-    "title": "องค์การบริหารส่วนตำบลสระทะเล",
-    "year": 2017,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 15.4851232,
-    "lng": 100.1423456,
-    "coverImage": "/images/projects/project-60.jpg",
-    "category": [
-      "นิคม โรงงาน",
-      "Dewatering"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-60.jpg",
-        "text": "องค์การบริหารส่วนตำบลสระทะเล – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-60.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 61,
-    "title": "องค์การบริหารส่วนตำบลหนองหลวง",
-    "year": 2013,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.6354092,
-    "lng": 99.7757308,
-    "coverImage": "/images/projects/project-61.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-61.jpg",
-        "text": "องค์การบริหารส่วนตำบลหนองหลวง – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-61.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 62,
-    "title": "องค์การบริหารส่วนตำบลเขาชนกัน",
-    "year": 2022,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 15.8908049,
-    "lng": 99.5283846,
-    "coverImage": "/images/projects/project-62.jpg",
-    "category": [
-      "งานโครงการ"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-62.jpg",
-        "text": "องค์การบริหารส่วนตำบลเขาชนกัน – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-62.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 63,
-    "title": "องค์การบริหารส่วนตำบลแม่แตง",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.3972551,
-    "lng": 99.9521808,
-    "coverImage": "/images/projects/project-63.jpg",
-    "category": [
-      "งานโครงการ",
-      "วัด โรงเรียน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-63.jpg",
-        "text": "องค์การบริหารส่วนตำบลแม่แตง – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-63.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 64,
-    "title": "องค์การบริหารส่วนตำบลโพธิ์ทอง",
-    "year": 2021,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.1202,
-    "lng": 99.526036,
-    "coverImage": "/images/projects/project-64.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์",
-      "วัด โรงเรียน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-64.jpg",
-        "text": "องค์การบริหารส่วนตำบลโพธิ์ทอง – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-64.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 65,
-    "title": "อนันตรา ภูเก็ต ลายัน รีสอร์ท",
-    "year": 2024,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "resort",
-    "lat": 8.0356995,
-    "lng": 98.2844465,
-    "coverImage": "/images/projects/project-65.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-65.jpg",
-        "text": "อนันตรา ภูเก็ต ลายัน รีสอร์ท – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-65.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 66,
-    "title": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
-    "year": 2015,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.139823,
-    "lng": 99.3673084,
-    "coverImage": "/images/projects/project-66.jpg",
-    "category": [
-      "ฟาร์ม เกษตร ปศุสัตว์"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-66.jpg",
-        "text": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-66.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 67,
-    "title": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
-    "year": 2018,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 17.243411,
-    "lng": 99.7232673,
-    "coverImage": "/images/projects/project-67.jpg",
-    "category": [
-      "Dewatering",
-      "เหมืองแร่ พลังงาน"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-67.jpg",
-        "text": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-67.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  },
-  {
-    "_id": 68,
-    "title": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
-    "year": 2012,
-    "logo": "/images/logo/logoImage.svg",
-    "projectType": "government",
-    "lat": 16.1872019,
-    "lng": 100.3497895,
-    "coverImage": "/images/projects/project-68.jpg",
-    "category": [
-      "เหมืองแร่ พลังงาน",
-      "โรงแรม รีสอร์ท"
-    ],
-    "contents": [
-      {
-        "image": "/images/projects/project-68.jpg",
-        "text": "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ – รายละเอียดโครงการจะถูกเพิ่มเติมในภายหลัง"
-      },
-      {
-        "image": "/images/projects/project-68.jpg",
-        "text": "เนื้อหาตัวอย่างสำหรับแสดงรูปและคำอธิบายโครงการ"
-      }
-    ]
-  }
+    {
+        "_id":  1,
+        "title":  "Intercontinental Phang Nga Bay Resort",
+        "year":  2018,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "resort",
+        "lat":  8.2382035,
+        "lng":  98.4410424,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  2,
+        "title":  "โรงงานน้ำดื่ม SK FACTORY ปากซัน ลาว",
+        "year":  2020,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  18.45078,
+        "lng":  103.6487821,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "อาหาร เครื่องดื่ม",
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  3,
+        "title":  "โรงงานผลิตน้ำแร่เกรดพีเมี่ยม",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.5898818,
+        "lng":  100.751974,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  4,
+        "title":  "โครงการแผนที่น้ำบาดาล (อีสานกลาง)",
+        "year":  2017,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  15.891624932018866,
+        "lng":  102.29134615100094,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  5,
+        "title":  "บริษัท เอ็นเอ็กซ์พี แมนูแฟคเจอริ่ง (ไทยแลนด์) จำกัด",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  13.8824532,
+        "lng":  100.5842785,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  6,
+        "title":  "บริษัท อิเควเตอร์ โซลาร์ วัน จำกัด",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  12.8302805,
+        "lng":  99.9070152,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  7,
+        "title":  "Avani Resort \u0026 SPA - KhaoLak",
+        "year":  2018,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "resort",
+        "lat":  8.7634821,
+        "lng":  98.2655368,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  8,
+        "title":  "Kempinski Resort and Spa",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "resort",
+        "lat":  7.9056936,
+        "lng":  98.3677009,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  9,
+        "title":  "Pattaya International Pigeon Race (สนามแข่งนกพิราบนานาชาติพัทยา)",
+        "year":  2012,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "other",
+        "lat":  12.9235396,
+        "lng":  101.0105,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์",
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  10,
+        "title":  "น้ำพุร้อนเค็ม รีสอร์ท",
+        "year":  2011,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "resort",
+        "lat":  7.9051537,
+        "lng":  99.1079864,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  11,
+        "title":  "องค์การบริหารส่วนตำบลคลองขลุง",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.208588,
+        "lng":  99.7094572,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  12,
+        "title":  "บริษัท กระเบื้องหลังคาเซรามิคไทย จำกัด",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.380561,
+        "lng":  100.8421311,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  13,
+        "title":  "บริษัท กันกุล พาวเวอร์เจน จำกัด",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  16.0480602,
+        "lng":  100.7401483,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  14,
+        "title":  "บริษัท การ์เดียนอินดัสทรีส์ คอร์ป จำกัด",
+        "year":  2020,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.3699487,
+        "lng":  100.8397885,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  15,
+        "title":  "บริษัท กิจพูนชัย จำกัด",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.7648507,
+        "lng":  100.4577469,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  16,
+        "title":  "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด",
+        "year":  2024,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  12.0913676,
+        "lng":  99.8464812,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  17,
+        "title":  "บริษัท กุยบุรีผลไม้กระป๋อง จำกัด",
+        "year":  2024,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  12.0913676,
+        "lng":  99.8464812,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  18,
+        "title":  "บริษัท ช.การช่าง จำกัด (มหาชน)",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "train",
+        "lat":  13.7438643,
+        "lng":  100.4946614,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  19,
+        "title":  "บริษัท ช.การช่าง จำกัด (มหาชน)",
+        "year":  2010,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "train",
+        "lat":  13.7383192,
+        "lng":  100.4852881,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering",
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  20,
+        "title":  "บริษัท ซีพีเอฟ (ประเทศไทย) จำกัด (มหาชน)",
+        "year":  2020,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  16.2874963,
+        "lng":  102.7846621,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "โรงแรม รีสอร์ท",
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  21,
+        "title":  "บริษัท ซีพีแรม จำกัด",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  16.3432235,
+        "lng":  102.7992019,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  22,
+        "title":  "บริษัท ทิปโก้ เอฟแอนด์บี จำกัด",
+        "year":  2023,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.3024468,
+        "lng":  100.8144588,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ",
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  23,
+        "title":  "บริษัท ทิปโก้ฟูดส์ จำกัด",
+        "year":  2016,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  18.9041206,
+        "lng":  98.8295276,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering",
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  24,
+        "title":  "บริษัท ทิปโก้ฟูดส์ จำกัด (มหาชน)",
+        "year":  2010,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  11.8735836,
+        "lng":  99.7866867,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  25,
+        "title":  "บริษัท นิคอน (ประเทศไทย) จำกัด",
+        "year":  2020,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.3269677,
+        "lng":  100.645904,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  26,
+        "title":  "บริษัท บริดจสโตน คาร์บอน แบล็ค จำกัด",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  12.8796232,
+        "lng":  101.3366563,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  27,
+        "title":  "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด",
+        "year":  2017,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  15.4623335,
+        "lng":  101.7257623,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  28,
+        "title":  "บริษัท บางจาก โซลาร์เอ็นเนอร์ยี จำกัด",
+        "year":  2016,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  15.1305517,
+        "lng":  101.7374309,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering",
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  29,
+        "title":  "บริษัท บุญรอดบริวเวอรี่ จำกัด",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  19.987904,
+        "lng":  99.862536,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  30,
+        "title":  "บริษัท ปตท. จำกัด (มหาชน)",
+        "year":  2017,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "other",
+        "lat":  14.7321669,
+        "lng":  100.4554073,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  31,
+        "title":  "บริษัท มิวกี้ เบย์ จำกัด",
+        "year":  2020,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "island, resort",
+        "lat":  9.7031288,
+        "lng":  100.0120321,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  32,
+        "title":  "บริษัท มีบรอม อินดัสเทรียล จำกัด",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.6681669,
+        "lng":  100.9471996,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์",
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  33,
+        "title":  "บริษัท ลานนาเกษตรอุตสาหกรรม จำกัด",
+        "year":  2024,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "agriculture",
+        "lat":  18.6760448,
+        "lng":  99.0524708,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  34,
+        "title":  "บริษัท วีนัสเธร็ด จำกัด",
+        "year":  2016,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  13.7797025,
+        "lng":  100.5972925,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  35,
+        "title":  "บริษัท สยามซานิทาริแวร์ อินดัสทรี จำกัด",
+        "year":  2023,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.4060519,
+        "lng":  100.9095137,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  36,
+        "title":  "บริษัท สยามโตชู จำกัด",
+        "year":  2010,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  13.6132686,
+        "lng":  100.9260324,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน",
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  37,
+        "title":  "บริษัท สวัสดิ์ไพบูลย์ พอร์ต จำกัด",
+        "year":  2018,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.4369625,
+        "lng":  100.5967656,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  38,
+        "title":  "บริษัท สหฟาร์ม จำกัด",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "agriculture",
+        "lat":  13.8891351,
+        "lng":  101.5720013,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  39,
+        "title":  "บริษัท สหฟาร์ม จำกัด",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "agriculture",
+        "lat":  15.2275209,
+        "lng":  101.1256468,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  40,
+        "title":  "บริษัท สหฟาร์ม จำกัด",
+        "year":  2011,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  15.1079455,
+        "lng":  101.024164,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  41,
+        "title":  "บริษัท อัลเลโกร ไมโครซิสเตมส์ (ไทยแลนด์) จำกัด",
+        "year":  2019,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.35877,
+        "lng":  100.842127,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  42,
+        "title":  "บริษัท อิตาเลียนไทย ดีเวล๊อปเมนต์ จำกัด (มหาชน)",
+        "year":  2012,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "train",
+        "lat":  13.74204,
+        "lng":  100.51021,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  43,
+        "title":  "บริษัท เซรามิคอุตสาหกรรมไทย จำกัด",
+        "year":  2012,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.4086869,
+        "lng":  100.9106643,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  44,
+        "title":  "บริษัท อี เอ โซล่า จำกัด",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  18.3884679,
+        "lng":  99.4231324,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  45,
+        "title":  "บริษัท เพียวเคมม์ จำกัด",
+        "year":  2011,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  13.696136,
+        "lng":  101.4547608,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  46,
+        "title":  "บริษัท เฟมีน่า เลซ ไดย์ เวิร์คส จำกัด",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  15.1637872,
+        "lng":  100.2484323,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  47,
+        "title":  "บริษัท เสริมสุข จำกัด ( มหาชน) โรงงานสุราษฎร์ธานี",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  9.0163422,
+        "lng":  99.1805054,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  48,
+        "title":  "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครราชสีมา",
+        "year":  2022,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.9417548,
+        "lng":  102.0544833,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  49,
+        "title":  "บริษัท เสริมสุข จำกัด (มหาชน) โรงงานนครสวรรค์",
+        "year":  2014,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  15.6843183,
+        "lng":  100.114626,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  50,
+        "title":  "บริษัท โกลบอล ยูทิลิตี้ เซอร์วิส จำกัด",
+        "year":  2018,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  18.5919002,
+        "lng":  99.0444369,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน",
+                         "วัด โรงเรียน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  51,
+        "title":  "บริษัท ไทยบอนเนต เทรดดิ้งโซน จำกัด",
+        "year":  2022,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  13.5482155,
+        "lng":  100.6842437,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เกาะ",
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  52,
+        "title":  "วัดถ้ำกระบอก",
+        "year":  2016,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "other",
+        "lat":  14.7058965,
+        "lng":  100.8251277,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  53,
+        "title":  "สถาบันบัณฑิตบริหารธุรกิจศศินทร์ แห่งจุฬาลงกรณ์มหาวิทยาลัย",
+        "year":  2023,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  8.240391,
+        "lng":  98.28271,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "โรงแรม รีสอร์ท",
+                         "เกาะ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  54,
+        "title":  "สวนอุตสาหกรรมอินทรา",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "factory",
+        "lat":  14.9759258,
+        "lng":  100.3678748,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  55,
+        "title":  "ห้างหุ้นส่วนจำกัด เอส.เจฟาร์มอินเตอร์พิกส์",
+        "year":  2011,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "agriculture",
+        "lat":  18.4963625,
+        "lng":  99.0540781,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  56,
+        "title":  "องค์การบริหารส่วนตำบลคลองขลุง",
+        "year":  2012,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.208588,
+        "lng":  99.7094572,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "วัด โรงเรียน",
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  57,
+        "title":  "องค์การบริหารส่วนตำบลปางมะค่า",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.010791,
+        "lng":  99.792924,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "โรงแรม รีสอร์ท",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  58,
+        "title":  "องค์การบริหารส่วนตำบลวังหามแห",
+        "year":  2010,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.0866234,
+        "lng":  99.6377541,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ",
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  59,
+        "title":  "องค์การบริหารส่วนตำบลวังไทร",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.2189657,
+        "lng":  99.6203532,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์",
+                         "อาหาร เครื่องดื่ม"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  60,
+        "title":  "องค์การบริหารส่วนตำบลสระทะเล",
+        "year":  2017,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  15.4851232,
+        "lng":  100.1423456,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "นิคม โรงงาน",
+                         "Dewatering"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  61,
+        "title":  "องค์การบริหารส่วนตำบลหนองหลวง",
+        "year":  2013,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.6354092,
+        "lng":  99.7757308,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  62,
+        "title":  "องค์การบริหารส่วนตำบลเขาชนกัน",
+        "year":  2022,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  15.8908049,
+        "lng":  99.5283846,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  63,
+        "title":  "องค์การบริหารส่วนตำบลแม่แตง",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.3972551,
+        "lng":  99.9521808,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "งานโครงการ",
+                         "วัด โรงเรียน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  64,
+        "title":  "องค์การบริหารส่วนตำบลโพธิ์ทอง",
+        "year":  2021,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.1202,
+        "lng":  99.526036,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์",
+                         "วัด โรงเรียน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  65,
+        "title":  "อนันตรา ภูเก็ต ลายัน รีสอร์ท",
+        "year":  2024,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "resort",
+        "lat":  8.0356995,
+        "lng":  98.2844465,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  66,
+        "title":  "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
+        "year":  2015,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.139823,
+        "lng":  99.3673084,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "ฟาร์ม เกษตร ปศุสัตว์"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  67,
+        "title":  "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
+        "year":  2018,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  17.243411,
+        "lng":  99.7232673,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "Dewatering",
+                         "เหมืองแร่ พลังงาน"
+                     ],
+        "contents":  [
+
+                     ]
+    },
+    {
+        "_id":  68,
+        "title":  "โครงการพัฒนาแหล่งน้ำบาดาลเพื่อการเกษตรฯ",
+        "year":  2012,
+        "logo":  "/images/logo/logo_SGW_white.svg",
+        "projectType":  "government",
+        "lat":  16.1872019,
+        "lng":  100.3497895,
+        "coverImage":  "/images/logo/logo_SGW_white.svg",
+        "category":  [
+                         "เหมืองแร่ พลังงาน",
+                         "โรงแรม รีสอร์ท"
+                     ],
+        "contents":  [
+
+                     ]
+    }
 ]

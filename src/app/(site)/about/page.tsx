@@ -1,7 +1,15 @@
 // src/app/(site)/about/page.tsx
 
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import './page.css'
+
+export const metadata: Metadata = {
+  title: 'เกี่ยวกับเรา | Siam Groundwater',
+  description:
+    'รู้จักบริษัท สยามกราวด์วอเตอร์ จำกัด ประสบการณ์ ทีมงาน และแนวทางพัฒนาน้ำบาดาลอย่างถูกหลักวิชาการและยั่งยืน',
+  alternates: { canonical: '/about' },
+}
 import Teams from './teams/teams'
 import HeroSlide from './hero-slide/HeroSlide'
 
@@ -9,16 +17,22 @@ const AWARDS = [
   {
     id: 'award-1',
     src: '/images/about/award/award-1.png',
+    width: 138,
+    height: 328,
     label: 'รางวัลคุณภาพยอดเยี่ยม',
   },
   {
     id: 'award-2',
     src: '/images/about/award/award-2.png',
+    width: 358,
+    height: 326,
     label: 'รางวัลสถานประกอบการดีเด่น',
   },
   {
     id: 'award-3',
     src: '/images/about/award/award-3.png',
+    width: 244,
+    height: 344,
     label: 'รางวัลคุณภาพยอดเยี่ยม',
   },
 ]
@@ -62,9 +76,10 @@ export default function AboutPage() {
                   <Image
                     src={award.src}
                     alt={award.label}
-                    width={480}
-                    height={320}
+                    width={award.width}
+                    height={award.height}
                     className="about-award-image"
+                    style={{ width: 'auto', height: '20rem' }}
                   />
                 </div>
                 <p className="about-award-caption">{award.label}</p>
