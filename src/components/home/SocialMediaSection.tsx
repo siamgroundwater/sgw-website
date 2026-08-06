@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import Script from 'next/script'
 import { ExternalLink, MessageCircle } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { LocalizedLocale } from '@/i18n/config'
@@ -84,6 +83,7 @@ export default function SocialMediaSection({
 }) {
   const facebookRef = useRef<HTMLDivElement | null>(null)
   const tiktokRef = useRef<HTMLDivElement | null>(null)
+  const tiktokScriptAttemptedRef = useRef(false)
   const [facebookWidth, setFacebookWidth] = useState(420)
   const [shouldLoadFacebook, setShouldLoadFacebook] = useState(false)
   const [shouldLoadTikTok, setShouldLoadTikTok] = useState(false)
@@ -133,64 +133,59 @@ export default function SocialMediaSection({
   useEffect(() => {
     if (!shouldLoadTikTok || tiktokEmbedFailed) return
 
+    if (tiktokScriptAttemptedRef.current) return
+    tiktokScriptAttemptedRef.current = true
+
+    const script = document.createElement('script')
+    script.src = 'https://www.tiktok.com/embed.js'
+    script.async = true
+    script.dataset.sgwTikTokEmbed = 'true'
+    script.addEventListener('load', () => script.remove(), { once: true })
+    script.addEventListener(
+      'error',
+      () => {
+        script.remove()
+        setTikTokEmbedFailed(true)
+      },
+      { once: true }
+    )
+    document.body.appendChild(script)
+  }, [shouldLoadTikTok, tiktokEmbedFailed])
+
+  useEffect(() => {
+    if (!shouldLoadTikTok || tiktokEmbedFailed) return
+
     const element = tiktokRef.current
     if (!element) return
 
-    let observedFrame: HTMLIFrameElement | null = null
-    let shortFrameTimer: number | undefined
+    let detectionEnabled = false
 
     const markFailed = () => {
       setTikTokEmbedFailed(true)
     }
 
     const inspectEmbed = () => {
-      const frame = element.querySelector('iframe')
+      if (!detectionEnabled) return
 
-      if (frame && frame !== observedFrame) {
-        observedFrame = frame
-        resizeObserver.observe(frame)
-      }
+      const processedEmbed = element.querySelector(
+        'blockquote[data-embed-type="creator"][id]'
+      )
+      const isCollapsedError = element.getBoundingClientRect().height < 320
 
-      if (!frame) return
-
-      if (frame.getBoundingClientRect().height >= 320) {
-        if (shortFrameTimer !== undefined) {
-          window.clearTimeout(shortFrameTimer)
-          shortFrameTimer = undefined
-        }
-        return
-      }
-
-      if (shortFrameTimer === undefined) {
-        shortFrameTimer = window.setTimeout(() => {
-          const currentFrame = element.querySelector('iframe')
-          if (
-            currentFrame &&
-            currentFrame.getBoundingClientRect().height < 320
-          ) {
-            markFailed()
-          }
-        }, 2500)
-      }
+      if (!processedEmbed || isCollapsedError) markFailed()
     }
 
     const resizeObserver = new ResizeObserver(inspectEmbed)
-    const mutationObserver = new MutationObserver(inspectEmbed)
-    mutationObserver.observe(element, { childList: true, subtree: true })
+    resizeObserver.observe(element)
 
     const initializationTimer = window.setTimeout(() => {
-      if (!element.querySelector('iframe')) markFailed()
-    }, 12000)
-
-    inspectEmbed()
+      detectionEnabled = true
+      inspectEmbed()
+    }, 6000)
 
     return () => {
-      mutationObserver.disconnect()
       resizeObserver.disconnect()
       window.clearTimeout(initializationTimer)
-      if (shortFrameTimer !== undefined) {
-        window.clearTimeout(shortFrameTimer)
-      }
     }
   }, [shouldLoadTikTok, tiktokEmbedFailed])
 
@@ -331,12 +326,6 @@ export default function SocialMediaSection({
                     </a>
                   </section>
                 </blockquote>
-                <Script
-                  id="tiktok-creator-embed"
-                  src="https://www.tiktok.com/embed.js"
-                  strategy="afterInteractive"
-                  onError={() => setTikTokEmbedFailed(true)}
-                />
               </>
             )}
           </div>
