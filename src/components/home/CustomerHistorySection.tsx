@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Building2, History } from 'lucide-react'
+import { ArrowRight, History } from 'lucide-react'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import styles from './CustomerHistorySection.module.css'
 
@@ -76,9 +76,6 @@ export default function CustomerHistorySection({
       </div>
 
       <div className={styles.logoPanel}>
-        <div className={styles.panelLabel} aria-hidden="true">
-          <Building2 />
-        </div>
         <Image
           src="/images/customers/legacy-customer-logos.png"
           alt={copy.imageAlt}

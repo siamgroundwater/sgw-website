@@ -58,6 +58,11 @@ color: rgba(255, 255, 255, 0.76);
   width: 100%;
 }
 
+.tiktokCard {
+  border-color: rgba(37, 244, 238, 0.24);
+  background: linear-gradient(145deg, rgba(10, 60, 68, 0.9), rgba(7, 24, 36, 0.96));
+}
+
 .cardHeader {
   display: grid;
   grid-template-columns: 2.375rem minmax(0, 1fr);
@@ -85,6 +90,7 @@ color: rgba(255, 255, 255, 0.76);
 .socialIcon {
   width: 2.375rem;
   height: 2.375rem;
+  border-radius: 0.4rem;
   object-fit: contain;
 }
 
@@ -117,8 +123,7 @@ height: 480px;
   background: #fff;
 }
 
-.socialPlaceholder,
-.linePanel {
+.socialPlaceholder {
   width: 100%;
   min-height: 480px;
   display: flex;
@@ -132,8 +137,7 @@ height: 480px;
   background: linear-gradient(145deg, rgba(12, 90, 96, 0.18), rgba(3, 20, 31, 0.08));
 }
 
-.socialPlaceholder span,
-.linePanel span {
+.socialPlaceholder span {
   padding: 0.625rem 1rem;
   border: 1px solid rgba(165, 243, 252, 0.24);
   border-radius: 999px;
@@ -148,22 +152,40 @@ height: 480px;
   height: 2rem;
 }
 
-.linePanel {
-  min-height: 13.75rem;
-  border: 1px solid rgba(165, 243, 252, 0.18);
+.tiktokEmbedWrap {
+  width: 100%;
+  height: fit-content;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(37, 244, 238, 0.24);
   border-radius: 0.9rem;
-  background: linear-gradient(145deg, rgba(6, 199, 85, 0.14), rgba(3, 20, 31, 0.22));
+  background:
+    radial-gradient(circle at 20% 20%, rgba(37, 244, 238, 0.14), transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(254, 44, 85, 0.14), transparent 40%),
+    rgba(3, 20, 31, 0.72);
 }
 
-.linePanel img {
-  width: 4.5rem;
-  height: 4.5rem;
-  object-fit: contain;
+.tiktokEmbed {
+  width: 100%;
+  min-width: 0 !important;
+  margin: 0 auto !important;
 }
 
-.linePanel strong {
+.tiktokEmbed section {
+  width: 100%;
+  min-height: 30rem;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.tiktokEmbed section a {
   color: #fff;
-  font-size: var(--fs-xl);
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .actions {
@@ -174,8 +196,7 @@ height: 480px;
   margin-top: auto;
 }
 
-.primaryButton,
-.secondaryButton {
+.primaryButton {
   min-height: 3rem;
   display: inline-flex;
   align-items: center;
@@ -193,14 +214,7 @@ height: 480px;
   background: #67e8f9;
 }
 
-.secondaryButton {
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.primaryButton:hover,
-.secondaryButton:hover {
+.primaryButton:hover {
   transform: translateY(-1px);
 }
 
@@ -209,16 +223,10 @@ height: 480px;
   background: #a5f3fc;
 }
 
-.primaryButton svg,
-.secondaryButton svg {
+.primaryButton svg {
   width: 1.125rem;
   height: 1.125rem;
   flex: 0 0 auto;
-}
-
-.secondaryButton:hover {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.09);
 }
 
 @media (width <= 960px) {
@@ -257,15 +265,13 @@ height: 480px;
     height: 440px;
   }
 
-  .primaryButton,
-  .secondaryButton {
+  .primaryButton {
     width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .primaryButton,
-  .secondaryButton {
+  .primaryButton {
     transition: none;
   }
 }

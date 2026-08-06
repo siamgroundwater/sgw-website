@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CalendarDays,
   Layers3,
+  LocateFixed,
   MapPin,
   MapPinned,
   X,
@@ -23,10 +24,18 @@ import {
   type ProjectCategoryKey,
 } from '@/i18n/projects'
 import './map.css'
+import type { Map as LeafletMap } from 'leaflet'
 
 export type HomeProject = Project
 type MappableProject = Project & { lat: number; lng: number }
 type MapFilter = 'all' | ProjectCategoryKey
+type LocationStatus = 'idle' | 'locating' | 'found' | 'error'
+
+type CurrentLocation = {
+  lat: number
+  lng: number
+  accuracy: number
+}
 
 type HomeMapProps = {
   projects?: HomeProject[]
@@ -46,9 +55,19 @@ const mapCopy: Record<
     loading: string
     empty: string
     viewProject: string
+    locate: string
+    locating: string
+    locationFound: string
+    locationUnavailable: string
+    locationDenied: string
   }
 > = {
   th: {
+    locate: 'ตำแหน่งปัจจุบัน',
+    locating: 'กำลังค้นหาตำแหน่งของคุณ…',
+    locationFound: 'พบตำแหน่งปัจจุบันแล้ว',
+    locationUnavailable: 'ไม่สามารถค้นหาตำแหน่งปัจจุบันได้ กรุณาตรวจสอบการตั้งค่าอุปกรณ์',
+    locationDenied: 'กรุณาอนุญาตให้เว็บไซต์เข้าถึงตำแหน่งของคุณ',
     eyebrow: 'แผนที่ผลงาน',
     intro: 'ค้นหาผลงานตามพื้นที่และประเภทโครงการ แล้วเปิดดูรายละเอียด ภาพ และขอบเขตงานของแต่ละโครงการ',
     mapped: 'โครงการบนแผนที่',
@@ -59,6 +78,11 @@ const mapCopy: Record<
     viewProject: 'ดูรายละเอียดโครงการ',
   },
   en: {
+    locate: 'Current location',
+    locating: 'Finding your location…',
+    locationFound: 'Current location found',
+    locationUnavailable: 'Your current location could not be found. Check your device settings.',
+    locationDenied: 'Allow location access to use this feature.',
     eyebrow: 'Project map',
     intro: 'Explore work by location and project type, then open each record for its images, scope and details.',
     mapped: 'projects on the map',
@@ -69,6 +93,11 @@ const mapCopy: Record<
     viewProject: 'View project details',
   },
   zh: {
+    locate: '当前位置',
+    locating: '正在查找您的位置…',
+    locationFound: '已找到当前位置',
+    locationUnavailable: '无法获取当前位置，请检查设备设置。',
+    locationDenied: '请允许网站访问您的位置。',
     eyebrow: '项目地图',
     intro: '按地区和项目类型查看案例，并打开项目记录了解图片、范围和详细信息。',
     mapped: '地图项目',
@@ -79,6 +108,11 @@ const mapCopy: Record<
     viewProject: '查看项目详情',
   },
   ja: {
+    locate: '現在地',
+    locating: '現在地を取得しています…',
+    locationFound: '現在地を表示しました',
+    locationUnavailable: '現在地を取得できませんでした。端末の設定をご確認ください。',
+    locationDenied: '位置情報へのアクセスを許可してください。',
     eyebrow: '実績マップ',
     intro: '地域と案件種別から実績を探し、画像、業務範囲、詳細情報をご覧いただけます。',
     mapped: '地図掲載案件',
@@ -113,6 +147,14 @@ const Marker = dynamic(
   () => import('react-leaflet').then((mod) => mod.Marker),
   { ssr: false }
 )
+const Circle = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Circle),
+  { ssr: false }
+)
+const CircleMarker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.CircleMarker),
+  { ssr: false }
+)
 const MarkerClusterGroup = dynamic(
   () => import('react-leaflet-cluster').then((mod) => mod.default),
   { ssr: false }
@@ -143,8 +185,26 @@ export default function HomeMap({
   const [filter, setFilter] = useState<MapFilter>('all')
   const [selectedProject, setSelectedProject] =
     useState<MappableProject | null>(null)
+  const [currentLocation, setCurrentLocation] =
+    useState<CurrentLocation | null>(null)
+  const [locationStatus, setLocationStatus] =
+    useState<LocationStatus>('idle')
+  const [locationMessage, setLocationMessage] = useState('')
+  const mapRef = useRef<LeafletMap | null>(null)
+  const isMountedRef = useRef(true)
   const copy = mapCopy[locale]
   const data = projects ?? projectRegistry
+
+  const setMapRef = useCallback((map: LeafletMap | null) => {
+    mapRef.current = map
+  }, [])
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     let active = true
@@ -170,6 +230,66 @@ export default function HomeMap({
       active = false
     }
   }, [])
+
+  useEffect(() => {
+    if (locationStatus !== 'found') return
+
+    const timeoutId = window.setTimeout(() => {
+      setLocationMessage('')
+      setLocationStatus('idle')
+    }, 4000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [locationStatus])
+
+  const moveToCurrentLocation = () => {
+    if (locationStatus === 'locating') return
+
+    if (!navigator.geolocation) {
+      setLocationStatus('error')
+      setLocationMessage(copy.locationUnavailable)
+      return
+    }
+
+    setLocationStatus('locating')
+    setLocationMessage(copy.locating)
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        if (!isMountedRef.current) return
+
+        const nextLocation = {
+          lat: coords.latitude,
+          lng: coords.longitude,
+          accuracy: Math.max(coords.accuracy, 1),
+        }
+
+        setCurrentLocation(nextLocation)
+        setLocationStatus('found')
+        setLocationMessage(copy.locationFound)
+        setSelectedProject(null)
+        mapRef.current?.flyTo(
+          [nextLocation.lat, nextLocation.lng],
+          Math.max(mapRef.current.getZoom(), 15),
+          { animate: true, duration: 1.1 }
+        )
+      },
+      (error) => {
+        if (!isMountedRef.current) return
+        setLocationStatus('error')
+        setLocationMessage(
+          error.code === error.PERMISSION_DENIED
+            ? copy.locationDenied
+            : copy.locationUnavailable
+        )
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 60000,
+      }
+    )
+  }
 
   const validProjects = useMemo<MappableProject[]>(
     () => data.filter(isMappableProject),
@@ -305,6 +425,7 @@ export default function HomeMap({
           </div>
         ) : (
           <MapContainer
+            ref={setMapRef}
             center={center}
             zoom={6}
             minZoom={4}
@@ -338,7 +459,60 @@ export default function HomeMap({
                 />
               ))}
             </MarkerClusterGroup>
+
+            {currentLocation && (
+              <>
+                <Circle
+                  center={[currentLocation.lat, currentLocation.lng]}
+                  radius={currentLocation.accuracy}
+                  interactive={false}
+                  pathOptions={{
+                    color: '#0891b2',
+                    fillColor: '#67e8f9',
+                    fillOpacity: 0.14,
+                    weight: 1,
+                  }}
+                />
+                <CircleMarker
+                  center={[currentLocation.lat, currentLocation.lng]}
+                  radius={8}
+                  interactive={false}
+                  pathOptions={{
+                    color: '#ffffff',
+                    fillColor: '#0891b2',
+                    fillOpacity: 1,
+                    weight: 3,
+                  }}
+                />
+              </>
+            )}
           </MapContainer>
+        )}
+
+        {leafletReady && (
+          <div className="home-map-location-control">
+            <button
+              type="button"
+              className={locationStatus === 'locating' ? 'is-locating' : ''}
+              aria-label={copy.locate}
+              aria-busy={locationStatus === 'locating'}
+              title={copy.locate}
+              onClick={moveToCurrentLocation}
+              disabled={locationStatus === 'locating'}
+            >
+              <LocateFixed aria-hidden="true" />
+              <span>{copy.locate}</span>
+            </button>
+            {locationMessage && (
+              <p
+                className={`home-map-location-message is-${locationStatus}`}
+                role="status"
+                aria-live="polite"
+              >
+                {locationMessage}
+              </p>
+            )}
+          </div>
         )}
 
         {selectedProject && (
@@ -395,6 +569,8 @@ export default function HomeMap({
               <Link
                 href={selectedDetailHref}
                 className="home-map-popup-action"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {projectCopy?.details ?? copy.viewProject}
                 <ArrowRight aria-hidden="true" />

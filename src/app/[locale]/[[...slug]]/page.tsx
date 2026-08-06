@@ -230,8 +230,8 @@ function LocalizedHome({
         projectCopy={content.projects}
       />
       <ProjectsSection locale={locale} copy={content.projects} featured />
-      <CustomerHistorySection locale={locale} />
       <SocialMediaSection locale={locale} />
+      <CustomerHistorySection locale={locale} />
     </main>
   )
 }

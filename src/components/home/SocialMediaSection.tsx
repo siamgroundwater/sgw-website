@@ -1,13 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import Script from 'next/script'
 import { ExternalLink, MessageCircle } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { localePath, type LocalizedLocale } from '@/i18n/config'
+import type { LocalizedLocale } from '@/i18n/config'
 import styles from './SocialMediaSection.module.css'
 
 const FACEBOOK_URL = 'https://www.facebook.com/siamgroundwater'
-const LINE_URL = 'https://line.me/R/ti/p/@sgw_th?from=page&searchId=sgw_th'
+const TIKTOK_PROFILE_URL = 'https://www.tiktok.com/@siamgroundwater.co'
+const TIKTOK_URL = 'https://www.tiktok.com/@siamgroundwater.co?_r=1&_t=ZS-98eQ9HAfCxV'
 const facebookHeight = 480
 
 const socialCopy: Record<
@@ -19,9 +21,8 @@ const socialCopy: Record<
     text: string
     facebookText: string
     facebookButton: string
-    lineText: string
-    lineButton: string
-    contactButton: string
+    tiktokText: string
+    tiktokButton: string
   }
 > = {
   th: {
@@ -31,9 +32,8 @@ const socialCopy: Record<
     text: 'รับชมผลงานภาคสนาม ข่าวสารด้านน้ำบาดาล และติดต่อทีมงานผ่านช่องทางอย่างเป็นทางการ',
     facebookText: 'อัปเดตโครงการสำรวจ เจาะ พัฒนา และดูแลระบบน้ำบาดาลจากทีมงานของเรา',
     facebookButton: 'เปิดเพจ Facebook',
-    lineText: 'เพิ่มเพื่อนเพื่อสอบถามบริการ ส่งตำแหน่งโครงการ หรือพูดคุยกับทีมงานโดยตรง',
-    lineButton: 'เพิ่มเพื่อนทาง LINE',
-    contactButton: 'ติดต่อเรา',
+    tiktokText: 'ติดตามวิดีโอการทำงานภาคสนาม ขั้นตอนงานสำรวจ เจาะ และดูแลระบบน้ำบาดาลจากทีมงานของเรา',
+    tiktokButton: 'ติดตามบน TikTok',
   },
   en: {
     ariaLabel: 'Siam Groundwater social media channels',
@@ -42,9 +42,8 @@ const socialCopy: Record<
     text: 'See recent groundwater work, technical updates and official ways to contact Siam Groundwater.',
     facebookText: 'Follow our exploration, drilling, development and groundwater-system maintenance projects.',
     facebookButton: 'Open Facebook page',
-    lineText: 'Add our official account to ask about services, share a project location or contact the team.',
-    lineButton: 'Add us on LINE',
-    contactButton: 'Contact us',
+    tiktokText: 'Watch our field teams survey, drill, develop and maintain groundwater systems across Thailand.',
+    tiktokButton: 'Follow us on TikTok',
   },
   zh: {
     ariaLabel: '暹罗地下水社交媒体渠道',
@@ -53,9 +52,8 @@ const socialCopy: Record<
     text: '查看地下水项目动态、专业资讯，并通过官方渠道联系我们。',
     facebookText: '关注勘查、钻井、成井及地下水系统维护项目的最新动态。',
     facebookButton: '打开 Facebook 专页',
-    lineText: '添加官方账号，咨询服务、发送项目位置或直接联系团队。',
-    lineButton: '添加 LINE 好友',
-    contactButton: '联系我们',
+    tiktokText: '观看团队在泰国各地进行地下水勘查、钻井、成井及系统维护的现场视频。',
+    tiktokButton: '在 TikTok 上关注',
   },
   ja: {
     ariaLabel: 'サイアム・グラウンドウォーターのソーシャルメディア',
@@ -64,9 +62,8 @@ const socialCopy: Record<
     text: '地下水プロジェクト、技術情報、公式のお問い合わせ窓口をご案内します。',
     facebookText: '調査、掘削、井戸開発、地下水設備保守の最新事例を紹介しています。',
     facebookButton: 'Facebookページを開く',
-    lineText: '公式アカウントを友だち追加して、サービスや事業所在地についてご相談ください。',
-    lineButton: 'LINEで友だち追加',
-    contactButton: 'お問い合わせ',
+    tiktokText: 'タイ各地で行う地下水調査、掘削、井戸開発、設備保守の現場動画をご覧ください。',
+    tiktokButton: 'TikTokをフォロー',
   },
 }
 
@@ -179,48 +176,56 @@ export default function SocialMediaSection({
           </div>
         </article>
 
-        <article className={`${styles.socialCard} ${styles.lineCard}`}>
+        <article className={`${styles.socialCard} ${styles.tiktokCard}`}>
           <div className={styles.cardHeader}>
             <Image
               alt=""
               className={styles.socialIcon}
               height={96}
-              src="/images/logo/contact/LINE_icon.png"
+              src="/icons/TikTok.png"
               width={96}
             />
             <div>
-              <p>LINE Official</p>
-              <h3>@SGW_TH</h3>
+              <p>TikTok</p>
+              <h3>@siamgroundwater.co</h3>
             </div>
           </div>
-          <p className={styles.cardText}>{copy.lineText}</p>
+          <p className={styles.cardText}>{copy.tiktokText}</p>
 
-          <div className={styles.linePanel}>
-            <Image
-              alt="LINE Official"
-              height={96}
-              src="/images/logo/contact/LINE_icon.png"
-              width={96}
+          <div className={styles.tiktokEmbedWrap}>
+            <blockquote
+              cite={TIKTOK_PROFILE_URL}
+              className={`tiktok-embed ${styles.tiktokEmbed}`}
+              data-embed-from="oembed"
+              data-embed-type="creator"
+              data-unique-id="siamgroundwater.co"
+            >
+              <section>
+                <a
+                  href={`${TIKTOK_PROFILE_URL}?refer=creator_embed`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  @siamgroundwater.co
+                </a>
+              </section>
+            </blockquote>
+            <Script
+              id="tiktok-creator-embed"
+              src="https://www.tiktok.com/embed.js"
+              strategy="afterInteractive"
             />
-            <span>LINE OA ID</span>
-            <strong>@SGW_TH</strong>
           </div>
 
           <div className={styles.actions}>
             <a
               className={styles.primaryButton}
-              href={LINE_URL}
+              href={TIKTOK_URL}
               rel="noopener noreferrer"
               target="_blank"
             >
-              {copy.lineButton}
+              {copy.tiktokButton}
               <ExternalLink aria-hidden="true" strokeWidth={1.9} />
-            </a>
-            <a
-              className={styles.secondaryButton}
-              href={localePath('/contact', locale)}
-            >
-              {copy.contactButton}
             </a>
           </div>
         </article>

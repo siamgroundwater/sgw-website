@@ -18,7 +18,7 @@ import LegacyProjectMapSection from '@/components/LegacyProjectMapSection/Legacy
 import './projects.css'
 
 type FilterCategory = 'all' | ProjectCategory
-type ItemsPerPage = 10 | 20 | 50 | 100 | 'all'
+type ItemsPerPage = 6 | 10 | 20 | 50 | 100 | 'all'
 
 const toolbarCopy: Record<LocalizedLocale, { maximum: string; items: string; viewAll: string }> = {
   th: { maximum: 'แสดงสูงสุด', items: 'รายการ', viewAll: 'ดูโครงการทั้งหมด' },
@@ -33,15 +33,17 @@ export default function ProjectsSection({
   showHistoryMap = false,
   headingLevel = 'h2',
   featured = false,
+  initialItemsPerPage = 10,
 }: {
   locale?: LocalizedLocale
   copy?: LocalizedContent['projects']
   showHistoryMap?: boolean
   headingLevel?: 'h1' | 'h2'
   featured?: boolean
+  initialItemsPerPage?: Exclude<ItemsPerPage, 'all'>
 } = {}) {
   const [category, setCategory] = useState<FilterCategory>('all')
-  const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(10)
+  const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(initialItemsPerPage)
 
   const filteredProjects =
     category === 'all'
@@ -113,7 +115,7 @@ export default function ProjectsSection({
                 value={itemsPerPage === 'all' ? 'all' : itemsPerPage}
                 onChange={handleItemsPerPageChange}
               >
-                {[10, 20, 50, 100].map((amount) => (
+                {[6, 10, 20, 50, 100].map((amount) => (
                   <option key={amount} value={amount}>
                     {amount} {controls?.items ?? 'รายการ'}
                   </option>
@@ -140,6 +142,8 @@ export default function ProjectsSection({
               href={href}
               className="listing-item project-card"
               aria-label={`${copy?.details ?? 'ดูรายละเอียดโครงการ'} ${project.title}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <div className="image project-card-image-wrapper">
                 <Image

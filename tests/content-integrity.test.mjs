@@ -383,6 +383,65 @@ test('contact page uses copyable contact cards and an interactive office map', (
   assert.doesNotMatch(localizedPage, /contact-form-section|ContactForm/)
 })
 
+test('home sections keep the video and place customer history after social media', () => {
+  const defaultHome = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'page.tsx'),
+    'utf8'
+  )
+  const localizedPage = readFileSync(
+    path.join(root, 'src', 'app', '[locale]', '[[...slug]]', 'page.tsx'),
+    'utf8'
+  )
+  const socialSection = readFileSync(
+    path.join(root, 'src', 'components', 'home', 'SocialMediaSection.tsx'),
+    'utf8'
+  )
+
+  assert.match(defaultHome, /<CompanyVideoSection locale="th" \/>/)
+  assert.match(localizedPage, /<CompanyVideoSection locale=\{locale\} \/>/)
+  assert.ok(defaultHome.indexOf('<SocialMediaSection />') < defaultHome.indexOf('<CustomerHistorySection />'))
+  assert.ok(localizedPage.indexOf('<SocialMediaSection locale={locale} />') < localizedPage.indexOf('<CustomerHistorySection locale={locale} />'))
+  assert.match(socialSection, /tiktok\.com\/@siamgroundwater\.co/)
+  assert.match(socialSection, /\/icons\/TikTok\.png/)
+  assert.match(socialSection, /data-embed-type="creator"/)
+  assert.match(socialSection, /https:\/\/www\.tiktok\.com\/embed\.js/)
+  assert.doesNotMatch(socialSection, /line\.me|LINE Official|@SGW_TH/)
+})
+
+test('home project map can move to the visitor current location', () => {
+  const mapComponent = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.tsx'),
+    'utf8'
+  )
+
+  assert.match(mapComponent, /navigator\.geolocation\.getCurrentPosition/)
+  assert.match(mapComponent, /mapRef\.current\?\.flyTo/)
+  assert.match(mapComponent, /<LocateFixed aria-hidden="true"/)
+  assert.match(mapComponent, /aria-busy=\{locationStatus === 'locating'\}/)
+  assert.match(mapComponent, /<CircleMarker/)
+  assert.match(mapComponent, /PERMISSION_DENIED/)
+})
+
+test('home project cards and map popup actions open details in a new tab', () => {
+  const mapComponent = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.tsx'),
+    'utf8'
+  )
+  const projectBrowser = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'projects', 'projects.tsx'),
+    'utf8'
+  )
+
+  assert.match(
+    mapComponent,
+    /className="home-map-popup-action"\s+target="_blank"\s+rel="noopener noreferrer"/
+  )
+  assert.match(
+    projectBrowser,
+    /className="listing-item project-card"[\s\S]*?target="_blank"\s+rel="noopener noreferrer"/
+  )
+})
+
 test('all project font sizes use global tokens with a 16px minimum', () => {
   const globalsPath = path.join(root, 'src', 'styles', 'globals.css')
   const globals = readFileSync(globalsPath, 'utf8')
