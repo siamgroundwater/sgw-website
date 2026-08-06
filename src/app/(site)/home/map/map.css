@@ -92,6 +92,7 @@ margin-top: 0.75rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+  padding-top: 0.3rem;
 }
 
 .home-map-filters button {
@@ -162,11 +163,12 @@ margin-top: 0.75rem;
 
 .home-map-location-control {
   position: absolute;
-  top: 5.25rem;
-  left: 0.65rem;
+  right: 0.65rem;
+  bottom: 0.65rem;
   z-index: 900;
   display: flex;
-  align-items: flex-start;
+  flex-direction: row-reverse;
+  align-items: flex-end;
   gap: 0.55rem;
   pointer-events: none;
 }
@@ -497,8 +499,10 @@ margin-top: 0.75rem;
   }
 
   .home-map-location-control {
-    top: 5.1rem;
-    flex-direction: column;
+    right: 0.65rem;
+    bottom: 0.65rem;
+    flex-direction: column-reverse;
+    align-items: flex-end;
     gap: 0.4rem;
   }
 

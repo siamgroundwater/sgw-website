@@ -1,5 +1,5 @@
 .section {
-  width: calc(100% - 2rem);
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(16rem, 0.7fr) minmax(0, 1.3fr);
   align-items: center;
@@ -140,7 +140,7 @@
 
 @media (width <= 640px) {
   .section {
-    width: calc(100% - 1rem);
+    width: 100%;
     gap: 1rem;
     margin-bottom: 2.5rem;
     padding: 1rem;

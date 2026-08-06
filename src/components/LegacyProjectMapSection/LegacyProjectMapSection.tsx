@@ -99,10 +99,6 @@ export default function LegacyProjectMapSection({
           className={styles.mapImage}
           priority
         />
-        <span className={styles.openHint} aria-hidden="true">
-          <ExternalLink />
-          {copy.action}
-        </span>
       </a>
     </aside>
   )

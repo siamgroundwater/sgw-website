@@ -23,9 +23,13 @@ const socialCopy: Record<
     facebookButton: string
     tiktokText: string
     tiktokButton: string
+    tiktokLoading: string
+    tiktokUnavailable: string
   }
 > = {
   th: {
+    tiktokLoading: 'กำลังโหลดตัวอย่าง TikTok…',
+    tiktokUnavailable: 'ตัวอย่าง TikTok ไม่พร้อมใช้งานชั่วคราว สามารถเปิดดูวิดีโอทั้งหมดบน TikTok ได้โดยตรง',
     ariaLabel: 'ช่องทางโซเชียลมีเดียของสยามกราวด์วอเตอร์',
     eyebrow: 'ติดตามเรา',
     title: 'ติดตามข่าวสารและผลงานของเรา',
@@ -36,6 +40,8 @@ const socialCopy: Record<
     tiktokButton: 'ติดตามบน TikTok',
   },
   en: {
+    tiktokLoading: 'Loading TikTok preview…',
+    tiktokUnavailable: 'The TikTok preview is temporarily unavailable. You can still view every video directly on TikTok.',
     ariaLabel: 'Siam Groundwater social media channels',
     eyebrow: 'Follow us',
     title: 'News and field updates from our team',
@@ -46,6 +52,8 @@ const socialCopy: Record<
     tiktokButton: 'Follow us on TikTok',
   },
   zh: {
+    tiktokLoading: '正在加载 TikTok 预览…',
+    tiktokUnavailable: 'TikTok 预览暂时不可用，您仍可直接前往 TikTok 查看全部视频。',
     ariaLabel: '暹罗地下水社交媒体渠道',
     eyebrow: '关注我们',
     title: '了解最新资讯和现场项目',
@@ -56,6 +64,8 @@ const socialCopy: Record<
     tiktokButton: '在 TikTok 上关注',
   },
   ja: {
+    tiktokLoading: 'TikTokプレビューを読み込んでいます…',
+    tiktokUnavailable: 'TikTokプレビューは一時的に利用できません。TikTokで動画を直接ご覧いただけます。',
     ariaLabel: 'サイアム・グラウンドウォーターのソーシャルメディア',
     eyebrow: '公式アカウント',
     title: '最新情報と現場実績をご覧ください',
@@ -73,8 +83,11 @@ export default function SocialMediaSection({
   locale?: LocalizedLocale
 }) {
   const facebookRef = useRef<HTMLDivElement | null>(null)
+  const tiktokRef = useRef<HTMLDivElement | null>(null)
   const [facebookWidth, setFacebookWidth] = useState(420)
   const [shouldLoadFacebook, setShouldLoadFacebook] = useState(false)
+  const [shouldLoadTikTok, setShouldLoadTikTok] = useState(false)
+  const [tiktokEmbedFailed, setTikTokEmbedFailed] = useState(false)
   const copy = socialCopy[locale]
 
   useEffect(() => {
@@ -92,6 +105,94 @@ export default function SocialMediaSection({
     observer.observe(element)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    const element = tiktokRef.current
+    if (!element) return
+
+    if (typeof IntersectionObserver === 'undefined') {
+      const fallbackTimer = window.setTimeout(() => {
+        setShouldLoadTikTok(true)
+      }, 0)
+      return () => window.clearTimeout(fallbackTimer)
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        setShouldLoadTikTok(true)
+        observer.disconnect()
+      },
+      { rootMargin: '300px 0px' }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!shouldLoadTikTok || tiktokEmbedFailed) return
+
+    const element = tiktokRef.current
+    if (!element) return
+
+    let observedFrame: HTMLIFrameElement | null = null
+    let shortFrameTimer: number | undefined
+
+    const markFailed = () => {
+      setTikTokEmbedFailed(true)
+    }
+
+    const inspectEmbed = () => {
+      const frame = element.querySelector('iframe')
+
+      if (frame && frame !== observedFrame) {
+        observedFrame = frame
+        resizeObserver.observe(frame)
+      }
+
+      if (!frame) return
+
+      if (frame.getBoundingClientRect().height >= 320) {
+        if (shortFrameTimer !== undefined) {
+          window.clearTimeout(shortFrameTimer)
+          shortFrameTimer = undefined
+        }
+        return
+      }
+
+      if (shortFrameTimer === undefined) {
+        shortFrameTimer = window.setTimeout(() => {
+          const currentFrame = element.querySelector('iframe')
+          if (
+            currentFrame &&
+            currentFrame.getBoundingClientRect().height < 320
+          ) {
+            markFailed()
+          }
+        }, 2500)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(inspectEmbed)
+    const mutationObserver = new MutationObserver(inspectEmbed)
+    mutationObserver.observe(element, { childList: true, subtree: true })
+
+    const initializationTimer = window.setTimeout(() => {
+      if (!element.querySelector('iframe')) markFailed()
+    }, 12000)
+
+    inspectEmbed()
+
+    return () => {
+      mutationObserver.disconnect()
+      resizeObserver.disconnect()
+      window.clearTimeout(initializationTimer)
+      if (shortFrameTimer !== undefined) {
+        window.clearTimeout(shortFrameTimer)
+      }
+    }
+  }, [shouldLoadTikTok, tiktokEmbedFailed])
 
   useEffect(() => {
     const element = facebookRef.current
@@ -192,29 +293,52 @@ export default function SocialMediaSection({
           </div>
           <p className={styles.cardText}>{copy.tiktokText}</p>
 
-          <div className={styles.tiktokEmbedWrap}>
-            <blockquote
-              cite={TIKTOK_PROFILE_URL}
-              className={`tiktok-embed ${styles.tiktokEmbed}`}
-              data-embed-from="oembed"
-              data-embed-type="creator"
-              data-unique-id="siamgroundwater.co"
-            >
-              <section>
-                <a
-                  href={`${TIKTOK_PROFILE_URL}?refer=creator_embed`}
-                  rel="noopener noreferrer"
-                  target="_blank"
+          <div ref={tiktokRef} className={styles.tiktokEmbedWrap}>
+            {!shouldLoadTikTok || tiktokEmbedFailed ? (
+              <div
+                className={styles.tiktokFallback}
+                role={tiktokEmbedFailed ? 'status' : undefined}
+              >
+                <Image
+                  alt=""
+                  height={96}
+                  src="/icons/TikTok.png"
+                  width={96}
+                />
+                <strong>@siamgroundwater.co</strong>
+                <p>
+                  {tiktokEmbedFailed
+                    ? copy.tiktokUnavailable
+                    : copy.tiktokLoading}
+                </p>
+              </div>
+            ) : (
+              <>
+                <blockquote
+                  cite={TIKTOK_PROFILE_URL}
+                  className={`tiktok-embed ${styles.tiktokEmbed}`}
+                  data-embed-from="oembed"
+                  data-embed-type="creator"
+                  data-unique-id="siamgroundwater.co"
                 >
-                  @siamgroundwater.co
-                </a>
-              </section>
-            </blockquote>
-            <Script
-              id="tiktok-creator-embed"
-              src="https://www.tiktok.com/embed.js"
-              strategy="afterInteractive"
-            />
+                  <section>
+                    <a
+                      href={`${TIKTOK_PROFILE_URL}?refer=creator_embed`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      @siamgroundwater.co
+                    </a>
+                  </section>
+                </blockquote>
+                <Script
+                  id="tiktok-creator-embed"
+                  src="https://www.tiktok.com/embed.js"
+                  strategy="afterInteractive"
+                  onError={() => setTikTokEmbedFailed(true)}
+                />
+              </>
+            )}
           </div>
 
           <div className={styles.actions}>

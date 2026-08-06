@@ -103,27 +103,6 @@
   object-fit: contain;
 }
 
-.openHint {
-  position: absolute;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 999px;
-  color: #fff;
-  font-size: var(--fs-sm);
-  font-weight: 800;
-  background: rgba(4, 44, 52, 0.9);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
-}
-
-.openHint svg {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
 @media (width <= 760px) {
   .section {
     grid-template-columns: 1fr;

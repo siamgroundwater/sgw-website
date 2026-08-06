@@ -337,6 +337,12 @@ test('historical customer and project assets are available locally', () => {
   for (const asset of historicalAssets) {
     assert.ok(existsSync(asset), asset)
   }
+
+  const legacyMapComponent = readFileSync(
+    path.join(root, 'src', 'components', 'LegacyProjectMapSection', 'LegacyProjectMapSection.tsx'),
+    'utf8'
+  )
+  assert.doesNotMatch(legacyMapComponent, /openHint/)
 })
 
 test('mobile navigation uses an accessible right-side drawer', () => {
@@ -405,12 +411,20 @@ test('home sections keep the video and place customer history after social media
   assert.match(socialSection, /\/icons\/TikTok\.png/)
   assert.match(socialSection, /data-embed-type="creator"/)
   assert.match(socialSection, /https:\/\/www\.tiktok\.com\/embed\.js/)
+  assert.match(socialSection, /IntersectionObserver/)
+  assert.match(socialSection, /MutationObserver/)
+  assert.match(socialSection, /getBoundingClientRect\(\)\.height < 320/)
+  assert.match(socialSection, /tiktokEmbedFailed/)
   assert.doesNotMatch(socialSection, /line\.me|LINE Official|@SGW_TH/)
 })
 
 test('home project map can move to the visitor current location', () => {
   const mapComponent = readFileSync(
     path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.tsx'),
+    'utf8'
+  )
+  const mapStyles = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.css'),
     'utf8'
   )
 
@@ -420,6 +434,10 @@ test('home project map can move to the visitor current location', () => {
   assert.match(mapComponent, /aria-busy=\{locationStatus === 'locating'\}/)
   assert.match(mapComponent, /<CircleMarker/)
   assert.match(mapComponent, /PERMISSION_DENIED/)
+  assert.match(
+    mapStyles,
+    /\.home-map-location-control\s*\{[\s\S]*?right:\s*0\.65rem;[\s\S]*?bottom:\s*0\.65rem;/
+  )
 })
 
 test('home project cards and map popup actions open details in a new tab', () => {
@@ -440,6 +458,46 @@ test('home project cards and map popup actions open details in a new tab', () =>
     projectBrowser,
     /className="listing-item project-card"[\s\S]*?target="_blank"\s+rel="noopener noreferrer"/
   )
+})
+
+test('project category controls remain horizontally usable on mobile', () => {
+  const mapStyles = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.css'),
+    'utf8'
+  )
+  const projectStyles = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'projects', 'projects.css'),
+    'utf8'
+  )
+
+  assert.match(mapStyles, /\.home-map-filters\s*\{[\s\S]*?padding-top:\s*0\.3rem/)
+  assert.match(
+    projectStyles,
+    /@media \(width <= 640px\)[\s\S]*?\.projects-filter-buttons\s*\{[\s\S]*?flex-wrap:\s*nowrap;[\s\S]*?overflow-x:\s*auto;/
+  )
+  assert.match(
+    projectStyles,
+    /\.projects-filter-buttons \.filter-button\s*\{[\s\S]*?flex:\s*0 0 auto;/
+  )
+  assert.match(
+    projectStyles,
+    /\.projects-filter-buttons\s*\{[\s\S]*?padding-top:\s*0\.3rem;/
+  )
+})
+
+test('full projects page can reveal more projects after the grid', () => {
+  const projectBrowser = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'projects', 'projects.tsx'),
+    'utf8'
+  )
+
+  assert.ok(
+    projectBrowser.indexOf('className="projects-grid display-posts-listing"') <
+      projectBrowser.indexOf('className="projects-show-more-wrap"')
+  )
+  assert.match(projectBrowser, /!featured &&[\s\S]*?displayedProjects\.length < filteredProjects\.length/)
+  assert.match(projectBrowser, /setVisibleCount\(\(count\) => count \+ itemsPerPage\)/)
+  assert.match(projectBrowser, /showMore: 'Show more'/)
 })
 
 test('all project font sizes use global tokens with a 16px minimum', () => {

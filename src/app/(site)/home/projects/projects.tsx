@@ -20,11 +20,14 @@ import './projects.css'
 type FilterCategory = 'all' | ProjectCategory
 type ItemsPerPage = 6 | 10 | 20 | 50 | 100 | 'all'
 
-const toolbarCopy: Record<LocalizedLocale, { maximum: string; items: string; viewAll: string }> = {
-  th: { maximum: 'แสดงสูงสุด', items: 'รายการ', viewAll: 'ดูโครงการทั้งหมด' },
-  en: { maximum: 'Show up to', items: 'items', viewAll: 'View all projects' },
-  zh: { maximum: '最多显示', items: '项', viewAll: '查看全部项目' },
-  ja: { maximum: '最大表示数', items: '件', viewAll: 'すべての実績を見る' },
+const toolbarCopy: Record<
+  LocalizedLocale,
+  { maximum: string; items: string; viewAll: string; showMore: string }
+> = {
+  th: { maximum: 'แสดงสูงสุด', items: 'รายการ', viewAll: 'ดูโครงการทั้งหมด', showMore: 'แสดงเพิ่มเติม' },
+  en: { maximum: 'Show up to', items: 'items', viewAll: 'View all projects', showMore: 'Show more' },
+  zh: { maximum: '最多显示', items: '项', viewAll: '查看全部项目', showMore: '显示更多' },
+  ja: { maximum: '最大表示数', items: '件', viewAll: 'すべての実績を見る', showMore: 'さらに表示' },
 }
 
 export default function ProjectsSection({
@@ -44,6 +47,7 @@ export default function ProjectsSection({
 } = {}) {
   const [category, setCategory] = useState<FilterCategory>('all')
   const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(initialItemsPerPage)
+  const [visibleCount, setVisibleCount] = useState<number>(initialItemsPerPage)
 
   const filteredProjects =
     category === 'all'
@@ -54,11 +58,23 @@ export default function ProjectsSection({
     ? filteredProjects.slice(0, 6)
     : itemsPerPage === 'all'
       ? filteredProjects
-      : filteredProjects.slice(0, itemsPerPage)
+      : filteredProjects.slice(0, visibleCount)
 
   const handleItemsPerPageChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value
-    setItemsPerPage(value === 'all' ? 'all' : (Number(value) as ItemsPerPage))
+    if (value === 'all') {
+      setItemsPerPage('all')
+      return
+    }
+
+    const amount = Number(value) as Exclude<ItemsPerPage, 'all'>
+    setItemsPerPage(amount)
+    setVisibleCount(amount)
+  }
+
+  const selectCategory = (nextCategory: FilterCategory) => {
+    setCategory(nextCategory)
+    if (itemsPerPage !== 'all') setVisibleCount(itemsPerPage)
   }
 
   const numberLocale = locale ? localeInfo[locale].htmlLang : 'th-TH'
@@ -81,7 +97,7 @@ export default function ProjectsSection({
           <button
             type="button"
             className={`filter-button ${category === 'all' ? 'active' : ''} filter-all`}
-            onClick={() => setCategory('all')}
+            onClick={() => selectCategory('all')}
           >
             {copy?.all ?? 'ทั้งหมด'}
           </button>
@@ -93,7 +109,7 @@ export default function ProjectsSection({
               className={`filter-button ${
                 category === filterCategory ? 'active' : ''
               }`}
-              onClick={() => setCategory(filterCategory)}
+              onClick={() => selectCategory(filterCategory)}
             >
               {copy?.categories[PROJECT_CATEGORY_KEYS[index]] ?? filterCategory}
             </button>
@@ -180,6 +196,20 @@ export default function ProjectsSection({
           )
         })}
       </div>
+
+      {!featured &&
+        itemsPerPage !== 'all' &&
+        displayedProjects.length < filteredProjects.length && (
+          <div className="projects-show-more-wrap">
+            <button
+              type="button"
+              className="projects-show-more"
+              onClick={() => setVisibleCount((count) => count + itemsPerPage)}
+            >
+              {controls?.showMore ?? 'แสดงเพิ่มเติม'}
+            </button>
+          </div>
+        )}
 
       {featured && locale && (
         <div className="projects-view-all-wrap">
