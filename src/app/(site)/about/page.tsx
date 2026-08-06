@@ -67,9 +67,9 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* 🔹 Award slider (public/images/about/award) */}
+        {/* Awards (public/images/about/award) */}
         <section className="about-awards">
-          <div className="about-awards-slider-track">
+          <div className="about-awards-grid">
             {AWARDS.map((award) => (
               <article key={award.id} className="about-award-card">
                 <div className="about-award-image-wrapper">
@@ -79,7 +79,6 @@ export default function AboutPage() {
                     width={award.width}
                     height={award.height}
                     className="about-award-image"
-                    style={{ width: 'auto', height: '20rem' }}
                   />
                 </div>
                 <p className="about-award-caption">{award.label}</p>

@@ -30,7 +30,7 @@ import ProjectsSection from '@/app/(site)/home/projects/projects'
 import HomeTeam from '@/app/(site)/about/teams/teams'
 import HeroSlide from '@/app/(site)/about/hero-slide/HeroSlide'
 import {
-  LOCALIZED_LOCALES,
+  PREFIXED_LOCALES,
   isLocalizedLocale,
   languageAlternates,
   localeInfo,
@@ -102,7 +102,7 @@ const aboutAwardLabels: Record<LocalizedLocale, [string, string, string]> = {
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return LOCALIZED_LOCALES.flatMap((locale) =>
+  return PREFIXED_LOCALES.flatMap((locale) =>
     staticRouteSegments.map((slug) => ({ locale, slug }))
   )
 }
@@ -273,7 +273,7 @@ function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content:
         </div>
 
         <section className="about-awards" aria-label={content.about.principlesTitle}>
-          <div className="about-awards-slider-track">
+          <div className="about-awards-grid">
             {awards.map((award, index) => {
               const awardLabel = awardLabels[index]
               return (
@@ -316,7 +316,7 @@ function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content:
 
 function LocalizedServices({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   return (
-    <main style={{ marginTop: '4rem' }}>
+    <main className="services-page">
       <Services locale={locale} copy={content} headingLevel="h1" />
     </main>
   )

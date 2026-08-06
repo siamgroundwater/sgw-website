@@ -82,7 +82,7 @@
 }
 
 /* ────────────────────────────── */
-/* Awards slider                  */
+/* Awards                         */
 /* ────────────────────────────── */
 
 .about-awards {
@@ -90,38 +90,13 @@
   width: 100%;
 }
 
-.about-awards-slider-track {
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+.about-awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: 1.5rem;
-
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-
-  padding-bottom: 0.75rem;
-  scrollbar-width: thin;
-}
-
-.about-awards-slider-track::-webkit-scrollbar {
-  height: 6px;
-}
-
-.about-awards-slider-track::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.04);
-  border-radius: 999px;
-}
-
-.about-awards-slider-track::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.28);
-  border-radius: 999px;
 }
 
 .about-award-card {
-  flex: 0 0 auto;
-  scroll-snap-align: center;
   border-radius: 1rem;
 
   background: radial-gradient(circle at 0 0, #38bdf829, #0000 60%), rgba(9, 40, 52, 0.82);
@@ -135,16 +110,18 @@
 }
 
 .about-award-image-wrapper {
-  padding: 1.25rem 1.25rem 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
 }
 
 .about-award-image {
-  height: 16rem;
-  width: auto;
+  position: absolute;
+  inset: 1rem;
   display: block;
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  object-fit: contain;
 }
 
 .about-award-caption {
@@ -229,12 +206,35 @@
     width: 15rem;
   }
 
-  .about-awards-slider-track {
-    justify-content: flex-start;
+  .about-awards {
+    margin-top: 2rem;
+  }
+
+  .about-awards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .about-award-card {
+    border-radius: 0.75rem;
+  }
+
+  .about-award-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - 0.325rem);
+    justify-self: center;
   }
 
   .about-award-image {
-    height: 13rem;
+    inset: 0.65rem;
+    width: calc(100% - 1.3rem);
+    height: calc(100% - 1.3rem);
+  }
+
+  .about-award-caption {
+    padding: 0.55rem 0.5rem 0.7rem;
+    font-size: var(--fs-sm);
+    line-height: 1.4;
   }
 
   .about-hero,

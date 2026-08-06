@@ -77,16 +77,9 @@ margin: 0.875rem auto 0;
 .footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1.25rem;
   margin-top: 1rem;
-}
-
-.footer p {
-margin: 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: var(--fs-sm);
-  line-height: 1.6;
 }
 
 .action {

@@ -11,6 +11,7 @@ import {
   Navigation,
   Phone,
   Printer,
+  ReceiptText,
 } from 'lucide-react'
 import type { LocalizedLocale } from '@/i18n/config'
 import './ContactDetails.css'
@@ -27,7 +28,7 @@ type ContactDetailsProps = {
 
 type ContactMethod = {
   id: string
-  href: string
+  href?: string
   title: string
   detail: string
   copyValue: string
@@ -45,6 +46,7 @@ const uiCopy: Record<
     mapDescription: string
     mapLoading: string
     copyAddress: string
+    taxId: string
   }
 > = {
   th: {
@@ -55,6 +57,7 @@ const uiCopy: Record<
     mapDescription: 'ซูมและเลื่อนแผนที่เพื่อดูตำแหน่งสำนักงาน หรือเปิด Google Maps สำหรับการนำทางแบบเรียลไทม์',
     mapLoading: 'กำลังโหลดแผนที่สำนักงาน',
     copyAddress: 'คัดลอกที่อยู่',
+    taxId: 'เลขประจำตัวผู้เสียภาษี',
   },
   en: {
     copy: 'Copy',
@@ -64,6 +67,7 @@ const uiCopy: Record<
     mapDescription: 'Zoom and move the map to inspect our location, or open Google Maps for live navigation.',
     mapLoading: 'Loading office map',
     copyAddress: 'Copy address',
+    taxId: 'Tax ID',
   },
   zh: {
     copy: '复制',
@@ -73,6 +77,7 @@ const uiCopy: Record<
     mapDescription: '可缩放和移动地图查看办公室位置，或打开Google Maps进行实时导航。',
     mapLoading: '正在加载办公室地图',
     copyAddress: '复制地址',
+    taxId: '税务登记号',
   },
   ja: {
     copy: 'コピー',
@@ -82,6 +87,7 @@ const uiCopy: Record<
     mapDescription: '地図を拡大・移動して所在地を確認するか、Google Mapsでナビゲーションを開始できます。',
     mapLoading: 'オフィスマップを読み込み中',
     copyAddress: '住所をコピー',
+    taxId: '納税者番号',
   },
 }
 
@@ -136,6 +142,13 @@ export default function ContactDetails({
       icon: <Phone aria-hidden="true" />,
     },
     {
+      id: 'tax-id',
+      title: copy.taxId,
+      detail: '0105530015432',
+      copyValue: '0105530015432',
+      icon: <ReceiptText aria-hidden="true" />,
+    },
+    {
       id: 'facebook',
       href: 'https://www.facebook.com/siamgroundwater',
       title: 'Facebook',
@@ -178,21 +191,27 @@ export default function ContactDetails({
         <div className="contact-methods">
           {methods.map((method) => {
             const isCopied = copiedId === method.id
+            const cardContent = (
+              <>
+                <span className="contact-card-icon">{method.icon}</span>
+                <span className="contact-card-text">
+                  <strong className="contact-card-title">{method.title}</strong>
+                  <span className="contact-card-detail">{method.detail}</span>
+                </span>
+              </>
+            )
             return (
               <article className={`contact-card${method.external ? ' contact-card--social' : ''}`} key={method.id}>
-                <a
-                  href={method.href}
-                  className="contact-card-link"
-                  target={method.external ? '_blank' : undefined}
-                  rel={method.external ? 'noopener noreferrer' : undefined}
-                >
-                  <span className="contact-card-icon">{method.icon}</span>
-                  <span className="contact-card-text">
-                    <strong className="contact-card-title">{method.title}</strong>
-                    <span className="contact-card-detail">{method.detail}</span>
-                  </span>
-                  {method.external && <ExternalLink className="contact-card-external" aria-hidden="true" />}
-                </a>
+                {method.href ? (
+                  <a
+                    href={method.href}
+                    className="contact-card-link"
+                    target={method.external ? '_blank' : undefined}
+                    rel={method.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {cardContent}
+                  </a>
+                ) : <div className="contact-card-link">{cardContent}</div>}
                 <button
                   type="button"
                   className={`contact-copy-button${isCopied ? ' is-copied' : ''}`}
@@ -200,7 +219,6 @@ export default function ContactDetails({
                   onClick={() => copyText(method.id, method.copyValue)}
                 >
                   {isCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
-                  <span>{isCopied ? copy.copied : copy.copy}</span>
                 </button>
               </article>
             )

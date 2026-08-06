@@ -19,13 +19,14 @@ test('locale helpers preserve the current route when switching language', () => 
   assert.equal(localeFromPathname('/projects/12'), 'th')
   assert.equal(stripLocaleFromPathname('/ja/learn/groundwater-faq-thailand'), '/learn/groundwater-faq-thailand')
   assert.equal(localePath('/zh/services/drilling', 'en'), '/en/services/drilling')
-  assert.equal(localePath('/en', 'th'), '/th')
+  assert.equal(localePath('/en', 'th'), '/')
+  assert.equal(localePath('/th/projects/8', 'th'), '/projects/8')
   assert.deepEqual(languageAlternates('/projects/8'), {
-    'th-TH': '/th/projects/8',
+    'th-TH': '/projects/8',
     en: '/en/projects/8',
     'zh-CN': '/zh/projects/8',
     ja: '/ja/projects/8',
-    'x-default': '/th/projects/8',
+    'x-default': '/projects/8',
   })
 })
 
@@ -34,9 +35,17 @@ test('every localized navigation points into its own locale', () => {
     const navigation = getNavigation(locale)
     assert.equal(navigation.length, 7)
     for (const item of navigation) {
-      assert.ok(item.href.startsWith(`/${locale}`), item.href)
+      if (locale === 'th') {
+        assert.equal(item.href.startsWith('/th'), false, item.href)
+      } else {
+        assert.ok(item.href.startsWith(`/${locale}`), item.href)
+      }
       for (const child of item.subNav ?? []) {
-        assert.ok(child.href.startsWith(`/${locale}`), child.href)
+        if (locale === 'th') {
+          assert.equal(child.href.startsWith('/th'), false, child.href)
+        } else {
+          assert.ok(child.href.startsWith(`/${locale}`), child.href)
+        }
       }
     }
   }

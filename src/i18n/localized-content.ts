@@ -376,10 +376,10 @@ const englishArticles: Record<LearningSlug, LocalizedArticle> = {
   'groundwater-guide-factory-hotel-resort': {
     slug: 'groundwater-guide-factory-hotel-resort',
     eyebrow: 'OWNER’S GUIDE',
-    title: 'Groundwater planning for factories, hotels and resorts',
+    title: 'Groundwater planning guide for operators',
     description:
-      'A decision sequence from water balance and site investigation through handover, redundancy and long-term care.',
-    audience: 'Business owners, plant directors, hotel managers and engineering teams',
+      'An interactive guide for factories, hotels and resorts, agriculture and construction dewatering—from first inputs through handover and operation.',
+    audience: 'Business owners, facility managers, farm owners, contractors and engineering teams',
     sections: [
       {
         heading: '1. Begin with the project water balance',
@@ -520,9 +520,9 @@ const chineseArticles: Record<LearningSlug, LocalizedArticle> = {
   'groundwater-guide-factory-hotel-resort': {
     slug: 'groundwater-guide-factory-hotel-resort',
     eyebrow: '业主指南',
-    title: '工厂、酒店与度假村地下水规划指南',
-    description: '从用水平衡、现场勘查到验收、备用方案和长期维护的决策流程。',
-    audience: '企业业主、厂长、酒店管理人员及工程团队',
+    title: '经营者地下水规划指南',
+    description: '面向工厂、酒店与度假村、农业和施工降水的互动指南，涵盖前期资料、验收与运行。',
+    audience: '企业业主、设施管理者、农场经营者、承包商及工程团队',
     sections: [
       { heading: '1. 从项目用水平衡开始', paragraphs: ['按用途、所需水质和使用时间拆分生产、客房、厨房、洗衣、灌溉和消防用水，避免所有系统采用同一标准。'] },
       { heading: '2. 确定井位前进行现场调查', paragraphs: ['检查建筑、地下管线、污染风险、钻机通道和维护空间，并与水文地质资料综合判断。'] },
@@ -597,9 +597,9 @@ const japaneseArticles: Record<LearningSlug, LocalizedArticle> = {
   'groundwater-guide-factory-hotel-resort': {
     slug: 'groundwater-guide-factory-hotel-resort',
     eyebrow: '事業主向けガイド',
-    title: '工場・ホテル・リゾートの地下水計画',
-    description: '水収支、敷地調査、引渡し、冗長性、長期保守までの判断手順です。',
-    audience: '事業主、工場長、ホテル管理者、技術チーム',
+    title: '事業者向け地下水計画ガイド',
+    description: '工場、ホテル・リゾート、農業、工事排水を対象に、初期情報から検収・運用までを整理するインタラクティブガイドです。',
+    audience: '事業主、施設管理者、農場経営者、施工会社、技術チーム',
     sections: [
       { heading: '1. 事業の水収支から始める', paragraphs: ['製造、客室、厨房、洗濯、散水、消防を用途・水質・時間帯別に分け、すべてを同一仕様にしないことが重要です。'] },
       { heading: '2. 掘削地点を決める前に敷地調査を行う', paragraphs: ['建物、埋設物、汚染リスク、掘削機の進入、将来の保守スペースを確認し、水文地質情報と合わせて評価します。'] },
@@ -644,7 +644,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
         'ผลงานโครงการภาครัฐ อุตสาหกรรม โรงแรม เกษตรกรรม และโครงสร้างพื้นฐานในประเทศไทยและภูมิภาค',
       trustTitle: 'สร้างเพื่อการตัดสินใจที่ยั่งยืน',
       trust: [
-        { value: '80', label: 'โครงการที่เผยแพร่ในทะเบียนผลงาน' },
+        { value: '79', label: 'โครงการที่เผยแพร่ในทะเบียนผลงาน' },
         { value: '4', label: 'สาขาบริการที่ทำงานร่วมกัน' },
         { value: 'ทั่วประเทศ', label: 'ความพร้อมของทีมภาคสนาม' },
       ],
@@ -678,28 +678,28 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       processTitle: 'ขั้นตอนการทำงานโดยทั่วไป',
       items: {
         survey: {
-          title: 'สำรวจศึกษาน้ำบาดาล น้ำแร่ น้ำพุร้อน และ EIA',
+          title: 'สำรวจศึกษาน้ำบาดาล น้ำแร่ น้ำพุร้อน EIA',
           short: 'สำรวจศึกษาโดยผู้เชี่ยวชาญ และทีมสำรวจที่มีความชำนาญและประสบการณ์สูง',
           intro: 'รับสำรวจศึกษาน้ำบาดาลให้กับโครงการที่ต้องการเจาะน้ำบาดาลขึ้นมาใช้ โดยการวัดค่าความต้านทานไฟฟ้า (Resistivity Survey) รวมถึงการสำรวจแหล่งน้ำแร่ น้ำพุร้อน และการสำรวจสำหรับรายงานวิเคราะห์ผลกระทบสิ่งแวดล้อม (EIA)',
           highlights: ['ทบทวนข้อมูลและสำรวจพื้นที่เบื้องต้น', 'สำรวจธรณีวิทยาน้ำบาดาลและธรณีฟิสิกส์', 'ประเมินจุดเจาะที่มีศักยภาพ', 'จัดทำรายงานประกอบโครงการและ EIA'],
           process: ['กำหนดความต้องการใช้น้ำและเกณฑ์ตัดสินใจ', 'ทบทวนข้อมูลเดิมและความเสี่ยงของพื้นที่', 'ดำเนินการสำรวจภาคสนาม', 'จัดลำดับเป้าหมายเจาะและขั้นตอนถัดไป'],
         },
         drilling: {
-          title: 'เจาะบ่อน้ำบาดาล น้ำแร่ น้ำพุร้อน และบ่อสูบลดระดับน้ำ',
+          title: 'เจาะบ่อน้ำบาดาล บ่อน้ำแร่ บ่อน้ำพุร้อน บ่อสูบลดระดับน้ำ',
           short: 'เจาะบ่อพร้อมติดตั้งเครื่องสูบอย่างถูกหลักวิชาการ และอุดกลบบ่อน้ำบาดาลที่เลิกใช้งาน',
           intro: 'รับขุดเจาะก่อสร้างบ่อน้ำบาดาลได้มาตรฐานตามหลักวิชาการ และถูกต้องตาม พ.ร.บ. น้ำบาดาล ทั้งบ่อในชั้นกรวดทราย บ่อในหินแข็ง บ่อสูบลดระดับน้ำ และบ่อสังเกตการณ์',
           highlights: ['บ่อน้ำบาดาลและบ่อผลิต', 'บ่อน้ำแร่และบ่อน้ำพุร้อน', 'บ่อสูบลดระดับน้ำ', 'พัฒนาบ่อ สูบทดสอบ และจัดทำเอกสารส่งมอบ'],
           process: ['ยืนยันผลสำรวจและทางเข้าพื้นที่', 'กำหนดโครงสร้างบ่อและเกณฑ์รับงาน', 'เจาะ บันทึกชั้นดิน และก่อสร้างบ่อ', 'พัฒนาบ่อ ทดสอบ และบันทึกผล'],
         },
         maintenance: {
-          title: 'ซ่อมบำรุงบ่อและเครื่องสูบน้ำ',
+          title: 'ซ่อมบำรุงรักษาบ่อน้ำบาดาล และเครื่องสูบน้ำ',
           short: 'เพื่อให้บ่อน้ำบาดาลและเครื่องสูบมีอายุการใช้งานยาวนาน ควรทำการบำรุงรักษาให้ถูกต้อง',
           intro: 'บ่อที่ใช้งานเป็นเวลานานอาจมีตะกอนดินทราย สนิมเหล็ก หรือตะกรันอุดตัน ทำให้น้ำไหลเข้าบ่อน้อยลง ควรเป่าล้างพัฒนาบ่อและตรวจเช็คเครื่องสูบทุก 1 ปี หรือตามความเหมาะสมของสภาพการใช้งานจริง',
           highlights: ['เป่าล้างและพัฒนาบ่อ', 'ถอน ตรวจสอบ และซ่อมเครื่องสูบ', 'ปรับระดับติดตั้งและระบบควบคุม', 'วิเคราะห์แนวโน้มอัตราสูบ ระดับน้ำ และพลังงาน'],
           process: ['รวบรวมข้อมูลเดิมและอาการผิดปกติ', 'ตรวจบ่อและระบบสูบน้ำ', 'เลือกวิธีแก้ไขที่มีประสิทธิภาพและกระทบน้อยที่สุด', 'ทดสอบซ้ำและกำหนดเกณฑ์ติดตาม'],
         },
         consult: {
-          title: 'วิเคราะห์และแก้ไขปัญหาระบบน้ำบาดาล',
+          title: 'แก้ไขโครงการที่เจาะน้ำบาดาลขึ้นมาใช้แล้วมีปัญหาและเสียหาย',
           short: '•ซ่อมบ่อใหญ่ คุ้มค่ากว่าเจาะบ่อใหม่•',
           intro: 'บ่อใหญ่ขนาด 8–12 นิ้วที่ชำรุดเสียหาย ทั้งปัญหาทรายเข้าบ่อ น้ำขุ่น บ่ออุดตัน น้ำเค็มเข้าบ่อ บ่อรั่วทะลุ น้ำเสียเข้าบ่อ หรือเครื่องสูบชำรุด เราสามารถซ่อมแก้ไขด้ด้วยวิธีพิเศษ เร็วกว่า ถูกกว่าเจาะบ่อใหม่ และคุ้มค่าการลงทุน',
           highlights: ['วิเคราะห์อัตราสูบต่ำและระดับน้ำลด', 'วิเคราะห์ทราย ความขุ่น และความสมบูรณ์ของบ่อ', 'ตรวจเส้นทางความเค็ม ความเป็นกรด และการปนเปื้อน', 'จัดทำแผนฟื้นฟูและให้คำปรึกษาฝ่ายเจ้าของ'],
@@ -832,7 +832,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       projectsIntro: 'A searchable registry of public, industrial, hospitality, agricultural and infrastructure assignments.',
       trustTitle: 'Built for decisions that last',
       trust: [
-        { value: '80', label: 'published project records' },
+        { value: '79', label: 'published project records' },
         { value: '4', label: 'integrated service disciplines' },
         { value: 'Nationwide', label: 'field capability across Thailand' },
       ],
@@ -870,7 +870,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       },
     },
     projects: {
-      eyebrow: 'PROJECT REGISTRY', title: 'Groundwater experience across sectors', intro: 'Browse 80 published records recovered from the company’s former website, covering government, factories, hospitality, agriculture and dewatering.', all: 'All projects', showing: 'Showing', loadMore: 'Show more projects', details: 'View project', typeLabel: 'Project type', categoryLabel: 'Sector', location: 'Project location', yearLabel: 'Project year', workScopeLabel: 'Scope of work', businessTypeLabel: 'Business sector', projectStoryTitle: 'Original project record', recoveredRecordNote: 'Recovered from the project registry and public content of the company’s former website. The original Thai wording is retained.', registryNoteTitle: 'About this record', registryNote: 'This record contains information previously published by the company. Contractual and client-sensitive details remain private; contact our team for a comparable case study.', mapCta: 'Open location in Google Maps', enquiryCta: 'Ask about similar experience',
+      eyebrow: 'PROJECT REGISTRY', title: 'Groundwater experience across sectors', intro: 'Browse 79 published records recovered from the company’s former website, covering government, factories, hospitality, agriculture and dewatering.', all: 'All projects', showing: 'Showing', loadMore: 'Show more projects', details: 'View project', typeLabel: 'Project type', categoryLabel: 'Sector', location: 'Project location', yearLabel: 'Project year', workScopeLabel: 'Scope of work', businessTypeLabel: 'Business sector', projectStoryTitle: 'Original project record', recoveredRecordNote: 'Recovered from the project registry and public content of the company’s former website. The original Thai wording is retained.', registryNoteTitle: 'About this record', registryNote: 'This record contains information previously published by the company. Contractual and client-sensitive details remain private; contact our team for a comparable case study.', mapCta: 'Open location in Google Maps', enquiryCta: 'Ask about similar experience',
       categories: { government: 'Government', factory: 'Factories', resort: 'Hotels & resorts', agriculture: 'Agriculture & livestock', dewatering: 'Dewatering', other: 'Other' },
       types: { agriculture: 'Agricultural groundwater project', factory: 'Industrial groundwater project', government: 'Government groundwater project', 'island, resort': 'Island resort groundwater project', infrastructure: 'Dewatering and infrastructure project', other: 'Groundwater project', resort: 'Hotel and resort groundwater project', train: 'Infrastructure groundwater project' },
     },
@@ -902,7 +902,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
     siteTitle: '暹罗地下水 | 泰国地下水专业服务',
     metaDescription: '提供地下水勘查、钻井、维护、故障诊断及可持续供水系统规划。',
     common: { home: '首页', learnMore: '了解更多', contactTeam: '咨询团队', viewProjects: '查看项目', breadcrumbLabel: '面包屑导航', suitableFor: '适合对象', officialSources: '官方资料', sourceReviewed: '资料复核日期：2026年8月2日', project: '项目', service: '服务' },
-    home: { eyebrow: '泰国地下水工程', title: '我们懂地下水。', summary: '从勘查、成井、抽水试验到维护与修复，我们以现场数据和专业判断建设可靠的地下水系统。', assurance: '保护含水层，稳定供水，长期守护项目投资。', motto: '以善行回馈大地', primaryCta: '咨询项目场地', secondaryCta: '查看专业服务', servicesTitle: '覆盖水井全生命周期的技术团队', servicesIntro: '勘查、钻井、水泵、水质与长期运维由同一技术体系协调，减少设计衔接风险。', projectsTitle: '泰国及周边地区项目经验', projectsIntro: '涵盖公共事业、工业、酒店度假、农业与基础设施项目。', trustTitle: '面向长期运营的专业能力', trust: [{ value: '80', label: '公开项目记录' }, { value: '4', label: '一体化服务领域' }, { value: '全泰国', label: '现场服务能力' }] },
+    home: { eyebrow: '泰国地下水工程', title: '我们懂地下水。', summary: '从勘查、成井、抽水试验到维护与修复，我们以现场数据和专业判断建设可靠的地下水系统。', assurance: '保护含水层，稳定供水，长期守护项目投资。', motto: '以善行回馈大地', primaryCta: '咨询项目场地', secondaryCta: '查看专业服务', servicesTitle: '覆盖水井全生命周期的技术团队', servicesIntro: '勘查、钻井、水泵、水质与长期运维由同一技术体系协调，减少设计衔接风险。', projectsTitle: '泰国及周边地区项目经验', projectsIntro: '涵盖公共事业、工业、酒店度假、农业与基础设施项目。', trustTitle: '面向长期运营的专业能力', trust: [{ value: '79', label: '公开项目记录' }, { value: '4', label: '一体化服务领域' }, { value: '全泰国', label: '现场服务能力' }] },
     about: { eyebrow: '关于暹罗地下水', title: '把每一口井都当作长期基础设施', intro: '暹罗地下水将现场经验、水文地质、钻井质量控制与维护管理结合，负责任地开发地下水。', storyTitle: '我们的工作理念', story: ['好井不只取决于深度，而来自合适的井位、可靠的结构、充分洗井、经过验证的抽水量和维护计划。', '我们从用水需求讨论开始，持续支持到交付和长期监测，并以技术资料作为每项决定的依据。'], principlesTitle: '工作原则', principles: [{ title: '先调查，后钻井', description: '以场地条件和水文地质资料制定调查与设计方案。' }, { title: '保护含水层', description: '合理的成井和抽水方案可避免不必要的资源损害。' }, { title: '用数据验收', description: '抽水试验、水质结果和运行记录让水井成为可管理资产。' }, { title: '面向长期维护', description: '建立基线并及时保养，以维持流量、水质和能源效率。' }], teamTitle: '多专业现场团队', teamIntro: '管理、勘查、钻井、维护和客户沟通团队以统一质量目标协作。' },
     services: { eyebrow: '地下水专业服务', title: '从初步调查到长期运行的技术支持', intro: '可选择单项服务，也可由我们统筹完整的地下水工程。', highlightsTitle: '服务内容', processTitle: '典型工作流程', items: {
       survey: { title: '地下水、矿泉水、温泉及EIA调查', short: '通过场地资料和专业调查降低盲目钻井风险。', intro: '我们分析项目用水、场地限制、地质资料和适用的物探方法，再确定调查重点与建议井位。', highlights: ['资料审查与现场踏勘', '水文地质及地球物理调查', '候选井位评估', '项目与EIA协调报告'], process: ['明确用水需求和决策标准', '审查既有资料与场地风险', '实施现场调查', '排序井位并提出下一步建议'] },
@@ -910,7 +910,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       maintenance: { title: '水井与水泵维护', short: '恢复性能并延长水井和抽水设备寿命。', intro: '先诊断性能下降原因，再选择洗井、修复、水泵维护或运行调整。', highlights: ['气举洗井与井内清洗', '水泵拆装、检查和维修', '水泵安装深度与控制调整', '流量、水位和能耗趋势分析'], process: ['收集基线与故障现象', '检查水井和抽水系统', '选择有效且损伤最小的处理方式', '复测并设定监测阈值'] },
       consult: { title: '地下水系统诊断与修复', short: '分析低流量、出砂、咸化、腐蚀及运行不稳的真正原因。', intro: '系统区分含水层、水井、水泵、水质和运行问题，让投资用于正确的解决方案。', highlights: ['低流量和降深分析', '出砂、浑浊及井体完整性诊断', '盐分、酸性和污染通道分析', '修复方案与业主技术支持'], process: ['审查原始资料和故障历史', '测量当前水力与水质状态', '验证最可能的原因', '排序修复、更换或运行调整方案'] },
     } },
-    projects: { eyebrow: '项目登记', title: '跨行业地下水项目经验', intro: '浏览从公司旧网站恢复的80条公开项目记录。', all: '全部项目', showing: '当前显示', loadMore: '显示更多项目', details: '查看项目', typeLabel: '项目类型', categoryLabel: '行业', location: '项目地点', yearLabel: '项目年份', workScopeLabel: '工作范围', businessTypeLabel: '业务领域', projectStoryTitle: '原项目记录', recoveredRecordNote: '内容来自公司旧网站公开的项目登记和项目资料，并保留原始泰文。', registryNoteTitle: '关于本记录', registryNote: '本记录仅包含公司曾经公开的资料；合同及客户敏感信息仍不公开。', mapCta: '在Google地图中打开', enquiryCta: '咨询类似项目经验', categories: { government: '政府', factory: '工厂', resort: '酒店与度假村', agriculture: '农业与畜牧', dewatering: '降水工程', other: '其他' }, types: { agriculture: '农业地下水项目', factory: '工业地下水项目', government: '政府地下水项目', 'island, resort': '海岛度假村地下水项目', infrastructure: '降水与基础设施项目', other: '地下水项目', resort: '酒店与度假村地下水项目', train: '基础设施地下水项目' } },
+    projects: { eyebrow: '项目登记', title: '跨行业地下水项目经验', intro: '浏览从公司旧网站恢复的79条公开项目记录。', all: '全部项目', showing: '当前显示', loadMore: '显示更多项目', details: '查看项目', typeLabel: '项目类型', categoryLabel: '行业', location: '项目地点', yearLabel: '项目年份', workScopeLabel: '工作范围', businessTypeLabel: '业务领域', projectStoryTitle: '原项目记录', recoveredRecordNote: '内容来自公司旧网站公开的项目登记和项目资料，并保留原始泰文。', registryNoteTitle: '关于本记录', registryNote: '本记录仅包含公司曾经公开的资料；合同及客户敏感信息仍不公开。', mapCta: '在Google地图中打开', enquiryCta: '咨询类似项目经验', categories: { government: '政府', factory: '工厂', resort: '酒店与度假村', agriculture: '农业与畜牧', dewatering: '降水工程', other: '其他' }, types: { agriculture: '农业地下水项目', factory: '工业地下水项目', government: '政府地下水项目', 'island, resort': '海岛度假村地下水项目', infrastructure: '降水与基础设施项目', other: '地下水项目', resort: '酒店与度假村地下水项目', train: '基础设施地下水项目' } },
     governance: { eyebrow: '企业治理', title: '可靠水井始于负责任的决策', intro: '我们的治理体系将技术质量、含水层保护、现场安全和诚信沟通结合起来。', pillars: [{ title: '技术诚信', description: '建议基于现有资料、明确假设和可衡量的验收标准。' }, { title: '环境责任', description: '采用可持续抽水量和保护地下水层的成井方式。' }, { title: '安全与现场纪律', description: '通过计划、现场控制和合适设备支持安全施工。' }, { title: '尊重客户信息', description: '敏感项目资料仅用于项目交付，未经许可不公开。' }], commitmentTitle: '地下水保护承诺', commitment: '“钻好井，回馈土地”意味着把每个含水层视为共享的自然基础设施，而不是无限资源。' },
     learning: { eyebrow: '地下水知识中心', title: '清晰信息，帮助做出更好的地下水决策', intro: '为在泰国规划地下水系统的业主、工程师和运维人员提供实用指南。', audienceTitle: '适合对象', audience: ['工厂、酒店、度假村和地产项目', '工程、维护和采购团队', '顾问与供水系统设计人员', '首次在泰国开展地下水项目的人士'], topicsTitle: '选择学习主题', topicsIntro: '使用计算工具、了解技术基础、分析常见故障并核实泰国法规。', readMore: '阅读文章', articles: chineseArticles, ctaTitle: '需要结合您的场地进一步分析吗？', ctaText: '请将位置、用水需求和项目限制发送给我们的团队。' },
     calculator: { kicker: '快速估算', title: '估算所需抽水流量', intro: '输入每日总用水量、计划抽水时间和储备比例。', dailyDemand: '每日用水量', dailyUnit: '立方米/日', pumpHours: '计划抽水时间', hoursUnit: '小时/日', reserve: '储备与增长比例', percentUnit: '百分比', result: '系统初步所需流量', flowUnit: '立方米/小时', designDemand: '设计用水量', minimumBuffer: '初步最低储水量', volumeUnit: '立方米', disclaimer: '本结果不代表水井出水量保证。实际运行流量应通过抽水试验和专业系统设计确认。' },
@@ -921,7 +921,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
     siteTitle: 'サイアム・グラウンドウォーター | タイの地下水専門会社',
     metaDescription: 'タイ全土で地下水調査、井戸掘削、保守、診断、持続可能な給水計画を提供します。',
     common: { home: 'ホーム', learnMore: '詳しく見る', contactTeam: 'チームに相談', viewProjects: '実績を見る', breadcrumbLabel: 'パンくずリスト', suitableFor: '対象', officialSources: '公式情報', sourceReviewed: '情報確認日：2026年8月2日', project: 'プロジェクト', service: 'サービス' },
-    home: { eyebrow: 'タイの地下水エンジニアリング', title: '地下水を知り尽くす。', summary: '調査、井戸施工、揚水試験、保守、再生まで、推測ではなく現場データに基づいて地下水システムを構築します。', assurance: '帯水層を守り、安定した水を届け、投資価値を長期に維持します。', motto: '確かな仕事で大地に恩返しする', primaryCta: '敷地について相談', secondaryCta: 'サービスを見る', servicesTitle: '井戸のライフサイクルを支える一貫した技術体制', servicesIntro: '調査、掘削、ポンプ、水質、長期運用を同じ技術体系でつなぎ、設計の抜けを減らします。', projectsTitle: 'タイ全土と周辺地域での経験', projectsIntro: '公共、工業、宿泊、農業、インフラ分野の登録実績をご覧いただけます。', trustTitle: '長期運用を見据えた技術力', trust: [{ value: '80', label: '公開プロジェクト記録' }, { value: '4', label: '一体化した専門分野' }, { value: 'タイ全土', label: '現場対応エリア' }] },
+    home: { eyebrow: 'タイの地下水エンジニアリング', title: '地下水を知り尽くす。', summary: '調査、井戸施工、揚水試験、保守、再生まで、推測ではなく現場データに基づいて地下水システムを構築します。', assurance: '帯水層を守り、安定した水を届け、投資価値を長期に維持します。', motto: '確かな仕事で大地に恩返しする', primaryCta: '敷地について相談', secondaryCta: 'サービスを見る', servicesTitle: '井戸のライフサイクルを支える一貫した技術体制', servicesIntro: '調査、掘削、ポンプ、水質、長期運用を同じ技術体系でつなぎ、設計の抜けを減らします。', projectsTitle: 'タイ全土と周辺地域での経験', projectsIntro: '公共、工業、宿泊、農業、インフラ分野の登録実績をご覧いただけます。', trustTitle: '長期運用を見据えた技術力', trust: [{ value: '79', label: '公開プロジェクト記録' }, { value: '4', label: '一体化した専門分野' }, { value: 'タイ全土', label: '現場対応エリア' }] },
     about: { eyebrow: '会社案内', title: 'すべての井戸を長期インフラとして考える専門家', intro: '現場経験、水文地質、掘削品質、保守管理を統合し、地下水を責任を持って開発します。', storyTitle: '私たちの考え方', story: ['良い井戸は深さだけでは決まりません。適切な位置、確かな構造、十分な井戸開発、確認された揚水量、保守計画が必要です。', '水需要の整理から引渡し、長期モニタリングまで、技術的根拠を中心にお客様を支援します。'], principlesTitle: '仕事の原則', principles: [{ title: '掘削前に根拠を集める', description: '敷地条件と水文地質情報から調査・設計を組み立てます。' }, { title: '帯水層を守る', description: '適切な井戸構造と揚水量で予防可能な損傷を避けます。' }, { title: '結果を測定する', description: '揚水試験、水質、運転記録により井戸を管理可能な資産にします。' }, { title: '長期保守を設計する', description: '基準データと適時の保守で流量、水質、効率を守ります。' }], teamTitle: '多分野の現場チーム', teamIntro: '管理、調査、掘削、保守、顧客対応の各チームが共通の品質目標で連携します。' },
     services: { eyebrow: '地下水サービス', title: '初期調査から長期運用までの技術支援', intro: '個別サービスにも、地下水業務全体の統括にも対応します。', highlightsTitle: 'サービス内容', processTitle: '標準的な進め方', items: {
       survey: { title: '地下水・鉱泉・温泉・EIA調査', short: '敷地データと専門調査で掘削の不確実性を減らします。', intro: '水需要、敷地制約、地質資料、適切な物理探査手法を検討し、調査と掘削候補の優先順位を提案します。', highlights: ['資料調査と現地踏査', '水文地質・物理探査', '掘削候補地点の評価', '事業・EIA調整用の報告'], process: ['水需要と判断基準を整理', '既存資料と敷地リスクを確認', '現地調査を実施', '掘削候補と次の手順を提示'] },
@@ -929,7 +929,7 @@ export const localizedContent: Record<LocalizedLocale, LocalizedContent> = {
       maintenance: { title: '井戸・ポンプの保守', short: '性能を回復し、井戸とポンプ設備の寿命を延ばします。', intro: '性能低下の原因を診断してから、洗浄、再生、ポンプ整備、運転変更を選択します。', highlights: ['エアリフトによる井戸洗浄', 'ポンプ引上げ・点検・修理', '設置深度と制御の調整', '流量・水位・電力傾向の確認'], process: ['基準値と症状を収集', '井戸と揚水設備を点検', '効果的で損傷の少ない処置を選択', '再試験と監視基準の設定'] },
       consult: { title: '地下水システムの診断・改善', short: '流量低下、砂、塩分、腐食、不安定運転の原因を特定します。', intro: '帯水層、井戸、ポンプ、水質、運転の問題を切り分け、本当の原因に投資を集中させます。', highlights: ['流量低下・水位低下の調査', '砂・濁り・井戸健全性の診断', '塩分・酸性・汚染経路の確認', '復旧計画と事業主側技術支援'], process: ['元資料と故障履歴を確認', '水理・水質の現状を測定', '可能性の高い原因を検証', '修理・更新・運転変更を優先順位化'] },
     } },
-    projects: { eyebrow: 'プロジェクト登録', title: '多様な分野での地下水実績', intro: '会社の旧サイトから復元した80件の公開プロジェクト記録をご覧いただけます。', all: 'すべて', showing: '表示中', loadMore: 'さらに表示', details: '詳細を見る', typeLabel: '案件種別', categoryLabel: '分野', location: 'プロジェクト所在地', yearLabel: '実施年', workScopeLabel: '業務範囲', businessTypeLabel: '事業分野', projectStoryTitle: '旧サイトの案件記録', recoveredRecordNote: '会社の旧サイトで公開されていた案件登録とコンテンツをもとに復元し、原文のタイ語を保持しています。', registryNoteTitle: 'この記録について', registryNote: '過去に会社が公開した資料のみを掲載し、契約および顧客の機密情報は引き続き非公開です。', mapCta: 'Googleマップで開く', enquiryCta: '類似実績を問い合わせる', categories: { government: '行政', factory: '工場', resort: 'ホテル・リゾート', agriculture: '農業・畜産', dewatering: 'ディウォータリング', other: 'その他' }, types: { agriculture: '農業地下水プロジェクト', factory: '工業地下水プロジェクト', government: '行政地下水プロジェクト', 'island, resort': '島嶼リゾート地下水プロジェクト', infrastructure: 'ディウォータリング・インフラプロジェクト', other: '地下水プロジェクト', resort: 'ホテル・リゾート地下水プロジェクト', train: 'インフラ地下水プロジェクト' } },
+    projects: { eyebrow: 'プロジェクト登録', title: '多様な分野での地下水実績', intro: '会社の旧サイトから復元した79件の公開プロジェクト記録をご覧いただけます。', all: 'すべて', showing: '表示中', loadMore: 'さらに表示', details: '詳細を見る', typeLabel: '案件種別', categoryLabel: '分野', location: 'プロジェクト所在地', yearLabel: '実施年', workScopeLabel: '業務範囲', businessTypeLabel: '事業分野', projectStoryTitle: '旧サイトの案件記録', recoveredRecordNote: '会社の旧サイトで公開されていた案件登録とコンテンツをもとに復元し、原文のタイ語を保持しています。', registryNoteTitle: 'この記録について', registryNote: '過去に会社が公開した資料のみを掲載し、契約および顧客の機密情報は引き続き非公開です。', mapCta: 'Googleマップで開く', enquiryCta: '類似実績を問い合わせる', categories: { government: '行政', factory: '工場', resort: 'ホテル・リゾート', agriculture: '農業・畜産', dewatering: 'ディウォータリング', other: 'その他' }, types: { agriculture: '農業地下水プロジェクト', factory: '工業地下水プロジェクト', government: '行政地下水プロジェクト', 'island, resort': '島嶼リゾート地下水プロジェクト', infrastructure: 'ディウォータリング・インフラプロジェクト', other: '地下水プロジェクト', resort: 'ホテル・リゾート地下水プロジェクト', train: 'インフラ地下水プロジェクト' } },
     governance: { eyebrow: '企業統治', title: '良い井戸は責任ある判断から始まる', intro: '技術品質、帯水層保全、現場安全、誠実なコミュニケーションを一体化しています。', pillars: [{ title: '技術的誠実さ', description: '入手可能な根拠、明示した仮定、測定可能な検収基準に基づいて提案します。' }, { title: '環境への責任', description: '持続可能な揚水量と地下水層を守る施工を目指します。' }, { title: '安全と現場規律', description: '計画、現場管理、適切な機材で安全な施工・保守を支えます。' }, { title: '顧客情報の尊重', description: '機密情報は業務遂行にのみ使用し、適切な許可なく公開しません。' }], commitmentTitle: '地下水保全への約束', commitment: '「高品質な井戸を掘り、大地に恩返しする」とは、帯水層を無限資源ではなく共有の自然インフラとして扱うことです。' },
     learning: { eyebrow: '地下水学習センター', title: '明確な情報から、より良い地下水判断へ', intro: 'タイで地下水システムを計画する事業主、技術者、運転担当者向けの実践情報です。', audienceTitle: '対象', audience: ['工場、ホテル、リゾート、不動産事業', '技術、保守、調達チーム', 'コンサルタントと給水設計者', 'タイで地下水事業を始める方'], topicsTitle: '学習テーマを選ぶ', topicsIntro: '計算ツール、技術基礎、故障事例、タイの法規情報を確認できます。', readMore: '記事を読む', articles: japaneseArticles, ctaTitle: '敷地への適用について相談しますか？', ctaText: '所在地、水需要、事業上の制約をお知らせください。' },
     calculator: { kicker: '概算', title: '必要揚水量を概算する', intro: '1日の総需要、ポンプ運転時間、予備率を入力してください。', dailyDemand: '1日の水需要', dailyUnit: 'm³/日', pumpHours: '計画運転時間', hoursUnit: '時間/日', reserve: '予備・成長率', percentUnit: '％', result: '必要システム流量の概算', flowUnit: 'm³/時', designDemand: '設計需要量', minimumBuffer: '最低予備貯水量の概算', volumeUnit: 'm³', disclaimer: 'この結果は井戸揚水量を保証するものではありません。揚水試験と専門設計により運転流量を確認してください。' },

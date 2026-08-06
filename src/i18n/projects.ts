@@ -25,7 +25,11 @@ export function getProjectCategoryKey(
   if (projectType === 'factory') return 'factory'
   if (projectType === 'resort' || projectType === 'island, resort') return 'resort'
   if (projectType === 'agriculture') return 'agriculture'
-  if (projectType === 'train' || projectType === 'infrastructure') {
+  if (
+    projectType === 'train' ||
+    projectType === 'infrastructure' ||
+    projectType === 'dewatering'
+  ) {
     return 'dewatering'
   }
   return 'other'
@@ -39,6 +43,10 @@ export function getLocalizedProjectPresentation(
   return {
     categoryKey,
     categoryLabel: copy.categories[categoryKey],
-    typeLabel: copy.types[project.projectType] ?? copy.types.other,
+    typeLabel:
+      copy.types[project.projectType] ??
+      (categoryKey === 'dewatering'
+        ? copy.types.infrastructure
+        : copy.types.other),
   }
 }

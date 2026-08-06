@@ -5,12 +5,12 @@ import { getLocalizedContent } from '@/i18n/localized-content'
 const content = getLocalizedContent('th')
 
 export const metadata: Metadata = {
-  title: 'ซ่อมบำรุงบ่อน้ำบาดาลและเครื่องสูบน้ำ | Siam Groundwater',
+  title: 'ซ่อมบำรุงรักษาบ่อน้ำบาดาล และเครื่องสูบน้ำ | Siam Groundwater',
   description:
     'เป่าล้างพัฒนาบ่อ ถอนตรวจและซ่อมเครื่องสูบ ปรับอัตราสูบ และวางแผนบำรุงรักษา เพื่อฟื้นประสิทธิภาพ ลดพลังงาน และยืดอายุระบบน้ำบาดาล',
   alternates: { canonical: '/services/maintenance' },
   openGraph: {
-    title: 'ซ่อมบำรุงบ่อน้ำบาดาลและเครื่องสูบน้ำ',
+    title: 'ซ่อมบำรุงรักษาบ่อน้ำบาดาล และเครื่องสูบน้ำ',
     description:
       'ตรวจหาสาเหตุของน้ำลด ตะกอน สนิม ตะกรัน และเครื่องสูบทำงานผิดปกติ ก่อนเลือกวิธีซ่อมที่เหมาะกับสภาพจริง',
     url: '/services/maintenance',

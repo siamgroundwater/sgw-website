@@ -1,3 +1,8 @@
+.services-page {
+  margin-top: 4rem;
+  padding-inline: 1.25rem;
+}
+
 .home-services {
   display: grid;
   width: 100%;
@@ -112,6 +117,10 @@
 }
 
 @media (width <= 680px) {
+  .services-page {
+    padding-inline: 1rem;
+  }
+
   .home-services {
     gap: 1rem;
     padding: 2rem 0;

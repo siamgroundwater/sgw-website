@@ -459,16 +459,6 @@ margin: 1rem 0 0;
   height: 1.25rem;
 }
 
-.service-detail-card-number {
-  position: absolute;
-  top: 0.95rem;
-  right: 1rem;
-  color: rgba(var(--service-accent-rgb), 0.34);
-  font-size: var(--fs-2xl);
-  font-weight: 800;
-  line-height: 1;
-}
-
 .service-detail-scope-grid h3,
 .service-detail-details-grid h3,
 .service-detail-process-copy ol h3 {

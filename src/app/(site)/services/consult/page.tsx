@@ -5,12 +5,12 @@ import { getLocalizedContent } from '@/i18n/localized-content'
 const content = getLocalizedContent('th')
 
 export const metadata: Metadata = {
-  title: 'วิเคราะห์และแก้ไขปัญหาระบบน้ำบาดาล | Siam Groundwater',
+  title: 'แก้ไขโครงการที่เจาะน้ำบาดาลขึ้นมาใช้แล้วมีปัญหาและเสียหาย | Siam Groundwater',
   description:
     'วิเคราะห์และฟื้นฟูบ่อที่มีทราย น้ำขุ่น บ่ออุดตัน น้ำเค็ม น้ำปนเปื้อน เครื่องสูบเสียบ่อย หรือบ่อขนาดใหญ่ 8–12 นิ้วชำรุด เพื่อเลือกวิธีซ่อมที่คุ้มค่าก่อนตัดสินใจเจาะใหม่',
   alternates: { canonical: '/services/consult' },
   openGraph: {
-    title: 'วิเคราะห์และแก้ไขปัญหาระบบน้ำบาดาล',
+    title: 'แก้ไขโครงการที่เจาะน้ำบาดาลขึ้นมาใช้แล้วมีปัญหาและเสียหาย',
     description:
       'แยกสาเหตุจากชั้นน้ำ โครงสร้างบ่อ เครื่องสูบ คุณภาพน้ำ และรูปแบบการใช้งาน เพื่อให้ลงทุนแก้ไขได้ตรงจุด',
     url: '/services/consult',

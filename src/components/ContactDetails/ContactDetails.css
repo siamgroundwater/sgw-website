@@ -11,13 +11,13 @@
 }
 
 .contact-methods {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.8rem;
 }
 
 .contact-card--social {
-  grid-column: span 2;
   border-color: rgba(45, 212, 191, 0.24);
   background: linear-gradient(145deg, rgba(8, 70, 72, 0.86), rgba(6, 36, 49, 0.82));
 }
@@ -25,6 +25,7 @@
 .contact-card {
   position: relative;
   display: grid;
+  width: fit-content;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   min-width: 0;
@@ -97,13 +98,6 @@
   font-size: var(--fs-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.contact-card-external {
-  flex: 0 0 auto;
-  width: 0.85rem;
-  margin-left: auto;
-  color: rgba(103, 232, 249, 0.5);
 }
 
 .contact-copy-button,
@@ -265,19 +259,42 @@
   line-height: 1.5;
 }
 
-@media (width <= 900px) {
-  .contact-methods {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .contact-card--social {
-    grid-column: span 1;
-  }
-}
-
 @media (width <= 640px) {
   .contact-methods {
+    display: grid;
+    width: 100%;
     grid-template-columns: minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .contact-card {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .contact-card-link {
+    min-height: auto;
+    gap: 0.75rem;
+    padding: 0.75rem 0.4rem 0.75rem 0.75rem;
+    text-align: left;
+  }
+
+  .contact-card-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .contact-card-title,
+  .contact-card-detail {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-copy-button {
+    align-self: center;
+    margin: 0.6rem 0.6rem 0.6rem 0;
   }
 
   .contact-map-heading {
@@ -299,16 +316,6 @@
 
   .contact-map-address button {
     grid-column: 2;
-  }
-}
-
-@media (width <= 380px) {
-  .contact-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .contact-copy-button {
-    margin: 0 0.8rem 0.8rem;
   }
 }
 

@@ -1,5 +1,6 @@
 export const SITE_LOCALES = ['th', 'en', 'zh', 'ja'] as const
 export const LOCALIZED_LOCALES = SITE_LOCALES
+export const PREFIXED_LOCALES = ['en', 'zh', 'ja'] as const
 
 export type SiteLocale = (typeof SITE_LOCALES)[number]
 export type LocalizedLocale = (typeof LOCALIZED_LOCALES)[number]
@@ -66,6 +67,7 @@ export function stripLocaleFromPathname(pathname: string) {
 
 export function localePath(pathname: string, locale: SiteLocale) {
   const basePath = stripLocaleFromPathname(pathname)
+  if (locale === 'th') return basePath
   return basePath === '/' ? `/${locale}` : `/${locale}${basePath}`
 }
 
@@ -133,9 +135,9 @@ export const navigationCopy: Record<SiteLocale, NavigationCopy> = {
       '75 ซอยรามคำแหง 60 (สวนสน) แขวงหัวหมาก เขตบางกะปิ กรุงเทพฯ 10240',
     serviceItems: [
       'สำรวจศึกษาน้ำบาดาล น้ำแร่ น้ำพุร้อน EIA',
-      'เจาะบ่อน้ำบาดาล น้ำแร่ น้ำพุร้อน และบ่อสูบลดระดับน้ำ',
-      'ซ่อมบำรุงบ่อและเครื่องสูบน้ำ',
-      'วิเคราะห์และแก้ไขปัญหาระบบน้ำบาดาล',
+      'เจาะบ่อน้ำบาดาล บ่อน้ำแร่ บ่อน้ำพุร้อน บ่อสูบลดระดับน้ำ',
+      'ซ่อมบำรุงรักษาบ่อน้ำบาดาล และเครื่องสูบน้ำ',
+      'แก้ไขโครงการที่เจาะน้ำบาดาลขึ้นมาใช้แล้วมีปัญหาและเสียหาย',
     ],
     learningItems: [
       'เครื่องมือคำนวณ',

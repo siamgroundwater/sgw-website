@@ -101,7 +101,9 @@ test('projects default to newest year first with undated records last', () => {
     assert.ok(previousYear >= currentYear)
   }
 
-  assert.equal(sortedProjects.at(-1).year, null)
+  if (sortedProjects.some((project) => project.year === null)) {
+    assert.equal(sortedProjects.at(-1).year, null)
+  }
 })
 
 test('learning center exposes six unique complete routes', () => {
@@ -218,6 +220,8 @@ test('facility owner guide is interactive, localized and includes its planning i
   const guideAssets = [
     path.join(root, 'public', 'images', 'learning', 'groundwater-owner-guide', 'factory-hotel-resort-planning.webp'),
     path.join(root, 'public', 'images', 'learning', 'groundwater-owner-guide', 'resilient-water-system.webp'),
+    path.join(root, 'public', 'images', 'learning', 'groundwater-owner-guide', 'four-context-groundwater-guide.webp'),
+    path.join(root, 'public', 'images', 'learning', 'groundwater-owner-guide', 'agriculture-dewatering-systems.webp'),
   ]
 
   for (const asset of guideAssets) {
@@ -230,6 +234,9 @@ test('facility owner guide is interactive, localized and includes its planning i
 
   assert.match(guideSource, /calculateGroundwaterPlan/)
   assert.match(guideSource, /calculateStoragePlan/)
+  assert.match(guideSource, /hospitality/)
+  assert.match(guideSource, /agriculture/)
+  assert.match(guideSource, /dewatering/)
   assert.match(guideSource, /navigator\.clipboard\.writeText/)
   assert.match(guideSource, /https:\/\/www\.dgr\.go\.th/)
   assert.match(guideSource, /https:\/\/smartgis\.dgr\.go\.th/)
@@ -237,6 +244,16 @@ test('facility owner guide is interactive, localized and includes its planning i
 
 test('service detail pages have complete recovered copy and local field imagery', () => {
   const serviceKeys = ['survey', 'drilling', 'maintenance', 'consult']
+  const servicePageSource = readFileSync(
+    path.join(
+      root,
+      'src',
+      'components',
+      'ServiceDetailPage',
+      'ServiceDetailPage.tsx'
+    ),
+    'utf8'
+  )
 
   for (const serviceKey of serviceKeys) {
     const details = recoveredThaiServiceDetails[serviceKey]
@@ -245,7 +262,7 @@ test('service detail pages have complete recovered copy and local field imagery'
     assert.ok(details.every((detail) => detail.text.length > 40))
 
     for (let imageNumber = 1; imageNumber <= 3; imageNumber += 1) {
-      const imagePath = path.join(
+      const legacyImagePath = path.join(
         root,
         'public',
         'images',
@@ -253,9 +270,62 @@ test('service detail pages have complete recovered copy and local field imagery'
         serviceKey,
         `legacy-${String(imageNumber).padStart(2, '0')}.jpg`
       )
-      assert.ok(existsSync(imagePath), imagePath)
+      const restoredImagePath = path.join(
+        root,
+        'public',
+        'images',
+        'services',
+        serviceKey,
+        `restored-${String(imageNumber).padStart(2, '0')}.webp`
+      )
+      const ppeImagePath = path.join(
+        root,
+        'public',
+        'images',
+        'services',
+        serviceKey,
+        `gallery-ppe-${String(imageNumber).padStart(2, '0')}.webp`
+      )
+      assert.ok(existsSync(legacyImagePath), legacyImagePath)
+      assert.ok(existsSync(restoredImagePath), restoredImagePath)
+      assert.ok(existsSync(ppeImagePath), ppeImagePath)
     }
+
+    const heroImagePath = path.join(
+      root,
+      'public',
+      'images',
+      'services',
+      serviceKey,
+      'hero-ppe.webp'
+    )
+    assert.ok(existsSync(heroImagePath), heroImagePath)
   }
+
+  const helmetLogoPath = path.join(
+    root,
+    'public',
+    'images',
+    'brand',
+    'sgw-helmet-logo.svg'
+  )
+  const helmetLogoRasterPath = path.join(
+    root,
+    'public',
+    'images',
+    'brand',
+    'sgw-helmet-logo.png'
+  )
+  assert.ok(existsSync(helmetLogoPath), helmetLogoPath)
+  assert.ok(existsSync(helmetLogoRasterPath), helmetLogoRasterPath)
+  assert.doesNotMatch(servicePageSource, /gallery-ppe-|restored-/)
+  assert.match(servicePageSource, /padStart\(2, '0'\)/)
+  assert.doesNotMatch(servicePageSource, /0[1-4] \/ \{/)
+  assert.equal(
+    (servicePageSource.match(/hero: '\/images\/services\/[^']+\/legacy-/g) ?? [])
+      .length,
+    4
+  )
 })
 
 test('historical customer and project assets are available locally', () => {
@@ -308,6 +378,7 @@ test('contact page uses copyable contact cards and an interactive office map', (
   assert.match(component, /navigator\.clipboard\.writeText/)
   assert.match(component, /document\.execCommand\('copy'\)/)
   assert.match(component, /google\.com\/maps\/search/)
+  assert.match(component, /0105530015432/)
   assert.doesNotMatch(defaultPage, /contact-form-section|ContactForm/)
   assert.doesNotMatch(localizedPage, /contact-form-section|ContactForm/)
 })

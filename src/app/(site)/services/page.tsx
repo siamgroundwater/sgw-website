@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <main style={{marginTop: '4rem'}}>
+    <main className="services-page">
       {/* Reuse the Home services section */}
       <Services />
     </main>

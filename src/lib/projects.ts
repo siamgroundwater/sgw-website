@@ -69,6 +69,10 @@ const typePresentation: Record<
     label: 'โครงการสูบลดระดับน้ำและโครงสร้างพื้นฐาน',
     category: 'Dewatering',
   },
+  dewatering: {
+    label: 'โครงการสูบลดระดับน้ำและโครงสร้างพื้นฐาน',
+    category: 'Dewatering',
+  },
   other: {
     label: 'โครงการน้ำบาดาล',
     category: 'อื่นๆ',

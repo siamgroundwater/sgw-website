@@ -156,6 +156,10 @@ margin-top: 0.75rem;
   filter: saturate(0.78) contrast(1.04);
 }
 
+.home-map-wrapper .leaflet-bottom {
+  display: none !important;
+}
+
 .home-map-loading,
 .home-map-empty {
   position: absolute;

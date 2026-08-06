@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import {
   ArrowRight,
-  Building2,
+  ArrowDownToLine,
   Check,
   CheckCircle2,
   ClipboardCheck,
@@ -22,6 +22,7 @@ import {
   MapPinned,
   ShieldCheck,
   Sparkles,
+  Sprout,
   Wrench,
 } from 'lucide-react'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
@@ -31,7 +32,7 @@ import {
 } from '@/lib/groundwater-calculator'
 import './GroundwaterOwnerGuide.css'
 
-type Facility = 'factory' | 'hotel' | 'resort'
+type Facility = 'factory' | 'hospitality' | 'agriculture' | 'dewatering'
 type UseKey = 'core' | 'laundry' | 'kitchen' | 'cooling' | 'landscape' | 'other'
 
 type GuideCopy = {
@@ -53,7 +54,93 @@ type GuideCopy = {
   next: { title: string; text: string; contact: string; tools: string; law: string }
 }
 
-const facilityIcons = { factory: Factory, hotel: Hotel, resort: Building2 }
+const facilityIcons = {
+  factory: Factory,
+  hospitality: Hotel,
+  agriculture: Sprout,
+  dewatering: ArrowDownToLine,
+}
+
+const quickNavByLocale: Record<LocalizedLocale, Array<{ label: string; href: string }>> = {
+  th: [
+    { label: 'เลือกประเภทกิจการ', href: '#facility-profile' },
+    { label: 'คำนวณสมดุลน้ำ', href: '#water-balance' },
+    { label: 'เช็กลิสต์โครงการ', href: '#project-roadmap' },
+    { label: 'การออกแบบระบบ', href: '#system-design' },
+    { label: 'การรับมอบและดูแล', href: '#handover-operation' },
+  ],
+  en: [
+    { label: 'Choose your context', href: '#facility-profile' },
+    { label: 'Build a water balance', href: '#water-balance' },
+    { label: 'Project checklist', href: '#project-roadmap' },
+    { label: 'System design', href: '#system-design' },
+    { label: 'Handover and operate', href: '#handover-operation' },
+  ],
+  zh: [
+    { label: '选择应用场景', href: '#facility-profile' },
+    { label: '建立用水平衡', href: '#water-balance' },
+    { label: '项目检查表', href: '#project-roadmap' },
+    { label: '系统设计', href: '#system-design' },
+    { label: '验收与运行', href: '#handover-operation' },
+  ],
+  ja: [
+    { label: '用途を選ぶ', href: '#facility-profile' },
+    { label: '水収支を作る', href: '#water-balance' },
+    { label: 'プロジェクト確認', href: '#project-roadmap' },
+    { label: 'システム設計', href: '#system-design' },
+    { label: '検収と運用', href: '#handover-operation' },
+  ],
+}
+
+const useLabelsByLocale: Record<LocalizedLocale, Record<Facility, Record<UseKey, string>>> = {
+  th: {
+    factory: { core: 'กระบวนการผลิตหลัก', laundry: 'ล้างวัตถุดิบและอุปกรณ์', kitchen: 'น้ำใช้ของบุคลากรและโรงอาหาร', cooling: 'หล่อเย็น / HVAC / boiler makeup', landscape: 'ภูมิทัศน์และงานภายนอก', other: 'อื่น ๆ และการสูญเสียที่ทราบ' },
+    hospitality: { core: 'ห้องพักและพื้นที่บริการ', laundry: 'ซักรีดและทำความสะอาด', kitchen: 'ครัว อาหาร และเครื่องดื่ม', cooling: 'HVAC และระบบอาคาร', landscape: 'สระ ภูมิทัศน์ และกิจกรรมกลางแจ้ง', other: 'อื่น ๆ และการสูญเสียที่ทราบ' },
+    agriculture: { core: 'ให้น้ำพืชหลัก / สวน', laundry: 'ล้างผลผลิตและอุปกรณ์', kitchen: 'ปศุสัตว์และน้ำใช้ของแรงงาน', cooling: 'พ่นหมอก / ลดอุณหภูมิ', landscape: 'แปลงเพาะ โรงเรือน และบ่อพัก', other: 'อื่น ๆ และการสูญเสียที่ทราบ' },
+    dewatering: { core: 'น้ำซึมเข้าสู่หลุมขุด', laundry: 'น้ำฝนและน้ำผิวดิน', kitchen: 'น้ำซึมตามแนวกำแพงและฐาน', cooling: 'กำลังสำรองและเหตุฉุกเฉิน', landscape: 'นำน้ำกลับใช้ / ระบายออก', other: 'ปัจจัยเผื่อและปริมาณที่ยังไม่ทราบ' },
+  },
+  en: {
+    factory: { core: 'Core production process', laundry: 'Raw-material and equipment washing', kitchen: 'Staff and canteen water', cooling: 'Cooling / HVAC / boiler makeup', landscape: 'Landscape and external works', other: 'Other and known losses' },
+    hospitality: { core: 'Guest rooms and service areas', laundry: 'Laundry and housekeeping', kitchen: 'Kitchen, food and beverage', cooling: 'HVAC and building systems', landscape: 'Pools, landscape and outdoor uses', other: 'Other and known losses' },
+    agriculture: { core: 'Primary crop / orchard irrigation', laundry: 'Produce and equipment washing', kitchen: 'Livestock and worker facilities', cooling: 'Misting / temperature control', landscape: 'Nursery, greenhouse and ponds', other: 'Other and known losses' },
+    dewatering: { core: 'Base excavation inflow', laundry: 'Rainfall and surface runoff', kitchen: 'Wall and formation seepage', cooling: 'Standby and contingency duty', landscape: 'Reuse / controlled discharge', other: 'Uncertainty and unmeasured inflow' },
+  },
+  zh: {
+    factory: { core: '核心生产工艺', laundry: '原料与设备清洗', kitchen: '员工与食堂用水', cooling: '冷却 / 空调 / 锅炉补水', landscape: '景观与室外用水', other: '其他及已知损失' },
+    hospitality: { core: '客房与服务区域', laundry: '洗衣与客房清洁', kitchen: '厨房与餐饮', cooling: '空调与楼宇系统', landscape: '泳池、景观与户外用水', other: '其他及已知损失' },
+    agriculture: { core: '主要作物 / 果园灌溉', laundry: '农产品与设备清洗', kitchen: '畜牧与人员生活用水', cooling: '喷雾 / 降温', landscape: '育苗、温室与蓄水池', other: '其他及已知损失' },
+    dewatering: { core: '基坑基础涌水', laundry: '降雨与地表径流', kitchen: '围护墙与地层渗水', cooling: '备用与应急能力', landscape: '回用 / 受控排放', other: '不确定量与未测涌水' },
+  },
+  ja: {
+    factory: { core: '主要生産工程', laundry: '原料・設備洗浄', kitchen: '従業員・食堂用水', cooling: '冷却 / 空調 / ボイラー補給', landscape: '植栽・屋外用水', other: 'その他・既知の損失' },
+    hospitality: { core: '客室・サービスエリア', laundry: 'ランドリー・客室清掃', kitchen: '厨房・飲食', cooling: '空調・建物設備', landscape: 'プール・植栽・屋外用途', other: 'その他・既知の損失' },
+    agriculture: { core: '主要作物・果樹園の灌漑', laundry: '農産物・機器の洗浄', kitchen: '畜産・作業員用水', cooling: 'ミスト・温度管理', landscape: '育苗・温室・貯水池', other: 'その他・既知の損失' },
+    dewatering: { core: '掘削底への流入', laundry: '降雨・表面流出', kitchen: '山留め壁・地層からの浸透', cooling: '予備・緊急能力', landscape: '再利用・管理放流', other: '不確実量・未計測流入' },
+  },
+}
+
+const contextVisualByLocale: Record<LocalizedLocale, { alt: string; caption: string; navLabel: string }> = {
+  th: {
+    alt: 'ภาพตัดระบบน้ำบาดาลเพื่อการเกษตรและระบบสูบลดระดับน้ำรอบหลุมขุด',
+    caption: 'เกษตรกรรมต้องจับคู่ปริมาณและคุณภาพน้ำกับพืชและระบบให้น้ำ ส่วนการสูบลดระดับน้ำต้องควบคุมระดับน้ำ ผลกระทบข้างเคียง การตกตะกอน และทางระบายตลอดช่วงก่อสร้าง',
+    navLabel: 'ทางลัดในคู่มือ',
+  },
+  en: {
+    alt: 'Cutaway of an agricultural groundwater system and construction dewatering system',
+    caption: 'Agriculture matches quantity and quality to crops and irrigation. Dewatering controls water level, neighbouring impacts, settlement treatment and discharge throughout construction.',
+    navLabel: 'Guide shortcuts',
+  },
+  zh: {
+    alt: '农业地下水系统与施工降水系统剖面图',
+    caption: '农业应让水量和水质匹配作物与灌溉系统；施工降水则需在整个施工期控制水位、邻近影响、沉淀处理和排放。',
+    navLabel: '指南快捷入口',
+  },
+  ja: {
+    alt: '農業用地下水設備と工事排水設備の断面図',
+    caption: '農業では水量・水質を作物と灌漑に合わせます。工事排水では施工期間を通じ、水位、周辺影響、沈殿処理、放流を管理します。',
+    navLabel: 'ガイド内ショートカット',
+  },
+}
 
 const sourceLinks = {
   permit: 'https://www.dgr.go.th/gcl/th/newsAll/433/13900',
@@ -69,17 +156,18 @@ const copyByLocale: Record<LocalizedLocale, GuideCopy> = {
       eyebrow: 'OWNER’S PLANNING GUIDE', title: 'เปลี่ยน “อยากมีบ่อ” ให้เป็นระบบน้ำที่วางแผนได้',
       text: 'คู่มือนี้ช่วยเจ้าของกิจการรวบรวมความต้องการใช้น้ำ ตรวจจุดเสี่ยง และกำหนดหลักฐานรับมอบก่อนคุยกับนักธรณีวิทยา วิศวกร ผู้รับจ้าง และหน่วยงานอนุญาต',
       items: ['คำนวณจากข้อมูลใช้จริง ไม่เดาปริมาณน้ำจากขนาดกิจการ', 'แยกน้ำตามคุณภาพและความสำคัญของจุดใช้', 'วางแหล่งสำรอง ถัง และแผนหยุดระบบตั้งแต่ต้น', 'รับมอบด้วยค่าที่วัดได้และเอกสารตามสภาพจริง'],
-      imageAlt: 'ภาพโรงงาน โรงแรม และรีสอร์ทกับบ่อน้ำบาดาลและระบบปรับปรุงน้ำ', caption: 'กิจการต่างกัน แต่หลักคิดเหมือนกัน: เริ่มจาก water balance แล้วออกแบบบ่อ ระบบปรับปรุง ถัง และแหล่งสำรองให้ทำงานเป็นระบบเดียว',
+      imageAlt: 'ภาพระบบน้ำบาดาลสำหรับโรงงาน โรงแรมและรีสอร์ท เกษตรกรรม และงานสูบลดระดับน้ำ', caption: 'สี่บริบท หนึ่งหลักคิด: เริ่มจากข้อมูลหน้างาน แล้วออกแบบแหล่งน้ำ ระบบสูบ การปรับปรุง การสำรอง และจุดตรวจวัดให้ทำงานร่วมกัน',
     },
     choose: {
       eyebrow: 'เลือกบริบทก่อน', title: 'ความเสี่ยงหลักของแต่ละกิจการไม่เหมือนกัน', text: 'เลือกประเภทที่ใกล้เคียงที่สุดเพื่อจัดลำดับหัวข้อด้านล่าง คุณยังต้องยืนยันตัวเลขและมาตรฐานเฉพาะของสถานประกอบการจริง',
-      labels: { factory: 'โรงงาน', hotel: 'โรงแรม', resort: 'รีสอร์ท' },
-      descriptions: { factory: 'เน้นความต่อเนื่องของกระบวนการ คุณภาพเฉพาะจุด และผลกระทบต่อการผลิต', hotel: 'เน้นพีกตามจำนวนผู้เข้าพัก สุขอนามัย ซักรีด ครัว และประสบการณ์ลูกค้า', resort: 'เน้นฤดูกาล พื้นที่กระจาย ระบบภูมิทัศน์ และความพร้อมเมื่อแหล่งหลักขัดข้อง' },
+      labels: { factory: 'โรงงาน', hospitality: 'โรงแรมและรีสอร์ท', agriculture: 'เกษตรกรรม', dewatering: 'สูบลดระดับน้ำ' },
+      descriptions: { factory: 'ความต่อเนื่องของกระบวนการ คุณภาพเฉพาะจุด และผลกระทบต่อการผลิต', hospitality: 'พีกตามจำนวนผู้เข้าพัก ฤดูกาล สุขอนามัย ซักรีด ครัว และภูมิทัศน์', agriculture: 'ความต้องการน้ำตามชนิดพืช ฤดูกาล ระบบให้น้ำ คุณภาพน้ำ และต้นทุนพลังงาน', dewatering: 'ควบคุมน้ำใต้ดินรอบหลุมขุด เสถียรภาพพื้นที่ การระบาย และผลกระทบข้างเคียง' },
       priorityLabel: 'ประเด็นที่ควรยืนยันก่อน',
       priorities: {
         factory: ['แยก process, cooling, boiler และ domestic water', 'กำหนดคุณภาพรับเข้าเครื่องจักรและผลกระทบเมื่อหยุดน้ำ', 'ตรวจข้อกำหนดโรงงาน สิ่งแวดล้อม และการระบายน้ำร่วมด้วย'],
-        hotel: ['แยกห้องพัก ครัว ซักรีด สระ และระบบปรับอากาศ', 'ออกแบบถังให้รับมือช่วง check-in และงานจัดเลี้ยง', 'กำหนดจุดตรวจคุณภาพน้ำดื่มและน้ำใช้ให้ชัด'],
-        resort: ['แยกอาคารพัก สระ ภูมิทัศน์ และพื้นที่ห่างไกล', 'ตรวจฤดูท่องเที่ยวเทียบฤดูแล้งและช่วงไฟฟ้าดับ', 'พิจารณาการนำน้ำที่เหมาะสมกลับใช้กับภูมิทัศน์'],
+        hospitality: ['แยกห้องพัก ครัว ซักรีด สระ HVAC และภูมิทัศน์', 'ตรวจพีกของอัตราเข้าพัก งานจัดเลี้ยง ฤดูแล้ง และช่วงไฟฟ้าดับ', 'กำหนดจุดตรวจคุณภาพน้ำดื่ม น้ำใช้ และน้ำสำหรับภูมิทัศน์ให้ชัด'],
+        agriculture: ['คำนวณจากพื้นที่ ชนิดพืช วิธีให้น้ำ และช่วงพีกจริง', 'ตรวจคุณภาพน้ำต่อดิน พืช ระบบน้ำหยด หัวพ่น และการอุดตัน', 'วางบ่อพัก การแบ่งโซน และเวลาเดินปั๊มให้สอดคล้องกับพลังงานและใบอนุญาต'],
+        dewatering: ['มีข้อมูลชั้นดิน ระดับน้ำใต้ดิน และผลทดสอบก่อนกำหนดจำนวนปั๊ม', 'ออกแบบ duty/standby จุดวัดระดับน้ำ การตกตะกอน และทางระบายที่อนุญาต', 'ติดตามการทรุดตัว น้ำขุ่น ผลกระทบต่อบ่อและอาคารข้างเคียง พร้อมแผนฉุกเฉิน'],
       },
     },
     calculator: {
@@ -149,8 +237,8 @@ const copyByLocale: Record<LocalizedLocale, GuideCopy> = {
 
 copyByLocale.en = {
   ...copyByLocale.th,
-  overview: { eyebrow: 'OWNER’S PLANNING GUIDE', title: 'Turn “we need a well” into a water system that can be planned', text: 'Build an evidence-based brief before speaking with hydrogeologists, engineers, contractors and permit authorities.', items: ['Base demand on measured use, not facility size alone', 'Separate end uses by quality and criticality', 'Plan storage, backup and shutdowns from the start', 'Accept measurable performance and as-built records'], imageAlt: 'Factory, hotel and resort served by groundwater wells and treatment systems', caption: 'Different facilities, one discipline: begin with the water balance and design the well, treatment, storage and backup as one system.' },
-  choose: { eyebrow: 'CHOOSE THE CONTEXT', title: 'Each facility has a different dominant risk', text: 'Choose the closest profile to prioritize the guide. Confirm all figures and sector-specific requirements for the actual site.', labels: { factory: 'Factory', hotel: 'Hotel', resort: 'Resort' }, descriptions: { factory: 'Process continuity, use-specific quality and production impact.', hotel: 'Occupancy peaks, hygiene, laundry, kitchens and guest experience.', resort: 'Seasonality, dispersed loads, landscape demand and source resilience.' }, priorityLabel: 'Confirm these early', priorities: { factory: ['Separate process, cooling, boiler and domestic water', 'Define machine inlet quality and the cost of interruption', 'Check factory, environmental and discharge obligations too'], hotel: ['Separate rooms, kitchen, laundry, pool and HVAC loads', 'Size buffers for occupancy and event peaks', 'Define drinking and domestic sampling points'], resort: ['Compare high season with the dry season', 'Map remote buildings and power-outage exposure', 'Assess fit-for-purpose reuse for landscaping'] } },
+  overview: { eyebrow: 'OWNER’S PLANNING GUIDE', title: 'Turn “we need water” into an evidence-based system plan', text: 'Build an evidence-based brief before speaking with hydrogeologists, engineers, contractors and permit authorities.', items: ['Base demand on measured use, not facility size alone', 'Separate end uses by quality and criticality', 'Plan storage, backup and shutdowns from the start', 'Accept measurable performance and as-built records'], imageAlt: 'Groundwater systems for a factory, hotel and resort, agriculture and construction dewatering', caption: 'Four contexts, one discipline: start with site evidence and design the source, pumping, treatment, storage and monitoring as one system.' },
+  choose: { eyebrow: 'CHOOSE THE CONTEXT', title: 'Each operation has a different dominant risk', text: 'Choose the closest profile to prioritize the guide and relabel the worksheet. Confirm all figures and sector-specific requirements for the actual site.', labels: { factory: 'Factory', hospitality: 'Hotel and resort', agriculture: 'Agriculture', dewatering: 'Dewatering' }, descriptions: { factory: 'Process continuity, use-specific quality and production impact.', hospitality: 'Occupancy peaks, seasonality, hygiene, laundry, kitchens and landscapes.', agriculture: 'Crop demand, seasons, irrigation method, water quality and energy cost.', dewatering: 'Groundwater control around an excavation, stability, discharge and neighbouring impacts.' }, priorityLabel: 'Confirm these early', priorities: { factory: ['Separate process, cooling, boiler and domestic water', 'Define machine inlet quality and the cost of interruption', 'Check factory, environmental and discharge obligations too'], hospitality: ['Separate rooms, kitchen, laundry, pools, HVAC and landscape loads', 'Check occupancy, events, dry-season demand and power-outage exposure', 'Define sampling points for drinking, domestic and landscape water'], agriculture: ['Calculate from crop, area, irrigation method and real peak period', 'Check effects of water quality on soil, crops, emitters and clogging', 'Coordinate storage, zones and pump hours with power and permit limits'], dewatering: ['Use ground profile, groundwater levels and testing before sizing pumps', 'Provide duty/standby capacity, level monitoring, settlement and an approved outlet', 'Monitor settlement, turbidity and impacts on nearby wells and structures with an emergency plan'] } },
   calculator: { ...copyByLocale.th.calculator, eyebrow: 'WATER BALANCE WORKSHEET', title: 'Build the design question from real consumption', text: 'Enter average daily use from meters, bills, production records or traceable estimates. Results are preliminary planning values—not a guarantee of well yield.', useTitle: 'Demand by end use', assumptionsTitle: 'Design assumptions', uses: { core: 'Core process / guest rooms', laundry: 'Laundry and cleaning', kitchen: 'Kitchen, food and beverage', cooling: 'Cooling / HVAC / boiler makeup', landscape: 'Landscape, pools and outdoor use', other: 'Other and known losses' }, unit: 'm³/day', targetShare: 'Target groundwater share', pumpHours: 'Planned pumping hours/day', reserve: 'Growth/uncertainty allowance', backupHours: 'Backup duration when source stops', usableStorage: 'Usable fraction of tank', resultsTitle: 'Preliminary design frame', currentDemand: 'Current demand', designDemand: 'Demand with allowance', groundwaterTarget: 'Groundwater target', preliminaryFlow: 'Average required pumping rate', usableTank: 'Required usable storage', nominalTank: 'Approximate nominal tank', warning: 'Confirm yield by pumping test, aquifer sustainability and permit conditions before selecting a pump or guaranteeing output.', copyBrief: 'Copy project brief', copied: 'Copied', briefTitle: 'Groundwater project starting brief', noDemand: 'Enter at least one end-use demand to begin' },
   roadmap: { eyebrow: 'PROJECT GATES', title: 'Advance by evidence, not assumptions', text: 'Tick an item only when the team holds the real input or deliverable. Progress shows missing evidence; it is not an approval.', done: 'readiness', steps: [
     { title: 'Define demand and service level', detail: 'Confirm water balance, peaks, quality by use, tolerable outage and backup source.', output: 'Design basis and load profile' },
@@ -187,8 +275,8 @@ copyByLocale.en = {
 
 copyByLocale.zh = {
   ...copyByLocale.en,
-  overview: { ...copyByLocale.en.overview, eyebrow: '业主规划指南', title: '把“需要一口井”转化为可验证的供水系统', text: '在与水文地质、工程、承包和许可团队沟通前，先形成有依据的项目任务书。', items: ['以实际用量为依据，而非只看项目规模', '按水质要求和重要性区分用途', '从一开始规划储水、备用水源和停机', '以可测性能和竣工资料进行验收'], caption: '设施不同，方法相同：先做用水平衡，再把井、处理、储水和备用系统作为整体设计。' },
-  choose: { ...copyByLocale.en.choose, eyebrow: '先选场景', title: '不同设施的主导风险不同', text: '选择最接近的类型，以调整阅读重点；实际数值和行业要求仍需按现场确认。', labels: { factory: '工厂', hotel: '酒店', resort: '度假村' }, descriptions: { factory: '关注工艺连续性、分用途水质和停水损失。', hotel: '关注入住高峰、卫生、洗衣、厨房和宾客体验。', resort: '关注季节性、分散负荷、景观用水和备用能力。' }, priorityLabel: '应优先确认', priorities: { factory: ['区分工艺、冷却、锅炉和生活用水', '确定设备进水水质与停水影响', '同时核查工厂、环保和排放要求'], hotel: ['区分客房、厨房、洗衣、泳池和空调负荷', '按入住和活动高峰配置缓冲', '明确饮用与生活用水取样点'], resort: ['比较旺季与旱季用水', '梳理远端建筑和停电风险', '评估适用水质的景观回用'] } },
+  overview: { ...copyByLocale.en.overview, eyebrow: '业主规划指南', title: '把“需要用水”转化为可验证的系统方案', text: '在与水文地质、工程、承包和许可团队沟通前，先形成有依据的项目任务书。', items: ['以实际用量为依据，而非只看项目规模', '按水质要求和重要性区分用途', '从一开始规划储水、备用水源和停机', '以可测性能和竣工资料进行验收'], imageAlt: '工厂、酒店度假村、农业和施工降水的地下水系统', caption: '四种场景，同一原则：从现场资料开始，把水源、抽水、处理、储存与监测作为一个系统设计。' },
+  choose: { ...copyByLocale.en.choose, eyebrow: '先选场景', title: '不同运营场景的主导风险不同', text: '选择最接近的类型，页面会调整重点与工作表标签；实际数值和行业要求仍需按现场确认。', labels: { factory: '工厂', hospitality: '酒店与度假村', agriculture: '农业', dewatering: '施工降水' }, descriptions: { factory: '工艺连续性、分用途水质和停水损失。', hospitality: '入住高峰、季节性、卫生、洗衣、厨房与景观用水。', agriculture: '作物需求、季节、灌溉方式、水质与能源成本。', dewatering: '基坑周边地下水控制、稳定性、排放及邻近影响。' }, priorityLabel: '应优先确认', priorities: { factory: ['区分工艺、冷却、锅炉和生活用水', '确定设备进水水质与停水影响', '同时核查工厂、环保和排放要求'], hospitality: ['区分客房、厨房、洗衣、泳池、空调和景观负荷', '核查入住率、活动、旱季需求与停电风险', '明确饮用、生活与景观用水取样点'], agriculture: ['按作物、面积、灌溉方式和真实高峰期计算', '核查水质对土壤、作物、滴头和堵塞的影响', '让储水、分区与抽水时间符合供电和许可限制'], dewatering: ['在确定泵量前取得地层、地下水位与试验资料', '设置主备能力、水位监测、沉淀处理和获批排放口', '监测沉降、浊度及对邻井和建筑的影响，并备有应急方案'] } },
   calculator: { ...copyByLocale.en.calculator, eyebrow: '用水平衡表', title: '用实际用量建立设计条件', text: '输入来自水表、账单、生产记录或可追溯估算的日均用量。结果仅用于前期规划，不保证井的出水量。', useTitle: '按用途统计', assumptionsTitle: '设计假设', uses: { core: '核心工艺 / 客房', laundry: '洗衣与清洁', kitchen: '厨房、餐饮', cooling: '冷却 / 空调 / 锅炉补水', landscape: '景观、泳池和室外', other: '其他及已知损耗' }, unit: 'm³/天', targetShare: '地下水目标占比', pumpHours: '计划每日抽水小时', reserve: '增长/不确定性余量', backupHours: '主水源中断备用小时', usableStorage: '水箱可用比例', resultsTitle: '初步设计框架', currentDemand: '当前需求', designDemand: '含余量需求', groundwaterTarget: '地下水目标量', preliminaryFlow: '平均所需抽水量', usableTank: '所需可用储水', nominalTank: '估算名义水箱', warning: '选泵或承诺产水量前，必须通过抽水试验、含水层可持续性和许可条件确认。', copyBrief: '复制项目简报', copied: '已复制', briefTitle: '地下水项目前期资料', noDemand: '请至少输入一项用水量' },
   roadmap: { ...copyByLocale.en.roadmap, eyebrow: '项目关卡', title: '用证据推进，不凭假设跳步', text: '只有真正取得资料或成果后才勾选。进度表示资料完整度，不代表审批。', done: '准备度', steps: [
     { title: '确定需求与服务水平', detail: '确认用水平衡、高峰、各用途水质、可接受停水时间和备用水源。', output: '设计依据与负荷曲线' },
@@ -225,8 +313,8 @@ copyByLocale.zh = {
 
 copyByLocale.ja = {
   ...copyByLocale.en,
-  overview: { ...copyByLocale.en.overview, eyebrow: '事業主向け計画ガイド', title: '「井戸が必要」を検証可能な給水計画へ', text: '水文地質、設計、施工、許認可の担当者と協議する前に、根拠のあるプロジェクト要件を整理します。', items: ['施設規模だけでなく実測使用量を基準にする', '用途を必要水質と重要度で分ける', '貯留、予備水源、停止計画を初期から組み込む', '測定できる性能と完成図書で検収する'], caption: '施設が違っても基本は同じです。水収支から始め、井戸・処理・貯留・予備を一体で設計します。' },
-  choose: { ...copyByLocale.en.choose, eyebrow: '施設を選択', title: '施設ごとに主要リスクは異なります', text: '最も近い施設を選ぶと、確認事項の優先順位が変わります。数値と業種固有要件は現地条件で確認してください。', labels: { factory: '工場', hotel: 'ホテル', resort: 'リゾート' }, descriptions: { factory: '工程継続性、用途別水質、生産停止の影響。', hotel: '稼働率ピーク、衛生、ランドリー、厨房、顧客体験。', resort: '季節変動、分散負荷、植栽用水、予備能力。' }, priorityLabel: '初期に確認する項目', priorities: { factory: ['工程、冷却、ボイラー、生活用水を分ける', '設備入口水質と断水影響を定義する', '工場・環境・排水要件も確認する'], hotel: ['客室、厨房、ランドリー、プール、空調を分ける', '稼働率とイベントピークに備える', '飲用・生活用水の採水点を決める'], resort: ['繁忙期と乾季を比較する', '遠隔棟と停電リスクを把握する', '植栽への適正な再利用を検討する'] } },
+  overview: { ...copyByLocale.en.overview, eyebrow: '事業主向け計画ガイド', title: '「水が必要」を検証可能なシステム計画へ', text: '水文地質、設計、施工、許認可の担当者と協議する前に、根拠のあるプロジェクト要件を整理します。', items: ['施設規模だけでなく実測使用量を基準にする', '用途を必要水質と重要度で分ける', '貯留、予備水源、停止計画を初期から組み込む', '測定できる性能と完成図書で検収する'], imageAlt: '工場、ホテルとリゾート、農業、工事排水の地下水システム', caption: '4つの用途、1つの原則。現地データから始め、水源・揚水・処理・貯留・監視を一体で設計します。' },
+  choose: { ...copyByLocale.en.choose, eyebrow: '用途を選択', title: '用途ごとに主要リスクは異なります', text: '最も近い用途を選ぶと、確認事項とワークシート表示が変わります。数値と業種固有要件は現地条件で確認してください。', labels: { factory: '工場', hospitality: 'ホテル・リゾート', agriculture: '農業', dewatering: '工事排水' }, descriptions: { factory: '工程継続性、用途別水質、生産停止の影響。', hospitality: '稼働率ピーク、季節性、衛生、ランドリー、厨房、植栽。', agriculture: '作物需要、季節、灌漑方式、水質、エネルギー費。', dewatering: '掘削周辺の地下水制御、安定、放流、近隣影響。' }, priorityLabel: '初期に確認する項目', priorities: { factory: ['工程、冷却、ボイラー、生活用水を分ける', '設備入口水質と断水影響を定義する', '工場・環境・排水要件も確認する'], hospitality: ['客室、厨房、ランドリー、プール、空調、植栽を分ける', '稼働率、イベント、乾季、停電リスクを確認する', '飲用・生活・植栽用水の採水点を決める'], agriculture: ['作物、面積、灌漑方式、実際のピーク期から計算する', '土壌・作物・散水器・目詰まりへの水質影響を確認する', '貯留、ゾーン、揚水時間を電力と許可条件に合わせる'], dewatering: ['ポンプ台数決定前に地層、水位、試験資料を得る', '主予備容量、水位監視、沈殿処理、許可された放流先を設ける', '沈下、濁度、近隣井戸・構造物への影響を監視し緊急計画を持つ'] } },
   calculator: { ...copyByLocale.en.calculator, eyebrow: '水収支ワークシート', title: '実際の使用量から設計条件を作る', text: 'メーター、請求書、生産記録、根拠のある推計から日平均使用量を入力します。結果は予備計画値であり、井戸揚水量の保証ではありません。', useTitle: '用途別需要', assumptionsTitle: '設計前提', uses: { core: '主要工程 / 客室', laundry: 'ランドリー・清掃', kitchen: '厨房・飲食', cooling: '冷却 / 空調 / ボイラー補給', landscape: '植栽・プール・屋外', other: 'その他・既知の損失' }, unit: 'm³/日', targetShare: '地下水の目標比率', pumpHours: '計画揚水時間/日', reserve: '成長・不確実性の余裕', backupHours: '主水源停止時の予備時間', usableStorage: 'タンク有効率', resultsTitle: '予備設計フレーム', currentDemand: '現在需要', designDemand: '余裕込み需要', groundwaterTarget: '地下水目標量', preliminaryFlow: '必要平均揚水量', usableTank: '必要有効貯留量', nominalTank: '概算公称タンク容量', warning: 'ポンプ選定や水量保証の前に、揚水試験、帯水層の持続性、許可条件で確認してください。', copyBrief: 'プロジェクト要件をコピー', copied: 'コピーしました', briefTitle: '地下水プロジェクト初期要件', noDemand: '少なくとも1用途の水量を入力してください' },
   roadmap: { ...copyByLocale.en.roadmap, eyebrow: 'プロジェクトゲート', title: '想定ではなく証拠で進める', text: '実際の資料や成果物がある場合のみチェックします。進捗は資料の準備度で、承認を意味しません。', done: '準備度', steps: [
     { title: '需要とサービスレベルを定義', detail: '水収支、ピーク、用途別水質、許容停止時間、予備水源を確認します。', output: '設計条件と負荷プロファイル' },
@@ -267,6 +355,8 @@ function NumberInput({ value, onChange, suffix, min = 0, max = 100000, step = 1 
 
 export default function GroundwaterOwnerGuide({ locale = 'th' }: { locale?: LocalizedLocale; localized?: boolean }) {
   const copy = copyByLocale[locale]
+  const quickNav = quickNavByLocale[locale]
+  const contextVisual = contextVisualByLocale[locale]
   const [facility, setFacility] = useState<Facility>('factory')
   const [uses, setUses] = useState<Record<UseKey, number>>({ core: 0, laundry: 0, kitchen: 0, cooling: 0, landscape: 0, other: 0 })
   const [targetShare, setTargetShare] = useState(70)
@@ -288,11 +378,17 @@ export default function GroundwaterOwnerGuide({ locale = 'th' }: { locale?: Loca
 
   const format = (value: number) => new Intl.NumberFormat(locale === 'th' ? 'th-TH' : locale, { maximumFractionDigits: 1 }).format(value)
   const readiness = Math.round(completed.length / copy.roadmap.steps.length * 100)
+  const useLabels = useLabelsByLocale[locale][facility]
+
+  const selectFacility = (nextFacility: Facility) => {
+    setFacility(nextFacility)
+    if (nextFacility === 'dewatering' && targetShare === 70) setTargetShare(100)
+  }
 
   const brief = [
     copy.calculator.briefTitle,
     `${copy.choose.labels[facility]} — ${copy.choose.descriptions[facility]}`,
-    ...Object.entries(uses).map(([key, value]) => `${copy.calculator.uses[key as UseKey]}: ${format(value)} ${copy.calculator.unit}`),
+    ...Object.entries(uses).map(([key, value]) => `${useLabels[key as UseKey]}: ${format(value)} ${copy.calculator.unit}`),
     `${copy.calculator.currentDemand}: ${format(calculation.daily)} ${copy.calculator.unit}`,
     `${copy.calculator.designDemand}: ${format(calculation.design)} ${copy.calculator.unit}`,
     `${copy.calculator.groundwaterTarget}: ${format(calculation.groundwaterDaily)} ${copy.calculator.unit} (${targetShare}%)`,
@@ -312,21 +408,26 @@ export default function GroundwaterOwnerGuide({ locale = 'th' }: { locale?: Loca
     <div className="gog-shell">
       <section className="gog-overview">
         <div className="gog-overview-copy"><p className="gog-eyebrow">{copy.overview.eyebrow}</p><h2>{copy.overview.title}</h2><p>{copy.overview.text}</p><ul>{copy.overview.items.map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul></div>
-        <figure><Image src="/images/learning/groundwater-owner-guide/factory-hotel-resort-planning.webp" alt={copy.overview.imageAlt} width={1600} height={900} priority /><figcaption>{copy.overview.caption}</figcaption></figure>
+        <figure><Image src="/images/learning/groundwater-owner-guide/four-context-groundwater-guide.webp" alt={copy.overview.imageAlt} width={1600} height={900} priority /><figcaption>{copy.overview.caption}</figcaption></figure>
       </section>
+
+      <nav className="gog-quick-nav" aria-label={contextVisual.navLabel}>
+        {quickNav.map((item, index) => <a href={item.href} key={item.href}><span>{index + 1}</span>{item.label}</a>)}
+      </nav>
 
       <section className="gog-section" id="facility-profile">
         <div className="gog-section-heading"><p className="gog-eyebrow">{copy.choose.eyebrow}</p><h2>{copy.choose.title}</h2><p>{copy.choose.text}</p></div>
         <div className="gog-facility-grid" role="group" aria-label={copy.choose.title}>
-          {(Object.keys(copy.choose.labels) as Facility[]).map((key) => { const Icon = facilityIcons[key]; return <button key={key} type="button" className={facility === key ? 'is-active' : ''} aria-pressed={facility === key} onClick={() => setFacility(key)}><Icon aria-hidden="true" /><span><strong>{copy.choose.labels[key]}</strong><small>{copy.choose.descriptions[key]}</small></span>{facility === key && <Check aria-hidden="true" className="gog-selected" />}</button> })}
+          {(Object.keys(copy.choose.labels) as Facility[]).map((key) => { const Icon = facilityIcons[key]; return <button key={key} type="button" className={facility === key ? 'is-active' : ''} aria-pressed={facility === key} onClick={() => selectFacility(key)}><Icon aria-hidden="true" /><span><strong>{copy.choose.labels[key]}</strong><small>{copy.choose.descriptions[key]}</small></span>{facility === key && <Check aria-hidden="true" className="gog-selected" />}</button> })}
         </div>
-        <div className="gog-priority-panel"><div><Sparkles aria-hidden="true" /><strong>{copy.choose.priorityLabel}: {copy.choose.labels[facility]}</strong></div><ul>{copy.choose.priorities[facility].map((item) => <li key={item}>{item}</li>)}</ul></div>
+        <div className="gog-priority-panel" aria-live="polite"><div><Sparkles aria-hidden="true" /><strong>{copy.choose.priorityLabel}: {copy.choose.labels[facility]}</strong></div><ul>{copy.choose.priorities[facility].map((item) => <li key={item}>{item}</li>)}</ul></div>
+        <figure className="gog-context-visual"><Image src="/images/learning/groundwater-owner-guide/agriculture-dewatering-systems.webp" alt={contextVisual.alt} width={1600} height={900} /><figcaption>{contextVisual.caption}</figcaption></figure>
       </section>
 
       <section className="gog-section gog-calculator" id="water-balance">
         <div className="gog-section-heading"><p className="gog-eyebrow">{copy.calculator.eyebrow}</p><h2>{copy.calculator.title}</h2><p>{copy.calculator.text}</p></div>
         <div className="gog-calculator-layout">
-          <div className="gog-input-panel"><h3><Droplets aria-hidden="true" />{copy.calculator.useTitle}</h3><div className="gog-use-list">{(Object.keys(uses) as UseKey[]).map((key) => <div className="gog-use-row" key={key}><span>{copy.calculator.uses[key]}</span><NumberInput value={uses[key]} onChange={(value) => setUses((current) => ({ ...current, [key]: value }))} suffix={copy.calculator.unit} step={0.1} /></div>)}</div>
+          <div className="gog-input-panel"><h3><Droplets aria-hidden="true" />{copy.calculator.useTitle}: {copy.choose.labels[facility]}</h3><div className="gog-use-list">{(Object.keys(uses) as UseKey[]).map((key) => <div className="gog-use-row" key={key}><span>{useLabels[key]}</span><NumberInput value={uses[key]} onChange={(value) => setUses((current) => ({ ...current, [key]: value }))} suffix={copy.calculator.unit} step={0.1} /></div>)}</div>
             <h3><Gauge aria-hidden="true" />{copy.calculator.assumptionsTitle}</h3><div className="gog-assumption-grid">
               <label><span>{copy.calculator.targetShare}</span><NumberInput value={targetShare} onChange={setTargetShare} suffix="%" max={100} /></label>
               <label><span>{copy.calculator.pumpHours}</span><NumberInput value={pumpHours} onChange={setPumpHours} suffix="h" min={1} max={24} /></label>
@@ -351,13 +452,13 @@ export default function GroundwaterOwnerGuide({ locale = 'th' }: { locale?: Loca
         <div className="gog-roadmap">{copy.roadmap.steps.map((step, index) => { const checked = completed.includes(index); return <article key={step.title} className={checked ? 'is-complete' : ''}><button type="button" aria-pressed={checked} onClick={() => setCompleted((current) => checked ? current.filter((item) => item !== index) : [...current, index])}><span>{checked ? <Check aria-hidden="true" /> : index + 1}</span><span><strong>{step.title}</strong><small>{step.detail}</small><em><FileCheck2 aria-hidden="true" />{step.output}</em></span></button></article> })}</div>
       </section>
 
-      <section className="gog-section gog-architecture">
+      <section className="gog-section gog-architecture" id="system-design">
         <div className="gog-section-heading"><p className="gog-eyebrow">{copy.architecture.eyebrow}</p><h2>{copy.architecture.title}</h2><p>{copy.architecture.text}</p></div>
         <figure><Image src="/images/learning/groundwater-owner-guide/resilient-water-system.webp" alt={copy.architecture.imageAlt} width={1600} height={900} /><figcaption>{copy.architecture.caption}</figcaption></figure>
         <div className="gog-principles">{copy.architecture.principles.map((item, index) => { const icons = [FlaskConical, Droplets, ShieldCheck, Gauge]; const Icon = icons[index]; return <article key={item.title}><Icon aria-hidden="true" /><h3>{item.title}</h3><p>{item.text}</p></article> })}</div>
       </section>
 
-      <section className="gog-section">
+      <section className="gog-section" id="handover-operation">
         <div className="gog-section-heading"><p className="gog-eyebrow">{copy.handover.eyebrow}</p><h2>{copy.handover.title}</h2><p>{copy.handover.text}</p></div>
         <div className="gog-handover-grid">{copy.handover.groups.map((group, index) => { const icons = [HardHat, FlaskConical, Wrench, ClipboardCheck]; const Icon = icons[index]; return <article key={group.title}><div><Icon aria-hidden="true" /><h3>{group.title}</h3></div><ul>{group.items.map((item) => <li key={item}><Check aria-hidden="true" />{item}</li>)}</ul></article> })}</div>
       </section>

@@ -41,10 +41,13 @@
 .gog-overview figure img { width: 100%; height: 100%; min-height: 24rem; object-fit: cover; }
 .gog-overview figcaption, .gog-architecture figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid rgba(255,255,255,.13); border-radius: .75rem; background: rgba(3, 20, 29, .83); color: rgba(255,255,255,.79); font-size: var(--fs-sm); line-height: 1.55; backdrop-filter: blur(10px); }
 
-.gog-section { padding: 1.25rem; }
-.gog-section-heading { }
-.gog-facility-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin-top: 1.4rem; }
-.gog-facility-grid button { position: relative; display: flex; gap: .85rem; align-items: flex-start; min-height: 10rem; padding: 1.1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); color: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
+.gog-section { padding: 1.25rem; scroll-margin-top: 7rem; }
+.gog-quick-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .55rem; padding: .7rem; border: 1px solid rgba(96, 220, 239, .17); border-radius: 1rem; background: rgba(5, 31, 43, .9); box-shadow: 0 .8rem 2rem rgba(0, 12, 20, .12); }
+.gog-quick-nav a { display: flex; gap: .55rem; align-items: center; justify-content: center; padding: .7rem .8rem; border: 1px solid transparent; border-radius: .75rem; color: var(--gog-ink); text-align: center; text-decoration: none; transition: border-color .2s, background .2s; }
+.gog-quick-nav a:hover, .gog-quick-nav a:focus-visible { border-color: rgba(96,220,239,.4); background: rgba(96,220,239,.08); outline: 0; }
+.gog-quick-nav span { display: grid; place-items: center; flex: 0 0 auto; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: rgba(96,220,239,.12); color: var(--gog-cyan); font-weight: 800; }
+.gog-facility-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-top: 1.4rem; }
+.gog-facility-grid button { position: relative; display: flex; gap: .85rem; align-items: flex-start; padding: 1.1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); color: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
 .gog-facility-grid button:hover { transform: translateY(-2px); border-color: rgba(96,220,239,.45); }
 .gog-facility-grid button.is-active { border-color: var(--gog-cyan); background: linear-gradient(145deg, rgba(96,220,239,.15), rgba(45,212,191,.08)); box-shadow: inset 0 0 0 1px rgba(96,220,239,.12); }
 .gog-facility-grid button > svg:first-child { width: 1.55rem; height: 1.55rem; color: var(--gog-cyan); }
@@ -56,6 +59,9 @@
 .gog-priority-panel > div { display: flex; gap: .6rem; align-items: flex-start; color: #a7f3d0; }
 .gog-priority-panel svg { width: 1.15rem; flex: 0 0 auto; }
 .gog-priority-panel ul { display: grid; gap: .4rem; margin: 0; padding-left: 1.15rem; color: var(--gog-muted); line-height: 1.55; }
+.gog-context-visual { position: relative; overflow: hidden; margin: .8rem 0 0; border: 1px solid rgba(96,220,239,.16); border-radius: 1rem; background: #061f2d; }
+.gog-context-visual img { display: block; width: 100%; height: auto; }
+.gog-context-visual figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid rgba(255,255,255,.13); border-radius: .75rem; background: rgba(3,20,29,.86); color: rgba(255,255,255,.82); line-height: 1.55; backdrop-filter: blur(10px); }
 
 .gog-calculator { background: radial-gradient(circle at 100% 0, rgba(96,220,239,.1), transparent 32%), var(--gog-panel); }
 .gog-calculator-layout { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(22rem, .82fr); gap: 1rem; align-items: start; margin-top: 1.5rem; }
@@ -128,7 +134,6 @@
 .gog-source-links svg { width: 1rem; color: var(--gog-cyan); }
 .gog-source-links svg:last-child { width: .8rem; color: rgba(255,255,255,.45); }
 .gog-next { display: flex; gap: 2rem; align-items: center; justify-content: space-between; padding: 1.25rem; background: linear-gradient(120deg, rgba(8,50,63,.96), rgba(10,70,72,.88)); }
-.gog-next > div:first-child { }
 .gog-next > div:last-child { display: flex; flex-wrap: wrap; gap: .55rem; justify-content: flex-end; }
 .gog-next a { display: inline-flex; gap: .4rem; align-items: center; padding: .75rem 1rem; border: 1px solid var(--gog-cyan); border-radius: .7rem; background: var(--gog-cyan); color: #052737; font-weight: 800; text-decoration: none; }
 .gog-next a.is-secondary { border-color: rgba(255,255,255,.22); background: transparent; color: #fff; }
@@ -140,6 +145,8 @@
   .gog-overview figure img { min-height: 0; aspect-ratio: 16/9; }
   .gog-calculator-layout { grid-template-columns: 1fr; }
   .gog-results { position: static; }
+  .gog-quick-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gog-facility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gog-principles, .gog-operations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gog-source-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gog-roadmap button > span:last-child { grid-template-columns: minmax(11rem, .7fr) 1fr; }
@@ -148,8 +155,9 @@
 
 @media (width <= 720px) {
   .gog-shell { margin-top: 1rem; }
+  .gog-quick-nav { grid-template-columns: 1fr; }
+  .gog-quick-nav a { justify-content: flex-start; text-align: left; }
   .gog-facility-grid, .gog-handover-grid, .gog-principles, .gog-operations, .gog-source-links { grid-template-columns: 1fr; }
-  .gog-facility-grid button { min-height: auto; }
   .gog-priority-panel, .gog-roadmap-heading, .gog-next { display: grid; grid-template-columns: 1fr; }
   .gog-progress { width: 100%; }
   .gog-use-row { grid-template-columns: 1fr; gap: .35rem; }
@@ -158,6 +166,7 @@
   .gog-roadmap button > span:last-child { grid-template-columns: 1fr; gap: .35rem; }
   .gog-roadmap em { grid-column: auto; margin-top: .25rem; }
   .gog-architecture figcaption, .gog-overview figcaption { position: static; border: 0; border-radius: 0; background: rgba(3,20,29,.9); }
+  .gog-context-visual figcaption { position: static; border: 0; border-radius: 0; background: rgba(3,20,29,.9); }
   .gog-next > div:last-child { justify-content: flex-start; }
 }
 

@@ -91,7 +91,6 @@ export default function CustomerHistorySection({
       </div>
 
       <div className={styles.footer}>
-        <p>{copy.note}</p>
         <Link href={projectsHref} className={styles.action}>
           {copy.action}
           <ArrowRight aria-hidden="true" />

@@ -340,7 +340,7 @@ export default function ServiceDetailPage({
 
         <section className="service-detail-section" aria-labelledby="service-scope">
           <div className="service-detail-section-heading">
-            <p>01 / {content.services.highlightsTitle}</p>
+            <p>{content.services.highlightsTitle}</p>
             <h2 id="service-scope">{content.services.highlightsTitle}</h2>
             <span>{ui.scopeIntro}</span>
           </div>
@@ -354,9 +354,6 @@ export default function ServiceDetailPage({
                   <div className="service-detail-card-icon">
                     <ScopeIcon aria-hidden="true" />
                   </div>
-                  <span className="service-detail-card-number">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                   <h3>{item}</h3>
                   <p>{service.process[index] ?? service.short}</p>
                 </article>
@@ -393,7 +390,7 @@ export default function ServiceDetailPage({
 
           <div className="service-detail-process-copy">
             <p className="service-detail-kicker">
-              02 / {content.services.processTitle}
+              {content.services.processTitle}
             </p>
             <h2 id="service-process">{content.services.processTitle}</h2>
             <p className="service-detail-section-lead">{ui.processIntro}</p>
@@ -419,7 +416,7 @@ export default function ServiceDetailPage({
           aria-labelledby="service-details"
         >
           <div className="service-detail-section-heading">
-            <p>03 / {ui.detailsEyebrow}</p>
+            <p>{ui.detailsEyebrow}</p>
             <h2 id="service-details">{ui.detailsTitle}</h2>
             <span>{ui.detailsIntro}</span>
           </div>
@@ -451,7 +448,7 @@ export default function ServiceDetailPage({
         >
           <div className="service-detail-gallery-heading">
             <div>
-              <p className="service-detail-kicker">04 / {ui.galleryEyebrow}</p>
+              <p className="service-detail-kicker">{ui.galleryEyebrow}</p>
               <h2 id="service-gallery">{ui.galleryTitle}</h2>
             </div>
             <Link href={href('/projects')}>

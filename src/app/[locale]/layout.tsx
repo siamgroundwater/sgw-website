@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar/Navbar'
 import NavbarMobile from '@/components/Navbar/mobile/Navbar-mobile'
 import Footer from '@/components/Footer/Footer'
 import {
-  LOCALIZED_LOCALES,
+  PREFIXED_LOCALES,
   isLocalizedLocale,
   languageAlternates,
   localeInfo,
@@ -18,7 +18,7 @@ type LayoutProps = {
 }
 
 export function generateStaticParams() {
-  return LOCALIZED_LOCALES.map((locale) => ({ locale }))
+  return PREFIXED_LOCALES.map((locale) => ({ locale }))
 }
 
 export async function generateMetadata({
