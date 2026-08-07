@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { ExternalLink, MessageCircle } from 'lucide-react'
+import { ExternalLink, MessageCircle, RefreshCw } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { LocalizedLocale } from '@/i18n/config'
 import styles from './SocialMediaSection.module.css'
@@ -24,11 +24,13 @@ const socialCopy: Record<
     tiktokButton: string
     tiktokLoading: string
     tiktokUnavailable: string
+    tiktokRetry: string
   }
 > = {
   th: {
     tiktokLoading: 'กำลังโหลดตัวอย่าง TikTok…',
     tiktokUnavailable: 'ตัวอย่าง TikTok ไม่พร้อมใช้งานชั่วคราว สามารถเปิดดูวิดีโอทั้งหมดบน TikTok ได้โดยตรง',
+    tiktokRetry: 'ลองโหลดอีกครั้ง',
     ariaLabel: 'ช่องทางโซเชียลมีเดียของสยามกราวด์วอเตอร์',
     eyebrow: 'ติดตามเรา',
     title: 'ติดตามข่าวสารและผลงานของเรา',
@@ -41,6 +43,7 @@ const socialCopy: Record<
   en: {
     tiktokLoading: 'Loading TikTok preview…',
     tiktokUnavailable: 'The TikTok preview is temporarily unavailable. You can still view every video directly on TikTok.',
+    tiktokRetry: 'Try again',
     ariaLabel: 'Siam Groundwater social media channels',
     eyebrow: 'Follow us',
     title: 'News and field updates from our team',
@@ -53,6 +56,7 @@ const socialCopy: Record<
   zh: {
     tiktokLoading: '正在加载 TikTok 预览…',
     tiktokUnavailable: 'TikTok 预览暂时不可用，您仍可直接前往 TikTok 查看全部视频。',
+    tiktokRetry: '重新加载',
     ariaLabel: '暹罗地下水社交媒体渠道',
     eyebrow: '关注我们',
     title: '了解最新资讯和现场项目',
@@ -65,6 +69,7 @@ const socialCopy: Record<
   ja: {
     tiktokLoading: 'TikTokプレビューを読み込んでいます…',
     tiktokUnavailable: 'TikTokプレビューは一時的に利用できません。TikTokで動画を直接ご覧いただけます。',
+    tiktokRetry: '再読み込み',
     ariaLabel: 'サイアム・グラウンドウォーターのソーシャルメディア',
     eyebrow: '公式アカウント',
     title: '最新情報と現場実績をご覧ください',
@@ -89,6 +94,11 @@ export default function SocialMediaSection({
   const [shouldLoadTikTok, setShouldLoadTikTok] = useState(false)
   const [tiktokEmbedFailed, setTikTokEmbedFailed] = useState(false)
   const copy = socialCopy[locale]
+
+  const retryTikTokEmbed = () => {
+    tiktokScriptAttemptedRef.current = false
+    setTikTokEmbedFailed(false)
+  }
 
   useEffect(() => {
     const element = facebookRef.current
@@ -306,6 +316,16 @@ export default function SocialMediaSection({
                     ? copy.tiktokUnavailable
                     : copy.tiktokLoading}
                 </p>
+                {tiktokEmbedFailed ? (
+                  <button
+                    className={styles.retryButton}
+                    onClick={retryTikTokEmbed}
+                    type="button"
+                  >
+                    <RefreshCw aria-hidden="true" strokeWidth={1.9} />
+                    {copy.tiktokRetry}
+                  </button>
+                ) : null}
               </div>
             ) : (
               <>

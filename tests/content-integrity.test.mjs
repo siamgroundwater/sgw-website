@@ -363,6 +363,19 @@ test('mobile navigation uses an accessible right-side drawer', () => {
   assert.match(styles, /inset: 0 0 0 auto/)
   assert.match(styles, /translateX\(102%\)/)
   assert.match(styles, /safe-area-inset-bottom/)
+
+  const desktopStyles = readFileSync(
+    path.join(root, 'src', 'components', 'Navbar', 'Navbar.css'),
+    'utf8'
+  )
+  assert.match(
+    desktopStyles,
+    /\.navbar-subnav\s*\{[\s\S]*?width:\s*fit-content;/
+  )
+  assert.match(
+    desktopStyles,
+    /\.navbar-subnav-link\s*\{[\s\S]*?white-space:\s*nowrap;/
+  )
 })
 
 test('contact page uses copyable contact cards and an interactive office map', () => {
