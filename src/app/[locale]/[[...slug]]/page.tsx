@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import {
   ArrowLeft,
   ArrowRight,
@@ -47,8 +47,10 @@ import {
   type LocalizedContent,
   type ServiceKey,
 } from '@/i18n/localized-content'
-import { getLocalizedProjectPresentation } from '@/i18n/projects'
-import { getProjectById, getProjectMapUrl, projects } from '@/lib/projects'
+import { getLocalizedProjectPresentation, localizeProject } from '@/i18n/projects'
+import { getProjectMapUrl, type Project } from '@/lib/projects'
+import { toProjectSummary, type ProjectSummary } from '@/lib/project-summaries'
+import { getPublicProjectById, getPublicProjectByLegacyId, listPublicProjects } from '@/server/public-projects'
 import '@/app/(site)/home/page.css'
 import '@/app/(site)/about/page.css'
 import '@/app/(site)/contact/page.css'
@@ -60,6 +62,10 @@ import '@/app/(site)/projects/[id]/page.css'
 
 type LocalizedPageProps = {
   params: Promise<{ locale: string; slug?: string[] }>
+}
+
+async function resolveProject(id: string) {
+  return (await getPublicProjectById(id)) || (await getPublicProjectByLegacyId(id))
 }
 
 const staticRouteSegments: string[][] = [
@@ -74,7 +80,6 @@ const staticRouteSegments: string[][] = [
   ['contact'],
   ['privacy'],
   ...LEARNING_SLUGS.map((slug) => ['learn', slug]),
-  ...projects.map((project) => ['projects', String(project._id)]),
 ]
 
 const aboutVideoLabel: Record<LocalizedLocale, string> = {
@@ -99,11 +104,16 @@ const aboutAwardLabels: Record<LocalizedLocale, [string, string, string]> = {
   ja: ['優秀品質賞', '優良事業所賞', '優秀品質賞'],
 }
 
-export const dynamicParams = false
+export const dynamicParams = true
+export const revalidate = 60
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const projectRoutes = (await listPublicProjects()).map((project) => [
+    'projects',
+    String(project._id),
+  ])
   return PREFIXED_LOCALES.flatMap((locale) =>
-    staticRouteSegments.map((slug) => ({ locale, slug }))
+    [...staticRouteSegments, ...projectRoutes].map((slug) => ({ locale, slug }))
   )
 }
 
@@ -115,7 +125,8 @@ function routePath(slug: string[]) {
 function pageMetadata(
   locale: LocalizedLocale,
   slug: string[],
-  content: LocalizedContent
+  content: LocalizedContent,
+  project?: Project | null
 ) {
   const first = slug[0]
   const second = slug[1]
@@ -132,10 +143,9 @@ function pageMetadata(
     title = `${content.services.title} | Siam Groundwater`
     description = content.services.intro
   } else if (first === 'projects' && second) {
-    const project = getProjectById(second)
     if (project) {
       title = `${project.title} | Siam Groundwater`
-      description = content.projects.registryNote
+      description = project.summary || content.projects.registryNote
     }
   } else if (first === 'projects') {
     title = `${content.projects.title} | Siam Groundwater`
@@ -167,7 +177,11 @@ export async function generateMetadata({
   const { locale: rawLocale, slug = [] } = await params
   if (!isLocalizedLocale(rawLocale)) return {}
   const content = getLocalizedContent(rawLocale)
-  const { title, description } = pageMetadata(rawLocale, slug, content)
+  const rawProject = slug[0] === 'projects' && slug[1]
+    ? await resolveProject(slug[1])
+    : null
+  const project = rawProject ? localizeProject(rawProject, rawLocale) : null
+  const { title, description } = pageMetadata(rawLocale, slug, content, project)
   const basePath = routePath(slug)
   const canonical = localePath(basePath, rawLocale)
 
@@ -206,9 +220,11 @@ export async function generateMetadata({
 function LocalizedHome({
   locale,
   content,
+  projects,
 }: {
   locale: LocalizedLocale
   content: LocalizedContent
+  projects: ProjectSummary[]
 }) {
   return (
     <main className="page-content">
@@ -225,11 +241,12 @@ function LocalizedHome({
       <Services locale={locale} copy={content} />
       <CompanyVideoSection locale={locale} />
       <HomeMap
+        projects={projects}
         locale={locale}
         title={content.home.projectsTitle}
         projectCopy={content.projects}
       />
-      <ProjectsSection locale={locale} copy={content.projects} featured />
+      <ProjectsSection projects={projects} locale={locale} copy={content.projects} featured />
       <SocialMediaSection locale={locale} />
       <CustomerHistorySection locale={locale} />
     </main>
@@ -342,17 +359,16 @@ function LocalizedServiceDetail({
 }
 
 
-function LocalizedProjects({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
+function LocalizedProjects({ locale, content, projects }: { locale: LocalizedLocale; content: LocalizedContent; projects: ProjectSummary[] }) {
   return (
     <main className="projects-page" style={{ padding: '1rem' }}>
-      <ProjectsSection locale={locale} copy={content.projects} showHistoryMap headingLevel="h1" />
+      <ProjectsSection projects={projects} locale={locale} copy={content.projects} showHistoryMap headingLevel="h1" />
     </main>
   )
 }
 
-function LocalizedProjectDetail({ locale, content, id }: { locale: LocalizedLocale; content: LocalizedContent; id: string }) {
-  const project = getProjectById(id)
-  if (!project) notFound()
+function LocalizedProjectDetail({ locale, content, project: rawProject }: { locale: LocalizedLocale; content: LocalizedContent; project: Project }) {
+  const project = localizeProject(rawProject, locale)
   const presentation = getLocalizedProjectPresentation(project, content.projects)
   const mapUrl = getProjectMapUrl(project)
   return (
@@ -410,6 +426,7 @@ function LocalizedProjectDetail({ locale, content, id }: { locale: LocalizedLoca
           <section className="project-detail-record">
             <h2>{content.projects.projectStoryTitle}</h2>
             <p className="project-detail-story">{project.summary}</p>
+            {project.details.length ? <div className="project-detail-sections">{project.details.map((detail, index) => <p key={`${index}-${detail.slice(0, 24)}`}>{detail}</p>)}</div> : null}
             <p className="project-detail-source">
               {content.projects.recoveredRecordNote}
             </p>
@@ -438,7 +455,7 @@ function LocalizedProjectDetail({ locale, content, id }: { locale: LocalizedLoca
         </div>
 
         <ProjectMediaSlider
-          images={project.localGalleryImages}
+          images={project.galleryImages}
           locale={locale}
           projectNumber={project._id}
           title={project.title}
@@ -531,12 +548,23 @@ export default async function LocalizedPage({ params }: LocalizedPageProps) {
   const first = slug[0]
   const second = slug[1]
 
-  if (slug.length === 0 || (slug.length === 1 && first === 'home')) return <LocalizedHome locale={locale} content={content} />
+  if (slug.length === 0 || (slug.length === 1 && first === 'home')) {
+    const projects = (await listPublicProjects()).map((project) => toProjectSummary(project, locale))
+    return <LocalizedHome locale={locale} content={content} projects={projects} />
+  }
   if (slug.length === 1 && first === 'about') return <LocalizedAbout locale={locale} content={content} />
   if (slug.length === 1 && first === 'services') return <LocalizedServices locale={locale} content={content} />
   if (slug.length === 2 && first === 'services' && second && isServiceKey(second)) return <LocalizedServiceDetail locale={locale} content={content} serviceKey={second} />
-  if (slug.length === 1 && first === 'projects') return <LocalizedProjects locale={locale} content={content} />
-  if (slug.length === 2 && first === 'projects' && second) return <LocalizedProjectDetail locale={locale} content={content} id={second} />
+  if (slug.length === 1 && first === 'projects') {
+    const projects = (await listPublicProjects()).map((project) => toProjectSummary(project, locale))
+    return <LocalizedProjects locale={locale} content={content} projects={projects} />
+  }
+  if (slug.length === 2 && first === 'projects' && second) {
+    const project = await resolveProject(second)
+    if (!project) notFound()
+    if (second !== project._id) permanentRedirect(localePath(`/projects/${project._id}`, locale))
+    return <LocalizedProjectDetail locale={locale} content={content} project={project} />
+  }
   if (slug.length === 1 && first === 'governance') return <LocalizedGovernance locale={locale} content={content} />
   if (slug.length === 1 && first === 'groundwater-learning') return <LocalizedLearning locale={locale} content={content} />
   if (slug.length === 2 && first === 'learn' && second && isLearningSlug(second)) return <LocalizedArticlePage locale={locale} content={content} articleSlug={second} />

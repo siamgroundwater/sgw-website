@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Plus } from 'lucide-react'
-import { projects } from '@/lib/projects'
+import type { ProjectSummary } from '@/lib/project-summaries'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import type { LocalizedContent } from '@/i18n/localized-content'
 import {
@@ -18,11 +18,13 @@ import './LocalizedProjectBrowser.css'
 type LocalizedProjectBrowserProps = {
   locale: LocalizedLocale
   copy: LocalizedContent['projects']
+  projects: ProjectSummary[]
 }
 
 export default function LocalizedProjectBrowser({
   locale,
   copy,
+  projects,
 }: LocalizedProjectBrowserProps) {
   const [filter, setFilter] = useState<'all' | ProjectCategoryKey>('all')
   const [visibleCount, setVisibleCount] = useState(12)
@@ -34,7 +36,7 @@ export default function LocalizedProjectBrowser({
         : projects.filter(
             (project) => getProjectCategoryKey(project.projectType) === filter
           ),
-    [filter]
+    [filter, projects]
   )
 
   const visibleProjects = filteredProjects.slice(0, visibleCount)
@@ -81,7 +83,7 @@ export default function LocalizedProjectBrowser({
                 aria-label={`${copy.details}: ${project.title}`}
               >
                 <Image
-                  src={project.localCoverImage}
+                  src={project.coverImage}
                   alt={project.title}
                   width={800}
                   height={600}

@@ -145,11 +145,19 @@
   transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
 }
 
-.gcs-chapter-nav button:hover,
 .gcs-chapter-nav button:focus-visible {
   border-color: var(--gcs-cyan);
   color: #052d37;
   background: var(--gcs-cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gcs-chapter-nav button:hover {
+  border-color: var(--gcs-cyan);
+  color: #052d37;
+  background: var(--gcs-cyan);
+}
 }
 
 .gcs-chapter-nav svg {
@@ -311,12 +319,20 @@
   cursor: pointer;
 }
 
-.gcs-symptom-tabs button:hover,
 .gcs-symptom-tabs button:focus-visible,
 .gcs-symptom-tabs button.is-active {
   border-color: rgba(103, 232, 249, 0.7);
   color: white;
   background: rgba(6, 182, 212, 0.13);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gcs-symptom-tabs button:hover {
+  border-color: rgba(103, 232, 249, 0.7);
+  color: white;
+  background: rgba(6, 182, 212, 0.13);
+}
 }
 
 .gcs-symptom-tabs button.is-active {
@@ -859,12 +875,19 @@
   cursor: pointer;
 }
 
-.gcs-report-actions button:hover,
 .gcs-report-actions button:focus-visible,
-.gcs-quiz-result button:hover,
 .gcs-quiz-result button:focus-visible {
   color: #042f35;
   background: var(--gcs-cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gcs-report-actions button:hover,
+.gcs-quiz-result button:hover {
+  color: #042f35;
+  background: var(--gcs-cyan);
+}
 }
 
 .gcs-report-actions svg,
@@ -990,8 +1013,12 @@
   cursor: pointer;
 }
 
-.gcs-quiz fieldset > button:hover,
 .gcs-quiz fieldset > button:focus-visible { border-color: var(--gcs-cyan); color: white; }
+
+@media (hover: hover) and (pointer: fine) {
+
+.gcs-quiz fieldset > button:hover { border-color: var(--gcs-cyan); color: white; }
+}
 .gcs-quiz fieldset > button.is-correct { border-color: rgba(94, 234, 212, 0.55); color: #ccfbf1; background: rgba(13, 148, 136, 0.15); }
 .gcs-quiz fieldset > button.is-wrong { border-color: rgba(251, 113, 133, 0.5); color: #ffe4e6; background: rgba(159, 18, 57, 0.14); }
 
@@ -1057,8 +1084,12 @@
   background: rgba(255, 255, 255, 0.025);
 }
 
-.gcs-sources a:hover,
 .gcs-sources a:focus-visible { border-color: var(--gcs-cyan); color: white; }
+
+@media (hover: hover) and (pointer: fine) {
+
+.gcs-sources a:hover { border-color: var(--gcs-cyan); color: white; }
+}
 .gcs-sources a svg { flex: 0 0 auto; width: 0.85rem; height: 0.85rem; }
 
 .gcs-next {

@@ -86,9 +86,12 @@ margin: 0.875rem auto 0;
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .action:hover {
   transform: translateY(-1px);
   background: #a5f3fc;
+}
 }
 
 .action svg {

@@ -94,11 +94,19 @@ margin: 1rem auto 2.5rem;
   transform: scale(1.25);
 }
 
-.about-hero-slider-dot:hover,
 .about-hero-slider-dot:focus-visible {
   background: rgba(59, 130, 246, 0.9);
   border-color: rgba(59, 130, 246, 1);
   transform: scale(1.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.about-hero-slider-dot:hover {
+  background: rgba(59, 130, 246, 0.9);
+  border-color: rgba(59, 130, 246, 1);
+  transform: scale(1.1);
+}
 }
 
 @media (width <= 768px) {

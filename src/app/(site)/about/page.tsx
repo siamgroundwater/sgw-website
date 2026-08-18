@@ -1,15 +1,15 @@
 // src/app/(site)/about/page.tsx
 
-import type { Metadata } from 'next'
 import Image from 'next/image'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import './page.css'
 
-export const metadata: Metadata = {
+export const metadata = createThaiPageMetadata({
   title: 'เกี่ยวกับเรา | Siam Groundwater',
   description:
     'รู้จักบริษัท สยามกราวด์วอเตอร์ จำกัด ประสบการณ์ ทีมงาน และแนวทางพัฒนาน้ำบาดาลอย่างถูกหลักวิชาการและยั่งยืน',
-  alternates: { canonical: '/about' },
-}
+  pathname: '/about',
+})
 import Teams from './teams/teams'
 import HeroSlide from './hero-slide/HeroSlide'
 

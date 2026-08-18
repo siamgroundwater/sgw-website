@@ -282,8 +282,8 @@ export default function HeroSlide() {
         ref={sliderRef}
         className="about-hero-slider-track"
         onScroll={handleScroll}
-        onMouseEnter={pauseAutoplay}
-        onMouseLeave={() => (pausedRef.current = false)}
+        onPointerEnter={(event) => { if (event.pointerType === 'mouse') pauseAutoplay() }}
+        onPointerLeave={(event) => { if (event.pointerType === 'mouse') pausedRef.current = false }}
         onFocusCapture={pauseAutoplay}
         onBlurCapture={() => (pausedRef.current = false)}
         onTouchStart={pauseAutoplay}

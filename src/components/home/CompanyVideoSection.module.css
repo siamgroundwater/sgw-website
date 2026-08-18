@@ -51,9 +51,12 @@
   background: rgba(103, 232, 249, 0.06);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .youtubeLink:hover {
   border-color: rgba(165, 243, 252, 0.6);
   background: rgba(103, 232, 249, 0.12);
+}
 }
 
 .youtubeLink svg {
@@ -91,8 +94,11 @@
   transition: transform 240ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .videoButton:hover img {
   transform: scale(1.025);
+}
 }
 
 .overlay {

@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react'
 import 'leaflet/dist/leaflet.css'
-import { projects as projectRegistry, type Project } from '@/lib/projects'
+import type { ProjectSummary } from '@/lib/project-summaries'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import type { LocalizedContent } from '@/i18n/localized-content'
 import {
@@ -26,8 +26,8 @@ import {
 import './map.css'
 import type { Map as LeafletMap } from 'leaflet'
 
-export type HomeProject = Project
-type MappableProject = Project & { lat: number; lng: number }
+export type HomeProject = ProjectSummary
+type MappableProject = ProjectSummary & { lat: number; lng: number }
 type MapFilter = 'all' | ProjectCategoryKey
 type LocationStatus = 'idle' | 'locating' | 'found' | 'error'
 
@@ -38,7 +38,7 @@ type CurrentLocation = {
 }
 
 type HomeMapProps = {
-  projects?: HomeProject[]
+  projects: HomeProject[]
   title?: string
   locale?: LocalizedLocale
   projectCopy?: LocalizedContent['projects']
@@ -162,7 +162,7 @@ const MarkerClusterGroup = dynamic(
 
 const FALLBACK_CENTER: [number, number] = [15, 100]
 
-function isMappableProject(project: Project): project is MappableProject {
+function isMappableProject(project: HomeProject): project is MappableProject {
   return (
     typeof project.lat === 'number' &&
     Number.isFinite(project.lat) &&
@@ -193,7 +193,7 @@ export default function HomeMap({
   const mapRef = useRef<LeafletMap | null>(null)
   const isMountedRef = useRef(true)
   const copy = mapCopy[locale]
-  const data = projects ?? projectRegistry
+  const data = projects
 
   const setMapRef = useCallback((map: LeafletMap | null) => {
     mapRef.current = map
@@ -535,7 +535,7 @@ export default function HomeMap({
               aria-label={`${copy.viewProject}: ${selectedProject.title}`}
             >
               <Image
-                src={selectedProject.localCoverImage}
+                src={selectedProject.coverImage}
                 alt=""
                 width={640}
                 height={400}

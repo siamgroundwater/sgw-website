@@ -9,7 +9,7 @@ import './ProjectMediaSlider.css'
 type ProjectMediaSliderProps = {
   images: string[]
   locale: LocalizedLocale
-  projectNumber: number
+  projectNumber: number | string
   title: string
 }
 

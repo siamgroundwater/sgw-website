@@ -241,9 +241,12 @@ height: 480px;
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .retryButton:hover {
   transform: translateY(-1px);
   background: #a5f3fc;
+}
 }
 
 .retryButton:focus-visible {
@@ -282,13 +285,19 @@ height: 480px;
   background: #67e8f9;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .primaryButton:hover {
   transform: translateY(-1px);
 }
+}
+
+@media (hover: hover) and (pointer: fine) {
 
 .primaryButton:hover {
   border-color: #a5f3fc;
   background: #a5f3fc;
+}
 }
 
 .primaryButton svg {

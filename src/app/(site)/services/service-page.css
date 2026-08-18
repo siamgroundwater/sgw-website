@@ -38,8 +38,11 @@ margin: 0 auto;
   color: rgba(255, 255, 255, 0.85);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .serviceBreadcrumbsLink:hover {
   text-decoration: underline;
+}
 }
 
 .serviceBreadcrumbsCurrent {
@@ -117,8 +120,11 @@ margin: 0 auto;
   border: 1px solid rgba(56, 189, 248, 0.7);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .serviceButtonPrimary:hover {
   filter: brightness(1.03);
+}
 }
 
 .serviceButtonGhost {
@@ -127,8 +133,11 @@ margin: 0 auto;
   border: 1px solid rgba(148, 163, 184, 0.24);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .serviceButtonGhost:hover {
   background: rgba(15, 23, 42, 0.5);
+}
 }
 
 .serviceSection {

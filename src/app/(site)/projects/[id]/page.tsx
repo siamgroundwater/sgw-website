@@ -1,41 +1,48 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MapPin, MessageCircle } from 'lucide-react'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlider'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import {
-  getProjectById,
   getProjectMapUrl,
-  projects,
 } from '@/lib/projects'
+import { getPublicProjectById, getPublicProjectByLegacyId, listPublicProjects } from '@/server/public-projects'
 import './page.css'
+
+export const revalidate = 60
 
 type ProjectPageProps = {
   params: Promise<{ id: string }>
 }
 
-export function generateStaticParams() {
-  return projects.map((project) => ({ id: String(project._id) }))
+async function resolveProject(id: string) {
+  return (await getPublicProjectById(id)) || (await getPublicProjectByLegacyId(id))
+}
+
+export async function generateStaticParams() {
+  return (await listPublicProjects()).map((project) => ({ id: String(project._id) }))
 }
 
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { id } = await params
-  const project = getProjectById(id)
+  const project = await resolveProject(id)
   if (!project) return { title: 'ไม่พบโครงการ | Siam Groundwater' }
 
-  return {
+  return createThaiPageMetadata({
     title: `${project.title} | ผลงาน Siam Groundwater`,
-    description: `ข้อมูลสรุปโครงการ ${project.title} จากทะเบียนผลงานของบริษัท สยามกราวด์วอเตอร์ จำกัด`,
-    alternates: { canonical: `/projects/${project._id}` },
-  }
+    description: project.summary || `ข้อมูลสรุปโครงการ ${project.title} จากทะเบียนผลงานของบริษัท สยามกราวด์วอเตอร์ จำกัด`,
+    pathname: `/projects/${project._id}`,
+  })
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { id } = await params
-  const project = getProjectById(id)
+  const project = await resolveProject(id)
   if (!project) notFound()
+  if (id !== project._id) permanentRedirect(`/projects/${project._id}`)
   const mapUrl = getProjectMapUrl(project)
 
   return (
@@ -50,7 +57,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <article className="project-detail-card">
         <ProjectMediaSlider
-          images={project.localGalleryImages}
+          images={project.galleryImages}
           locale="th"
           projectNumber={project._id}
           title={project.title}
@@ -96,6 +103,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <section className="project-detail-record">
             <h2>รายละเอียดงาน</h2>
             <p className="project-detail-story">{project.summary}</p>
+            {project.details.length ? <div className="project-detail-sections">{project.details.map((detail, index) => <p key={`${index}-${detail.slice(0, 24)}`}>{detail}</p>)}</div> : null}
             <p className="project-detail-source">
               เรียบเรียงจากทะเบียนผลงานและเนื้อหาที่เผยแพร่ในเว็บไซต์เดิมของบริษัท
             </p>

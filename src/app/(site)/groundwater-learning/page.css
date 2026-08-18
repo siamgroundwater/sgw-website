@@ -124,18 +124,27 @@ margin: 1.25rem auto 0;
   background: rgba(255, 255, 255, 0.06);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .groundwater-learning-primary-action:hover,
 .groundwater-learning-secondary-action:hover {
   transform: translateY(-2px);
 }
+}
+
+@media (hover: hover) and (pointer: fine) {
 
 .groundwater-learning-primary-action:hover {
   background: #a5f3fc;
 }
+}
+
+@media (hover: hover) and (pointer: fine) {
 
 .groundwater-learning-secondary-action:hover {
   border-color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.1);
+}
 }
 
 .groundwater-learning-primary-action svg,
@@ -215,10 +224,13 @@ display: block;
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .groundwater-learning-start-list > a:hover {
   transform: translateX(3px);
   border-color: rgba(103, 232, 249, 0.45);
   background: rgba(103, 232, 249, 0.08);
+}
 }
 
 .groundwater-learning-start-list > a > svg {
@@ -396,9 +408,12 @@ display: block;
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .groundwater-learning-cta > a:hover {
   transform: translateY(-2px);
   background: #a5f3fc;
+}
 }
 
 .groundwater-learning-cta > a svg {

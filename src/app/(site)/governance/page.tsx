@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Download } from 'lucide-react'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import './page.css'
 
-export const metadata: Metadata = {
+export const metadata = createThaiPageMetadata({
   title: 'โครงการรักษ์น้ำบาดาล | Siam Groundwater',
   description:
     'แนวทางบริหารจัดการและอนุรักษ์ทรัพยากรน้ำบาดาลอย่างยั่งยืน โดยผู้เจาะ ผู้ใช้น้ำ และหน่วยงานภาครัฐมีส่วนร่วม',
-  alternates: { canonical: '/governance' },
-}
+  pathname: '/governance',
+})
 
 export default function GovernancePage() {
   return (

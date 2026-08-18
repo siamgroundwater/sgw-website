@@ -8,6 +8,7 @@ import GroundwaterCaseStudies from '@/components/GroundwaterCaseStudies/Groundwa
 import GroundwaterLawGuide from '@/components/GroundwaterLawGuide/GroundwaterLawGuide'
 import GroundwaterFaq from '@/components/GroundwaterFaq/GroundwaterFaq'
 import GroundwaterOwnerGuide from '@/components/GroundwaterOwnerGuide/GroundwaterOwnerGuide'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import {
   getLearningArticle,
   learningArticles,
@@ -28,11 +29,12 @@ export async function generateMetadata({
   const { slug } = await params
   const article = getLearningArticle(slug)
   if (!article) return { title: 'ไม่พบบทความ | Siam Groundwater' }
-  return {
+  return createThaiPageMetadata({
     title: `${article.title} | Siam Groundwater`,
     description: article.description,
-    alternates: { canonical: `/learn/${article.slug}` },
-  }
+    pathname: `/learn/${article.slug}`,
+    openGraphType: 'article',
+  })
 }
 
 export default async function LearningArticlePage({ params }: LearningPageProps) {

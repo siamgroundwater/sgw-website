@@ -572,8 +572,11 @@ padding: 1.5rem;
   text-decoration: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .locale-learning-grid h2 a:hover {
   color: #a5f3fc;
+}
 }
 
 .locale-learning-grid article > span {

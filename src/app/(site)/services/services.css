@@ -74,11 +74,14 @@
     box-shadow 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .home-service-card:hover {
   border-color: rgba(103, 232, 249, 0.78);
   background: rgba(8, 62, 75, 0.94);
   box-shadow: 0 1.2rem 2.6rem rgba(3, 20, 31, 0.34);
   transform: translateY(-0.25rem);
+}
 }
 
 .home-service-icon {

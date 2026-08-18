@@ -127,8 +127,8 @@ export default function Slider({
       role="region"
       aria-roledescription="carousel"
       aria-label={ariaLabel}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onPointerEnter={(event) => { if (event.pointerType === 'mouse') setIsHovering(true) }}
+      onPointerLeave={(event) => { if (event.pointerType === 'mouse') setIsHovering(false) }}
     >
       <div className="slider__viewport">
         <div

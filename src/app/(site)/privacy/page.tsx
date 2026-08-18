@@ -1,19 +1,19 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import './page.css'
 
-export const metadata: Metadata = {
+export const metadata = createThaiPageMetadata({
   title: 'นโยบายข้อมูลส่วนบุคคล | Siam Groundwater',
-  description: 'แนวทางใช้และดูแลข้อมูลที่ส่งผ่านแบบฟอร์มติดต่อของ Siam Groundwater',
-  alternates: { canonical: '/privacy' },
-}
+  description: 'แนวทางใช้และดูแลข้อมูลที่ส่งให้ทีมงานของ Siam Groundwater ผ่านช่องทางติดต่อของบริษัท',
+  pathname: '/privacy',
+})
 
 export default function PrivacyPage() {
   return (
     <main className="privacy-page">
       <p className="privacy-eyebrow">PRIVACY NOTICE</p>
-      <h1>การใช้ข้อมูลจากแบบฟอร์มติดต่อ</h1>
+      <h1>การใช้ข้อมูลจากช่องทางติดต่อ</h1>
       <p className="privacy-lead">
         บริษัท สยามกราวด์วอเตอร์ จำกัด ใช้ข้อมูลที่คุณส่งผ่านเว็บไซต์
         เพื่อประเมินคำขอ ติดต่อกลับ และจัดทำข้อเสนอที่เกี่ยวข้องเท่านั้น

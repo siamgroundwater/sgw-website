@@ -1,22 +1,24 @@
-import recoveredProjects from '@/data/wordpress-projects-recovered.json'
-import { sortProjectsNewestFirst } from './project-sort'
+import {
+  type ProjectCategory,
+} from './project-categories'
 
-export const PROJECT_CATEGORIES = [
-  'ภาครัฐ',
-  'โรงงาน',
-  'โรงแรม รีสอร์ต',
-  'เกษตรกรรม ปศุสัตว์',
-  'Dewatering',
-  'อื่นๆ',
-] as const
+export type { ProjectCategory }
 
-export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number]
+export type ProjectTranslation = {
+  businessTypes: string[]
+  details: string[]
+  location: string
+  summary: string
+  title: string
+  workTypes: string[]
+}
 
 export type Project = {
-  _id: number
+  _id: string
   legacyPostId: number
   slug: string
   title: string
+  translations: { en: ProjectTranslation }
   year: number | null
   projectType: string
   projectTypeLabel: string
@@ -26,77 +28,11 @@ export type Project = {
   workTypes: string[]
   businessTypes: string[]
   coverImage: string
-  localCoverImage: string
   galleryImages: string[]
-  localGalleryImages: string[]
   summary: string
   details: string[]
   legacyUrl: string
   category: ProjectCategory[]
-}
-
-type RecoveredProject = Omit<Project, 'projectTypeLabel' | 'category'>
-
-const typePresentation: Record<
-  string,
-  { label: string; category: ProjectCategory }
-> = {
-  agriculture: {
-    label: 'โครงการน้ำบาดาลเพื่อการเกษตร',
-    category: 'เกษตรกรรม ปศุสัตว์',
-  },
-  factory: {
-    label: 'โครงการน้ำบาดาลภาคอุตสาหกรรม',
-    category: 'โรงงาน',
-  },
-  government: {
-    label: 'โครงการน้ำบาดาลภาครัฐ',
-    category: 'ภาครัฐ',
-  },
-  'island, resort': {
-    label: 'โครงการน้ำบาดาลรีสอร์ตบนเกาะ',
-    category: 'โรงแรม รีสอร์ต',
-  },
-  resort: {
-    label: 'โครงการน้ำบาดาลโรงแรมและรีสอร์ต',
-    category: 'โรงแรม รีสอร์ต',
-  },
-  train: {
-    label: 'โครงการสูบลดระดับน้ำและโครงสร้างพื้นฐาน',
-    category: 'Dewatering',
-  },
-  infrastructure: {
-    label: 'โครงการสูบลดระดับน้ำและโครงสร้างพื้นฐาน',
-    category: 'Dewatering',
-  },
-  dewatering: {
-    label: 'โครงการสูบลดระดับน้ำและโครงสร้างพื้นฐาน',
-    category: 'Dewatering',
-  },
-  other: {
-    label: 'โครงการน้ำบาดาล',
-    category: 'อื่นๆ',
-  },
-}
-
-function presentProject(project: RecoveredProject): Project {
-  const presentation = typePresentation[project.projectType] ?? typePresentation.other
-
-  return {
-    ...project,
-    projectTypeLabel: presentation.label,
-    category: [presentation.category],
-  }
-}
-
-export const projects = sortProjectsNewestFirst(
-  (recoveredProjects as RecoveredProject[]).map(presentProject)
-)
-
-export function getProjectById(id: string | number) {
-  const numericId = typeof id === 'number' ? id : Number(id)
-  if (!Number.isInteger(numericId)) return undefined
-  return projects.find((project) => project._id === numericId)
 }
 
 export function getProjectMapUrl(project: Project) {

@@ -1,13 +1,13 @@
-import type { Metadata } from 'next'
 import ContactDetails from '@/components/ContactDetails/ContactDetails'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
 import './page.css'
 
-export const metadata: Metadata = {
+export const metadata = createThaiPageMetadata({
   title: 'ติดต่อเรา | Siam Groundwater',
   description:
     'ติดต่อบริษัท สยามกราวด์วอเตอร์ จำกัด เพื่อขอคำปรึกษา สำรวจ เจาะ ซ่อมบำรุง และแก้ไขปัญหาระบบน้ำบาดาล',
-  alternates: { canonical: '/contact' },
-}
+  pathname: '/contact',
+})
 
 export default function ContactPage() {
   const officeAddress =

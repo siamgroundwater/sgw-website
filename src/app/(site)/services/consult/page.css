@@ -45,8 +45,11 @@
   border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .consult-breadcrumb-link:hover {
   border-bottom-color: rgba(255, 255, 255, 0.75);
+}
 }
 
 .consult-breadcrumb-sep {
@@ -130,9 +133,12 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .consult-btn-primary:hover {
   background: rgba(60, 140, 255, 0.24);
   border-color: rgba(60, 140, 255, 0.5);
+}
 }
 
 .consult-btn-ghost {
@@ -140,9 +146,12 @@
   color: rgba(255, 255, 255, 0.92);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .consult-btn-ghost:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
+}
 }
 
 .consult-bullets {

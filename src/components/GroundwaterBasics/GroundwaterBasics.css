@@ -141,12 +141,21 @@ flex: 0 1 auto;
   cursor: pointer;
 }
 
-.gb-chapter-nav button:hover,
 .gb-chapter-nav button:focus-visible {
   border-color: rgba(103, 232, 249, 0.5);
   color: white;
   background: rgba(103, 232, 249, 0.1);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gb-chapter-nav button:hover {
+  border-color: rgba(103, 232, 249, 0.5);
+  color: white;
+  background: rgba(103, 232, 249, 0.1);
+  outline: none;
+}
 }
 
 .gb-chapter-nav button svg {
@@ -966,11 +975,19 @@ margin-top: 0.55rem;
   cursor: pointer;
 }
 
-.gb-quiz fieldset button:hover,
 .gb-quiz fieldset button:focus-visible {
   border-color: rgba(103, 232, 249, 0.45);
   color: white;
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gb-quiz fieldset button:hover {
+  border-color: rgba(103, 232, 249, 0.45);
+  color: white;
+  outline: none;
+}
 }
 
 .gb-quiz fieldset button > span {
@@ -1098,9 +1115,12 @@ margin-top: 0.55rem;
   font-size: var(--fs-sm);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .gb-sources a:hover {
   border-color: rgba(103, 232, 249, 0.35);
   color: var(--gb-cyan);
+}
 }
 
 .gb-sources a svg {

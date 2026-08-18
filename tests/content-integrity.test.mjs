@@ -8,10 +8,9 @@ import { groundwaterLawDocuments } from '../src/data/groundwater-law-library.ts'
 import { groundwaterFaqItems, groundwaterFaqSourceLinks } from '../src/data/groundwater-faq.ts'
 import { recoveredThaiServiceDetails } from '../src/data/service-page-details.ts'
 import { sortProjectsNewestFirst } from '../src/lib/project-sort.ts'
+import { toProjectSummary } from '../src/lib/project-summaries.ts'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const projectFile = path.join(root, 'src/data/wordpress-projects-recovered.json')
-const projects = JSON.parse(readFileSync(projectFile, 'utf8'))
 
 function listFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -20,79 +19,13 @@ function listFiles(directory) {
   })
 }
 
-function isProjectImageUrl(sourceUrl) {
-  try {
-    return /\.(?:jpe?g|png|webp|gif)$/i.test(new URL(sourceUrl).pathname)
-  } catch {
-    return false
-  }
-}
-
-function canonicalProjectImageKey(sourceUrl) {
-  try {
-    return decodeURIComponent(new URL(sourceUrl).pathname)
-      .toLocaleLowerCase('en')
-      .replace(/-\d+x\d+(?=\.[^.]+$)/, '')
-      .replace(/-scaled(?=\.[^.]+$)/, '')
-      .replace(/-e\d+(?=\.[^.]+$)/, '')
-  } catch {
-    return sourceUrl.toLocaleLowerCase('en')
-  }
-}
-
-function expectedDistinctProjectImages(project) {
-  return new Set(
-    [project.coverImage, ...project.galleryImages]
-      .filter(Boolean)
-      .filter(isProjectImageUrl)
-      .map(canonicalProjectImageKey)
-  ).size
-}
-
-test('project data has unique valid records and existing assets', () => {
-  assert.ok(projects.length > 0)
-  assert.equal(new Set(projects.map((project) => project._id)).size, projects.length)
-
-  for (const project of projects) {
-    assert.ok(project.title.trim())
-    assert.ok(project.year === null || Number.isInteger(project.year))
-    assert.ok(project.location.trim())
-    assert.ok(project.summary.trim())
-    assert.ok(project.workTypes.length > 0 || project._id === 76)
-    if (project.lat !== null || project.lng !== null) {
-      assert.ok(Number.isFinite(project.lat) && project.lat >= -90 && project.lat <= 90)
-      assert.ok(Number.isFinite(project.lng) && project.lng >= -180 && project.lng <= 180)
-    }
-
-    assert.ok(project.localCoverImage.startsWith('/'))
-    assert.ok(
-      existsSync(path.join(root, 'public', project.localCoverImage.slice(1))),
-      project.localCoverImage
-    )
-    assert.ok(project.localGalleryImages.length >= 1)
-    assert.equal(
-      project.localGalleryImages.length,
-      expectedDistinctProjectImages(project),
-      project.title
-    )
-    assert.equal(project.localGalleryImages[0], project.localCoverImage)
-    assert.equal(
-      new Set(project.localGalleryImages).size,
-      project.localGalleryImages.length
-    )
-    if (project.galleryImages.length > 1) {
-      assert.ok(project.localGalleryImages.length > 1, project.title)
-    }
-    for (const galleryImage of project.localGalleryImages) {
-      assert.ok(
-        existsSync(path.join(root, 'public', galleryImage.slice(1))),
-        galleryImage
-      )
-    }
-  }
-})
-
 test('projects default to newest year first with undated records last', () => {
+  const projects = [
+    { _id: 3, year: null },
+    { _id: 2, year: 2024 },
+    { _id: 1, year: 2024 },
+    { _id: 4, year: 2022 },
+  ]
   const sortedProjects = sortProjectsNewestFirst(projects)
 
   for (let index = 1; index < sortedProjects.length; index += 1) {
@@ -104,6 +37,55 @@ test('projects default to newest year first with undated records last', () => {
   if (sortedProjects.some((project) => project.year === null)) {
     assert.equal(sortedProjects.at(-1).year, null)
   }
+})
+
+test('public project listings use a lightweight Cloudinary-backed projection', () => {
+  assert.equal(existsSync(path.join(root, 'src/data/wordpress-projects-recovered.json')), false)
+  assert.equal(existsSync(path.join(root, 'src/data/project-summaries.json')), false)
+  assert.equal(existsSync(path.join(root, 'public/images/projects/wordpress')), false)
+
+  const objectId = '66c2a8e109f1d0b582a6f701'
+  const project = {
+    _id: objectId,
+    businessTypes: ['โรงงาน'],
+    category: ['โรงงาน'],
+    coverImage: 'https://res.cloudinary.com/example/image/upload/cover.webp',
+    details: ['Detail'],
+    galleryImages: ['https://res.cloudinary.com/example/image/upload/gallery.webp'],
+    lat: 13.7,
+    legacyPostId: 123,
+    legacyUrl: 'https://example.com/project',
+    lng: 100.5,
+    location: 'กรุงเทพมหานคร',
+    projectType: 'factory',
+    projectTypeLabel: 'Factory',
+    slug: 'factory-project',
+    summary: 'Summary',
+    title: 'Project',
+    workTypes: ['Survey'],
+    year: 2024,
+  }
+  assert.deepEqual(toProjectSummary(project), {
+    _id: objectId,
+    category: ['โรงงาน'],
+    coverImage: project.coverImage,
+    lat: 13.7,
+    lng: 100.5,
+    location: 'กรุงเทพมหานคร',
+    projectType: 'factory',
+    projectTypeLabel: 'Factory',
+    title: 'Project',
+    workTypes: ['Survey'],
+    year: 2024,
+  })
+
+  const publicSource = readFileSync(path.join(root, 'src/server/public-projects.ts'), 'utf8')
+  assert.match(publicSource, /getCmsProjectsCollection/)
+  assert.match(publicSource, /status:\s*'active'/)
+  assert.match(publicSource, /ObjectId\.isValid/)
+  assert.match(publicSource, /_id:\s*new ObjectId/)
+  assert.match(publicSource, /coverImage:\s*document\.coverImage/)
+  assert.doesNotMatch(publicSource, /wordpress-projects-recovered/)
 })
 
 test('learning center exposes six unique complete routes', () => {
@@ -415,9 +397,15 @@ test('home sections keep the video and place customer history after social media
     path.join(root, 'src', 'components', 'home', 'SocialMediaSection.tsx'),
     'utf8'
   )
+  const videoSection = readFileSync(
+    path.join(root, 'src', 'components', 'home', 'CompanyVideoSection.tsx'),
+    'utf8'
+  )
 
   assert.match(defaultHome, /<CompanyVideoSection locale="th" \/>/)
   assert.match(localizedPage, /<CompanyVideoSection locale=\{locale\} \/>/)
+  assert.match(videoSection, /maxresdefault\.jpg/)
+  assert.match(videoSection, /\bunoptimized\b/)
   assert.ok(defaultHome.indexOf('<SocialMediaSection />') < defaultHome.indexOf('<CustomerHistorySection />'))
   assert.ok(localizedPage.indexOf('<SocialMediaSection locale={locale} />') < localizedPage.indexOf('<CustomerHistorySection locale={locale} />'))
   assert.match(socialSection, /tiktok\.com\/@siamgroundwater\.co/)
@@ -454,6 +442,37 @@ test('home project map can move to the visitor current location', () => {
     mapStyles,
     /\.home-map-location-control\s*\{[\s\S]*?right:\s*0\.65rem;[\s\S]*?bottom:\s*0\.65rem;/
   )
+
+  const nextConfig = readFileSync(path.join(root, 'next.config.ts'), 'utf8')
+  assert.match(nextConfig, /geolocation=\(self\)/)
+  assert.doesNotMatch(nextConfig, /geolocation=\(\)/)
+})
+
+test('Thai routes keep localized search metadata and page-level headings', () => {
+  const metadataHelper = readFileSync(
+    path.join(root, 'src', 'lib', 'site-metadata.ts'),
+    'utf8'
+  )
+  const structuredData = readFileSync(
+    path.join(root, 'src', 'components', 'SiteStructuredData', 'SiteStructuredData.tsx'),
+    'utf8'
+  )
+  const servicesPage = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'services', 'page.tsx'),
+    'utf8'
+  )
+  const projectsPage = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'projects', 'page.tsx'),
+    'utf8'
+  )
+
+  assert.match(metadataHelper, /languages:\s*languageAlternates\(pathname\)/)
+  assert.match(metadataHelper, /openGraph:/)
+  assert.match(metadataHelper, /twitter:/)
+  assert.match(structuredData, /'@type': 'Organization'/)
+  assert.match(structuredData, /'@type': 'WebSite'/)
+  assert.match(servicesPage, /<Services headingLevel="h1" \/>/)
+  assert.match(projectsPage, /<Projects projects=\{projects\} showHistoryMap headingLevel="h1" \/>/)
 })
 
 test('home project cards and map popup actions open details in a new tab', () => {

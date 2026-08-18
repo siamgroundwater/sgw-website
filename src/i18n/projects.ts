@@ -1,4 +1,5 @@
 import type { Project } from '@/lib/projects'
+import type { LocalizedLocale } from './config'
 import type { LocalizedContent } from './localized-content'
 
 export type ProjectCategoryKey =
@@ -36,7 +37,7 @@ export function getProjectCategoryKey(
 }
 
 export function getLocalizedProjectPresentation(
-  project: Project,
+  project: Pick<Project, 'projectType'>,
   copy: LocalizedContent['projects']
 ) {
   const categoryKey = getProjectCategoryKey(project.projectType)
@@ -48,5 +49,19 @@ export function getLocalizedProjectPresentation(
       (categoryKey === 'dewatering'
         ? copy.types.infrastructure
         : copy.types.other),
+  }
+}
+
+export function localizeProject(project: Project, locale: LocalizedLocale): Project {
+  if (locale === 'th') return project
+  const english = project.translations.en
+  return {
+    ...project,
+    businessTypes: english.businessTypes.length ? english.businessTypes : project.businessTypes,
+    details: english.details.length ? english.details : project.details,
+    location: english.location || project.location,
+    summary: english.summary || project.summary,
+    title: english.title || project.title,
+    workTypes: english.workTypes.length ? english.workTypes : project.workTypes,
   }
 }

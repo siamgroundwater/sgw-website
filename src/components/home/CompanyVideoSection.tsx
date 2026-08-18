@@ -87,6 +87,7 @@ export default function CompanyVideoSection({ locale }: { locale: LocalizedLocal
               fill
               loading="lazy"
               sizes="(width <= 900px) 100vw, 58vw"
+              unoptimized
             />
             <span className={styles.overlay} aria-hidden="true" />
             <span className={styles.playIcon} aria-hidden="true"><Play fill="currentColor" /></span>

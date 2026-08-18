@@ -46,9 +46,12 @@
   transition: transform 180ms ease, filter 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .footer-logo:hover {
   filter: drop-shadow(0 0 0.85rem rgba(103, 232, 249, 0.28));
   transform: translateY(-0.15rem);
+}
 }
 
 .footer-logo img {
@@ -120,9 +123,12 @@
   text-underline-offset: 0.25rem;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .footer-link:hover {
   color: #a5f3fc;
   text-decoration: underline;
+}
 }
 
 .footer-social {
@@ -147,11 +153,14 @@
     box-shadow 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .footer-social-item:hover {
   border-color: rgba(103, 232, 249, 0.55);
   background: rgba(255, 255, 255, 0.14);
   box-shadow: 0 0.7rem 1.5rem rgba(2, 18, 28, 0.3);
   transform: translateY(-0.15rem);
+}
 }
 
 .footer-social img {
@@ -209,10 +218,13 @@
     box-shadow 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .footer-back-to-top:hover {
   background: #2a6175;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.48);
   transform: translateY(-0.2rem);
+}
 }
 
 .footer-back-to-top-icon {

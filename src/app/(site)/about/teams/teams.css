@@ -57,10 +57,13 @@
   transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .teams-selector-button:hover {
   border-color: rgba(103, 232, 249, 0.45);
   background: rgba(7, 67, 77, 0.76);
   transform: translateY(-2px);
+}
 }
 
 .teams-selector-button.is-active {

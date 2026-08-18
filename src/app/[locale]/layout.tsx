@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import Navbar from '@/components/Navbar/Navbar'
 import NavbarMobile from '@/components/Navbar/mobile/Navbar-mobile'
 import Footer from '@/components/Footer/Footer'
+import SiteStructuredData from '@/components/SiteStructuredData/SiteStructuredData'
 import {
   PREFIXED_LOCALES,
   isLocalizedLocale,
@@ -68,6 +69,7 @@ export default async function LocalizedLayout({ children, params }: LayoutProps)
   return (
     <html lang={localeInfo[locale].htmlLang}>
       <body className="antialiased min-h-screen">
+        <SiteStructuredData />
         <Navbar />
         <NavbarMobile />
         {children}

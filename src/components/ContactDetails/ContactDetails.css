@@ -37,10 +37,13 @@
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .contact-card:hover {
   transform: translateY(-2px);
   border-color: rgba(103, 232, 249, 0.42);
   box-shadow: 0 14px 30px rgba(1, 18, 27, 0.24);
+}
 }
 
 .contact-card-link {
@@ -124,10 +127,13 @@
   margin: 0.7rem 0.7rem 0.7rem 0.25rem;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .contact-copy-button:hover,
 .contact-map-address button:hover {
   border-color: rgba(103, 232, 249, 0.52);
   background: rgba(103, 232, 249, 0.14);
+}
 }
 
 .contact-copy-button.is-copied,
@@ -200,8 +206,11 @@
   text-decoration: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .contact-map-heading > a:hover {
   background: #a5f3fc;
+}
 }
 
 .contact-map-heading > a svg {

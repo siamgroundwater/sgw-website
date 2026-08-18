@@ -57,11 +57,19 @@
   transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
-.project-detail-media-arrow:hover,
 .project-detail-media-arrow:focus-visible {
   border-color: #a5f3fc;
   background: rgba(8, 79, 88, 0.94);
   transform: translateY(-50%) scale(1.05);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.project-detail-media-arrow:hover {
+  border-color: #a5f3fc;
+  background: rgba(8, 79, 88, 0.94);
+  transform: translateY(-50%) scale(1.05);
+}
 }
 
 .project-detail-media-arrow svg {
@@ -122,11 +130,18 @@
   transition: width 160ms ease, background 160ms ease, border-color 160ms ease;
 }
 
-.project-detail-media-dots button:hover,
 .project-detail-media-dots button:focus-visible,
 .project-detail-media-dots button.is-active {
   border-color: #67e8f9;
   background: #67e8f9;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.project-detail-media-dots button:hover {
+  border-color: #67e8f9;
+  background: #67e8f9;
+}
 }
 
 .project-detail-media-dots button.is-active {

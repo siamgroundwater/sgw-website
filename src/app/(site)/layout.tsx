@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import Navbar from '@/components/Navbar/Navbar'
 import NavbarMobile from '@/components/Navbar/mobile/Navbar-mobile'
 import Footer from '@/components/Footer/Footer'
+import SiteStructuredData from '@/components/SiteStructuredData/SiteStructuredData'
 import { languageAlternates } from '@/i18n/config'
 
 export const metadata: Metadata = {
@@ -53,6 +54,7 @@ export default function ThaiLayout({
   return (
     <html lang="th">
       <body className="antialiased min-h-screen">
+        <SiteStructuredData />
         <Navbar />
         <NavbarMobile />
         {children}

@@ -95,10 +95,13 @@
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .governance-download-button:hover {
   border-color: #a5f3fc;
   background: #a5f3fc;
   transform: translateY(-2px);
+}
 }
 
 .governance-download-button svg {

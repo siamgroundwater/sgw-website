@@ -45,8 +45,11 @@
   transition: opacity 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-logo:hover img{
   opacity: 0.86;
+}
 }
 
 /* center nav */
@@ -99,15 +102,24 @@
   transition: transform 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-link:hover {
   color: #d9fbff;
   background-color: rgba(0, 57, 58, 0.7);
 }
+}
 
-.navbar-link:hover::after,
 .navbar-link:focus-visible::after,
 .navbar-link.is-active::after {
   transform: translateX(-50%) scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
 }
 
 .navbar-link.is-active {
@@ -116,8 +128,10 @@
 }
 
 /* highlight parent if it has subnav and is hovered */
+@media (hover: hover) and (pointer: fine) {
 .has-subnav:hover .navbar-link {
   background-color: rgba(0, 57, 58, 0.7);
+}
 }
 
 /* ========== SUB NAV ========== */
@@ -140,13 +154,20 @@ background-color: rgba(1, 53, 58, 0.98);
 }
 
 /* show submenu on hover of parent item */
-.navbar-item:hover .navbar-subnav,
 .navbar-item:focus-within .navbar-subnav {
   display: flex;
 }
+@media (hover: hover) and (pointer: fine) {
+.navbar-item:hover .navbar-subnav {
+  display: flex;
+}
+}
+
+@media (hover: hover) and (pointer: fine) {
 
 .navbar-subnav:hover{
   display: flex;
+}
 }
 
 /* each subnav line */
@@ -162,9 +183,12 @@ background-color: rgba(1, 53, 58, 0.98);
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-subnav-link:hover {
   color: #e0f0d0;
   background-color: rgba(34, 197, 189, 0.16);
+}
 }
 
 .navbar-subnav-link.is-active {
@@ -197,9 +221,11 @@ background-color: rgba(1, 53, 58, 0.98);
   font-size: var(--fs-sm);
   transition: color 0.2s ease, background-color 0.2s ease;
 }
+@media (hover: hover) and (pointer: fine) {
 .navbar-lang-btn:hover {
   color: #a5f3fc;
   background-color: rgba(0, 57, 58, 0.7);
+}
 }
 
 .navbar-lang-btn:focus-visible,
@@ -256,8 +282,11 @@ background-color: rgba(1, 53, 58, 0.98);
   border-radius: 0.25rem;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-lang-menu-item:hover {
   background-color: rgba(34, 197, 189, 0.2);
+}
 }
 
 .navbar-lang-menu-item[aria-current='page'] {

@@ -42,7 +42,7 @@ npm run build
 
 ## Content locations
 
-- Projects: `src/app/(site)/home/projects.json`
+- Published projects: MongoDB `cmsProjects` records with Cloudinary media
 - Learning articles: `src/data/learning.ts`
 - English, Chinese and Japanese copy: `src/i18n/localized-content.ts`
 - Locale configuration, navigation and route helpers: `src/i18n/config.ts`
@@ -53,7 +53,7 @@ npm run build
 - Thai is the default language and keeps the existing unprefixed routes, such as `/services`.
 - English uses `/en`, Simplified Chinese uses `/zh`, and Japanese uses `/ja`.
 - The language switcher preserves the current page whenever the equivalent translated route exists.
-- Localized project details and learning articles are statically generated at build time.
+- Localized project details use Thai-first MongoDB content with English project translations and are revalidated after publishing.
 - Canonical URLs and `hreflang` alternatives are emitted in localized page metadata and `sitemap.xml`.
 
 ข้อมูลโครงการต้องมาจากข้อมูลที่ตรวจสอบแล้วเท่านั้น สคริปต์แปลงข้อมูลจะไม่สุ่มปี
@@ -66,3 +66,5 @@ npm run build
 - ตรวจ `npm audit`
 - รัน `npm run check`
 - ทดสอบ `/robots.txt`, `/sitemap.xml`, แบบฟอร์ม และหน้าหลักบนมือถือ
+- ตั้ง `CRON_SECRET`, schedule `/api/cron/cleanup-project-media`, และ monitor `/api/health`
+- หลัง build ให้รัน `npm run test:e2e`; รัน `npm run test:e2e:cms` เฉพาะฐานข้อมูลทดสอบแยกเท่านั้น

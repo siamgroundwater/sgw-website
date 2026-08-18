@@ -75,10 +75,13 @@
   user-select: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .slider__btn:hover {
   transform: translateY(-50%) translateY(-1px);
   border-color: rgba(255, 255, 255, 0.28);
   background: rgba(0, 0, 0, 0.3);
+}
 }
 
 .slider__btn:focus-visible {
@@ -111,9 +114,12 @@
   transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .slider__dot:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.35);
+}
 }
 
 .slider__dot.is-active {

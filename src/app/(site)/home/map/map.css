@@ -109,12 +109,21 @@ margin-top: 0.75rem;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 
-.home-map-filters button:hover,
 .home-map-filters button.is-active {
   border-color: #67e8f9;
   color: #fff;
   background: rgba(14, 116, 124, 0.38);
   transform: translateY(-1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.home-map-filters button:hover {
+  border-color: #67e8f9;
+  color: #fff;
+  background: rgba(14, 116, 124, 0.38);
+  transform: translateY(-1px);
+}
 }
 
 .home-map-filters button svg {
@@ -193,10 +202,13 @@ margin-top: 0.75rem;
   transition: color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .home-map-location-control button:hover {
   color: #fff;
   background: #0e7490;
   transform: translateY(-1px);
+}
 }
 
 .home-map-location-control button:disabled {
@@ -314,8 +326,11 @@ margin-top: 0.75rem;
   cursor: pointer;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .home-map-popup-dismiss:hover {
   background: #082d42;
+}
 }
 
 .home-map-popup-dismiss svg {
@@ -338,8 +353,11 @@ margin-top: 0.75rem;
   transition: transform 200ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .home-map-popup-image:hover img {
   transform: scale(1.03);
+}
 }
 
 .home-map-popup-content {
@@ -365,8 +383,11 @@ margin-top: 0.75rem;
   color: #0f172a;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .home-map-popup h3 a:hover {
   color: #0e7490;
+}
 }
 
 .home-map-popup-meta {

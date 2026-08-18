@@ -101,6 +101,19 @@
   white-space: normal;
 }
 
+.project-detail-sections {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.project-detail-sections p {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.8;
+  margin: 0;
+  white-space: pre-line;
+}
+
 .project-detail-source {
   margin-top: 1rem;
   color: rgba(165, 243, 252, 0.68);

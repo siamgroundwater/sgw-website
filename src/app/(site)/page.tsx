@@ -1,11 +1,8 @@
 // src/app/(site)/page.tsx
 
-import type { Metadata } from 'next'
 import HomePage from './home/page'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
-}
+export const revalidate = 60
 
 export default function SiteRootPage() {
   return <HomePage />

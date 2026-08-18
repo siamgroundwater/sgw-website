@@ -1,12 +1,14 @@
 import type { MetadataRoute } from 'next'
 import { learningArticles } from '@/data/learning'
-import { projects } from '@/lib/projects'
+import { listPublicProjects } from '@/server/public-projects'
 import {
   SITE_LOCALES,
   languageAlternates,
   localePath,
   type SiteLocale,
 } from '@/i18n/config'
+
+export const revalidate = 300
 
 function absoluteUrl(baseUrl: string, pathname: string) {
   return `${baseUrl}${pathname === '/' ? '' : pathname}`
@@ -21,7 +23,8 @@ function absoluteAlternates(baseUrl: string, pathname: string) {
   )
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const projects = await listPublicProjects()
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://siamgroundwater.com'
   const staticRoutes = [
     '',

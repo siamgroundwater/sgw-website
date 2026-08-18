@@ -263,13 +263,22 @@
   cursor: pointer;
 }
 
-.gwf-situations button:hover,
 .gwf-situations button:focus-visible,
 .gwf-situations button.is-active {
   border-color: var(--gwf-cyan);
   color: #052e37;
   outline: none;
   background: var(--gwf-cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-situations button:hover {
+  border-color: var(--gwf-cyan);
+  color: #052e37;
+  outline: none;
+  background: var(--gwf-cyan);
+}
 }
 
 .gwf-situations button svg {
@@ -333,10 +342,17 @@
   cursor: pointer;
 }
 
-.gwf-recommended li button:hover,
 .gwf-recommended li button:focus-visible {
   color: white;
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-recommended li button:hover {
+  color: white;
+  outline: none;
+}
 }
 
 .gwf-recommended li button svg {
@@ -505,13 +521,22 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
-.gwf-category-filter button:hover,
 .gwf-category-filter button:focus-visible,
 .gwf-category-filter button.is-active {
   border-color: var(--gwf-cyan);
   color: #052e37;
   outline: none;
   background: var(--gwf-cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-category-filter button:hover {
+  border-color: var(--gwf-cyan);
+  color: #052e37;
+  outline: none;
+  background: var(--gwf-cyan);
+}
 }
 
 .gwf-category-filter button svg {
@@ -548,11 +573,19 @@
   background: rgba(103, 232, 249, 0.08);
 }
 
-.gwf-library-meta button:hover,
 .gwf-library-meta button:focus-visible {
   color: #052e37;
   outline: none;
   background: var(--gwf-cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-library-meta button:hover {
+  color: #052e37;
+  outline: none;
+  background: var(--gwf-cyan);
+}
 }
 
 .gwf-library-meta button svg {
@@ -595,10 +628,17 @@
   cursor: pointer;
 }
 
-.gwf-question:hover,
 .gwf-question:focus-visible {
   outline: none;
   background: rgba(103, 232, 249, 0.055);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-question:hover {
+  outline: none;
+  background: rgba(103, 232, 249, 0.055);
+}
 }
 
 .gwf-question-icon {
@@ -755,13 +795,21 @@ color: var(--gwf-muted);
   cursor: pointer;
 }
 
-.gwf-answer footer a:hover,
 .gwf-answer footer a:focus-visible,
-.gwf-answer footer button:hover,
 .gwf-answer footer button:focus-visible {
   border-color: var(--gwf-cyan);
   color: white;
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-answer footer a:hover,
+.gwf-answer footer button:hover {
+  border-color: var(--gwf-cyan);
+  color: white;
+  outline: none;
+}
 }
 
 .gwf-answer footer svg {
@@ -835,11 +883,19 @@ color: var(--gwf-muted);
   background: rgba(255, 255, 255, 0.035);
 }
 
-.gwf-sources a:hover,
 .gwf-sources a:focus-visible {
   border-color: var(--gwf-cyan);
   color: var(--gwf-cyan);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-sources a:hover {
+  border-color: var(--gwf-cyan);
+  color: var(--gwf-cyan);
+  outline: none;
+}
 }
 
 .gwf-sources a svg {
@@ -913,10 +969,17 @@ color: var(--gwf-muted);
   background: #07545c;
 }
 
-.gwf-next a:hover,
 .gwf-next a:focus-visible {
   outline: 2px solid #07545c;
   outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.gwf-next a:hover {
+  outline: 2px solid #07545c;
+  outline-offset: 2px;
+}
 }
 
 .gwf-next a svg {

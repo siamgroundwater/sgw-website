@@ -63,12 +63,20 @@
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
+.navbar-mobile-toggle[aria-expanded='true'] {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.42);
+  background: rgba(103, 232, 249, 0.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-mobile-toggle:hover,
-.navbar-mobile-toggle[aria-expanded='true'],
 .navbar-mobile-close:hover {
   color: #67e8f9;
   border-color: rgba(103, 232, 249, 0.42);
   background: rgba(103, 232, 249, 0.1);
+}
 }
 
 .navbar-mobile-toggle svg,
@@ -253,10 +261,17 @@
   color: rgba(165, 243, 252, 0.78);
 }
 
-.navbar-mobile-link:hover,
 .navbar-mobile-link:focus-visible {
   color: #fff;
   background: rgba(255, 255, 255, 0.055);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-mobile-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.055);
+}
 }
 
 .navbar-mobile-list > li.is-active .navbar-mobile-link,
@@ -278,10 +293,17 @@
   cursor: pointer;
 }
 
-.navbar-mobile-submenu-toggle:hover,
 .navbar-mobile-submenu-toggle:focus-visible {
   color: #67e8f9;
   background: rgba(103, 232, 249, 0.09);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-mobile-submenu-toggle:hover {
+  color: #67e8f9;
+  background: rgba(103, 232, 249, 0.09);
+}
 }
 
 .navbar-mobile-submenu-toggle svg {
@@ -325,11 +347,18 @@
   background: rgba(103, 232, 249, 0.42);
 }
 
-.navbar-mobile-subnav-link:hover,
 .navbar-mobile-subnav-link:focus-visible,
 .navbar-mobile-subnav-link.is-active {
   color: #cffafe;
   background: rgba(103, 232, 249, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-mobile-subnav-link:hover {
+  color: #cffafe;
+  background: rgba(103, 232, 249, 0.08);
+}
 }
 
 .navbar-mobile-subnav-link.is-active > span {
@@ -396,10 +425,13 @@
   font-weight: 800;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .navbar-mobile-quick-contact:hover,
 .navbar-mobile-line:hover {
   border-color: rgba(103, 232, 249, 0.48);
   background: rgba(103, 232, 249, 0.13);
+}
 }
 
 .navbar-mobile-lang {
@@ -422,11 +454,19 @@
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.navbar-mobile-lang-btn:hover,
 .navbar-mobile-lang-btn[aria-expanded='true'] {
   color: #a5f3fc;
   border-color: rgba(103, 232, 249, 0.16);
   background: rgba(103, 232, 249, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-mobile-lang-btn:hover {
+  color: #a5f3fc;
+  border-color: rgba(103, 232, 249, 0.16);
+  background: rgba(103, 232, 249, 0.08);
+}
 }
 
 .navbar-mobile-lang-code {
@@ -470,10 +510,17 @@
   white-space: nowrap;
 }
 
-.navbar-mobile-lang-menu-item:hover,
 .navbar-mobile-lang-menu-item[aria-current='page'] {
   color: #a5f3fc;
   background: rgba(103, 232, 249, 0.13);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.navbar-mobile-lang-menu-item:hover {
+  color: #a5f3fc;
+  background: rgba(103, 232, 249, 0.13);
+}
 }
 
 .navbar-mobile-toggle:focus-visible,

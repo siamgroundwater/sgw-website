@@ -50,10 +50,12 @@
   color: var(--muted);
   text-decoration: none;
 }
+@media (hover: hover) and (pointer: fine) {
 .sv-crumb:hover {
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: 4px;
+}
 }
 
 .sv-current {
@@ -135,10 +137,12 @@ text-wrap: pretty;
   background: rgba(255, 255, 255, 0.1);
   color: var(--text);
 }
+@media (hover: hover) and (pointer: fine) {
 .sv-btn:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.22);
   filter: brightness(1.06) contrast(1.05);
+}
 }
 .sv-btn:focus-visible {
   outline: 3px solid rgba(56, 189, 248, 0.55);
@@ -416,6 +420,8 @@ text-wrap: pretty;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .sv-card:hover,
 .sv-person:hover,
 .sv-step:hover,
@@ -424,6 +430,7 @@ text-wrap: pretty;
   transform: translateY(-2px);
   border-color: rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.34);
+}
 }
 
 /* performance: disable blur on small screens */

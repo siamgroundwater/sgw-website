@@ -82,8 +82,11 @@
   transition: color 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-breadcrumb a:hover {
   color: var(--service-accent);
+}
 }
 
 .service-detail-breadcrumb svg {
@@ -158,10 +161,13 @@
     background 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-tabs-list a:hover {
   color: #fff;
   border-color: rgba(148, 163, 184, 0.2);
   background: rgba(255, 255, 255, 0.06);
+}
 }
 
 .service-detail-tabs-list a.is-active {
@@ -265,8 +271,11 @@ margin: 1rem 0 0;
     border-color 160ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-button:hover {
   transform: translateY(-2px);
+}
 }
 
 .service-detail-button svg {
@@ -281,8 +290,11 @@ margin: 1rem 0 0;
   box-shadow: 0 12px 30px rgba(var(--service-accent-rgb), 0.18);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-button--primary:hover {
   background: color-mix(in srgb, var(--service-accent) 88%, white);
+}
 }
 
 .service-detail-button--secondary {
@@ -291,9 +303,12 @@ margin: 1rem 0 0;
   background: rgba(15, 23, 42, 0.36);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-button--secondary:hover {
   border-color: rgba(var(--service-accent-rgb), 0.5);
   background: rgba(255, 255, 255, 0.07);
+}
 }
 
 .service-detail-hero-points {
@@ -347,8 +362,11 @@ margin: 1rem 0 0;
   transition: transform 420ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-hero:hover .service-detail-hero-media img {
   transform: scale(1.025);
+}
 }
 
 .service-detail-hero-media figcaption {
@@ -437,10 +455,13 @@ margin: 1rem 0 0;
     background 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-scope-grid article:hover {
   transform: translateY(-4px);
   border-color: rgba(var(--service-accent-rgb), 0.46);
   background: rgba(3, 31, 42, 0.86);
+}
 }
 
 .service-detail-card-icon {
@@ -698,8 +719,11 @@ margin-top: 0.55rem;
   background: #0f4752;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .service-detail-gallery-grid figure:hover img {
   transform: scale(1.04);
+}
 }
 
 .service-detail-cta {

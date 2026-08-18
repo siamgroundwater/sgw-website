@@ -119,7 +119,6 @@ export default function ContactDetails({
     },
     {
       id: 'fax',
-      href: 'tel:023750791',
       title: 'FAX',
       detail: '0-2375-0791-2',
       copyValue: '0-2375-0791-2',

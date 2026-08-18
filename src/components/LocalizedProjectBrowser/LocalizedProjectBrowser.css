@@ -18,12 +18,20 @@
   transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
 }
 
+.localized-project-filters button.is-active {
+  transform: translateY(-1px);
+  border-color: #67e8f9;
+  background: rgba(14, 116, 124, 0.72);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
 .localized-project-filters button:hover,
-.localized-project-filters button.is-active,
 .localized-project-load-more:hover {
   transform: translateY(-1px);
   border-color: #67e8f9;
   background: rgba(14, 116, 124, 0.72);
+}
 }
 
 .localized-project-count {
@@ -75,8 +83,11 @@
   background: rgba(3, 20, 31, 0.78);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .localized-project-card:hover .localized-project-card-visual img {
   transform: scale(1.03);
+}
 }
 
 .localized-project-card-body {

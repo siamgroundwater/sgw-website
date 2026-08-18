@@ -5,9 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   PROJECT_CATEGORIES,
-  projects,
   type ProjectCategory,
-} from '@/lib/projects'
+} from '@/lib/project-categories'
+import type { ProjectSummary } from '@/lib/project-summaries'
 import { localeInfo, localePath, type LocalizedLocale } from '@/i18n/config'
 import type { LocalizedContent } from '@/i18n/localized-content'
 import {
@@ -31,6 +31,7 @@ const toolbarCopy: Record<
 }
 
 export default function ProjectsSection({
+  projects,
   locale,
   copy,
   showHistoryMap = false,
@@ -38,13 +39,14 @@ export default function ProjectsSection({
   featured = false,
   initialItemsPerPage = 10,
 }: {
+  projects: ProjectSummary[]
   locale?: LocalizedLocale
   copy?: LocalizedContent['projects']
   showHistoryMap?: boolean
   headingLevel?: 'h1' | 'h2'
   featured?: boolean
   initialItemsPerPage?: Exclude<ItemsPerPage, 'all'>
-} = {}) {
+}) {
   const [category, setCategory] = useState<FilterCategory>('all')
   const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(initialItemsPerPage)
   const [visibleCount, setVisibleCount] = useState<number>(initialItemsPerPage)
@@ -163,7 +165,7 @@ export default function ProjectsSection({
             >
               <div className="image project-card-image-wrapper">
                 <Image
-                  src={project.localCoverImage}
+                  src={project.coverImage}
                   alt={project.title}
                   width={800}
                   height={600}
@@ -173,12 +175,12 @@ export default function ProjectsSection({
                 />
               </div>
 
-              <h4
+              <h3
                 className="Project-Title title SP-textHead5 removeUnderLine"
                 style={{ textAlign: 'center', marginBottom: 0 }}
               >
                 {project.title}
-              </h4>
+              </h3>
 
               <div className="project-card-meta">
                 {project.year && <span>{project.year}</span>}

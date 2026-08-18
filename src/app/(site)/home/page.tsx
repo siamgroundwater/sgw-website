@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import './page.css'
 
 import Hero from './hero'
@@ -8,22 +7,28 @@ import ProjectsSection from './projects/projects'
 import SocialMediaSection from '@/components/home/SocialMediaSection'
 import CustomerHistorySection from '@/components/home/CustomerHistorySection'
 import CompanyVideoSection from '@/components/home/CompanyVideoSection'
+import { createThaiPageMetadata } from '@/lib/site-metadata'
+import { toProjectSummary } from '@/lib/project-summaries'
+import { listPublicProjects } from '@/server/public-projects'
 
-export const metadata: Metadata = {
+export const revalidate = 60
+
+export const metadata = createThaiPageMetadata({
   title: 'สยามกราวด์วอเตอร์ | ผู้เชี่ยวชาญด้านน้ำบาดาล',
   description:
     'บริการสำรวจ เจาะ ซ่อมบำรุง และแก้ไขปัญหาระบบน้ำบาดาล สำหรับโรงงาน โรงแรม รีสอร์ท และโครงการทั่วประเทศไทย',
-  alternates: { canonical: '/' },
-}
+  pathname: '/',
+})
 
-export default function HomePage() {
+export default async function HomePage() {
+  const projects = (await listPublicProjects()).map((project) => toProjectSummary(project))
   return (
     <main className="page-content">
       <Hero />
       <Services />
       <CompanyVideoSection locale="th" />
-      <HomeMap />
-      <ProjectsSection initialItemsPerPage={6} />
+      <HomeMap projects={projects} />
+      <ProjectsSection projects={projects} initialItemsPerPage={6} />
       <SocialMediaSection />
       <CustomerHistorySection />
     </main>
