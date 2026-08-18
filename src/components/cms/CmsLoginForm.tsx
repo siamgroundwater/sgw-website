@@ -19,7 +19,7 @@ export default function CmsLoginForm() {
     passwordPlaceholder: 'อย่างน้อย 12 ตัวอักษร',
     remember: 'จำชื่อผู้ใช้ในอุปกรณ์นี้',
     showPassword: 'แสดงรหัสผ่าน',
-    signIn: 'เข้าสู่ระบบอย่างปลอดภัย',
+    signIn: 'เข้าสู่ระบบ',
     signingIn: 'กำลังเข้าสู่ระบบ...',
     username: 'ชื่อผู้ใช้',
   } : {
@@ -28,7 +28,7 @@ export default function CmsLoginForm() {
     errorSignIn: 'Could not sign in.',
     hidePassword: 'Hide password', message: 'Signed in. Opening the SGW workspace...', password: 'Password',
     passwordPlaceholder: 'At least 12 characters', remember: 'Remember username on this device', showPassword: 'Show password',
-    signIn: 'Sign in securely', signingIn: 'Signing in...', username: 'Username',
+    signIn: 'Sign in', signingIn: 'Signing in...', username: 'Username',
   }
   const usernameId = useId()
   const passwordId = useId()

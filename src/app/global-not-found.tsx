@@ -25,12 +25,12 @@ export default function GlobalNotFound() {
           }}
         >
           <Image
-            src="/logos/Logo.png"
+            src="/images/logo/logo_SGW_white.svg"
             alt="Siam Groundwater"
-            width={220}
-            height={73}
+            width={160}
+            height={160}
             priority
-            style={{ width: 'min(220px, 70vw)', height: 'auto' }}
+            style={{ width: 'min(160px, 50vw)', height: 'auto' }}
           />
           <p
             style={{

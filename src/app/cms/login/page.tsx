@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 import { AlertCircle } from 'lucide-react'
 import CmsLoginForm from '@/components/cms/CmsLoginForm'
 import { CmsLanguageSwitcher } from '@/components/cms/CmsLanguage'
@@ -10,17 +11,13 @@ export const dynamic = 'force-dynamic'
 export default async function CmsLoginPage() {
   const locale = await getCmsLocale()
   const copy = locale === 'th' ? {
-    authorized: 'สำหรับพนักงานที่ได้รับอนุญาต',
-    brandDescription: 'จัดการผลงาน บริการ บทความความรู้ ผู้ใช้ และประวัติการแก้ไขของ SGW ได้ในที่เดียว',
-    brandEyebrow: 'พื้นที่จัดการเนื้อหาส่วนตัว',
+    eyebrow: 'พื้นที่จัดการเนื้อหา',
     instruction: 'ใช้บัญชี CMS ที่สร้างโดยผู้ดูแลระบบ SGW',
     openWebsite: 'เปิดเว็บไซต์ Siam Groundwater',
     setup: 'การตั้งค่า CMS ยังไม่สมบูรณ์ กรุณาเพิ่ม MongoDB และค่าเซสชันจาก .env.example แล้วสร้างผู้ดูแลระบบคนแรก',
     signIn: 'เข้าสู่ระบบ',
   } : {
-    authorized: 'Authorized team members',
-    brandDescription: 'Manage SGW projects, services, learning content, users, and editorial history from one secure workspace.',
-    brandEyebrow: 'Private content workspace',
+    eyebrow: 'Content workspace',
     instruction: 'Use the CMS account created by the SGW administrator.',
     openWebsite: 'Open Siam Groundwater website',
     setup: 'CMS setup is incomplete. Add MongoDB and session settings from .env.example, then seed the first administrator.',
@@ -43,22 +40,31 @@ export default async function CmsLoginPage() {
   return (
     <main className="cms-login-page">
       <section className="cms-login-shell" aria-labelledby="cms-login-title">
-        <div className="cms-login-brand">
-          <a href="/" target="_blank" rel="noreferrer" aria-label={copy.openWebsite}>
-            <img className="cms-login-logo" src="/images/logo/logo_SGW_white.svg" alt="Siam Groundwater" />
-          </a>
-          <div className="cms-login-brand-copy">
-            <p className="cms-eyebrow">{copy.brandEyebrow}</p>
-            <h1 id="cms-login-title">Siam Groundwater CMS</h1>
-            <p>{copy.brandDescription}</p>
-          </div>
-        </div>
+        <a
+          className="cms-login-brand"
+          href="/"
+          target="_blank"
+          rel="noreferrer"
+          aria-label={copy.openWebsite}
+        >
+          <span className="cms-login-logo-mark">
+            <Image
+              className="cms-login-logo"
+              src="/images/logo/logo_SGW_white.svg"
+              alt=""
+              width={920}
+              height={920}
+              priority
+            />
+          </span>
+          <span>Siam Groundwater CMS</span>
+        </a>
 
-        <div className="cms-login-form-panel">
+        <section className="cms-login-form-panel">
           <div className="cms-login-language"><CmsLanguageSwitcher /></div>
           <div className="cms-login-heading">
-            <p className="cms-eyebrow">{copy.authorized}</p>
-            <h2>{copy.signIn}</h2>
+            <p className="cms-eyebrow">{copy.eyebrow}</p>
+            <h1 id="cms-login-title">{copy.signIn}</h1>
             <p>{copy.instruction}</p>
           </div>
           {!configured ? (
@@ -68,7 +74,7 @@ export default async function CmsLoginPage() {
             </p>
           ) : null}
           <CmsLoginForm />
-        </div>
+        </section>
       </section>
     </main>
   )
