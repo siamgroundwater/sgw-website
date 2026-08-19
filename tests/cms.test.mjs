@@ -232,6 +232,27 @@ test('CMS stylesheet follows SGW sizing rules', () => {
   assert.match(css, /font-size:\s*var\(--fs-sm\)/i)
 })
 
+test('orphan media cleanup is scheduled and secured by Vercel', () => {
+  const config = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8'))
+  const route = readFileSync(
+    path.join(root, 'src', 'app', 'api', 'cron', 'cleanup-project-media', 'route.ts'),
+    'utf8'
+  )
+
+  assert.deepEqual(config.crons, [
+    {
+      path: '/api/cron/cleanup-project-media',
+      schedule: '23 2 * * *',
+    },
+  ])
+  assert.match(route, /process\.env\.CRON_SECRET/)
+  assert.match(route, /Authorization|authorization/)
+  assert.equal(
+    existsSync(path.join(root, '.github', 'workflows', 'cleanup-project-media.yml')),
+    false
+  )
+})
+
 test('CMS project library uses scannable responsive cards', () => {
   const manager = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsProjectsManager.tsx'), 'utf8')
   const editor = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsProjectEditor.tsx'), 'utf8')

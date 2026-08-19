@@ -116,9 +116,12 @@ Project pages use MongoDB ObjectIds. Older numeric project URLs redirect to the 
 
 ## Scheduled cleanup and monitoring
 
-- Set the same `CRON_SECRET` in Vercel Production environment variables and the GitHub Actions repository secret. `.github/workflows/cleanup-project-media.yml` calls the guarded cleanup endpoint hourly. Until the main domain points to Vercel with a trusted certificate, monitoring defaults to `https://siamgroundwater.vercel.app`; set the optional `MONITOR_BASE_URL` repository variable when the production origin changes.
+- Set `CRON_SECRET` only in Vercel Production environment variables. Vercel Cron automatically sends it as a bearer token when invoking the guarded cleanup endpoint. `vercel.json` runs cleanup daily at 02:23 UTC (09:23 Asia/Bangkok), which is compatible with both Hobby and paid Vercel plans. GitHub does not need this secret.
+- Until the main domain points to Vercel with a trusted certificate, monitoring defaults to `https://siamgroundwater.vercel.app`; set the optional GitHub Actions repository variable `MONITOR_BASE_URL` when the production origin changes.
 - Monitor `GET /api/health` externally.
 - Run `npm run monitor:production` for a production HTTP smoke check.
+
+The quality workflow intentionally sets `SGW_CI_SKIP_DATABASE=true` so pull-request builds can validate the complete Next.js application without receiving production MongoDB credentials. This bypass is accepted only when GitHub Actions also provides `CI=true`; regular local and Vercel builds still require MongoDB.
 
 ## End-to-end checks
 

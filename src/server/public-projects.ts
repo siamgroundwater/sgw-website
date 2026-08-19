@@ -8,6 +8,13 @@ import { getCmsProjectsCollection } from '@/server/db'
 import type { CmsProjectDocument } from '@/server/db'
 import { normalizeSlug } from '@/lib/slug'
 
+function skipDatabaseDuringCiBuild() {
+  return (
+    process.env.CI === 'true' &&
+    process.env.SGW_CI_SKIP_DATABASE === 'true'
+  )
+}
+
 function toPublicProject(document: CmsProjectDocument): Project {
   if (!document._id) throw new Error('Public project is missing its MongoDB ObjectId.')
   const presentation = getProjectTypePresentation(document.projectType)
@@ -45,6 +52,8 @@ function toPublicProject(document: CmsProjectDocument): Project {
 }
 
 export const listPublicProjects = cache(async () => {
+  if (skipDatabaseDuringCiBuild()) return []
+
   const collection = await getCmsProjectsCollection()
   const rows = await collection.find({
     deletedAt: { $exists: false },
@@ -56,6 +65,8 @@ export const listPublicProjects = cache(async () => {
 export const getPublicProjectById = cache(async (id: string | number) => {
   const objectId = String(id)
   if (!ObjectId.isValid(objectId)) return null
+  if (skipDatabaseDuringCiBuild()) return null
+
   const collection = await getCmsProjectsCollection()
   const row = await collection.findOne({
     _id: new ObjectId(objectId),
@@ -68,6 +79,8 @@ export const getPublicProjectById = cache(async (id: string | number) => {
 export const getPublicProjectByLegacyId = cache(async (id: string | number) => {
   const publicId = Number(id)
   if (!Number.isInteger(publicId) || publicId < 1) return null
+  if (skipDatabaseDuringCiBuild()) return null
+
   const collection = await getCmsProjectsCollection()
   const row = await collection.findOne({
     publicId,

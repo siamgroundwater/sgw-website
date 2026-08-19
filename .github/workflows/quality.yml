@@ -9,6 +9,8 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      SGW_CI_SKIP_DATABASE: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6

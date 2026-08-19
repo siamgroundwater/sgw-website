@@ -66,5 +66,5 @@ npm run build
 - ตรวจ `npm audit`
 - รัน `npm run check`
 - ทดสอบ `/robots.txt`, `/sitemap.xml`, แบบฟอร์ม และหน้าหลักบนมือถือ
-- ตั้ง `CRON_SECRET`, schedule `/api/cron/cleanup-project-media`, และ monitor `/api/health`
+- ตั้ง `CRON_SECRET` ใน Vercel Production; `vercel.json` จะ schedule `/api/cron/cleanup-project-media` และให้ monitor `/api/health`
 - หลัง build ให้รัน `npm run test:e2e`; รัน `npm run test:e2e:cms` เฉพาะฐานข้อมูลทดสอบแยกเท่านั้น
