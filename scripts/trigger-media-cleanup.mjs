@@ -1,4 +1,4 @@
-const baseUrl = (process.env.MONITOR_BASE_URL || 'https://siamgroundwater.com').replace(/\/$/, '')
+const baseUrl = (process.env.MONITOR_BASE_URL || 'https://siamgroundwater.vercel.app').replace(/\/$/, '')
 const secret = process.env.CRON_SECRET
 if (!secret) throw new Error('CRON_SECRET is required.')
 

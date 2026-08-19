@@ -94,12 +94,12 @@ html {
   align-items: center;
   display: grid;
   min-height: 100vh;
-  padding: clamp(24px, 5vw, 64px);
+  padding: 64px;
 }
 
 .cms-login-shell {
   display: grid;
-  width: min(100%, 420px);
+  width: 420px;
   margin: 0 auto;
   gap: 20px;
   justify-items: center;
@@ -142,7 +142,7 @@ html {
   display: grid;
   width: 100%;
   gap: 20px;
-  padding: clamp(22px, 4vw, 30px);
+  padding: 30px;
   border: 1px solid var(--cms-line);
   border-radius: var(--cms-radius-small);
   background: var(--cms-panel);
@@ -1491,6 +1491,7 @@ html {
   }
 
   .cms-login-shell {
+    width: 100%;
     gap: 22px;
   }
 

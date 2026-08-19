@@ -116,7 +116,7 @@ Project pages use MongoDB ObjectIds. Older numeric project URLs redirect to the 
 
 ## Scheduled cleanup and monitoring
 
-- Set the same `CRON_SECRET` in deployment settings and the GitHub Actions secret. `.github/workflows/cleanup-project-media.yml` calls the guarded cleanup endpoint hourly. Set the optional `MONITOR_BASE_URL` repository variable when the production origin differs from `https://siamgroundwater.com`.
+- Set the same `CRON_SECRET` in Vercel Production environment variables and the GitHub Actions repository secret. `.github/workflows/cleanup-project-media.yml` calls the guarded cleanup endpoint hourly. Until the main domain points to Vercel with a trusted certificate, monitoring defaults to `https://siamgroundwater.vercel.app`; set the optional `MONITOR_BASE_URL` repository variable when the production origin changes.
 - Monitor `GET /api/health` externally.
 - Run `npm run monitor:production` for a production HTTP smoke check.
 
