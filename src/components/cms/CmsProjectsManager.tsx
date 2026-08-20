@@ -104,7 +104,7 @@ export default function CmsProjectsManager({
 
   return (
     <section className="cms-panel">
-        <header className="cms-panel-header">
+        <header className="cms-panel-header cms-panel-header-single">
           <div><h2>{copy.library}</h2><p>{copy.shown(filtered.length, items.length)}</p></div>
           {canWrite ? <a className="cms-button" href="/cms/projects/new" target="_blank" rel="noopener noreferrer"><Plus aria-hidden="true" />{copy.newProject}</a> : null}
         </header>

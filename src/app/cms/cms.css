@@ -593,6 +593,12 @@ html {
   gap: 16px;
 }
 
+.cms-panel-header-single {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+}
+
 .cms-panel-header > div {
   display: grid;
   gap: 5px;
