@@ -34,7 +34,7 @@ html {
   min-height: 100vh;
   margin: 0;
   background-color: var(--cms-bg) !important;
-  background-image: radial-gradient(circle at 90% 5%, rgba(85, 217, 232, 0.18), transparent 28rem);
+  background-image: none;
   color: var(--cms-ink);
   font-family: 'Prompt', 'Leelawadee UI', Tahoma, 'Noto Sans Thai', system-ui, sans-serif;
   font-size: var(--fs-sm);
@@ -419,7 +419,6 @@ html {
 .cms-sidebar-user {
   display: grid;
   gap: 6px;
-  margin-top: auto;
   padding: 16px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
@@ -428,6 +427,25 @@ html {
 
 .cms-sidebar-user span {
   color: #a9cacc;
+}
+
+.cms-sidebar-footer {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.cms-sidebar-footer .cms-language-switcher {
+  width: 100%;
+  grid-template-columns: 20px repeat(2, minmax(0, 1fr));
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #a9cacc;
+  box-shadow: none;
+}
+
+.cms-sidebar-signout {
+  width: 100%;
 }
 
 .cms-main {
@@ -458,24 +476,6 @@ html {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
-}
-
-.cms-workspace-badge {
-  display: inline-flex;
-  min-height: 38px;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
-  border: 1px solid #ead59a;
-  border-radius: 999px;
-  background: var(--cms-warning-soft);
-  color: var(--cms-warning);
-  font-weight: 700;
-}
-
-.cms-workspace-badge svg {
-  width: 18px;
-  height: 18px;
 }
 
 .cms-language-switcher {
@@ -1502,15 +1502,21 @@ html {
 
   .cms-topbar {
     display: grid;
+    position: relative;
+  }
+
+  .cms-topbar-copy {
+    padding-right: 54px;
   }
 
   .cms-topbar-actions {
     justify-content: flex-start;
   }
 
-  .cms-workspace-badge {
-    width: 100%;
-    border-radius: 12px;
+  .cms-mobile-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .cms-stats,

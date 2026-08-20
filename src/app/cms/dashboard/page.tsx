@@ -13,7 +13,6 @@ export default async function CmsDashboardPage() {
   const data = await getCmsDashboardData()
   return (
     <CmsShell eyebrow={locale === 'th' ? 'ภาพรวมพื้นที่ทำงาน' : 'Workspace overview'} title={locale === 'th' ? 'ภาพรวม' : 'Dashboard'} session={session}>
-      <p className="cms-notice">{locale === 'th' ? 'CMS นี้แยกจากเว็บไซต์ SGW สาธารณะโดยตั้งใจ การแก้ไขที่นี่จะไม่เผยแพร่หรือเปลี่ยนแปลงเว็บไซต์ปัจจุบัน' : 'This CMS is intentionally isolated from the public SGW pages. Editing here does not publish or change the current website.'}</p>
       <CmsDashboard data={data} canImport={canCmsRole(session.role, 'imports:manage')} />
     </CmsShell>
   )

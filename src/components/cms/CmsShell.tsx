@@ -4,15 +4,12 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   Activity,
-  BookOpen,
   FolderKanban,
   Gauge,
   Globe2,
   LogOut,
   Menu,
-  ShieldAlert,
   Users,
-  Wrench,
   X,
   type LucideIcon,
 } from 'lucide-react'
@@ -32,8 +29,6 @@ type NavItem = {
 const navItems: NavItem[] = [
   { href: '/cms/dashboard', icon: Gauge, label: { th: 'ภาพรวม', en: 'Dashboard' }, permission: 'dashboard:view' },
   { href: '/cms/projects', icon: FolderKanban, label: { th: 'ผลงาน', en: 'Projects' }, permission: 'projects:view' },
-  { href: '/cms/services', icon: Wrench, label: { th: 'บริการ', en: 'Services' }, permission: 'services:view' },
-  { href: '/cms/learning', icon: BookOpen, label: { th: 'ศูนย์ความรู้', en: 'Learning' }, permission: 'learning:view' },
   { href: '/cms/users', icon: Users, label: { th: 'ผู้ใช้', en: 'Users' }, permission: 'users:manage' },
   { href: '/cms/audit-logs', icon: Activity, label: { th: 'ประวัติการใช้งาน', en: 'Audit logs' }, permission: 'audit:view' },
   { href: '/', icon: Globe2, label: { th: 'เปิดเว็บไซต์', en: 'Open website' } },
@@ -59,14 +54,12 @@ export default function CmsShell({
     contentWorkspace: 'พื้นที่จัดการเนื้อหา',
     navigation: 'เมนู CMS',
     openNavigation: 'เปิดเมนู CMS',
-    publicDisconnected: 'ยังไม่กระทบเว็บสาธารณะ',
     signOut: 'ออกจากระบบ',
   } : {
     closeNavigation: 'Close CMS navigation',
     contentWorkspace: 'Content workspace',
     navigation: 'CMS navigation',
     openNavigation: 'Open CMS navigation',
-    publicDisconnected: 'Public website disconnected',
     signOut: 'Sign out',
   }
 
@@ -99,7 +92,7 @@ export default function CmsShell({
         <a className="cms-sidebar-brand" href="/cms/dashboard">
           {/* Using a normal image keeps the private CMS independent from frontend image settings. */}
           <img src="/images/logo/logo_SGW_white.svg" alt="Siam Groundwater" />
-          <span><strong>SGW CMS</strong><span>{copy.contentWorkspace}</span></span>
+          <span><strong>SGW CMS</strong></span>
         </a>
 
         <nav className="cms-nav">
@@ -124,10 +117,16 @@ export default function CmsShell({
           })}
         </nav>
 
-        <div className="cms-sidebar-user">
-          <strong>{session.displayName}</strong>
-          <span>{cmsRoleLabel(locale, session.role)}</span>
-          <span>@{session.username}</span>
+        <div className="cms-sidebar-footer">
+          <CmsLanguageSwitcher />
+          <div className="cms-sidebar-user">
+            <strong>{session.displayName}</strong>
+            <span>{cmsRoleLabel(locale, session.role)}</span>
+            <span>@{session.username}</span>
+          </div>
+          <button className="cms-button-secondary cms-sidebar-signout" type="button" onClick={signOut}>
+            <LogOut aria-hidden="true" />{copy.signOut}
+          </button>
         </div>
       </aside>
       {open ? <button className="cms-drawer-scrim" type="button" onClick={() => setOpen(false)} aria-label={copy.closeNavigation} /> : null}
@@ -139,13 +138,8 @@ export default function CmsShell({
             <h1>{title}</h1>
           </div>
           <div className="cms-topbar-actions">
-            <span className="cms-workspace-badge"><ShieldAlert aria-hidden="true" />{copy.publicDisconnected}</span>
-            <CmsLanguageSwitcher />
             <button className="cms-icon-button cms-mobile-toggle" type="button" onClick={() => setOpen(true)} aria-label={copy.openNavigation}>
               <Menu aria-hidden="true" />
-            </button>
-            <button className="cms-button-secondary" type="button" onClick={signOut}>
-              <LogOut aria-hidden="true" />{copy.signOut}
             </button>
           </div>
         </header>
