@@ -58,6 +58,17 @@ function stagedMediaIsUsed(
   return staged.every(({ asset }) => used.has(asset.src))
 }
 
+function newProjectMediaIsStaged(
+  staged: CmsStagedMediaTokenPayload[],
+  coverImage: string,
+  galleryImages: string[]
+) {
+  const stagedUrls = new Set(staged.map(({ asset }) => asset.src))
+  return [coverImage, ...galleryImages]
+    .filter(Boolean)
+    .every((url) => stagedUrls.has(url))
+}
+
 async function rollbackQuietly(staged: CmsStagedMediaTokenPayload[]) {
   if (!staged.length) return true
   try {
@@ -118,12 +129,15 @@ export async function POST(request: Request) {
     if (!stagedMediaIsUsed(staged, result.data.coverImage, result.data.galleryImages)) {
       throw new Error('INVALID_STAGED_MEDIA')
     }
+    if (!newProjectMediaIsStaged(staged, result.data.coverImage, result.data.galleryImages)) {
+      throw new Error('UNSTAGED_NEW_PROJECT_MEDIA')
+    }
     const intent = raw?.intent === 'publish' ? 'publish' : 'save-draft'
     if (intent === 'publish') {
       const publishingErrors = validateProjectForPublishing(result.data)
       if (publishingErrors) {
         const cleaned = await rollbackQuietly(staged)
-        return NextResponse.json({ error: 'Complete the Thai and English content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
+        return NextResponse.json({ error: 'Complete the required Thai content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
       }
     }
     const item = await createCmsProject(result.data, user, intent === 'publish')
@@ -131,12 +145,15 @@ export async function POST(request: Request) {
     await recordCmsAudit({ action: intent === 'publish' ? 'content.publish' : 'content.create', actor: user, changes: createAuditChanges(undefined, item, labels), entity: { id: item.id, label: item.title, type: 'project' }, summary: intent === 'publish' ? `Created and published project ${item.title}` : `Created draft project ${item.title}` })
     await auditStagedUploads(staged, user)
     await commitQuietly(staged)
-    if (intent === 'publish') revalidatePublicProject(item.id, item.publicId)
+    if (intent === 'publish') revalidatePublicProject(item.id)
     return NextResponse.json({ item }, { status: 201 })
   } catch (error) {
     if (!committed) await rollbackQuietly(staged)
     if (error instanceof Error && error.message === 'INVALID_STAGED_MEDIA') {
       return NextResponse.json({ error: 'Invalid or expired staged project media.' }, { status: 400 })
+    }
+    if (error instanceof Error && error.message === 'UNSTAGED_NEW_PROJECT_MEDIA') {
+      return NextResponse.json({ error: 'Upload new project images through the CMS before saving.' }, { status: 400 })
     }
     if (error instanceof CmsContentError) return NextResponse.json({ error: error.message, fields: error.fields }, { status: error.status })
     return cmsApiError(error, 'Could not create project.')
@@ -171,7 +188,7 @@ export async function PUT(request: Request) {
       const publishingErrors = validateProjectForPublishing(result.data)
       if (publishingErrors) {
         const cleaned = await rollbackQuietly(staged)
-        return NextResponse.json({ error: 'Complete the Thai and English content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
+        return NextResponse.json({ error: 'Complete the required Thai content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
       }
     }
     const before = await getCmsProjectById(id)
@@ -182,7 +199,7 @@ export async function PUT(request: Request) {
     await recordCmsAudit({ action: intent === 'publish' ? 'content.publish' : 'content.update', actor: user, changes: createAuditChanges(before || undefined, item, labels), entity: { id: item.id, label: item.title, type: 'project' }, summary: intent === 'publish' ? `Published project ${item.title}` : `Saved draft changes for ${item.title}` })
     await auditStagedUploads(staged, user)
     await commitQuietly(staged)
-    if (intent === 'publish') revalidatePublicProject(item.id, item.publicId)
+    if (intent === 'publish') revalidatePublicProject(item.id)
     return NextResponse.json({ item })
   } catch (error) {
     if (!committed) await rollbackQuietly(staged)
@@ -212,13 +229,13 @@ export async function PATCH(request: Request) {
     if (action === 'unpublish') {
       const item = await unpublishCmsProject(id, user, expectedUpdatedAt)
       await recordCmsAudit({ action: 'content.unpublish', actor: user, entity: { id, label: item.title, type: 'project' }, summary: `Unpublished project ${item.title}` })
-      revalidatePublicProject(id, item.publicId)
+      revalidatePublicProject(id)
       return NextResponse.json({ item })
     }
     if (action === 'restore' && typeof raw?.revisionId === 'string') {
       const item = await restoreCmsProjectRevision(id, raw.revisionId, user, expectedUpdatedAt)
       await recordCmsAudit({ action: 'content.restore', actor: user, entity: { id, label: item.title, type: 'project' }, summary: `Restored and published a previous version of ${item.title}` })
-      revalidatePublicProject(id, item.publicId)
+      revalidatePublicProject(id)
       return NextResponse.json({ item })
     }
     return NextResponse.json({ error: 'Invalid project action.' }, { status: 400 })
@@ -238,7 +255,7 @@ export async function DELETE(request: Request) {
     const before = await getCmsProjectById(id)
     await deleteCmsProject(id)
     await recordCmsAudit({ action: 'content.archive', actor: user, entity: { id, label: before?.title, type: 'project' }, summary: `Removed project ${before?.title || id}` })
-    revalidatePublicProject(id, before?.publicId)
+    revalidatePublicProject(id)
     return NextResponse.json({ ok: true })
   } catch (error) {
     if (error instanceof CmsContentError) return NextResponse.json({ error: error.message }, { status: error.status })

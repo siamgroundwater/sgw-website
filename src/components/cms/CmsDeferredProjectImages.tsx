@@ -10,6 +10,7 @@ import {
 import { useCmsLanguage } from './CmsLanguage'
 
 type Props = {
+  allowManualEntry?: boolean
   disabled?: boolean
   error?: string
   help?: string
@@ -19,12 +20,14 @@ type Props = {
   onPendingChange: (values: PreparedClientImage[]) => void
   onPreparingChange: (preparing: boolean) => void
   pending: PreparedClientImage[]
+  required?: boolean
   values: string[]
 }
 
 const acceptedTypes = 'image/jpeg,image/png,image/webp,image/gif,image/avif'
 
 export default function CmsDeferredProjectImages({
+  allowManualEntry = true,
   disabled = false,
   error,
   help,
@@ -34,6 +37,7 @@ export default function CmsDeferredProjectImages({
   onPendingChange,
   onPreparingChange,
   pending,
+  required = false,
   values,
 }: Props) {
   const { locale } = useCmsLanguage()
@@ -103,19 +107,18 @@ export default function CmsDeferredProjectImages({
 
   return (
     <div className="cms-field cms-field-full">
-      <span className="cms-field-label">{label}</span>
-      {multiple ? (
+      <span className="cms-field-label">{label}{required ? <span className="cms-required" aria-hidden="true">*</span> : null}</span>
+      {allowManualEntry && (multiple ? (
         <textarea aria-invalid={Boolean(error)} disabled={disabled || preparing} onChange={(event) => updateManualValue(event.target.value)} value={values.join('\n')} />
       ) : (
         <input aria-invalid={Boolean(error)} disabled={disabled || preparing} onChange={(event) => updateManualValue(event.target.value)} value={values[0] || ''} />
-      )}
+      ))}
       <div className="cms-media-actions">
         <label className="cms-button-secondary" aria-disabled={disabled || preparing} htmlFor={inputId}>
           {preparing ? <LoaderCircle className="cms-spin" aria-hidden="true" /> : <ImagePlus aria-hidden="true" />}
           {preparing ? text('กำลังบีบอัด...', 'Compressing...') : multiple ? text('เลือกภาพ', 'Select images') : text('เลือกภาพ', 'Select image')}
         </label>
         <input className="cms-file-input" id={inputId} type="file" accept={acceptedTypes} multiple={multiple} disabled={disabled || preparing} onChange={prepare} />
-        <span className="cms-field-help">{text('ภาพจะถูกบีบอัดในอุปกรณ์นี้ และจะยังไม่อัปโหลดจนกว่าจะกดบันทึกฉบับร่างหรือเผยแพร่', 'Images are compressed on this device and are not uploaded until you save the draft or publish.')}</span>
       </div>
       {help ? <span className="cms-field-help">{help}</span> : null}
       {error ? <span className="cms-field-error">{error}</span> : null}

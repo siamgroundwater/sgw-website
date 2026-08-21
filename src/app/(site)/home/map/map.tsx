@@ -20,7 +20,7 @@ import type { LocalizedContent } from '@/i18n/localized-content'
 import {
   PROJECT_CATEGORY_KEYS,
   getLocalizedProjectPresentation,
-  getProjectCategoryKey,
+  getProjectCategoryKeys,
   type ProjectCategoryKey,
 } from '@/i18n/projects'
 import './map.css'
@@ -302,7 +302,9 @@ export default function HomeMap({
     ) as Record<ProjectCategoryKey, number>
 
     validProjects.forEach((project) => {
-      counts[getProjectCategoryKey(project.projectType)] += 1
+      getProjectCategoryKeys(project.category).forEach((category) => {
+        counts[category] += 1
+      })
     })
     return counts
   }, [validProjects])
@@ -312,7 +314,7 @@ export default function HomeMap({
       filter === 'all'
         ? validProjects
         : validProjects.filter(
-            (project) => getProjectCategoryKey(project.projectType) === filter
+            (project) => getProjectCategoryKeys(project.category).includes(filter)
           ),
     [filter, validProjects]
   )

@@ -1,6 +1,7 @@
-import type { Project } from '@/lib/projects'
-import type { LocalizedLocale } from './config'
-import type { LocalizedContent } from './localized-content'
+import type { Project } from '../lib/projects.ts'
+import { localizeProjectWorkTypes } from '../lib/project-work-types.ts'
+import type { LocalizedLocale } from './config.ts'
+import type { LocalizedContent } from './localized-content.ts'
 
 export type ProjectCategoryKey =
   | 'government'
@@ -19,49 +20,53 @@ export const PROJECT_CATEGORY_KEYS: ProjectCategoryKey[] = [
   'other',
 ]
 
-export function getProjectCategoryKey(
-  projectType: Project['projectType']
-): ProjectCategoryKey {
-  if (projectType === 'government') return 'government'
-  if (projectType === 'factory') return 'factory'
-  if (projectType === 'resort' || projectType === 'island, resort') return 'resort'
-  if (projectType === 'agriculture') return 'agriculture'
-  if (
-    projectType === 'train' ||
-    projectType === 'infrastructure' ||
-    projectType === 'dewatering'
-  ) {
-    return 'dewatering'
-  }
-  return 'other'
+export function getProjectCategoryKeys(
+  categories: Project['category']
+): ProjectCategoryKey[] {
+  const keys: ProjectCategoryKey[] = []
+  if (categories.includes('ภาครัฐ')) keys.push('government')
+  if (categories.includes('โรงงาน')) keys.push('factory')
+  if (categories.includes('โรงแรม รีสอร์ต')) keys.push('resort')
+  if (categories.includes('เกษตรกรรม ปศุสัตว์')) keys.push('agriculture')
+  if (categories.includes('Dewatering')) keys.push('dewatering')
+  if (categories.includes('อื่นๆ') || !keys.length) keys.push('other')
+  return keys
+}
+
+export function getProjectCategoryKey(categories: Project['category']): ProjectCategoryKey {
+  return getProjectCategoryKeys(categories)[0]
 }
 
 export function getLocalizedProjectPresentation(
-  project: Pick<Project, 'projectType'>,
+  project: Pick<Project, 'category'>,
   copy: LocalizedContent['projects']
 ) {
-  const categoryKey = getProjectCategoryKey(project.projectType)
+  const categoryKeys = getProjectCategoryKeys(project.category)
+  const categoryKey = categoryKeys[0]
+  const categoryLabels = categoryKeys.map((key) => copy.categories[key])
+  const typeLabels = [...new Set(categoryKeys.map((key) => {
+    const typeKey = key === 'dewatering' ? 'infrastructure' : key
+    return copy.types[typeKey]
+  }))]
   return {
     categoryKey,
-    categoryLabel: copy.categories[categoryKey],
-    typeLabel:
-      copy.types[project.projectType] ??
-      (categoryKey === 'dewatering'
-        ? copy.types.infrastructure
-        : copy.types.other),
+    categoryKeys,
+    categoryLabel: categoryLabels.join(' • '),
+    categoryLabels,
+    typeLabel: typeLabels.join(' • '),
+    typeLabels,
   }
 }
 
 export function localizeProject(project: Project, locale: LocalizedLocale): Project {
-  if (locale === 'th') return project
   const english = project.translations.en
+  const useEnglish = locale !== 'th'
   return {
     ...project,
-    businessTypes: english.businessTypes.length ? english.businessTypes : project.businessTypes,
-    details: english.details.length ? english.details : project.details,
-    location: english.location || project.location,
-    summary: english.summary || project.summary,
-    title: english.title || project.title,
-    workTypes: english.workTypes.length ? english.workTypes : project.workTypes,
+    details: useEnglish && english.details.length ? english.details : project.details,
+    location: useEnglish ? english.location || project.location : project.location,
+    summary: useEnglish ? english.summary || project.summary : project.summary,
+    title: useEnglish ? english.title || project.title : project.title,
+    workTypes: localizeProjectWorkTypes(project.workTypes, locale),
   }
 }

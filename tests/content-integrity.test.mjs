@@ -9,6 +9,7 @@ import { groundwaterFaqItems, groundwaterFaqSourceLinks } from '../src/data/grou
 import { recoveredThaiServiceDetails } from '../src/data/service-page-details.ts'
 import { sortProjectsNewestFirst } from '../src/lib/project-sort.ts'
 import { toProjectSummary } from '../src/lib/project-summaries.ts'
+import { localizeProjectWorkTypes, normalizeProjectWorkTypes } from '../src/lib/project-work-types.ts'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -47,22 +48,17 @@ test('public project listings use a lightweight Cloudinary-backed projection', (
   const objectId = '66c2a8e109f1d0b582a6f701'
   const project = {
     _id: objectId,
-    businessTypes: ['โรงงาน'],
     category: ['โรงงาน'],
     coverImage: 'https://res.cloudinary.com/example/image/upload/cover.webp',
     details: ['Detail'],
     galleryImages: ['https://res.cloudinary.com/example/image/upload/gallery.webp'],
     lat: 13.7,
-    legacyPostId: 123,
-    legacyUrl: 'https://example.com/project',
     lng: 100.5,
     location: 'กรุงเทพมหานคร',
-    projectType: 'factory',
-    projectTypeLabel: 'Factory',
     slug: 'factory-project',
     summary: 'Summary',
     title: 'Project',
-    workTypes: ['Survey'],
+    workTypes: ['groundwater-survey'],
     year: 2024,
   }
   assert.deepEqual(toProjectSummary(project), {
@@ -72,10 +68,8 @@ test('public project listings use a lightweight Cloudinary-backed projection', (
     lat: 13.7,
     lng: 100.5,
     location: 'กรุงเทพมหานคร',
-    projectType: 'factory',
-    projectTypeLabel: 'Factory',
     title: 'Project',
-    workTypes: ['Survey'],
+    workTypes: ['งานสำรวจน้ำบาดาล'],
     year: 2024,
   })
 
@@ -86,6 +80,14 @@ test('public project listings use a lightweight Cloudinary-backed projection', (
   assert.match(publicSource, /_id:\s*new ObjectId/)
   assert.match(publicSource, /coverImage:\s*document\.coverImage/)
   assert.doesNotMatch(publicSource, /wordpress-projects-recovered/)
+})
+
+test('project work type keys generate labels for every public language', () => {
+  assert.deepEqual(normalizeProjectWorkTypes(['งานสำรวจน้ำบาดาล']), ['groundwater-survey'])
+  assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'th'), ['งานสำรวจน้ำบาดาล'])
+  assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'en'), ['Groundwater survey'])
+  assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'zh'), ['地下水勘探'])
+  assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'ja'), ['地下水調査'])
 })
 
 test('learning center exposes six unique complete routes', () => {

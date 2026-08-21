@@ -1,4 +1,7 @@
 import type { ObjectId } from 'mongodb'
+import type { CmsProjectCategory, CmsProjectWorkType } from '@/types/cms'
+
+export type { CmsProjectCategory, CmsProjectWorkType }
 
 export type CmsDocumentStatus = 'draft' | 'active' | 'archived'
 export type CmsUserRole = 'admin' | 'editor' | 'viewer'
@@ -22,21 +25,11 @@ export type CmsUserDocument = CmsTimestampedDocument & {
   usernameLower: string
 }
 
-export type CmsProjectCategory =
-  | 'government'
-  | 'factory'
-  | 'resort'
-  | 'agriculture'
-  | 'dewatering'
-  | 'other'
-
 export type CmsProjectTranslation = {
-  businessTypes: string[]
   details: string[]
   location: string
   summary: string
   title: string
-  workTypes: string[]
 }
 
 export type CmsProjectTranslations = {
@@ -44,22 +37,18 @@ export type CmsProjectTranslations = {
 }
 
 export type CmsProjectContent = {
-  businessTypes: string[]
-  category: CmsProjectCategory
+  category: CmsProjectCategory[]
   coverImage: string
   details: string[]
   galleryImages: string[]
   lat: number | null
-  legacyPostId?: number
-  legacyUrl?: string
   lng: number | null
   location: string
-  projectType: string
   slug: string
   summary: string
   title: string
   translations?: CmsProjectTranslations
-  workTypes: string[]
+  workTypes: CmsProjectWorkType[]
   year: number | null
 }
 
@@ -73,7 +62,6 @@ export type CmsProjectDocument = CmsTimestampedDocument & CmsProjectContent & {
   publishedAt?: Date
   publishedBy?: string
   publishedVersion?: number
-  publicId: number
   source: 'cms' | 'public-snapshot'
   status: CmsDocumentStatus
 }

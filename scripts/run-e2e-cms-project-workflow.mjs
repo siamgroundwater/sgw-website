@@ -61,9 +61,15 @@ try {
   const projectIds = temporaryProjects.map(({ _id }) => _id)
   if (projectIds.length) {
     await db.collection('cmsProjectRevisions').deleteMany({ projectId: { $in: projectIds } })
-    await db.collection('cmsAuditLogs').deleteMany({ 'entity.id': { $in: projectIds.map(String) } })
     await db.collection('cmsProjects').deleteMany({ _id: { $in: projectIds } })
   }
+  await db.collection('cmsAuditLogs').deleteMany({
+    $or: [
+      { 'actor.userId': String(userId) },
+      { 'entity.id': { $in: projectIds.map(String) } },
+    ],
+  })
+  await db.collection('cmsStagedProjectMedia').deleteMany({ userId: String(userId) })
   if (userId) await db.collection('cmsUsers').deleteOne({ _id: userId })
   const [remainingProjects, remainingUsers] = await Promise.all([
     db.collection('cmsProjects').countDocuments({ slug: `e2e-project-${runId}` }),

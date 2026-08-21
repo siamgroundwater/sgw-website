@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { projectWorkTypeLabel } from '@/lib/project-work-types'
 import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlider'
 import CmsShell from '@/components/cms/CmsShell'
 import { getCmsProjectById } from '@/server/cms/content'
@@ -20,8 +21,7 @@ export default async function CmsProjectPreviewPage({ params }: { params: Promis
   const location = english ? translated.location || item.location : item.location
   const summary = english ? translated.summary || item.summary : item.summary
   const details = english && translated.details.length ? translated.details : item.details
-  const workTypes = english && translated.workTypes.length ? translated.workTypes : item.workTypes
-  const businessTypes = english && translated.businessTypes.length ? translated.businessTypes : item.businessTypes
+  const workTypes = item.workTypes.map((workType) => projectWorkTypeLabel(english ? 'en' : 'th', workType))
   const images = Array.from(new Set([item.coverImage, ...item.galleryImages].filter(Boolean)))
 
   return (
@@ -36,7 +36,6 @@ export default async function CmsProjectPreviewPage({ params }: { params: Promis
         <header><p>{item.year || '—'} · {location}</p><h2>{title}</h2></header>
         <dl>
           <div><dt>{english ? 'Work types' : 'ประเภทงาน'}</dt><dd>{workTypes.join(' · ') || '—'}</dd></div>
-          <div><dt>{english ? 'Business types' : 'ประเภทธุรกิจ'}</dt><dd>{businessTypes.join(' · ') || '—'}</dd></div>
         </dl>
         <p>{summary}</p>
         {details.map((detail, index) => <p key={`${index}-${detail.slice(0, 20)}`}>{detail}</p>)}

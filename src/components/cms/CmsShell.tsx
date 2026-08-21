@@ -65,17 +65,50 @@ export default function CmsShell({
 
   useEffect(() => {
     if (!open) return
-    const previousOverflow = document.body.style.overflow
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === 'Escape') setOpen(false)
     }
-    document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', closeOnEscape)
     return () => {
-      document.body.style.overflow = previousOverflow
       document.removeEventListener('keydown', closeOnEscape)
     }
   }, [open])
+
+  useEffect(() => {
+    function resetHorizontalScroll() {
+      if (document.scrollingElement) document.scrollingElement.scrollLeft = 0
+      document.documentElement.scrollLeft = 0
+      document.body.scrollLeft = 0
+    }
+
+    function syncVisualViewportEdge() {
+      const viewport = window.visualViewport
+      const hiddenRight = viewport
+        ? Math.max(0, window.innerWidth - viewport.offsetLeft - viewport.width)
+        : 0
+      document.documentElement.style.setProperty('--cms-visual-viewport-right', `${hiddenRight}px`)
+    }
+
+    resetHorizontalScroll()
+    syncVisualViewportEdge()
+    const frame = window.requestAnimationFrame(() => {
+      resetHorizontalScroll()
+      syncVisualViewportEdge()
+    })
+    function syncViewport() {
+      resetHorizontalScroll()
+      syncVisualViewportEdge()
+    }
+    window.addEventListener('resize', syncViewport)
+    window.visualViewport?.addEventListener('resize', syncViewport)
+    window.visualViewport?.addEventListener('scroll', syncViewport)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('resize', syncViewport)
+      window.visualViewport?.removeEventListener('resize', syncViewport)
+      window.visualViewport?.removeEventListener('scroll', syncViewport)
+    }
+  }, [open, pathname])
 
   async function signOut() {
     await logoutCmsSession()
@@ -85,7 +118,8 @@ export default function CmsShell({
 
   return (
     <main className="cms-shell">
-      <aside className="cms-sidebar" data-open={open} aria-label={copy.navigation}>
+      <div className="cms-sidebar-layer" data-open={open}>
+        <aside className="cms-sidebar" data-open={open} aria-label={copy.navigation}>
         <button className="cms-icon-button cms-mobile-close" type="button" onClick={() => setOpen(false)} aria-label={copy.closeNavigation}>
           <X aria-hidden="true" />
         </button>
@@ -128,7 +162,8 @@ export default function CmsShell({
             <LogOut aria-hidden="true" />{copy.signOut}
           </button>
         </div>
-      </aside>
+        </aside>
+      </div>
       {open ? <button className="cms-drawer-scrim" type="button" onClick={() => setOpen(false)} aria-label={copy.closeNavigation} /> : null}
 
       <section className="cms-main">

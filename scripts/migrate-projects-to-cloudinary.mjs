@@ -59,6 +59,22 @@ function categoryFromType(type) {
   return 'other'
 }
 
+const workTypeKeys = new Map([
+  ['งานสำรวจน้ำบาดาล', 'groundwater-survey'],
+  ['งานเจาะบ่อน้ำบาดาล', 'groundwater-well-drilling'],
+  ['งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา', 'groundwater-project-remediation'],
+  ['งานซ่อมบำรุงรักษาบ่อน้ำบาดาล', 'groundwater-well-maintenance'],
+  ['งานเจาะบ่อน้ำแร่คุณภาพดี', 'mineral-water-well-drilling'],
+  ['งานสำรวจศึกษาน้ำแร่', 'mineral-water-survey'],
+  ['งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ', 'dewatering-well-construction'],
+  ['งานแก้ไขปริมาณการใช้น้ำบาดาล', 'groundwater-use-capacity-adjustment'],
+])
+
+function normalizeImportedWorkTypes(value) {
+  if (!Array.isArray(value)) return []
+  return [...new Set(value.map((item) => workTypeKeys.get(item) || item).filter(Boolean))]
+}
+
 function publicIdFor(rootFolder, project, localPath) {
   const parsed = path.posix.parse(localPath)
   const base = parsed.name
@@ -102,27 +118,22 @@ async function deleteUploadedAssets(publicIds) {
 function sourceDocument(project, mediaByLocalPath, now) {
   const localGallery = Array.isArray(project.localGalleryImages) ? project.localGalleryImages : []
   return {
-    businessTypes: Array.isArray(project.businessTypes) ? project.businessTypes : [],
-    category: categoryFromType(project.projectType),
+    category: [categoryFromType(project.projectType)],
     coverImage: mediaByLocalPath.get(project.localCoverImage) || project.coverImage || '',
     details: Array.isArray(project.details) ? project.details : [],
     galleryImages: localGallery.length
       ? localGallery.map((localPath) => mediaByLocalPath.get(localPath)).filter(Boolean)
       : Array.isArray(project.galleryImages) ? project.galleryImages.filter((value) => typeof value === 'string' && !value.toLowerCase().endsWith('.mp4')) : [],
     lat: Number.isFinite(project.lat) ? project.lat : null,
-    legacyPostId: project.legacyPostId,
-    legacyUrl: project.legacyUrl || undefined,
     lng: Number.isFinite(project.lng) ? project.lng : null,
     location: project.location || '',
-    projectType: project.projectType || 'other',
-    publicId: project._id,
     slug: normalizeSlug(project.slug),
     source: 'public-snapshot',
     status: 'active',
     summary: project.summary || '',
     title: project.title || '',
     updatedAt: now,
-    workTypes: Array.isArray(project.workTypes) ? project.workTypes : [],
+    workTypes: normalizeImportedWorkTypes(project.workTypes),
     year: Number.isInteger(project.year) ? project.year : null,
   }
 }
@@ -177,11 +188,9 @@ try {
     cloudinary.api.ping(),
   ])
   const collection = client.db(dbName).collection('cmsProjects')
-  const indexes = await collection.indexes()
-  const publicIdIndex = indexes.find((index) => index.name === 'cms_projects_public_id_unique_v1')
   const existingRows = await collection.find(
     { deletedAt: { $exists: false } },
-    { projection: { coverImage: 1, galleryImages: 1, legacyPostId: 1, publicId: 1, slug: 1, source: 1 } }
+    { projection: { coverImage: 1, galleryImages: 1, slug: 1, source: 1 } }
   ).toArray()
   const existingCloudinary = await listExistingCloudinaryAssets(`${rootFolder}/projects/imported/`)
   const sourceCounts = existingRows.reduce((counts, row) => {
@@ -192,8 +201,6 @@ try {
   const recordsWithLocalMedia = existingRows.filter((row) =>
     row.coverImage?.startsWith('/') || row.galleryImages?.some((image) => image.startsWith('/'))
   ).length
-  const recordsWithPublicId = existingRows.filter((row) => Number.isInteger(row.publicId)).length
-  const uniquePublicIds = new Set(existingRows.map((row) => row.publicId).filter(Number.isInteger)).size
   const plannedIds = new Set(localPaths.map((localPath) => {
     const project = projects.find((candidate) => candidate.localCoverImage === localPath || candidate.localGalleryImages?.includes(localPath))
     return publicIdFor(rootFolder, project, localPath)
@@ -204,14 +211,11 @@ try {
   console.log(`Projects selected: ${projects.length}; local images: ${localPaths.length}; existing MongoDB projects: ${existingRows.length}.`)
   console.log(`Migration source: ${sourceFile}.`)
   console.log(`MongoDB sources: ${JSON.stringify(sourceCounts)}; records still using local media: ${recordsWithLocalMedia}.`)
-  console.log(`Stable public IDs: ${recordsWithPublicId}/${existingRows.length}; unique public IDs: ${uniquePublicIds}.`)
-  console.log(`Unique public-ID index: ${publicIdIndex?.unique === true ? 'ready' : 'missing'}.`)
   console.log(`Cloudinary assets reusable: ${plannedIds.size - missingUploads}; images to upload: ${missingUploads}.`)
   if (!apply) {
     console.log('Dry run complete. Run with --apply to upload images and upsert project data.')
     process.exitCode = 0
   } else {
-    const byLegacyId = new Map(existingRows.filter((row) => row.legacyPostId).map((row) => [row.legacyPostId, row]))
     const bySlug = new Map(existingRows.map((row) => [normalizeSlug(row.slug), row]))
     const counters = { inserted: 0, preservedCms: 0, reused: 0, updated: 0, uploaded: 0 }
 
@@ -249,14 +253,14 @@ try {
 
         const now = new Date()
         const document = sourceDocument(project, mediaByLocalPath, now)
-        const previous = byLegacyId.get(project.legacyPostId) || bySlug.get(document.slug)
+        const previous = bySlug.get(document.slug)
         if (previous?.source === 'cms') {
           const replacements = new Map(projectPaths.map((localPath) => [localPath, mediaByLocalPath.get(localPath)]))
           const coverImage = replacements.get(previous.coverImage) || previous.coverImage
           const galleryImages = (previous.galleryImages || []).map((image) => replacements.get(image) || image)
           await collection.updateOne(
             { _id: previous._id },
-            { $set: { coverImage, galleryImages, publicId: project._id, updatedAt: now } }
+            { $set: { coverImage, galleryImages, updatedAt: now } }
           )
           counters.preservedCms += 1
         } else if (previous?._id) {
@@ -264,7 +268,6 @@ try {
           counters.updated += 1
         } else {
           const result = await collection.insertOne({ ...document, createdAt: now })
-          byLegacyId.set(project.legacyPostId, { ...document, _id: result.insertedId })
           bySlug.set(document.slug, { ...document, _id: result.insertedId })
           counters.inserted += 1
         }
@@ -279,15 +282,6 @@ try {
         throw error
       }
     }
-
-    await collection.createIndex(
-      { publicId: 1 },
-      {
-        name: 'cms_projects_public_id_unique_v1',
-        partialFilterExpression: { publicId: { $exists: true } },
-        unique: true,
-      }
-    )
 
     console.log(`Migration complete: ${counters.uploaded} uploaded, ${counters.reused} reused, ${counters.inserted} inserted, ${counters.updated} updated, ${counters.preservedCms} CMS-edited records preserved.`)
   }

@@ -29,9 +29,8 @@ assert.match(detail.text, /res\.cloudinary\.com/)
 const english = await page(`/en/projects/${objectId}`)
 assert.equal(english.response.status, 200)
 
-const legacy = await fetch(`${baseUrl}/projects/1`, { redirect: 'manual' })
-assert.ok([307, 308].includes(legacy.status), `Expected a legacy redirect, received ${legacy.status}.`)
-assert.match((legacy.headers.get('location') || '').split(',')[0].trim(), /^\/projects\/[a-f\d]{24}$/i)
+const invalidProject = await fetch(`${baseUrl}/projects/1`, { redirect: 'manual' })
+assert.equal(invalidProject.status, 404, 'Numeric project URLs must not resolve after the ObjectId migration.')
 
 const cms = await fetch(`${baseUrl}/cms/projects`, { redirect: 'manual' })
 assert.ok([307, 308].includes(cms.status))

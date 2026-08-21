@@ -2,10 +2,10 @@
 
 import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Eye, LoaderCircle, RotateCcw, Save, Send, Undo2 } from 'lucide-react'
-import type { CmsProjectInput, CmsProjectRecord, CmsProjectRevisionRecord } from '@/types/cms'
+import { ArrowLeft, ChevronDown, Eye, LoaderCircle, Plus, RotateCcw, Save, Send, Trash2, Undo2 } from 'lucide-react'
+import { CMS_PROJECT_CATEGORIES, CMS_PROJECT_WORK_TYPES, type CmsProjectCategory, type CmsProjectInput, type CmsProjectRecord, type CmsProjectRevisionRecord, type CmsProjectWorkType } from '@/types/cms'
 import type { CmsStagedMediaUpload } from '@/types/cms-media'
-import { cmsProjectCategoryLabel, localizeCmsFieldErrors } from '@/lib/cms-locale'
+import { cmsProjectCategoryLabel, cmsProjectWorkTypeLabel, localizeCmsFieldErrors } from '@/lib/cms-locale'
 import { validateProjectForPublishing, validateProjectInput } from '@/lib/cms-validation'
 import type { PreparedClientImage } from '@/lib/client-image-compression'
 import CmsDeferredProjectImages from './CmsDeferredProjectImages'
@@ -17,16 +17,14 @@ type ProjectEditorForm = CmsProjectInput & Pick<
 >
 
 const blankProject: ProjectEditorForm = {
-  businessTypes: [],
-  category: 'other',
+  category: ['other'],
   coverImage: '',
-  details: [],
+  details: [''],
   galleryImages: [],
   hasUnpublishedChanges: true,
   lat: null,
   lng: null,
   location: '',
-  projectType: 'other',
   publishedAt: null,
   publishedBy: null,
   publishedVersion: 0,
@@ -35,25 +33,127 @@ const blankProject: ProjectEditorForm = {
   summary: '',
   title: '',
   translations: {
-    en: { businessTypes: [], details: [], location: '', summary: '', title: '', workTypes: [] },
+    en: { details: [''], location: '', summary: '', title: '' },
   },
   updatedAt: '',
   workTypes: [],
   year: new Date().getFullYear(),
 }
 
-const categoryValues: CmsProjectInput['category'][] = ['government', 'factory', 'resort', 'agriculture', 'dewatering', 'other']
+const categoryValues: CmsProjectCategory[] = [...CMS_PROJECT_CATEGORIES]
+const workTypeValues: CmsProjectWorkType[] = [...CMS_PROJECT_WORK_TYPES]
+
+function withDefaultDetailSections(item: ProjectEditorForm): ProjectEditorForm {
+  return {
+    ...item,
+    details: item.details.length ? item.details : [''],
+    translations: {
+      en: {
+        ...item.translations.en,
+        details: item.translations.en.details.length ? item.translations.en.details : [''],
+      },
+    },
+  }
+}
 
 function slugify(value: string) {
   return value.normalize('NFKC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[/?#\\]/g, '').replace(/-+/g, '-')
 }
 
-function lines(value: string) {
-  return value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean)
+function DetailedSectionsEditor({
+  addLabel,
+  disabled,
+  emptyLabel,
+  idPrefix,
+  label,
+  onChange,
+  removeLabel,
+  sectionLabel,
+  values,
+}: {
+  addLabel: string
+  disabled: boolean
+  emptyLabel: string
+  idPrefix: string
+  label: string
+  onChange: (values: string[]) => void
+  removeLabel: string
+  sectionLabel: string
+  values: string[]
+}) {
+  function updateSection(index: number, value: string) {
+    onChange(values.map((section, sectionIndex) => sectionIndex === index ? value : section))
+  }
+
+  function removeSection(index: number) {
+    onChange(values.filter((_, sectionIndex) => sectionIndex !== index))
+  }
+
+  return (
+    <fieldset className="cms-field cms-field-full cms-detail-sections">
+      <legend>{label}</legend>
+      {values.length ? <div className="cms-detail-section-list">{values.map((value, index) => (
+        <div className="cms-detail-section" key={index}>
+          <div className="cms-detail-section-header">
+            <label htmlFor={`${idPrefix}-${index}`}>{sectionLabel} {index + 1}</label>
+            <button className="cms-detail-section-remove" type="button" onClick={() => removeSection(index)} disabled={disabled} aria-label={`${removeLabel} ${index + 1}`}>
+              <Trash2 aria-hidden="true" />{removeLabel}
+            </button>
+          </div>
+          <textarea id={`${idPrefix}-${index}`} value={value} onChange={(event) => updateSection(index, event.target.value)} disabled={disabled} />
+        </div>
+      ))}</div> : <p className="cms-detail-sections-empty">{emptyLabel}</p>}
+      <button className="cms-button-secondary cms-add-section" type="button" onClick={() => onChange([...values, ''])} disabled={disabled}>
+        <Plus aria-hidden="true" />{addLabel}
+      </button>
+    </fieldset>
+  )
 }
 
-function blocks(value: string) {
-  return value.split(/\r?\n---\r?\n/).map((item) => item.trim()).filter(Boolean)
+function PillMultiSelect<T extends string>({
+  disabled,
+  error,
+  exclusiveValue,
+  label,
+  onChange,
+  options,
+  optionLabel,
+  required = false,
+  values,
+}: {
+  disabled: boolean
+  error?: string
+  exclusiveValue?: T
+  label: string
+  onChange: (values: T[]) => void
+  options: readonly T[]
+  optionLabel: (option: T) => string
+  required?: boolean
+  values: T[]
+}) {
+  function toggle(option: T) {
+    if (exclusiveValue && option === exclusiveValue) {
+      onChange(values.includes(option) ? [] : [option])
+      return
+    }
+    const withoutExclusive = exclusiveValue ? values.filter((value) => value !== exclusiveValue) : values
+    onChange(withoutExclusive.includes(option)
+      ? withoutExclusive.filter((value) => value !== option)
+      : [...withoutExclusive, option])
+  }
+
+  return (
+    <fieldset className="cms-field cms-pill-field" aria-invalid={Boolean(error)}>
+      <legend>{label}{required ? <span className="cms-required" aria-hidden="true">*</span> : null}</legend>
+      <div className="cms-pill-options">
+        {options.map((option) => {
+          const selected = values.includes(option)
+          return <button className={`cms-select-pill${selected ? ' is-selected' : ''}`} type="button" key={option} aria-pressed={selected} onClick={() => toggle(option)} disabled={disabled}>{optionLabel(option)}</button>
+        })}
+      </div>
+      {error ? <span className="cms-field-error">{error}</span> : null}
+    </fieldset>
+  )
 }
 
 export default function CmsProjectEditor({
@@ -72,7 +172,7 @@ export default function CmsProjectEditor({
   const th = locale === 'th'
   const text = (thai: string, english: string) => th ? thai : english
   const [editingId, setEditingId] = useState(initialItem?.id || null)
-  const [form, setForm] = useState<ProjectEditorForm>(initialItem ? { ...initialItem } : { ...blankProject })
+  const [form, setForm] = useState<ProjectEditorForm>(() => withDefaultDetailSections(initialItem ? { ...initialItem } : { ...blankProject }))
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState(initialMessage)
@@ -154,10 +254,13 @@ export default function CmsProjectEditor({
       return
     }
     if (intent === 'publish') {
-      const publishingErrors = validateProjectForPublishing(preflight.data)
+      const publishingInput = coverPending.length
+        ? { ...preflight.data, coverImage: 'pending-cover-upload' }
+        : preflight.data
+      const publishingErrors = validateProjectForPublishing(publishingInput)
       if (publishingErrors) {
         setFieldErrors(localizeCmsFieldErrors(locale, publishingErrors))
-        setError(text('กรอกเนื้อหาภาษาไทยและอังกฤษให้ครบก่อนเผยแพร่', 'Complete the Thai and English content before publishing.'))
+        setError(text('กรอกข้อมูลภาษาไทยที่จำเป็นให้ครบก่อนเผยแพร่', 'Complete the required Thai content before publishing.'))
         setBusy(false)
         return
       }
@@ -201,7 +304,7 @@ export default function CmsProjectEditor({
       setCoverPending([])
       setGalleryPending([])
       setEditingId(payload.item.id)
-      setForm({ ...payload.item })
+      setForm(withDefaultDetailSections({ ...payload.item }))
       if (!editingId) {
         router.replace(`/cms/projects/${payload.item.id}?created=${intent === 'publish' ? 'published' : 'draft'}`)
         return
@@ -239,7 +342,7 @@ export default function CmsProjectEditor({
       })
       const payload = (await response.json().catch(() => ({}))) as { error?: string; item?: CmsProjectRecord }
       if (!response.ok || !payload.item) throw new Error(payload.error || text('ไม่สามารถเปลี่ยนสถานะการเผยแพร่ได้', 'Could not change publishing state.'))
-      setForm({ ...payload.item })
+      setForm(withDefaultDetailSections({ ...payload.item }))
       setMessage(action === 'unpublish'
         ? text('ยกเลิกเผยแพร่แล้ว ผลงานถูกเก็บเป็นฉบับร่าง', 'Project unpublished and retained as a draft.')
         : text('กู้คืนและเผยแพร่เวอร์ชันก่อนหน้าแล้ว', 'Previous version restored and published.'))
@@ -271,36 +374,58 @@ export default function CmsProjectEditor({
               : text('ยังไม่แสดงบนเว็บไซต์สาธารณะ', 'Not visible on the public website.')}</span>
         </div>
         <div className="cms-form-grid">
-          <label className="cms-field"><span>{text('ชื่อผลงาน (ไทย)', 'Project title (Thai)')}</span><input value={form.title} onChange={(event) => set('title', event.target.value)} onBlur={() => { if (!form.slug) set('slug', slugify(form.title)) }} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.title)} />{fieldErrors.title ? <span className="cms-field-error">{fieldErrors.title}</span> : null}</label>
-          <label className="cms-field"><span>Slug</span><input value={form.slug} onChange={(event) => set('slug', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.slug)} />{fieldErrors.slug ? <span className="cms-field-error">{fieldErrors.slug}</span> : <span className="cms-field-help">{text('ห้ามมีช่องว่างหรือเครื่องหมายทับ', 'No spaces or slashes.')}</span>}</label>
+          <label className="cms-field"><span>{text('ชื่อผลงาน (ไทย)', 'Project title (Thai)')}<span className="cms-required" aria-hidden="true">*</span></span><input required value={form.title} onChange={(event) => set('title', event.target.value)} onBlur={() => { if (!form.slug) set('slug', slugify(form.title)) }} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.title)} />{fieldErrors.title ? <span className="cms-field-error">{fieldErrors.title}</span> : null}</label>
+          <label className="cms-field"><span>Slug<span className="cms-required" aria-hidden="true">*</span></span><input required value={form.slug} onChange={(event) => set('slug', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.slug)} />{fieldErrors.slug ? <span className="cms-field-error">{fieldErrors.slug}</span> : <span className="cms-field-help">{text('ห้ามมีช่องว่างหรือเครื่องหมายทับ', 'No spaces or slashes.')}</span>}</label>
+          <PillMultiSelect disabled={!canWrite} error={fieldErrors.category} exclusiveValue="other" label={text('หมวดหมู่', 'Category')} onChange={(values) => set('category', values)} options={categoryValues} optionLabel={(category) => cmsProjectCategoryLabel(locale, category)} required values={form.category} />
+          <PillMultiSelect disabled={!canWrite} error={fieldErrors.workTypes} label={text('ประเภทงาน', 'Work types')} onChange={(values) => set('workTypes', values)} options={workTypeValues} optionLabel={(workType) => cmsProjectWorkTypeLabel(locale, workType)} values={form.workTypes} />
           <label className="cms-field"><span>{text('ปี', 'Year')}</span><input type="number" min="1900" max={new Date().getFullYear() + 5} value={form.year ?? ''} onChange={(event) => set('year', event.target.value ? Number(event.target.value) : null)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.year)} />{fieldErrors.year ? <span className="cms-field-error">{fieldErrors.year}</span> : null}</label>
-          <label className="cms-field"><span>{text('หมวดหมู่', 'Category')}</span><select value={form.category} onChange={(event) => set('category', event.target.value as CmsProjectInput['category'])} disabled={!canWrite}>{categoryValues.map((category) => <option key={category} value={category}>{cmsProjectCategoryLabel(locale, category)}</option>)}</select></label>
-          <label className="cms-field"><span>{text('คีย์ประเภทผลงาน', 'Project type key')}</span><input value={form.projectType} onChange={(event) => set('projectType', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.projectType)} />{fieldErrors.projectType ? <span className="cms-field-error">{fieldErrors.projectType}</span> : null}</label>
-          <label className="cms-field cms-field-full"><span>{text('สถานที่ (ไทย)', 'Location (Thai)')}</span><input value={form.location} onChange={(event) => set('location', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.location)} />{fieldErrors.location ? <span className="cms-field-error">{fieldErrors.location}</span> : null}</label>
+          <label className="cms-field cms-field-full"><span>{text('สถานที่ (ไทย)', 'Location (Thai)')}<span className="cms-required" aria-hidden="true">*</span></span><input required value={form.location} onChange={(event) => set('location', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.location)} />{fieldErrors.location ? <span className="cms-field-error">{fieldErrors.location}</span> : null}</label>
           <label className="cms-field"><span>{text('ละติจูด', 'Latitude')}</span><input type="number" step="any" value={form.lat ?? ''} onChange={(event) => set('lat', event.target.value ? Number(event.target.value) : null)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.lat)} />{fieldErrors.lat ? <span className="cms-field-error">{fieldErrors.lat}</span> : null}</label>
           <label className="cms-field"><span>{text('ลองจิจูด', 'Longitude')}</span><input type="number" step="any" value={form.lng ?? ''} onChange={(event) => set('lng', event.target.value ? Number(event.target.value) : null)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.lng)} />{fieldErrors.lng ? <span className="cms-field-error">{fieldErrors.lng}</span> : null}</label>
-          <label className="cms-field cms-field-full"><span>{text('สรุป (ไทย)', 'Summary (Thai)')}</span><textarea value={form.summary} onChange={(event) => set('summary', event.target.value)} disabled={!canWrite} /></label>
-          <label className="cms-field"><span>{text('ประเภทงาน (ไทย)', 'Work types (Thai)')}</span><textarea value={form.workTypes.join('\n')} onChange={(event) => set('workTypes', lines(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">{text('หนึ่งรายการต่อบรรทัด', 'One item per line.')}</span></label>
-          <label className="cms-field"><span>{text('ประเภทธุรกิจ (ไทย)', 'Business types (Thai)')}</span><textarea value={form.businessTypes.join('\n')} onChange={(event) => set('businessTypes', lines(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">{text('หนึ่งรายการต่อบรรทัด', 'One item per line.')}</span></label>
-          <label className="cms-field cms-field-full"><span>{text('รายละเอียดแต่ละส่วน (ไทย)', 'Detailed sections (Thai)')}</span><textarea value={form.details.join('\n---\n')} onChange={(event) => set('details', blocks(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">{text('แยกแต่ละส่วนด้วยบรรทัดที่มี ---', 'Separate sections with a line containing ---.')}</span></label>
+          <label className="cms-field cms-field-full"><span>{text('สรุป (ไทย)', 'Summary (Thai)')}<span className="cms-required" aria-hidden="true">*</span></span><textarea required value={form.summary} onChange={(event) => set('summary', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.summary)} />{fieldErrors.summary ? <span className="cms-field-error">{fieldErrors.summary}</span> : null}</label>
+          <DetailedSectionsEditor
+            addLabel={text('เพิ่มรายละเอียด', 'Add detailed section')}
+            disabled={!canWrite}
+            emptyLabel={text('ยังไม่มีส่วนรายละเอียด กดปุ่มด้านล่างเพื่อเพิ่ม', 'No detailed sections yet. Use the button below to add one.')}
+            idPrefix="project-detail-th"
+            label={text('รายละเอียด (ไทย)', 'Detailed sections (Thai)')}
+            onChange={(values) => set('details', values)}
+            removeLabel={text('ลบ', 'Remove section')}
+            sectionLabel={text('ส่วนที่', 'Section')}
+            values={form.details}
+          />
 
-          <div className="cms-language-divider cms-field-full"><strong>English content</strong><span>{text('ต้องกรอกชื่อ สถานที่ และสรุปก่อนเผยแพร่', 'Title, location, and summary are required before publishing.')}</span></div>
-          <label className="cms-field cms-field-full"><span>Project title (English)</span><input value={form.translations.en.title} onChange={(event) => setEnglish('title', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors['translations.en.title'])} />{fieldErrors['translations.en.title'] ? <span className="cms-field-error">{fieldErrors['translations.en.title']}</span> : null}</label>
-          <label className="cms-field cms-field-full"><span>Location (English)</span><input value={form.translations.en.location} onChange={(event) => setEnglish('location', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors['translations.en.location'])} />{fieldErrors['translations.en.location'] ? <span className="cms-field-error">{fieldErrors['translations.en.location']}</span> : null}</label>
-          <label className="cms-field cms-field-full"><span>Summary (English)</span><textarea value={form.translations.en.summary} onChange={(event) => setEnglish('summary', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors['translations.en.summary'])} />{fieldErrors['translations.en.summary'] ? <span className="cms-field-error">{fieldErrors['translations.en.summary']}</span> : null}</label>
-          <label className="cms-field"><span>Work types (English)</span><textarea value={form.translations.en.workTypes.join('\n')} onChange={(event) => setEnglish('workTypes', lines(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">One item per line.</span></label>
-          <label className="cms-field"><span>Business types (English)</span><textarea value={form.translations.en.businessTypes.join('\n')} onChange={(event) => setEnglish('businessTypes', lines(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">One item per line.</span></label>
-          <label className="cms-field cms-field-full"><span>Detailed sections (English)</span><textarea value={form.translations.en.details.join('\n---\n')} onChange={(event) => setEnglish('details', blocks(event.target.value))} disabled={!canWrite} /><span className="cms-field-help">Separate sections with a line containing ---.</span></label>
-          <CmsDeferredProjectImages label={text('ภาพปก', 'Cover image')} values={form.coverImage ? [form.coverImage] : []} pending={coverPending} onChange={(values) => set('coverImage', values[0] || '')} onPendingChange={setCoverPending} onPreparingChange={setPreparing} disabled={!canWrite || busy} error={fieldErrors.coverImage} help={text('ภาพใหม่จะแทนภาพปัจจุบันหลังบันทึกสำเร็จ หรือกรอก HTTPS URL หรือพาธภายใน', 'A new image replaces the current image after a successful save, or enter an HTTPS URL or local path.')} />
-          <CmsDeferredProjectImages label={text('ภาพแกลเลอรี', 'Gallery images')} values={form.galleryImages} pending={galleryPending} onChange={(values) => set('galleryImages', values)} onPendingChange={setGalleryPending} onPreparingChange={setPreparing} disabled={!canWrite || busy} error={fieldErrors.galleryImages} help={text('หนึ่ง URL ต่อบรรทัด ภาพใหม่จะเพิ่มต่อท้ายเมื่อบันทึกสำเร็จ', 'One URL per line. New images are appended after a successful save.')} multiple />
-          <label className="cms-field cms-field-full"><span>{text('URL ต้นฉบับเก่า', 'Legacy source URL')}</span><input value={form.legacyUrl || ''} onChange={(event) => set('legacyUrl', event.target.value)} disabled={!canWrite} aria-invalid={Boolean(fieldErrors.legacyUrl)} />{fieldErrors.legacyUrl ? <span className="cms-field-error">{fieldErrors.legacyUrl}</span> : null}</label>
+          <details className="cms-language-section cms-field-full">
+            <summary>
+              <span><strong>{text('เนื้อหาภาษาอังกฤษ', 'English content')}</strong><small>{text('ไม่บังคับ กดเพื่อเปิดหรือพับส่วนนี้', 'Optional. Expand or collapse this section.')}</small></span>
+              <ChevronDown aria-hidden="true" />
+            </summary>
+            <div className="cms-language-fields">
+              <label className="cms-field cms-field-full"><span>Project title (English)</span><input value={form.translations.en.title} onChange={(event) => setEnglish('title', event.target.value)} disabled={!canWrite} /></label>
+              <label className="cms-field cms-field-full"><span>Location (English)</span><input value={form.translations.en.location} onChange={(event) => setEnglish('location', event.target.value)} disabled={!canWrite} /></label>
+              <label className="cms-field cms-field-full"><span>Summary (English)</span><textarea value={form.translations.en.summary} onChange={(event) => setEnglish('summary', event.target.value)} disabled={!canWrite} /></label>
+              <DetailedSectionsEditor
+                addLabel="Add detailed section"
+                disabled={!canWrite}
+                emptyLabel="No detailed sections yet. Use the button below to add one."
+                idPrefix="project-detail-en"
+                label="Detailed sections (English)"
+                onChange={(values) => setEnglish('details', values)}
+                removeLabel="Remove section"
+                sectionLabel="English section"
+                values={form.translations.en.details}
+              />
+            </div>
+          </details>
+          <CmsDeferredProjectImages allowManualEntry={Boolean(editingId)} required label={text('ภาพปก', 'Cover image')} values={form.coverImage ? [form.coverImage] : []} pending={coverPending} onChange={(values) => set('coverImage', values[0] || '')} onPendingChange={setCoverPending} onPreparingChange={setPreparing} disabled={!canWrite || busy} error={fieldErrors.coverImage} />
+          <CmsDeferredProjectImages allowManualEntry={Boolean(editingId)} label={text('ภาพแกลเลอรี', 'Gallery images')} values={form.galleryImages} pending={galleryPending} onChange={(values) => set('galleryImages', values)} onPendingChange={setGalleryPending} onPreparingChange={setPreparing} disabled={!canWrite || busy} error={fieldErrors.galleryImages} help={editingId ? text('หนึ่ง URL ต่อบรรทัด ภาพใหม่จะเพิ่มต่อท้ายเมื่อบันทึกสำเร็จ', 'One URL per line. New images are appended after a successful save.') : text('เลือกได้สูงสุด 12 ภาพต่อการบันทึกหนึ่งครั้ง', 'Select up to 12 images per save.')} multiple />
         </div>
         <div aria-live="polite">{saveStage ? <p className="cms-save-stage"><LoaderCircle className="cms-spin" aria-hidden="true" />{saveStage}</p> : null}{error ? <p className="cms-error">{error}</p> : null}{message ? <p className="cms-message">{message}</p> : null}</div>
         <div className="cms-form-actions">
           <a className="cms-button-secondary" href="/cms/projects">{text('ยกเลิก', 'Cancel')}</a>
           {editingId ? <a className="cms-button-secondary" href={`/cms/projects/${editingId}/preview`} target="_blank" rel="noopener noreferrer"><Eye aria-hidden="true" />{text('ดูตัวอย่างฉบับร่าง', 'Preview draft')}</a> : null}
           {canWrite && form.status === 'active' ? <button className="cms-button-secondary" type="button" onClick={() => publishingAction('unpublish')} disabled={busy}><Undo2 aria-hidden="true" />{text('ยกเลิกเผยแพร่', 'Unpublish')}</button> : null}
-          {canWrite ? <button className="cms-button-secondary" type="submit" value="save-draft" disabled={busy || preparingCount > 0}><Save aria-hidden="true" />{busy ? text('กำลังบันทึก...', 'Saving...') : text('บันทึกฉบับร่าง', 'Save draft')}</button> : null}
+          {canWrite ? <button className="cms-button-secondary" type="submit" value="save-draft" formNoValidate disabled={busy || preparingCount > 0}><Save aria-hidden="true" />{busy ? text('กำลังบันทึก...', 'Saving...') : text('บันทึกฉบับร่าง', 'Save draft')}</button> : null}
           {canWrite ? <button className="cms-button" type="submit" value="publish" disabled={busy || preparingCount > 0}><Send aria-hidden="true" />{busy ? text('กำลังเผยแพร่...', 'Publishing...') : text('เผยแพร่', 'Publish')}</button> : null}
         </div>
       </form>

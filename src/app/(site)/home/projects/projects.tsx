@@ -188,7 +188,7 @@ export default function ProjectsSection({
               </div>
 
               <p className="project-type-of-work SP-textHead6" style={{ textAlign: 'center' }}>
-                {project.workTypes.join(' · ') || presentation?.typeLabel || project.projectTypeLabel}
+                {project.workTypes.join(' · ') || presentation?.typeLabel}
               </p>
 
               <p className="project-category SP-textHead6" style={{ textAlign: 'center' }}>

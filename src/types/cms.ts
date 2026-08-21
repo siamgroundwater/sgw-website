@@ -1,13 +1,26 @@
 export type CmsStatus = 'draft' | 'active' | 'archived'
 export type CmsRole = 'admin' | 'editor' | 'viewer'
 
+export const CMS_PROJECT_CATEGORIES = ['government', 'factory', 'resort', 'agriculture', 'dewatering', 'other'] as const
+export type CmsProjectCategory = (typeof CMS_PROJECT_CATEGORIES)[number]
+
+export const CMS_PROJECT_WORK_TYPES = [
+  'groundwater-survey',
+  'groundwater-well-drilling',
+  'groundwater-project-remediation',
+  'groundwater-well-maintenance',
+  'mineral-water-well-drilling',
+  'mineral-water-survey',
+  'dewatering-well-construction',
+  'groundwater-use-capacity-adjustment',
+] as const
+export type CmsProjectWorkType = (typeof CMS_PROJECT_WORK_TYPES)[number]
+
 export type CmsProjectTranslation = {
-  businessTypes: string[]
   details: string[]
   location: string
   summary: string
   title: string
-  workTypes: string[]
 }
 
 export type CmsProjectTranslations = {
@@ -15,22 +28,19 @@ export type CmsProjectTranslations = {
 }
 
 export type CmsProjectInput = {
-  businessTypes: string[]
-  category: 'government' | 'factory' | 'resort' | 'agriculture' | 'dewatering' | 'other'
+  category: CmsProjectCategory[]
   coverImage: string
   details: string[]
   galleryImages: string[]
   lat: number | null
-  legacyUrl?: string
   lng: number | null
   location: string
-  projectType: string
   slug: string
   status: CmsStatus
   summary: string
   title: string
   translations: CmsProjectTranslations
-  workTypes: string[]
+  workTypes: CmsProjectWorkType[]
   year: number | null
 }
 
@@ -63,7 +73,6 @@ export type CmsProjectRecord = CmsProjectInput & {
   publishedAt: string | null
   publishedBy: string | null
   publishedVersion: number
-  publicId: number
   source: 'cms' | 'public-snapshot'
   updatedAt: string
 }

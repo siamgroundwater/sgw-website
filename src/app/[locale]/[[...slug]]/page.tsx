@@ -50,7 +50,7 @@ import {
 import { getLocalizedProjectPresentation, localizeProject } from '@/i18n/projects'
 import { getProjectMapUrl, type Project } from '@/lib/projects'
 import { toProjectSummary, type ProjectSummary } from '@/lib/project-summaries'
-import { getPublicProjectById, getPublicProjectByLegacyId, listPublicProjects } from '@/server/public-projects'
+import { getPublicProjectById, listPublicProjects } from '@/server/public-projects'
 import '@/app/(site)/home/page.css'
 import '@/app/(site)/about/page.css'
 import '@/app/(site)/contact/page.css'
@@ -65,7 +65,7 @@ type LocalizedPageProps = {
 }
 
 async function resolveProject(id: string) {
-  return (await getPublicProjectById(id)) || (await getPublicProjectByLegacyId(id))
+  return getPublicProjectById(id)
 }
 
 const staticRouteSegments: string[][] = [
@@ -415,12 +415,6 @@ function LocalizedProjectDetail({ locale, content, project: rawProject }: { loca
                 <dd>{project.workTypes.join(' • ')}</dd>
               </div>
             )}
-            {project.businessTypes.length > 0 && (
-              <div>
-                <dt>{content.projects.businessTypeLabel}</dt>
-                <dd>{project.businessTypes.join(' • ')}</dd>
-              </div>
-            )}
           </dl>
 
           <section className="project-detail-record">
@@ -524,7 +518,7 @@ function LocalizedArticlePage({ locale, content, articleSlug }: { locale: Locali
 function LocalizedContact({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   return (
     <main className="contact-page">
-      <section className="contact-header"><p className="contact-eyebrow">CONTACT SIAM GROUNDWATER</p><h1 className="contact-title-main">{content.contact.title}</h1><h2 className="contact-title-sub">{content.contact.officeTitle}</h2><p className="contact-address">{content.contact.officeAddress}</p></section>
+      <section className="contact-header"><p className="contact-eyebrow">{content.contact.eyebrow}</p><h1 className="contact-title-main">{content.contact.title}</h1><h2 className="contact-title-sub">{content.contact.officeTitle}</h2><p className="contact-address">{content.contact.officeAddress}</p></section>
       <ContactDetails locale={locale} officeAddress={content.contact.officeAddress} phoneTitle={content.contact.labels.phone} emailTitle={content.contact.labels.email} contactTitle={content.common.contactTeam} locationTitle={content.contact.locationTitle} locationAction={content.contact.locationAction} />
     </main>
   )

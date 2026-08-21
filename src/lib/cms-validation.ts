@@ -1,9 +1,13 @@
-import type {
-  CmsLearningInput,
-  CmsProjectInput,
-  CmsServiceInput,
-  CmsStatus,
-} from '@/types/cms'
+import {
+  CMS_PROJECT_CATEGORIES,
+  CMS_PROJECT_WORK_TYPES,
+  type CmsProjectCategory,
+  type CmsProjectWorkType,
+  type CmsProjectInput,
+  type CmsLearningInput,
+  type CmsServiceInput,
+  type CmsStatus,
+} from '../types/cms.ts'
 import { normalizeSlug } from './slug.ts'
 
 export type ValidationResult<T> =
@@ -11,14 +15,8 @@ export type ValidationResult<T> =
   | { data: null; errors: Record<string, string> }
 
 const statusValues: CmsStatus[] = ['draft', 'active', 'archived']
-const projectCategories: CmsProjectInput['category'][] = [
-  'government',
-  'factory',
-  'resort',
-  'agriculture',
-  'dewatering',
-  'other',
-]
+const projectCategories: readonly CmsProjectCategory[] = CMS_PROJECT_CATEGORIES
+const projectWorkTypes: readonly CmsProjectWorkType[] = CMS_PROJECT_WORK_TYPES
 const serviceKeys: CmsServiceInput['key'][] = [
   'survey',
   'drilling',
@@ -91,13 +89,16 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
   const title = cleanString(body.title, 180)
   const slug = normalizeSlug(cleanString(body.slug, 1000)).slice(0, 180)
   const location = cleanString(body.location, 300)
-  const projectType = cleanString(body.projectType, 100)
   const summary = cleanString(body.summary, 12000)
   const coverImage = cleanString(body.coverImage, 1000)
-  const legacyUrl = cleanString(body.legacyUrl, 1000)
-  const category = projectCategories.includes(body.category as CmsProjectInput['category'])
-    ? (body.category as CmsProjectInput['category'])
-    : 'other'
+  const rawCategories = Array.isArray(body.category) ? body.category : []
+  const category = Array.from(new Set(rawCategories.filter(
+    (item): item is CmsProjectCategory => projectCategories.includes(item as CmsProjectCategory)
+  )))
+  const rawWorkTypes = Array.isArray(body.workTypes) ? body.workTypes : []
+  const workTypes = Array.from(new Set(rawWorkTypes.filter(
+    (item): item is CmsProjectWorkType => projectWorkTypes.includes(item as CmsProjectWorkType)
+  )))
   const year = readNumber(body.year)
   const lat = readNumber(body.lat)
   const lng = readNumber(body.lng)
@@ -109,48 +110,50 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
   if (!title) errors.title = 'Project title is required.'
   if (!isSafeSlug(slug)) errors.slug = 'Use a URL-safe slug without spaces or slashes.'
   if (!location) errors.location = 'Project location is required.'
-  if (!projectType) errors.projectType = 'Project type is required.'
-  if (!projectCategories.includes(body.category as CmsProjectInput['category'])) errors.category = 'Choose a valid project category.'
+  if (!category.length || rawCategories.some((item) => !projectCategories.includes(item as CmsProjectCategory))) {
+    errors.category = 'Choose at least one valid project category.'
+  }
+  if (rawWorkTypes.some((item) => !projectWorkTypes.includes(item as CmsProjectWorkType))) {
+    errors.workTypes = 'Choose valid project work types.'
+  }
   if (!statusValues.includes(body.status as CmsStatus)) errors.status = 'Choose a valid content status.'
   if (year !== null && (!Number.isInteger(year) || year < 1900 || year > new Date().getFullYear() + 5)) {
     errors.year = 'Enter a valid four-digit year.'
   }
   if (lat !== null && (lat < -90 || lat > 90)) errors.lat = 'Latitude must be between -90 and 90.'
   if (lng !== null && (lng < -180 || lng > 180)) errors.lng = 'Longitude must be between -180 and 180.'
+  if ((lat === null) !== (lng === null)) {
+    errors.lat = 'Enter both latitude and longitude, or leave both empty.'
+    errors.lng = 'Enter both latitude and longitude, or leave both empty.'
+  }
   if (!isSafeAsset(coverImage)) errors.coverImage = 'Use an absolute HTTP(S) URL or a local / path.'
   if (galleryImages.some((image) => !isSafeAsset(image))) errors.galleryImages = 'Every gallery item must be a valid asset URL or local path.'
-  if (!isSafeLink(legacyUrl)) errors.legacyUrl = 'Use a valid HTTP(S) URL or local path.'
 
   if (Object.keys(errors).length) return { data: null, errors }
 
   return {
     errors: null,
     data: {
-      businessTypes: cleanStringList(body.businessTypes, 30, 120),
       category,
       coverImage,
       details: cleanStringList(body.details, 80, 6000),
       galleryImages,
       lat,
-      legacyUrl: legacyUrl || undefined,
       lng,
       location,
-      projectType,
       slug,
       status: readStatus(body.status),
       summary,
       title,
       translations: {
         en: {
-          businessTypes: cleanStringList(english?.businessTypes, 30, 120),
           details: cleanStringList(english?.details, 80, 6000),
           location: cleanString(english?.location, 300),
           summary: cleanString(english?.summary, 12000),
           title: cleanString(english?.title, 180),
-          workTypes: cleanStringList(english?.workTypes, 30, 200),
         },
       },
-      workTypes: cleanStringList(body.workTypes, 30, 200),
+      workTypes,
       year,
     },
   }
@@ -158,10 +161,8 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
 
 export function validateProjectForPublishing(input: CmsProjectInput) {
   const errors: Record<string, string> = {}
-  const english = input.translations.en
-  if (!english.title) errors['translations.en.title'] = 'English project title is required before publishing.'
-  if (!english.location) errors['translations.en.location'] = 'English project location is required before publishing.'
-  if (!english.summary) errors['translations.en.summary'] = 'English project summary is required before publishing.'
+  if (!input.summary) errors.summary = 'Thai project summary is required before publishing.'
+  if (!input.coverImage) errors.coverImage = 'Cover image is required before publishing.'
   return Object.keys(errors).length ? errors : null
 }
 

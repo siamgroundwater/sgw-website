@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
+import { v2 as cloudinary } from 'cloudinary'
 
 const baseUrl = (process.env.E2E_BASE_URL || 'http://127.0.0.1:3003').replace(/\/$/, '')
 const username = process.env.CMS_E2E_USERNAME
@@ -14,15 +16,39 @@ const cookie = (login.headers.get('set-cookie') || '').split(';', 1)[0]
 assert.ok(cookie.includes('sgw_cms_session='))
 const headers = { ...originHeaders, Cookie: cookie }
 const suffix = process.env.CMS_E2E_RUN_ID || `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`
+const submissionId = `e2e_media_${suffix.replace(/[^A-Za-z0-9_-]/g, '_')}`
 let createdId = ''
+let stagedUpload
+
+cloudinary.config({
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+})
+
+const mediaForm = new FormData()
+mediaForm.append('file', new File([
+  await readFile('public/images/about/teams/icon-service-3.png'),
+], 'e2e-project-cover.png', { type: 'image/png' }))
+mediaForm.append('submissionId', submissionId)
+mediaForm.append('slug', `e2e-project-${suffix}`)
+const mediaResponse = await fetch(`${baseUrl}/api/cms/projects/media`, {
+  method: 'POST',
+  headers: { Cookie: cookie, Origin: baseUrl },
+  body: mediaForm,
+})
+const mediaPayload = await mediaResponse.json().catch(() => ({}))
+assert.equal(mediaResponse.status, 201, JSON.stringify(mediaPayload))
+stagedUpload = mediaPayload.staged
+assert.ok(stagedUpload?.asset?.src)
 
 const project = {
-  businessTypes: ['ทดสอบระบบ'], category: 'other', coverImage: '', details: ['ฉบับทดสอบ'], galleryImages: [],
-  lat: 13.7563, legacyUrl: '', lng: 100.5018, location: 'กรุงเทพมหานคร', projectType: 'other',
+  category: ['other'], coverImage: stagedUpload.asset.src, details: ['ฉบับทดสอบ'], galleryImages: [],
+  lat: 13.7563, lng: 100.5018, location: 'กรุงเทพมหานคร',
   slug: `e2e-project-${suffix}`, status: 'draft', summary: 'โครงการสำหรับทดสอบขั้นตอนเผยแพร่เท่านั้น',
   title: `โครงการทดสอบ ${suffix}`,
-  translations: { en: { businessTypes: ['System test'], details: ['Test revision'], location: 'Bangkok', summary: 'Project used only for publishing workflow verification.', title: `E2E project ${suffix}`, workTypes: ['Workflow verification'] } },
-  workTypes: ['ทดสอบขั้นตอน'], year: new Date().getFullYear(),
+  translations: { en: { details: ['Test revision'], location: 'Bangkok', summary: 'Project used only for publishing workflow verification.', title: `E2E project ${suffix}` } },
+  workTypes: ['groundwater-survey'], year: new Date().getFullYear(),
 }
 
 async function cms(pathname, method, body) {
@@ -33,7 +59,7 @@ async function cms(pathname, method, body) {
 }
 
 try {
-  const draft = await cms('/api/cms/projects', 'POST', { ...project, intent: 'save-draft' })
+  const draft = await cms('/api/cms/projects', 'POST', { ...project, intent: 'save-draft', stagedMedia: [stagedUpload.token], submissionId })
   createdId = draft.item.id
   assert.equal(draft.item.status, 'draft')
 
@@ -42,10 +68,6 @@ try {
   const publicPage = await fetch(`${baseUrl}/en/projects/${createdId}`)
   assert.equal(publicPage.status, 200)
   assert.match(await publicPage.text(), new RegExp(`E2E project ${suffix}`))
-
-  const legacy = await fetch(`${baseUrl}/projects/${firstPublish.item.publicId}`, { redirect: 'manual' })
-  assert.ok([307, 308].includes(legacy.status))
-  assert.match((legacy.headers.get('location') || '').split(',')[0].trim(), new RegExp(`/projects/${createdId}$`))
 
   const changed = { ...project, title: `ฉบับร่าง ${suffix}`, translations: { en: { ...project.translations.en, title: `Draft only ${suffix}` } } }
   const savedDraft = await cms('/api/cms/projects', 'PUT', { ...changed, expectedUpdatedAt: firstPublish.item.updatedAt, id: createdId, intent: 'save-draft' })
@@ -68,5 +90,18 @@ try {
 } finally {
   if (createdId) {
     await fetch(`${baseUrl}/api/cms/projects?id=${encodeURIComponent(createdId)}`, { method: 'DELETE', headers }).catch(() => undefined)
+  } else if (stagedUpload) {
+    await fetch(`${baseUrl}/api/cms/projects/media`, {
+      method: 'DELETE',
+      headers,
+      body: JSON.stringify({ submissionId, tokens: [stagedUpload.token] }),
+    }).catch(() => undefined)
+  }
+  if (stagedUpload?.asset?.publicId) {
+    await cloudinary.api.delete_resources([stagedUpload.asset.publicId], {
+      invalidate: true,
+      resource_type: 'image',
+      type: 'upload',
+    }).catch(() => undefined)
   }
 }

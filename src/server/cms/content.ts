@@ -25,6 +25,8 @@ import type {
   CmsStatus,
 } from '@/types/cms'
 import { normalizeSlug } from '@/lib/slug'
+import { normalizeCmsProjectCategories } from '@/lib/cms-project-categories'
+import { normalizeProjectWorkTypes } from '@/lib/project-work-types'
 
 export class CmsContentError extends Error {
   status: number
@@ -56,14 +58,6 @@ export async function ensureCmsContentIndexes() {
           { unique: true, partialFilterExpression: { deletedAt: null } }
         ),
         projects.createIndex({ status: 1, year: -1, updatedAt: -1 }),
-        projects.createIndex(
-          { publicId: 1 },
-          {
-            name: 'cms_projects_public_id_unique_v1',
-            unique: true,
-            partialFilterExpression: { publicId: { $exists: true } },
-          }
-        ),
         projects.createIndex({ title: 'text', location: 'text', summary: 'text' }),
         revisions.createIndex({ projectId: 1, version: -1 }, { unique: true }),
         stagedMedia.createIndex({ expiresAt: 1 }),
@@ -94,29 +88,23 @@ function projectTranslations(input: { translations?: CmsProjectDocument['transla
   const english = input.translations?.en
   return {
     en: {
-      businessTypes: english?.businessTypes || [],
       details: english?.details || [],
       location: english?.location || '',
       summary: english?.summary || '',
       title: english?.title || '',
-      workTypes: english?.workTypes || [],
     },
   }
 }
 
-function projectContentFromInput(input: CmsProjectInput, legacyPostId?: number): CmsProjectContent {
+function projectContentFromInput(input: CmsProjectInput): CmsProjectContent {
   return {
-    businessTypes: input.businessTypes,
     category: input.category,
     coverImage: input.coverImage,
     details: input.details,
     galleryImages: input.galleryImages,
     lat: input.lat,
-    legacyPostId,
-    legacyUrl: input.legacyUrl,
     lng: input.lng,
     location: input.location,
-    projectType: input.projectType,
     slug: normalizeSlug(input.slug),
     summary: input.summary,
     title: input.title,
@@ -128,22 +116,18 @@ function projectContentFromInput(input: CmsProjectInput, legacyPostId?: number):
 
 function publishedProjectContent(document: CmsProjectDocument): CmsProjectContent {
   return {
-    businessTypes: document.businessTypes,
-    category: document.category,
+    category: normalizeCmsProjectCategories(document.category),
     coverImage: document.coverImage,
     details: document.details,
     galleryImages: document.galleryImages,
     lat: document.lat,
-    legacyPostId: document.legacyPostId,
-    legacyUrl: document.legacyUrl,
     lng: document.lng,
     location: document.location,
-    projectType: document.projectType,
     slug: normalizeSlug(document.slug),
     summary: document.summary,
     title: document.title,
     translations: projectTranslations(document),
-    workTypes: document.workTypes,
+    workTypes: normalizeProjectWorkTypes(document.workTypes),
     year: document.year,
   }
 }
@@ -175,8 +159,7 @@ export function serializeCmsProject(document: CmsProjectDocument): CmsProjectRec
   if (!document._id) throw new Error('CMS project is missing _id.')
   const content = document.draft || publishedProjectContent(document)
   return {
-    businessTypes: content.businessTypes,
-    category: content.category,
+    category: normalizeCmsProjectCategories(content.category),
     coverImage: content.coverImage,
     createdAt: document.createdAt.toISOString(),
     details: content.details,
@@ -184,14 +167,11 @@ export function serializeCmsProject(document: CmsProjectDocument): CmsProjectRec
     hasUnpublishedChanges: Boolean(document.draft) || document.status === 'draft',
     id: document._id.toString(),
     lat: content.lat,
-    legacyUrl: content.legacyUrl,
     lng: content.lng,
     location: content.location,
-    projectType: content.projectType,
     publishedAt: document.publishedAt?.toISOString() || null,
     publishedBy: document.publishedBy || null,
     publishedVersion: document.publishedVersion || (document.status === 'active' ? 1 : 0),
-    publicId: document.publicId,
     slug: normalizeSlug(content.slug),
     source: document.source,
     status: document.status,
@@ -199,7 +179,7 @@ export function serializeCmsProject(document: CmsProjectDocument): CmsProjectRec
     title: content.title,
     translations: projectTranslations(content),
     updatedAt: document.updatedAt.toISOString(),
-    workTypes: content.workTypes,
+    workTypes: normalizeProjectWorkTypes(content.workTypes),
     year: content.year,
   }
 }
@@ -345,38 +325,22 @@ export async function createCmsProject(
   await ensureCmsContentIndexes()
   const collection = await getCmsProjectsCollection()
   const now = new Date()
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    const highest = await collection.findOne(
-      { publicId: { $gte: 1 } },
-      { projection: { publicId: 1 }, sort: { publicId: -1 } }
-    )
-    const document: CmsProjectDocument = {
-      ...projectContentFromInput(input),
-      createdAt: now,
-      publishedAt: publish ? now : undefined,
-      publishedBy: publish ? actor.displayName : undefined,
-      publishedVersion: publish ? 1 : 0,
-      publicId: (highest?.publicId || 0) + 1,
-      source: 'cms',
-      status: publish ? 'active' : 'draft',
-      updatedAt: now,
-    }
-    try {
-      const result = await collection.insertOne(document)
-      return serializeCmsProject({ ...document, _id: result.insertedId })
-    } catch (error) {
-      const publicIdConflict = Boolean(
-        duplicateError(error) &&
-        error &&
-        typeof error === 'object' &&
-        'keyPattern' in error &&
-        (error as { keyPattern?: Record<string, unknown> }).keyPattern?.publicId
-      )
-      if (publicIdConflict && attempt < 2) continue
-      return throwWriteError(error)
-    }
+  const document: CmsProjectDocument = {
+    ...projectContentFromInput(input),
+    createdAt: now,
+    publishedAt: publish ? now : undefined,
+    publishedBy: publish ? actor.displayName : undefined,
+    publishedVersion: publish ? 1 : 0,
+    source: 'cms',
+    status: publish ? 'active' : 'draft',
+    updatedAt: now,
   }
-  throw new Error('Could not allocate a public project id.')
+  try {
+    const result = await collection.insertOne(document)
+    return serializeCmsProject({ ...document, _id: result.insertedId })
+  } catch (error) {
+    return throwWriteError(error)
+  }
 }
 
 export async function createCmsService(input: CmsServiceInput) {
@@ -431,7 +395,7 @@ export async function updateCmsProject(
       throw new CmsContentError('This project changed in another tab. Reload before saving.', 409)
     }
     const now = new Date()
-    const content = projectContentFromInput(input, current.legacyPostId)
+    const content = projectContentFromInput(input)
     const result = current.status === 'active'
       ? await collection.findOneAndUpdate(
           { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
@@ -501,7 +465,7 @@ export async function publishCmsProject(
       { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
       {
         $set: {
-          ...projectContentFromInput(input, current.legacyPostId),
+          ...projectContentFromInput(input),
           publishedAt: now,
           publishedBy: actor.displayName,
           publishedVersion: nextVersion,

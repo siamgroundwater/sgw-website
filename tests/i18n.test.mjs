@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import {
   LOCALIZED_LOCALES,
@@ -13,6 +14,21 @@ import {
   SERVICE_KEYS,
   getLocalizedContent,
 } from '../src/i18n/localized-content.ts'
+import {
+  getLocalizedProjectPresentation,
+  localizeProject,
+} from '../src/i18n/projects.ts'
+
+function collectStrings(value, result = []) {
+  if (typeof value === 'string') {
+    result.push(value)
+  } else if (Array.isArray(value)) {
+    value.forEach((item) => collectStrings(item, result))
+  } else if (value && typeof value === 'object') {
+    Object.values(value).forEach((item) => collectStrings(item, result))
+  }
+  return result
+}
 
 test('locale helpers preserve the current route when switching language', () => {
   assert.equal(localeFromPathname('/zh/services/drilling'), 'zh')
@@ -28,6 +44,49 @@ test('locale helpers preserve the current route when switching language', () => 
     ja: '/ja/projects/8',
     'x-default': '/projects/8',
   })
+})
+
+test('project presentation keeps every category and uses English content for non-Thai details', () => {
+  const thai = getLocalizedContent('th')
+  const presentation = getLocalizedProjectPresentation(
+    { category: ['ภาครัฐ', 'โรงงาน'] },
+    thai.projects
+  )
+  assert.deepEqual(presentation.categoryLabels, ['ภาครัฐ', 'โรงงาน'])
+  assert.equal(presentation.categoryLabel, 'ภาครัฐ • โรงงาน')
+
+  const project = {
+    _id: '507f1f77bcf86cd799439011',
+    category: ['โรงงาน'],
+    coverImage: '/cover.jpg',
+    details: ['รายละเอียดภาษาไทย'],
+    galleryImages: ['/cover.jpg'],
+    lat: 13.7,
+    lng: 100.5,
+    location: 'กรุงเทพฯ',
+    slug: 'example',
+    summary: 'สรุปภาษาไทย',
+    title: 'ชื่อภาษาไทย',
+    translations: {
+      en: {
+        details: ['English detail'],
+        location: 'Bangkok',
+        summary: 'English summary',
+        title: 'English title',
+      },
+    },
+    workTypes: ['งานสำรวจน้ำบาดาล'],
+    year: 2026,
+  }
+
+  assert.equal(localizeProject(project, 'th').title, 'ชื่อภาษาไทย')
+  for (const locale of ['en', 'zh', 'ja']) {
+    const localized = localizeProject(project, locale)
+    assert.equal(localized.title, 'English title')
+    assert.equal(localized.location, 'Bangkok')
+    assert.equal(localized.summary, 'English summary')
+    assert.deepEqual(localized.details, ['English detail'])
+  }
 })
 
 test('every localized navigation points into its own locale', () => {
@@ -75,5 +134,54 @@ test('each language has complete services, articles and interface copy', () => {
         )
       )
     }
+  }
+})
+
+test('English content does not silently fall back to Thai', () => {
+  const englishStrings = collectStrings(getLocalizedContent('en'))
+  assert.equal(
+    englishStrings.some((value) => /[\u0E00-\u0E7F]/u.test(value)),
+    false
+  )
+})
+
+test('key company facts preserve the meaning of the Thai source', () => {
+  const english = getLocalizedContent('en')
+  const chinese = getLocalizedContent('zh')
+  const japanese = getLocalizedContent('ja')
+
+  assert.match(english.about.intro, /1987/)
+  assert.equal(english.about.storyTitle, 'Our history')
+  assert.match(english.governance.intro, /22 December 2000/)
+  assert.match(chinese.about.intro, /1987/)
+  assert.match(chinese.governance.intro, /2000年12月22日/)
+  assert.match(japanese.about.intro, /1987/)
+  assert.match(japanese.governance.intro, /2000年12月22日/)
+
+  for (const content of [chinese, japanese]) {
+    const labels = content.learning.articles['groundwater-law-regulation-thailand'].sources?.map(
+      (source) => source.label
+    ) ?? []
+    assert.equal(labels.some((label) => /laws and regulations|public services/i.test(label)), false)
+  }
+})
+
+test('localized pages use translated UI labels and legal-guide detail', () => {
+  const localizedPage = readFileSync(
+    new URL('../src/app/[locale]/[[...slug]]/page.tsx', import.meta.url),
+    'utf8'
+  )
+  const lawGuide = readFileSync(
+    new URL('../src/components/GroundwaterLawGuide/GroundwaterLawGuide.tsx', import.meta.url),
+    'utf8'
+  )
+
+  assert.match(localizedPage, /className="contact-eyebrow">\{content\.contact\.eyebrow\}/)
+  for (const section of ['foundation', 'navigator', 'lifecycle', 'duties', 'checklist', 'penalties', 'quiz', 'sources']) {
+    assert.doesNotMatch(
+      lawGuide,
+      new RegExp(`${section}: \\{ \\.\\.\\.copyByLocale\\.en\\.${section}`),
+      `${section} must not inherit English detail in another locale`
+    )
   }
 })

@@ -52,6 +52,10 @@ test('CMS language defaults to Thai and keeps complete English labels', () => {
     localizeCmsFieldErrors('th', { title: 'Project title is required.' }).title,
     'กรุณากรอกชื่อผลงาน'
   )
+  assert.equal(
+    localizeCmsFieldErrors('th', { coverImage: 'Cover image is required before publishing.' }).coverImage,
+    'กรุณาเพิ่มภาพปกก่อนเผยแพร่'
+  )
 
   const layout = readFileSync(path.join(root, 'src', 'app', 'cms', 'layout.tsx'), 'utf8')
   const language = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsLanguage.tsx'), 'utf8')
@@ -120,27 +124,40 @@ test('staged project media tokens bind uploads to a user and submission', () => 
 
 test('project validation accepts complete SGW data and rejects unsafe values', () => {
   const valid = validateProjectInput({
-    businessTypes: ['โรงงาน'],
-    category: 'factory',
+    category: ['factory'],
     coverImage: '/images/projects/example.webp',
     details: ['รายละเอียดงาน'],
     galleryImages: ['/images/projects/example.webp'],
     lat: 13.7,
-    legacyUrl: 'https://www.siamgroundwater.com/example',
     lng: 100.5,
     location: 'กรุงเทพมหานคร',
-    projectType: 'factory',
     slug: 'example-project',
     status: 'active',
     summary: 'ข้อมูลโครงการ',
     title: 'โครงการตัวอย่าง',
-    translations: { en: { businessTypes: ['Factory'], details: ['Scope'], location: 'Bangkok', summary: 'Project information', title: 'Example project', workTypes: ['Groundwater survey'] } },
-    workTypes: ['งานสำรวจน้ำบาดาล'],
+    translations: { en: { details: ['Scope'], location: 'Bangkok', summary: 'Project information', title: 'Example project' } },
+    workTypes: ['groundwater-survey'],
     year: 2026,
   })
   assert.equal(valid.errors, null)
+  assert.deepEqual(valid.data.category, ['factory'])
   assert.equal(validateProjectForPublishing(valid.data), null)
-  assert.ok(validateProjectForPublishing({ ...valid.data, translations: { en: { ...valid.data.translations.en, title: '' } } })?.['translations.en.title'])
+  const multiCategory = validateProjectInput({ ...valid.data, category: ['factory', 'government'] })
+  assert.deepEqual(multiCategory.data?.category, ['factory', 'government'])
+  assert.deepEqual(valid.data.workTypes, ['groundwater-survey'])
+  assert.ok(validateProjectInput({ ...valid.data, category: 'factory' }).errors?.category)
+  assert.ok(validateProjectInput({ ...valid.data, category: [] }).errors?.category)
+  assert.ok(validateProjectInput({ ...valid.data, workTypes: ['งานสำรวจน้ำบาดาล'] }).errors?.workTypes)
+  assert.equal(validateProjectForPublishing({
+    ...valid.data,
+    translations: { en: { details: [], location: '', summary: '', title: '' } },
+  }), null)
+  assert.ok(validateProjectForPublishing({ ...valid.data, summary: '' })?.summary)
+  assert.ok(validateProjectForPublishing({ ...valid.data, coverImage: '' })?.coverImage)
+
+  const incompleteCoordinates = validateProjectInput({ ...valid.data, lng: null })
+  assert.ok(incompleteCoordinates.errors?.lat)
+  assert.ok(incompleteCoordinates.errors?.lng)
 
   const invalid = validateProjectInput({
     ...valid.data,
@@ -161,8 +178,8 @@ test('Thai project slugs are readable and normalized before validation', () => {
   assert.equal(normalizeSlug('โรงแรม-Trisara-Phuket'), 'โรงแรม-trisara-phuket')
 
   const result = validateProjectInput({
-    businessTypes: [], category: 'resort', coverImage: '', details: [], galleryImages: [],
-    lat: null, lng: null, location: 'ภูเก็ต', projectType: 'resort', slug: encoded,
+    category: ['resort'], coverImage: '', details: [], galleryImages: [],
+    lat: null, lng: null, location: 'ภูเก็ต', slug: encoded,
     status: 'active', summary: '', title: 'โรงแรม Trisara Phuket', workTypes: [], year: 2024,
   })
   assert.equal(result.errors, null)
@@ -232,6 +249,26 @@ test('CMS stylesheet follows SGW sizing rules', () => {
   assert.doesNotMatch(css, /max-width\s*:/i)
   assert.doesNotMatch(css, /font-size:\s*[\d.]+(?:px|rem)/i)
   assert.match(css, /font-size:\s*var\(--fs-sm\)/i)
+  assert.match(css, /html\s*\{[\s\S]*?overflow-x:\s*hidden[\s\S]*?overscroll-behavior-x:\s*none/i)
+  assert.match(css, /\.cms-body\s*\{[\s\S]*?overflow-x:\s*hidden[\s\S]*?overscroll-behavior-x:\s*none/i)
+  assert.match(css, /\.cms-sidebar-layer\s*\{[\s\S]*?overflow:\s*hidden[\s\S]*?visibility:\s*hidden/i)
+  assert.match(css, /\.cms-sidebar\s*\{[\s\S]*?inline-size:\s*min\(320px,\s*100vw\)[\s\S]*?transform:\s*translate3d\(100%,\s*0,\s*0\)/i)
+  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\] \.cms-sidebar\s*\{\s*transform:\s*translate3d\(0,\s*0,\s*0\)/i)
+  assert.match(css, /\.cms-select-pill\s*\{[\s\S]*?overflow-wrap:\s*anywhere/i)
+  assert.match(css, /\.cms-editor\s*\{[\s\S]*?touch-action:\s*pan-y pinch-zoom/i)
+})
+
+test('CMS mobile drawer cannot leave the document horizontally shifted', () => {
+  const shell = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsShell.tsx'), 'utf8')
+  const css = readFileSync(path.join(root, 'src', 'app', 'cms', 'cms.css'), 'utf8')
+  assert.doesNotMatch(shell, /document\.body\.style\.overflow/)
+  assert.match(shell, /document\.scrollingElement\.scrollLeft\s*=\s*0/)
+  assert.match(shell, /window\.visualViewport/)
+  assert.match(shell, /--cms-visual-viewport-right/)
+  assert.match(shell, /\[open, pathname\]/)
+  assert.match(css, /\.cms-mobile-toggle\s*\{[\s\S]*?position:\s*fixed[\s\S]*?top:\s*max\(18px,\s*env\(safe-area-inset-top\)\)[\s\S]*?right:\s*calc\(var\(--cms-visual-viewport-right,\s*0px\)/i)
+  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\]\s*\{[\s\S]*?pointer-events:\s*none/i)
+  assert.match(css, /\.cms-sidebar\s*\{[\s\S]*?pointer-events:\s*auto/i)
 })
 
 test('orphan media cleanup is scheduled and secured by Vercel', () => {
@@ -266,11 +303,15 @@ test('CMS project library uses scannable responsive cards', () => {
   const projectRoute = readFileSync(path.join(root, 'src', 'app', 'api', 'cms', 'projects', 'route.ts'), 'utf8')
   const stagedMedia = readFileSync(path.join(root, 'src', 'server', 'cms', 'staged-project-media.ts'), 'utf8')
   const revalidation = readFileSync(path.join(root, 'src', 'server', 'cms', 'revalidate.ts'), 'utf8')
+  const projectInputType = readFileSync(path.join(root, 'src', 'types', 'cms.ts'), 'utf8')
+  const projectDatabaseType = readFileSync(path.join(root, 'src', 'server', 'db', 'types.ts'), 'utf8')
+  const projectContent = readFileSync(path.join(root, 'src', 'server', 'cms', 'content.ts'), 'utf8')
+  const publicProjects = readFileSync(path.join(root, 'src', 'server', 'public-projects.ts'), 'utf8')
 
   assert.match(manager, /className="cms-project-grid"/)
   assert.match(manager, /className="cms-project-card"/)
   assert.match(manager, /className="cms-project-card-meta"/)
-  assert.match(manager, /item\.workTypes\.join\(' · '\)/)
+  assert.match(manager, /item\.workTypes\.map\(\(value\) => cmsProjectWorkTypeLabel\(locale, value\)\)\.join\(' · '\)/)
   assert.doesNotMatch(manager, /cms-project-card-summary/)
   assert.doesNotMatch(manager, /window\.confirm/)
   assert.match(manager, /role="dialog" aria-modal="true"/)
@@ -283,21 +324,60 @@ test('CMS project library uses scannable responsive cards', () => {
   assert.match(editor, /<form className="cms-form"/)
   assert.match(editor, /CmsDeferredProjectImages/)
   assert.match(editor, /validateProjectInput\(form\)/)
+  assert.match(editor, /formNoValidate/)
+  assert.match(editor, /allowManualEntry=\{Boolean\(editingId\)\}/)
+  assert.match(editor, /pending-cover-upload/)
   assert.match(editor, /\/api\/cms\/projects\/media/)
   assert.match(editor, /cleanUpStaged/)
   assert.match(editor, /Save draft/)
   assert.match(editor, /Preview draft/)
   assert.match(editor, /translations\.en\.title/)
-  assert.match(deferredImages, /not uploaded until you save the draft or publish/)
+  assert.match(editor, /<details className="cms-language-section cms-field-full">/)
+  assert.match(editor, /Optional\. Expand or collapse this section\./)
+  assert.match(editor, /onChange=\{\(values\) => set\('details', values\)\}/)
+  assert.match(editor, /onChange=\{\(values\) => setEnglish\('details', values\)\}/)
+  assert.match(editor, /details: \[''\]/)
+  assert.match(editor, /withDefaultDetailSections/)
+  assert.match(editor, /function PillMultiSelect/)
+  assert.match(editor, /aria-pressed=\{selected\}/)
+  assert.match(editor, /exclusiveValue="other"/)
+  assert.match(editor, /options=\{workTypeValues\}/)
+  assert.doesNotMatch(editor, /<select value=\{form\.category\}/)
+  assert.match(editor, /label=\{text\('หมวดหมู่', 'Category'\)\}[\s\S]*label=\{text\('ประเภทงาน', 'Work types'\)\}[\s\S]*text\('ปี', 'Year'\)/)
+  assert.doesNotMatch(editor, /Work types \(English\)|translations\.en\.workTypes/)
+  assert.match(editor, /Add detailed section/)
+  assert.match(editor, /Remove section/)
+  assert.match(editor, /เพิ่มรายละเอียด/)
+  assert.match(editor, /รายละเอียด \(ไทย\)/)
+  assert.match(editor, /removeLabel=\{text\('ลบ', 'Remove section'\)\}/)
+  assert.doesNotMatch(editor, /ประเภทผลงาน|Project type|คีย์ประเภทผลงาน|ป้ายกำกับภายใน|Internal tag such as|businessTypes/)
+  assert.doesNotMatch(editor, /<input required value=\{form\.translations\.en/)
+  assert.doesNotMatch(editor, /<textarea required value=\{form\.translations\.en/)
+  assert.doesNotMatch(editor, /Separate sections with a line containing|blocks\(/)
+  for (const source of [editor, projectInputType, projectDatabaseType, projectContent, publicProjects]) {
+    assert.doesNotMatch(source, /legacyPostId|legacyUrl/)
+  }
+  for (const source of [editor, projectInputType, projectDatabaseType, projectContent, publicProjects]) {
+    assert.doesNotMatch(source, /businessTypes|projectType/)
+  }
+  assert.doesNotMatch(projectInputType, /publicId:\s*number/)
+  assert.doesNotMatch(projectDatabaseType, /publicId:\s*number/)
+  assert.doesNotMatch(publicProjects, /getPublicProjectByLegacyId|\bpublicId\b/)
+  assert.doesNotMatch(deferredImages, /not uploaded until you save the draft or publish|ยังไม่อัปโหลดจนกว่าจะกดบันทึก/)
+  assert.match(deferredImages, /allowManualEntry/)
+  assert.match(deferredImages, /cms-required/)
   assert.doesNotMatch(deferredImages, /fetch\(/)
   assert.match(projectMediaRoute, /createStagedProjectMediaToken/)
   assert.match(projectMediaRoute, /rollbackStagedProjectMedia/)
   assert.match(projectMediaRoute, /registerStagedProjectMedia/)
   assert.match(projectRoute, /rollbackQuietly\(staged\)/)
+  assert.match(projectRoute, /newProjectMediaIsStaged/)
+  assert.match(projectRoute, /UNSTAGED_NEW_PROJECT_MEDIA/)
   assert.match(projectRoute, /publishCmsProject/)
   assert.match(projectRoute, /restoreCmsProjectRevision/)
   assert.match(stagedMedia, /cleanupExpiredStagedProjectMedia/)
   assert.match(revalidation, /revalidatePath/)
+  assert.doesNotMatch(revalidation, /legacyPublicId/)
   assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', 'projects', '[id]', 'preview', 'page.tsx')), true)
   assert.equal(existsSync(path.join(root, 'src', 'app', 'api', 'health', 'route.ts')), true)
   assert.equal(existsSync(path.join(root, 'src', 'app', 'api', 'cron', 'cleanup-project-media', 'route.ts')), true)
@@ -309,6 +389,9 @@ test('CMS project library uses scannable responsive cards', () => {
   assert.doesNotMatch(css, /\.cms-project-card-heading h3\s*{[^}]*(?:min-height|max-height)/)
   assert.match(css, /\.cms-body\s*{[^}]*background-color:\s*var\(--cms-bg\)\s*!important/)
   assert.match(css, /\.cms-project-card-actions \.cms-button-secondary\s*{[^}]*color:\s*var\(--cms-ink\)/)
+  assert.match(css, /\.cms-language-section\s*{/)
+  assert.match(css, /\.cms-detail-section-list\s*{/)
+  assert.match(css, /\.cms-select-pill\.is-selected\s*{/)
   assert.match(css, /@media \(width <= 1180px\)[\s\S]*\.cms-project-grid\s*{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/)
   assert.match(css, /@media \(width <= 700px\)[\s\S]*\.cms-project-grid\s*{[^}]*grid-template-columns:\s*1fr/)
 })

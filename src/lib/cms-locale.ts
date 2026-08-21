@@ -1,4 +1,5 @@
-import type { CmsRole, CmsStatus } from '@/types/cms'
+import type { CmsProjectCategory, CmsProjectWorkType, CmsRole, CmsStatus } from '@/types/cms'
+import { projectWorkTypeLabel } from './project-work-types.ts'
 
 export type CmsLocale = 'th' | 'en'
 
@@ -53,7 +54,7 @@ export function cmsSourceLabel(locale: CmsLocale, source: 'cms' | 'public') {
   return locale === 'th' ? 'สำเนาจากเว็บสาธารณะ' : 'Public snapshot'
 }
 
-export function cmsProjectCategoryLabel(locale: CmsLocale, category: 'government' | 'factory' | 'resort' | 'agriculture' | 'dewatering' | 'other') {
+export function cmsProjectCategoryLabel(locale: CmsLocale, category: CmsProjectCategory) {
   const labels = {
     agriculture: { th: 'เกษตรกรรม ปศุสัตว์', en: 'Agriculture and livestock' },
     dewatering: { th: 'งานสูบลดระดับน้ำ', en: 'Dewatering' },
@@ -65,6 +66,10 @@ export function cmsProjectCategoryLabel(locale: CmsLocale, category: 'government
   return labels[category][locale]
 }
 
+export function cmsProjectWorkTypeLabel(locale: CmsLocale, workType: CmsProjectWorkType) {
+  return projectWorkTypeLabel(locale, workType)
+}
+
 export function localizeCmsFieldErrors(locale: CmsLocale, errors: Record<string, string>) {
   if (locale === 'en') return errors
   const translations: Record<string, string> = {
@@ -74,9 +79,12 @@ export function localizeCmsFieldErrors(locale: CmsLocale, errors: Record<string,
     'Article title is required.': 'กรุณากรอกชื่อบทความ',
     'Choose a valid content status.': 'กรุณาเลือกสถานะเนื้อหาที่ถูกต้อง',
     'Choose a valid project category.': 'กรุณาเลือกหมวดหมู่ผลงานที่ถูกต้อง',
+    'Choose valid project work types.': 'กรุณาเลือกประเภทงานที่ถูกต้อง',
     'Choose a valid SGW service.': 'กรุณาเลือกบริการ SGW ที่ถูกต้อง',
+    'Cover image is required before publishing.': 'กรุณาเพิ่มภาพปกก่อนเผยแพร่',
     'Describe the intended audience.': 'กรุณาอธิบายกลุ่มเป้าหมาย',
     'Enter a valid four-digit year.': 'กรุณากรอกปีแบบสี่หลักที่ถูกต้อง',
+    'Enter both latitude and longitude, or leave both empty.': 'กรอกละติจูดและลองจิจูดให้ครบทั้งคู่ หรือเว้นว่างทั้งคู่',
     'Every gallery item must be a valid asset URL or local path.': 'ภาพแกลเลอรีทุกภาพต้องใช้ URL หรือพาธภายในที่ถูกต้อง',
     'Every section image must use an HTTP(S) URL or a local / path.': 'ภาพประกอบทุกภาพต้องใช้ HTTP(S) URL หรือพาธภายใน',
     'Every section needs a heading and learning content.': 'ทุกส่วนต้องมีหัวข้อและเนื้อหาการเรียนรู้',
@@ -89,6 +97,7 @@ export function localizeCmsFieldErrors(locale: CmsLocale, errors: Record<string,
     'Project type is required.': 'กรุณากรอกประเภทผลงาน',
     'Service description is required.': 'กรุณากรอกคำอธิบายบริการ',
     'Service title is required.': 'กรุณากรอกชื่อบริการ',
+    'Thai project summary is required before publishing.': 'กรุณากรอกสรุปผลงานภาษาไทยก่อนเผยแพร่',
     'Use a URL-safe slug without spaces or slashes.': 'ใช้ slug ที่ปลอดภัยสำหรับ URL โดยไม่มีช่องว่างหรือเครื่องหมายทับ',
     'Use a valid HTTP(S) URL or local path.': 'ใช้ HTTP(S) URL หรือพาธภายในที่ถูกต้อง',
     'Use an absolute HTTP(S) URL or a local / path.': 'ใช้ HTTP(S) URL แบบเต็ม หรือพาธภายในที่ขึ้นต้นด้วย /',

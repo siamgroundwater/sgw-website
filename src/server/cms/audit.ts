@@ -31,7 +31,11 @@ function scalar(value: unknown): CmsAuditScalar {
   if (typeof value === 'boolean' || typeof value === 'number') return value
   if (value instanceof Date) return value.toISOString()
   if (typeof value === 'string') return truncate(value)
-  if (Array.isArray(value)) return `${value.length} item${value.length === 1 ? '' : 's'}`
+  if (Array.isArray(value)) {
+    return value.every((item) => ['boolean', 'number', 'string'].includes(typeof item))
+      ? truncate(value.join(' · '))
+      : `${value.length} item${value.length === 1 ? '' : 's'}`
+  }
   return 'Changed'
 }
 

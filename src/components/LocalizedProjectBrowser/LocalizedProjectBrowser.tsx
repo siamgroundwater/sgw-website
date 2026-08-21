@@ -10,7 +10,7 @@ import type { LocalizedContent } from '@/i18n/localized-content'
 import {
   PROJECT_CATEGORY_KEYS,
   getLocalizedProjectPresentation,
-  getProjectCategoryKey,
+  getProjectCategoryKeys,
   type ProjectCategoryKey,
 } from '@/i18n/projects'
 import './LocalizedProjectBrowser.css'
@@ -34,7 +34,7 @@ export default function LocalizedProjectBrowser({
       filter === 'all'
         ? projects
         : projects.filter(
-            (project) => getProjectCategoryKey(project.projectType) === filter
+            (project) => getProjectCategoryKeys(project.category).includes(filter)
           ),
     [filter, projects]
   )

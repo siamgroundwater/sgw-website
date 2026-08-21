@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Eye, FolderKanban, ImageIcon, Pencil, Plus, Search, Trash2, TriangleAlert, X } from 'lucide-react'
-import type { CmsProjectInput, CmsProjectRecord, CmsStatus } from '@/types/cms'
-import { cmsDateLocale, cmsProjectCategoryLabel, cmsSourceLabel, cmsStatusLabel } from '@/lib/cms-locale'
+import { CMS_PROJECT_CATEGORIES, type CmsProjectCategory, type CmsProjectRecord, type CmsStatus } from '@/types/cms'
+import { cmsDateLocale, cmsProjectCategoryLabel, cmsProjectWorkTypeLabel, cmsSourceLabel, cmsStatusLabel } from '@/lib/cms-locale'
 import { useCmsLanguage } from './CmsLanguage'
 
-const categoryValues: CmsProjectInput['category'][] = ['government', 'factory', 'resort', 'agriculture', 'dewatering', 'other']
+const categoryValues: CmsProjectCategory[] = [...CMS_PROJECT_CATEGORIES]
 
 export default function CmsProjectsManager({
   canDelete,
@@ -24,18 +24,18 @@ export default function CmsProjectsManager({
     edit: 'แก้ไข', empty: 'ไม่พบผลงานที่ตรงกับการค้นหาและตัวกรองปัจจุบัน', errorReach: 'ไม่สามารถเชื่อมต่อบริการผลงาน CMS ได้', errorRemove: 'ไม่สามารถนำผลงานออได้',
     filterCategory: 'กรองผลงานตามหมวดหมู่', filterStatus: 'กรองผลงานตามสถานะ', library: 'คลังผลงาน', locationMissing: 'ยังไม่ได้เพิ่มสถานที่',
     newProject: 'เพิ่มผลงาน', noCover: 'ไม่มีภาพปก', remove: 'นำออก', removeDescription: 'ระบบจะเก็บรายการนี้เป็นรายการที่นำออกและคงประวัติการใช้งานไว้ หากผลงานเผยแพร่อยู่ ระบบจะนำออกจากเว็บไซต์สาธารณะทันที',
-    removeProject: 'นำผลงานออ', removeQuestion: 'นำผลงานนี้ออหรือไม่?', removing: 'กำลังนำออ...', search: 'ค้นหาชื่อ สถานที่ slug หรือประเภท', searchLabel: 'ค้นหาผลงาน',
-    shown: (filtered: number, total: number) => `แสดง ${filtered} จาก ${total} รายการ การบันทึกฉบับร่างไม่กระทบเว็บไซต์จนกว่าจะกดเผยแพร่`, strict: 'การยืนยันแบบเข้มงวด', typeMissing: 'ยังไม่ได้เพิ่มประเภทผลงาน', updated: 'อัปเดต', view: 'ดู',
+    removeProject: 'นำผลงานออ', removeQuestion: 'นำผลงานนี้ออหรือไม่?', removing: 'กำลังนำออ...', search: 'ค้นหาชื่อ สถานที่ slug หรือหมวดหมู่', searchLabel: 'ค้นหาผลงาน',
+    shown: (filtered: number, total: number) => `แสดง ${filtered} จาก ${total} รายการ การบันทึกฉบับร่างไม่กระทบเว็บไซต์จนกว่าจะกดเผยแพร่`, strict: 'การยืนยันแบบเข้มงวด', typeMissing: 'ยังไม่ได้เพิ่มประเภทงาน', updated: 'อัปเดต', view: 'ดู',
   } : {
     allCategories: 'All categories', allStatuses: 'All statuses', cancel: 'Cancel', closeConfirmation: 'Close removal confirmation', confirmHelp: 'The Remove project button stays disabled until the title matches exactly.', confirmLabel: 'Type the exact project title to confirm:',
     edit: 'Edit', empty: 'No projects match the current search and filter.', errorReach: 'Could not reach the CMS project service.', errorRemove: 'Could not remove the project.', filterCategory: 'Filter projects by category', filterStatus: 'Filter projects by status', library: 'Project library', locationMissing: 'Location not added',
-    newProject: 'New project', noCover: 'No cover image', remove: 'Remove', removeDescription: 'This archives the record and retains its audit history. If it is published, it will be removed from the public website immediately.', removeProject: 'Remove project', removeQuestion: 'Remove this project?', removing: 'Removing...', search: 'Search title, location, slug, or type', searchLabel: 'Search projects',
-    shown: (filtered: number, total: number) => `${filtered} of ${total} records shown. Draft saves stay private until Publish is selected.`, strict: 'Strict confirmation', typeMissing: 'Project type not added', updated: 'Updated', view: 'View',
+    newProject: 'New project', noCover: 'No cover image', remove: 'Remove', removeDescription: 'This archives the record and retains its audit history. If it is published, it will be removed from the public website immediately.', removeProject: 'Remove project', removeQuestion: 'Remove this project?', removing: 'Removing...', search: 'Search title, location, slug, or category', searchLabel: 'Search projects',
+    shown: (filtered: number, total: number) => `${filtered} of ${total} records shown. Draft saves stay private until Publish is selected.`, strict: 'Strict confirmation', typeMissing: 'Work type not added', updated: 'Updated', view: 'View',
   }
   const [items, setItems] = useState(initialItems)
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState<'all' | CmsStatus>('all')
-  const [category, setCategory] = useState<'all' | CmsProjectInput['category']>('all')
+  const [category, setCategory] = useState<'all' | CmsProjectCategory>('all')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [pendingRemoval, setPendingRemoval] = useState<CmsProjectRecord | null>(null)
@@ -46,8 +46,8 @@ export default function CmsProjectsManager({
     const cleanQuery = query.trim().toLocaleLowerCase('th')
     return items.filter((item) => {
       const matchesStatus = status === 'all' || item.status === status
-      const matchesCategory = category === 'all' || item.category === category
-      const haystack = `${item.title} ${item.location} ${item.translations.en.title} ${item.translations.en.location} ${item.slug} ${item.projectType} ${cmsProjectCategoryLabel(locale, item.category)}`.toLocaleLowerCase(locale)
+      const matchesCategory = category === 'all' || item.category.includes(category)
+      const haystack = `${item.title} ${item.location} ${item.translations.en.title} ${item.translations.en.location} ${item.slug} ${item.category.map((value) => cmsProjectCategoryLabel(locale, value)).join(' ')} ${item.workTypes.map((value) => cmsProjectWorkTypeLabel(locale, value)).join(' ')}`.toLocaleLowerCase(locale)
       return matchesStatus && matchesCategory && (!cleanQuery || haystack.includes(cleanQuery))
     })
   }, [category, items, locale, query, status])
@@ -111,7 +111,7 @@ export default function CmsProjectsManager({
 
         <div className="cms-toolbar">
           <label className="cms-search"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} aria-label={copy.searchLabel} /></label>
-          <select className="cms-filter" value={category} onChange={(event) => setCategory(event.target.value as 'all' | CmsProjectInput['category'])} aria-label={copy.filterCategory}>
+          <select className="cms-filter" value={category} onChange={(event) => setCategory(event.target.value as 'all' | CmsProjectCategory)} aria-label={copy.filterCategory}>
             <option value="all">{copy.allCategories}</option>{categoryValues.map((value) => <option key={value} value={value}>{cmsProjectCategoryLabel(locale, value)}</option>)}
           </select>
           <select className="cms-filter" value={status} onChange={(event) => setStatus(event.target.value as 'all' | CmsStatus)} aria-label={copy.filterStatus}>
@@ -144,8 +144,8 @@ export default function CmsProjectsManager({
                     <span>{displayLocation || copy.locationMissing}</span>
                   </div>
 
-                  <p className="cms-project-card-type">{item.workTypes.join(' · ') || item.projectType || copy.typeMissing}</p>
-                  <p className="cms-project-category">{cmsProjectCategoryLabel(locale, item.category)}</p>
+                  <p className="cms-project-card-type">{item.workTypes.map((value) => cmsProjectWorkTypeLabel(locale, value)).join(' · ') || copy.typeMissing}</p>
+                  <p className="cms-project-category">{item.category.map((value) => cmsProjectCategoryLabel(locale, value)).join(' · ')}</p>
 
                   <footer className="cms-project-card-footer">
                     <div className="cms-project-card-source"><strong>{cmsSourceLabel(locale, item.source === 'cms' ? 'cms' : 'public')}</strong><span>{copy.updated} {new Intl.DateTimeFormat(cmsDateLocale(locale), { dateStyle: 'medium' }).format(new Date(item.updatedAt))}</span></div>

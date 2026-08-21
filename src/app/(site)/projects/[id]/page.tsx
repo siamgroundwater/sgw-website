@@ -7,7 +7,7 @@ import { createThaiPageMetadata } from '@/lib/site-metadata'
 import {
   getProjectMapUrl,
 } from '@/lib/projects'
-import { getPublicProjectById, getPublicProjectByLegacyId, listPublicProjects } from '@/server/public-projects'
+import { getPublicProjectById, listPublicProjects } from '@/server/public-projects'
 import './page.css'
 
 export const revalidate = 60
@@ -17,7 +17,7 @@ type ProjectPageProps = {
 }
 
 async function resolveProject(id: string) {
-  return (await getPublicProjectById(id)) || (await getPublicProjectByLegacyId(id))
+  return getPublicProjectById(id)
 }
 
 export async function generateStaticParams() {
@@ -79,10 +79,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <dd>{project.location}</dd>
             </div>
             <div>
-              <dt>ประเภทงาน</dt>
-              <dd>{project.projectTypeLabel}</dd>
-            </div>
-            <div>
               <dt>หมวดหมู่</dt>
               <dd>{project.category.join(' • ')}</dd>
             </div>
@@ -90,12 +86,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <div>
                 <dt>ขอบเขตงาน</dt>
                 <dd>{project.workTypes.join(' • ')}</dd>
-              </div>
-            )}
-            {project.businessTypes.length > 0 && (
-              <div>
-                <dt>ประเภทธุรกิจ</dt>
-                <dd>{project.businessTypes.join(' • ')}</dd>
               </div>
             )}
           </dl>
