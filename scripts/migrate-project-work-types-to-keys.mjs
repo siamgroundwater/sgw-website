@@ -14,12 +14,11 @@ const apply = process.argv.includes('--apply')
 const workTypeLabels = {
   'groundwater-survey': ['งานสำรวจน้ำบาดาล', 'Groundwater survey'],
   'groundwater-well-drilling': ['งานเจาะบ่อน้ำบาดาล', 'Groundwater well drilling'],
-  'groundwater-project-remediation': ['งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา', 'Groundwater project remediation'],
-  'groundwater-well-maintenance': ['งานซ่อมบำรุงรักษาบ่อน้ำบาดาล', 'Groundwater well maintenance'],
-  'mineral-water-well-drilling': ['งานเจาะบ่อน้ำแร่คุณภาพดี', 'High-quality mineral water well drilling'],
-  'mineral-water-survey': ['งานสำรวจศึกษาน้ำแร่', 'Mineral water survey and study'],
-  'dewatering-well-construction': ['งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ', 'Dewatering well construction'],
-  'groundwater-use-capacity-adjustment': ['งานแก้ไขปริมาณการใช้น้ำบาดาล', 'Groundwater abstraction capacity adjustment'],
+  'groundwater-project-remediation': ['งานแก้ไขโครงการที่มีปัญหา', 'Problem project remediation'],
+  'groundwater-well-maintenance': ['งานซ่อมบำรุง', 'Maintenance work'],
+  'mineral-water': ['งานน้ำแร่', 'Mineral water work'],
+  'island-work': ['งานบนเกาะ', 'Island work'],
+  other: ['งานอื่นๆ', 'Other work'],
 }
 const validWorkTypes = new Set(Object.keys(workTypeLabels))
 const aliases = new Map()
@@ -28,11 +27,28 @@ for (const [key, labels] of Object.entries(workTypeLabels)) {
   for (const label of labels) aliases.set(label.toLocaleLowerCase('en'), key)
 }
 
-function normalizeWorkTypes(value) {
-  if (!Array.isArray(value)) return { normalized: [], unknown: [] }
+for (const [value, key] of Object.entries({
+  'dewatering-well-construction': 'other',
+  'groundwater-use-capacity-adjustment': 'other',
+  'mineral-water-survey': 'mineral-water',
+  'mineral-water-well-drilling': 'mineral-water',
+  'งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ': 'other',
+  'งานแก้ไขปริมาณการใช้น้ำบาดาล': 'other',
+  'งานเจาะบ่อน้ำแร่คุณภาพดี': 'mineral-water',
+  'งานสำรวจศึกษาน้ำแร่': 'mineral-water',
+  'งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา': 'groundwater-project-remediation',
+  'งานซ่อมบำรุงรักษาบ่อน้ำบาดาล': 'groundwater-well-maintenance',
+})) aliases.set(value.toLocaleLowerCase('en'), key)
+
+const islandProjectSlugs = new Set([
+  'บริษัท-มิวกี้-เบย์-จํากัด',
+  'บริษัท-มิวกี้-เบย์-จำกัด',
+])
+
+function normalizeWorkTypes(value, slug) {
   const normalized = []
   const unknown = []
-  for (const item of value) {
+  for (const item of Array.isArray(value) ? value : []) {
     const clean = typeof item === 'string' ? item.trim() : ''
     const key = aliases.get(clean.toLocaleLowerCase('en'))
     if (!key) {
@@ -40,6 +56,9 @@ function normalizeWorkTypes(value) {
       continue
     }
     if (!normalized.includes(key)) normalized.push(key)
+  }
+  if (islandProjectSlugs.has(String(slug || '').normalize('NFKC')) && !normalized.includes('island-work')) {
+    normalized.push('island-work')
   }
   return { normalized, unknown }
 }
@@ -62,12 +81,15 @@ try {
   const projects = db.collection('cmsProjects')
   const revisions = db.collection('cmsProjectRevisions')
   const projectRows = await projects.find({}, { projection: {
+    slug: 1,
     workTypes: 1,
     'translations.en.workTypes': 1,
     'draft.workTypes': 1,
+    'draft.slug': 1,
     'draft.translations.en.workTypes': 1,
   } }).toArray()
   const revisionRows = await revisions.find({}, { projection: {
+    'content.slug': 1,
     'content.workTypes': 1,
     'content.translations.en.workTypes': 1,
   } }).toArray()
@@ -76,8 +98,8 @@ try {
   const unknownValues = new Set()
 
   for (const row of projectRows) {
-    const published = normalizeWorkTypes(row.workTypes)
-    const draft = row.draft ? normalizeWorkTypes(row.draft.workTypes) : null
+    const published = normalizeWorkTypes(row.workTypes, row.slug)
+    const draft = row.draft ? normalizeWorkTypes(row.draft.workTypes, row.draft.slug) : null
     published.unknown.forEach((value) => unknownValues.add(value))
     draft?.unknown.forEach((value) => unknownValues.add(value))
     const set = {}
@@ -93,7 +115,7 @@ try {
   }
 
   for (const row of revisionRows) {
-    const result = normalizeWorkTypes(row.content?.workTypes)
+    const result = normalizeWorkTypes(row.content?.workTypes, row.content?.slug)
     result.unknown.forEach((value) => unknownValues.add(value))
     const set = {}
     const unset = {}

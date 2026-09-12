@@ -6,29 +6,17 @@ import {
 export type ProjectWorkTypeLocale = 'th' | 'en' | 'zh' | 'ja'
 
 const labels: Record<CmsProjectWorkType, Record<ProjectWorkTypeLocale, string>> = {
-  'dewatering-well-construction': {
-    th: 'งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ',
-    en: 'Dewatering well construction',
-    zh: '降水井钻探与施工',
-    ja: '地下水位低下井戸の掘削・建設',
-  },
   'groundwater-project-remediation': {
-    th: 'งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา',
-    en: 'Groundwater project remediation',
-    zh: '地下水项目修复',
-    ja: '問題のある地下水プロジェクトの改修',
+    th: 'งานแก้ไขโครงการที่มีปัญหา',
+    en: 'Problem project remediation',
+    zh: '问题项目修复',
+    ja: '問題のあるプロジェクトの改修',
   },
   'groundwater-survey': {
     th: 'งานสำรวจน้ำบาดาล',
     en: 'Groundwater survey',
     zh: '地下水勘探',
     ja: '地下水調査',
-  },
-  'groundwater-use-capacity-adjustment': {
-    th: 'งานแก้ไขปริมาณการใช้น้ำบาดาล',
-    en: 'Groundwater abstraction capacity adjustment',
-    zh: '地下水开采量调整',
-    ja: '地下水揚水量の調整',
   },
   'groundwater-well-drilling': {
     th: 'งานเจาะบ่อน้ำบาดาล',
@@ -37,22 +25,28 @@ const labels: Record<CmsProjectWorkType, Record<ProjectWorkTypeLocale, string>> 
     ja: '地下水井戸掘削',
   },
   'groundwater-well-maintenance': {
-    th: 'งานซ่อมบำรุงรักษาบ่อน้ำบาดาล',
-    en: 'Groundwater well maintenance',
-    zh: '地下水井维护',
-    ja: '地下水井戸の保守',
+    th: 'งานซ่อมบำรุง',
+    en: 'Maintenance work',
+    zh: '维护工程',
+    ja: '保守作業',
   },
-  'mineral-water-survey': {
-    th: 'งานสำรวจศึกษาน้ำแร่',
-    en: 'Mineral water survey and study',
-    zh: '矿泉水勘探与研究',
-    ja: '鉱泉水の調査・研究',
+  'island-work': {
+    th: 'งานบนเกาะ',
+    en: 'Island work',
+    zh: '岛屿工程',
+    ja: '島しょ部での作業',
   },
-  'mineral-water-well-drilling': {
-    th: 'งานเจาะบ่อน้ำแร่คุณภาพดี',
-    en: 'High-quality mineral water well drilling',
-    zh: '优质矿泉水井钻探',
-    ja: '高品質な鉱泉井戸の掘削',
+  'mineral-water': {
+    th: 'งานน้ำแร่',
+    en: 'Mineral water work',
+    zh: '矿泉水工程',
+    ja: '鉱泉関連作業',
+  },
+  other: {
+    th: 'งานอื่นๆ',
+    en: 'Other work',
+    zh: '其他工程',
+    ja: 'その他の作業',
   },
 }
 
@@ -63,6 +57,28 @@ for (const workType of CMS_PROJECT_WORK_TYPES) {
     aliases.set(label, workType)
     aliases.set(label.toLocaleLowerCase('en'), workType)
   }
+}
+
+const legacyAliases: Record<string, CmsProjectWorkType> = {
+  'dewatering-well-construction': 'other',
+  'Dewatering well construction': 'other',
+  'groundwater-use-capacity-adjustment': 'other',
+  'Groundwater abstraction capacity adjustment': 'other',
+  'mineral-water-survey': 'mineral-water',
+  'Mineral water survey and study': 'mineral-water',
+  'mineral-water-well-drilling': 'mineral-water',
+  'High-quality mineral water well drilling': 'mineral-water',
+  'งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ': 'other',
+  'งานแก้ไขปริมาณการใช้น้ำบาดาล': 'other',
+  'งานเจาะบ่อน้ำแร่คุณภาพดี': 'mineral-water',
+  'งานสำรวจศึกษาน้ำแร่': 'mineral-water',
+  'งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา': 'groundwater-project-remediation',
+  'งานซ่อมบำรุงรักษาบ่อน้ำบาดาล': 'groundwater-well-maintenance',
+}
+
+for (const [alias, workType] of Object.entries(legacyAliases)) {
+  aliases.set(alias, workType)
+  aliases.set(alias.toLocaleLowerCase('en'), workType)
 }
 
 export function projectWorkTypeLabel(locale: ProjectWorkTypeLocale, workType: CmsProjectWorkType) {

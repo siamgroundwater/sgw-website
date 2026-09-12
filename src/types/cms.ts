@@ -9,10 +9,9 @@ export const CMS_PROJECT_WORK_TYPES = [
   'groundwater-well-drilling',
   'groundwater-project-remediation',
   'groundwater-well-maintenance',
-  'mineral-water-well-drilling',
-  'mineral-water-survey',
-  'dewatering-well-construction',
-  'groundwater-use-capacity-adjustment',
+  'mineral-water',
+  'island-work',
+  'other',
 ] as const
 export type CmsProjectWorkType = (typeof CMS_PROJECT_WORK_TYPES)[number]
 
@@ -23,11 +22,18 @@ export type CmsProjectTranslation = {
   title: string
 }
 
+export const CMS_PROJECT_TRANSLATION_LOCALES = ['en', 'zh', 'ja'] as const
+export type CmsProjectTranslationLocale = (typeof CMS_PROJECT_TRANSLATION_LOCALES)[number]
+
 export type CmsProjectTranslations = {
   en: CmsProjectTranslation
+  ja?: CmsProjectTranslation
+  zh?: CmsProjectTranslation
 }
 
 export type CmsProjectInput = {
+  mediaMetadata?: Record<string, { alt: string; caption: string }>
+  translationSourceHash?: Partial<Record<CmsProjectTranslationLocale, string>>
   category: CmsProjectCategory[]
   coverImage: string
   details: string[]
@@ -36,7 +42,7 @@ export type CmsProjectInput = {
   lng: number | null
   location: string
   slug: string
-  status: CmsStatus
+  status: 'active' | 'archived'
   summary: string
   title: string
   translations: CmsProjectTranslations
@@ -68,20 +74,10 @@ export type CmsLearningInput = {
 
 export type CmsProjectRecord = CmsProjectInput & {
   createdAt: string
-  hasUnpublishedChanges: boolean
+  deletedAt: string | null
   id: string
-  publishedAt: string | null
-  publishedBy: string | null
-  publishedVersion: number
   source: 'cms' | 'public-snapshot'
   updatedAt: string
-}
-
-export type CmsProjectRevisionRecord = {
-  id: string
-  publishedAt: string
-  publishedBy: string
-  version: number
 }
 
 export type CmsServiceRecord = CmsServiceInput & {
@@ -112,6 +108,7 @@ export type CmsUserRecord = {
 }
 
 export type CmsSession = {
+  expiresAt?: number
   displayName: string
   role: CmsRole
   userId: string

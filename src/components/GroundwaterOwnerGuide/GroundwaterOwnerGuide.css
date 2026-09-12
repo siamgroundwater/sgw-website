@@ -1,13 +1,16 @@
 .gog-shell {
-  --gog-ink: #eaf8fb;
-  --gog-muted: rgba(234, 248, 251, .7);
-  --gog-cyan: #60dcef;
-  --gog-teal: #2dd4bf;
-  --gog-panel: rgba(8, 36, 49, .78);
+  --gog-ink: #173e46;
+  --gog-muted: #48656b;
+  --gog-cyan: #086b70;
+  --gog-teal: #086b70;
+  --gog-panel: #fff;
   display: grid;
   gap: 1.2rem;
   margin-top: 1.5rem;
   color: var(--gog-ink);
+  font-weight: 400;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
 }
 
 .gog-shell * { box-sizing: border-box; }
@@ -18,10 +21,10 @@
 .gog-section,
 .gog-next {
   overflow: hidden;
-  border: 1px solid rgba(96, 220, 239, .17);
+  border: 1px solid #d5e3e1;
   border-radius: 1.35rem;
-  background: var(--gog-panel);
-  box-shadow: 0 1.3rem 3rem rgba(0, 12, 20, .15);
+  background: #fff;
+  box-shadow: none;
 }
 
 .gog-overview {
@@ -31,69 +34,70 @@
 }
 
 .gog-overview-copy { padding: 1.35rem; }
-.gog-eyebrow { color: var(--gog-cyan); font-size: var(--fs-sm); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.gog-overview h2, .gog-section-heading h2, .gog-next h2 { margin-top: .55rem; font-size: var(--fs-fluid-heading-md); line-height: 1.2; }
+.gog-eyebrow { color: var(--gog-cyan); font-size: var(--fs-sm); font-weight: 650; letter-spacing: normal; text-transform: uppercase; }
+.gog-overview h2, .gog-section-heading h2, .gog-next h2 { margin-top: .55rem; font-size: var(--fs-fluid-heading-md); line-height: 1.4; }
 .gog-overview-copy > p:not(.gog-eyebrow), .gog-section-heading > p:not(.gog-eyebrow), .gog-next > div > p:not(.gog-eyebrow) { margin-top: .85rem; color: var(--gog-muted); line-height: 1.75; }
 .gog-overview ul { display: grid; gap: .65rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
-.gog-overview li { display: flex; gap: .65rem; align-items: flex-start; color: rgba(234, 248, 251, .86); line-height: 1.55; }
+.gog-overview li { display: flex; gap: .65rem; align-items: flex-start; color: #48656b; line-height: 1.55; }
 .gog-overview li svg { width: 1.1rem; flex: 0 0 auto; margin-top: .2rem; color: var(--gog-teal); }
-.gog-overview figure, .gog-architecture figure { position: relative; margin: 0; background: #061f2d; }
+.gog-overview figure, .gog-architecture figure { position: relative; margin: 0; background: #f4f8f7; }
 .gog-overview figure img { width: 100%; height: 100%; min-height: 24rem; object-fit: cover; }
-.gog-overview figcaption, .gog-architecture figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid rgba(255,255,255,.13); border-radius: .75rem; background: rgba(3, 20, 29, .83); color: rgba(255,255,255,.79); font-size: var(--fs-sm); line-height: 1.55; backdrop-filter: blur(10px); }
+.gog-overview figcaption, .gog-architecture figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid #d5e3e1; border-radius: .75rem; background: #f4f8f7; color: #48656b; font-size: var(--fs-sm); line-height: 1.55; backdrop-filter: none; }
 
 .gog-section { padding: 1.25rem; scroll-margin-top: 7rem; }
-.gog-quick-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .55rem; padding: .7rem; border: 1px solid rgba(96, 220, 239, .17); border-radius: 1rem; background: rgba(5, 31, 43, .9); box-shadow: 0 .8rem 2rem rgba(0, 12, 20, .12); }
+.gog-quick-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .55rem; padding: .7rem; border: 1px solid #d5e3e1; border-radius: 1rem; background: #f4f8f7; box-shadow: none; }
 .gog-quick-nav a { display: flex; gap: .55rem; align-items: center; justify-content: center; padding: .7rem .8rem; border: 1px solid transparent; border-radius: .75rem; color: var(--gog-ink); text-align: center; text-decoration: none; transition: border-color .2s, background .2s; }
-.gog-quick-nav a:focus-visible { border-color: rgba(96,220,239,.4); background: rgba(96,220,239,.08); outline: 0; }
+.gog-quick-nav a:focus-visible { border-color: #d5e3e1; background: #f4f8f7; outline: 0; }
 @media (hover: hover) and (pointer: fine) {
-.gog-quick-nav a:hover { border-color: rgba(96,220,239,.4); background: rgba(96,220,239,.08); outline: 0; }
+.gog-quick-nav a:hover { border-color: #d5e3e1; background: #f4f8f7; outline: 0; }
 }
-.gog-quick-nav span { display: grid; place-items: center; flex: 0 0 auto; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: rgba(96,220,239,.12); color: var(--gog-cyan); font-weight: 800; }
+.gog-quick-nav span { display: grid; place-items: center; flex: 0 0 auto; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: #f4f8f7; color: var(--gog-cyan); font-weight: 650; }
 .gog-facility-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-top: 1.4rem; }
-.gog-facility-grid button { position: relative; display: flex; gap: .85rem; align-items: flex-start; padding: 1.1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); color: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
+.gog-facility-grid button { position: relative; display: flex; gap: .85rem; align-items: flex-start; padding: 1.1rem; border: 1px solid #d5e3e1; border-radius: 1rem; background: #f4f8f7; color: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
 @media (hover: hover) and (pointer: fine) {
-.gog-facility-grid button:hover { transform: translateY(-2px); border-color: rgba(96,220,239,.45); }
+.gog-facility-grid button:hover { transform: translateY(-2px); border-color: #d5e3e1; }
 }
-.gog-facility-grid button.is-active { border-color: var(--gog-cyan); background: linear-gradient(145deg, rgba(96,220,239,.15), rgba(45,212,191,.08)); box-shadow: inset 0 0 0 1px rgba(96,220,239,.12); }
-.gog-facility-grid button > svg:first-child { width: 1.55rem; height: 1.55rem; color: var(--gog-cyan); }
+.gog-facility-grid button.is-active { border-color: var(--gog-cyan); background: #f4f8f7; box-shadow: none; }
 .gog-facility-grid button span { display: grid; gap: .45rem; }
-.gog-facility-grid button strong { font-size: var(--fs-base); }
+.gog-facility-grid button strong { display: flex; align-items: center; gap: .65rem; font-size: var(--fs-base); }
+.gog-facility-grid button strong svg { flex: 0 0 1.55rem; width: 1.55rem; height: 1.55rem; color: var(--gog-cyan); }
 .gog-facility-grid button small { color: var(--gog-muted); line-height: 1.55; }
 .gog-facility-grid .gog-selected { position: absolute; top: .7rem; right: .7rem; width: 1.15rem; color: var(--gog-teal); }
-.gog-priority-panel { display: grid; grid-template-columns: minmax(13rem, .45fr) 1fr; gap: 1rem; margin-top: .8rem; padding: 1rem 1.15rem; border: 1px solid rgba(45,212,191,.2); border-radius: 1rem; background: rgba(45,212,191,.06); }
-.gog-priority-panel > div { display: flex; gap: .6rem; align-items: flex-start; color: #a7f3d0; }
+.gog-priority-panel { display: grid; grid-template-columns: minmax(13rem, .45fr) 1fr; gap: 1rem; margin-top: .8rem; padding: 1rem 1.15rem; border: 1px solid #d5e3e1; border-radius: 1rem; background: #f4f8f7; }
+.gog-priority-panel > div { display: flex; gap: .6rem; align-items: flex-start; color: #173e46; }
+.gog-priority-panel strong { display: flex; align-items: center; gap: .6rem; }
 .gog-priority-panel svg { width: 1.15rem; flex: 0 0 auto; }
 .gog-priority-panel ul { display: grid; gap: .4rem; margin: 0; padding-left: 1.15rem; color: var(--gog-muted); line-height: 1.55; }
-.gog-context-visual { position: relative; overflow: hidden; margin: .8rem 0 0; border: 1px solid rgba(96,220,239,.16); border-radius: 1rem; background: #061f2d; }
+.gog-context-visual { position: relative; overflow: hidden; margin: .8rem 0 0; border: 1px solid #d5e3e1; border-radius: 1rem; background: #f4f8f7; }
 .gog-context-visual img { display: block; width: 100%; height: auto; }
-.gog-context-visual figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid rgba(255,255,255,.13); border-radius: .75rem; background: rgba(3,20,29,.86); color: rgba(255,255,255,.82); line-height: 1.55; backdrop-filter: blur(10px); }
+.gog-context-visual figcaption { position: absolute; right: .8rem; bottom: .8rem; left: .8rem; padding: .75rem .9rem; border: 1px solid #d5e3e1; border-radius: .75rem; background: #f4f8f7; color: #48656b; line-height: 1.55; backdrop-filter: none; }
 
-.gog-calculator { background: radial-gradient(circle at 100% 0, rgba(96,220,239,.1), transparent 32%), var(--gog-panel); }
+.gog-calculator { background: #fff; }
 .gog-calculator-layout { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(22rem, .82fr); gap: 1rem; align-items: start; margin-top: 1.5rem; }
-.gog-input-panel, .gog-results { padding: 1.15rem; border: 1px solid rgba(255,255,255,.1); border-radius: 1rem; background: rgba(2, 20, 30, .45); }
+.gog-input-panel, .gog-results { padding: 1.15rem; border: 1px solid #d5e3e1; border-radius: 1rem; background: #f4f8f7; }
 .gog-input-panel h3 { display: flex; gap: .55rem; align-items: center; font-size: var(--fs-sm); }
-.gog-input-panel h3:not(:first-child) { margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid rgba(255,255,255,.08); }
+.gog-input-panel h3:not(:first-child) { margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid #d5e3e1; }
 .gog-input-panel h3 svg { width: 1.1rem; color: var(--gog-cyan); }
-.gog-use-list { display: grid; margin-top: .7rem; }
-.gog-use-row { display: grid; grid-template-columns: 1fr minmax(9.7rem, .44fr); gap: 1rem; align-items: center; padding: .65rem 0; border-bottom: 1px solid rgba(255,255,255,.065); color: var(--gog-muted); }
-.gog-number-input { display: grid; grid-template-columns: 1fr auto; overflow: hidden; min-height: 2.7rem; border: 1px solid rgba(255,255,255,.15); border-radius: .7rem; background: rgba(255,255,255,.045); }
-.gog-number-input:focus-within { border-color: var(--gog-cyan); box-shadow: 0 0 0 3px rgba(96,220,239,.12); }
-.gog-number-input input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #fff; padding: .55rem .7rem; }
-.gog-number-input span { display: grid; place-items: center; padding: 0 .65rem; border-left: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.58); font-size: var(--fs-sm); white-space: nowrap; }
+.gog-use-list { display: grid; gap: .8rem; margin-top: .7rem; }
+.gog-use-row { display: grid; grid-template-columns: 1fr minmax(9.7rem, .44fr); gap: 1rem; align-items: center; padding: .65rem 0; border-bottom: 1px solid #d5e3e1; color: var(--gog-muted); }
+.gog-number-input { display: grid; grid-template-columns: 1fr auto; overflow: hidden; min-height: 2.7rem; border: 1px solid #d5e3e1; border-radius: .7rem; background: #f4f8f7; }
+.gog-number-input:focus-within { border-color: var(--gog-cyan); box-shadow: none; }
+.gog-number-input input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #173e46; padding: .55rem .7rem; }
+.gog-number-input span { display: grid; place-items: center; padding: 0 .65rem; border-left: 1px solid #d5e3e1; color: #48656b; font-size: var(--fs-sm); white-space: nowrap; }
 .gog-assumption-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-top: .8rem; }
 .gog-assumption-grid > label { display: grid; gap: .4rem; color: var(--gog-muted); font-size: var(--fs-sm); }
 .gog-results { position: sticky; top: 6.5rem; }
 .gog-result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin-top: .8rem; }
-.gog-result-grid > div { display: grid; min-height: 7.2rem; align-content: center; padding: .85rem; border: 1px solid rgba(96,220,239,.13); border-radius: .8rem; background: rgba(96,220,239,.045); }
+.gog-result-grid > div { display: grid; min-height: 7.2rem; align-content: center; padding: .85rem; border: 1px solid #d5e3e1; border-radius: .8rem; background: #f4f8f7; }
 .gog-result-grid span { color: var(--gog-muted); font-size: var(--fs-sm); line-height: 1.4; }
-.gog-result-grid strong { margin-top: .25rem; color: #fff; font-size: var(--fs-fluid-heading-sm); line-height: 1; }
+.gog-result-grid strong { margin-top: .25rem; color: #173e46; font-size: var(--fs-fluid-heading-sm); line-height: 1; }
 .gog-result-grid small { margin-top: .3rem; color: var(--gog-cyan); }
-.gog-empty-result { margin-top: .65rem !important; color: #fde68a; font-size: var(--fs-sm); }
+.gog-empty-result { margin-top: .65rem !important; color: #7f570d; font-size: var(--fs-sm); }
 .gog-result-note { display: flex; gap: .55rem; margin-top: .8rem !important; color: var(--gog-muted); font-size: var(--fs-sm); line-height: 1.55; }
 .gog-result-note svg { width: 1rem; flex: 0 0 auto; color: var(--gog-teal); }
-.gog-results > button { display: inline-flex; gap: .5rem; align-items: center; justify-content: center; width: 100%; margin-top: 1rem; padding: .8rem 1rem; border: 0; border-radius: .75rem; background: var(--gog-cyan); color: #052737; font-weight: 800; cursor: pointer; }
+.gog-results > button { display: inline-flex; gap: .5rem; align-items: center; justify-content: center; width: 100%; margin-top: 1rem; padding: .8rem 1rem; border: 0; border-radius: .75rem; background: #f4f8f7; color: #173e46; font-weight: 650; cursor: pointer; }
 @media (hover: hover) and (pointer: fine) {
-.gog-results > button:hover { background: #8be8f5; }
+.gog-results > button:hover { background: #f4f8f7; }
 }
 .gog-results > button svg { width: 1.05rem; }
 
@@ -102,50 +106,53 @@
 .gog-progress { display: grid; flex: 0 0 12rem; grid-template-columns: auto 1fr; gap: .1rem .5rem; align-items: baseline; }
 .gog-progress strong { color: var(--gog-cyan); font-size: var(--fs-2xl); }
 .gog-progress span { color: var(--gog-muted); font-size: var(--fs-sm); }
-.gog-progress > div { grid-column: 1 / -1; overflow: hidden; height: .42rem; border-radius: 1rem; background: rgba(255,255,255,.1); }
-.gog-progress i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--gog-cyan), var(--gog-teal)); transition: width .3s; }
+.gog-progress > div { grid-column: 1 / -1; overflow: hidden; height: .42rem; border-radius: 1rem; background: #f4f8f7; }
+.gog-progress i { display: block; height: 100%; border-radius: inherit; background: #f4f8f7; transition: width .3s; }
 .gog-roadmap { display: grid; gap: .65rem; margin-top: 1.35rem; }
-.gog-roadmap article { border: 1px solid rgba(255,255,255,.1); border-radius: .9rem; background: rgba(255,255,255,.025); transition: border-color .2s, background .2s; }
-.gog-roadmap article.is-complete { border-color: rgba(45,212,191,.38); background: rgba(45,212,191,.06); }
-.gog-roadmap button { display: grid; grid-template-columns: 2.3rem 1fr; gap: .9rem; width: 100%; padding: .9rem; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
-.gog-roadmap button > span:first-child { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border: 1px solid rgba(96,220,239,.35); border-radius: 50%; color: var(--gog-cyan); font-weight: 800; }
-.gog-roadmap .is-complete button > span:first-child { border-color: var(--gog-teal); background: var(--gog-teal); color: #052737; }
-.gog-roadmap button > span:last-child { display: grid; grid-template-columns: minmax(11rem, .6fr) 1fr minmax(12rem, .65fr); gap: 1rem; align-items: center; }
+.gog-roadmap article { border: 1px solid #d5e3e1; border-radius: .9rem; background: #f4f8f7; transition: border-color .2s, background .2s; }
+.gog-roadmap article.is-complete { border-color: #d5e3e1; background: #f4f8f7; }
+.gog-roadmap button { display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; padding: .9rem; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.gog-roadmap button > span { display: grid; grid-template-columns: minmax(11rem, .6fr) 1fr minmax(12rem, .65fr); gap: 1rem; align-items: center; }
+.gog-roadmap button strong { display: flex; align-items: center; gap: .9rem; }
+.gog-roadmap .gog-step-marker { display: grid; flex: 0 0 2.1rem; place-items: center; width: 2.1rem; height: 2.1rem; border: 1px solid #d5e3e1; border-radius: 50%; color: var(--gog-cyan); font-weight: 650; }
+.gog-roadmap .is-complete .gog-step-marker { border-color: var(--gog-teal); background: #f4f8f7; color: #173e46; }
 .gog-roadmap small { color: var(--gog-muted); line-height: 1.55; }
-.gog-roadmap em { display: flex; gap: .45rem; color: #a7f3d0; font-size: var(--fs-sm); font-style: normal; line-height: 1.4; }
+.gog-roadmap em { display: flex; gap: .45rem; color: #173e46; font-size: var(--fs-sm); font-style: normal; line-height: 1.4; }
 .gog-roadmap em svg { width: 1rem; flex: 0 0 auto; }
+.gog-roadmap .gog-mark-action { grid-column: 1 / -1; color: var(--gog-cyan); font-size: var(--fs-sm); font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
 
 .gog-architecture figure { overflow: hidden; margin-top: 1.4rem; border-radius: 1rem; }
 .gog-architecture figure img { display: block; width: 100%; height: auto; }
 .gog-principles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-top: .8rem; }
-.gog-principles article { padding: 1rem; border: 1px solid rgba(255,255,255,.1); border-radius: .9rem; background: rgba(255,255,255,.025); }
-.gog-principles svg { width: 1.35rem; color: var(--gog-cyan); }
-.gog-principles h3 { margin-top: .7rem; font-size: var(--fs-sm); }
+.gog-principles article { padding: 1rem; border: 1px solid #d5e3e1; border-radius: .9rem; background: #f4f8f7; }
+.gog-principles svg { flex: 0 0 1.35rem; width: 1.35rem; color: var(--gog-cyan); }
+.gog-principles h3 { display: flex; align-items: center; gap: .65rem; font-size: var(--fs-sm); }
 .gog-principles p { margin-top: .45rem; color: var(--gog-muted); font-size: var(--fs-sm); line-height: 1.6; }
 .gog-handover-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-top: 1.35rem; }
-.gog-handover-grid article { padding: 1.05rem; border: 1px solid rgba(255,255,255,.1); border-radius: .95rem; background: rgba(255,255,255,.025); }
-.gog-handover-grid article > div { display: flex; gap: .65rem; align-items: center; }
+.gog-handover-grid article { padding: 1.05rem; border: 1px solid #d5e3e1; border-radius: .95rem; background: #f4f8f7; }
+.gog-handover-grid article > div { display: block; }
+.gog-handover-grid h3 { display: flex; gap: .65rem; align-items: center; }
 .gog-handover-grid article > div svg { width: 1.3rem; color: var(--gog-cyan); }
 .gog-handover-grid ul { display: grid; gap: .55rem; margin: .85rem 0 0; padding: 0; list-style: none; }
 .gog-handover-grid li { display: flex; gap: .5rem; color: var(--gog-muted); line-height: 1.55; }
 .gog-handover-grid li svg { width: .9rem; flex: 0 0 auto; margin-top: .25rem; color: var(--gog-teal); }
 .gog-operations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; margin-top: 1.25rem; }
-.gog-operations article { padding: 1rem; border-top: 3px solid var(--gog-cyan); border-radius: .25rem .25rem .85rem .85rem; background: rgba(255,255,255,.04); }
-.gog-operations strong { color: #fff; }
+.gog-operations article { padding: 1rem; border-top: 3px solid var(--gog-cyan); border-radius: .25rem .25rem .85rem .85rem; background: #f4f8f7; }
+.gog-operations strong { color: #173e46; }
 .gog-operations p { margin-top: .65rem; color: var(--gog-muted); font-size: var(--fs-sm); line-height: 1.6; }
-.gog-operations span { display: block; margin-top: .8rem; padding-top: .65rem; border-top: 1px solid rgba(255,255,255,.09); color: #a7f3d0; font-size: var(--fs-sm); }
-.gog-sources { background: linear-gradient(145deg, rgba(9,45,58,.9), rgba(7,29,43,.88)); }
+.gog-operations span { display: block; margin-top: .8rem; padding-top: .65rem; border-top: 1px solid #d5e3e1; color: #173e46; font-size: var(--fs-sm); }
+.gog-sources { background: #fff; }
 .gog-source-links { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .65rem; margin-top: 1.2rem; }
-.gog-source-links a { display: grid; grid-template-columns: auto 1fr auto; gap: .55rem; align-items: start; padding: .9rem; border: 1px solid rgba(96,220,239,.15); border-radius: .85rem; color: var(--gog-ink); font-size: var(--fs-sm); line-height: 1.45; text-decoration: none; }
+.gog-source-links a { display: grid; grid-template-columns: auto 1fr auto; gap: .55rem; align-items: start; padding: .9rem; border: 1px solid #d5e3e1; border-radius: .85rem; color: var(--gog-ink); font-size: var(--fs-sm); line-height: 1.45; text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
-.gog-source-links a:hover { border-color: var(--gog-cyan); background: rgba(96,220,239,.06); }
+.gog-source-links a:hover { border-color: var(--gog-cyan); background: #f4f8f7; }
 }
 .gog-source-links svg { width: 1rem; color: var(--gog-cyan); }
-.gog-source-links svg:last-child { width: .8rem; color: rgba(255,255,255,.45); }
-.gog-next { display: flex; gap: 2rem; align-items: center; justify-content: space-between; padding: 1.25rem; background: linear-gradient(120deg, rgba(8,50,63,.96), rgba(10,70,72,.88)); }
+.gog-source-links svg:last-child { width: .8rem; color: #48656b; }
+.gog-next { display: flex; gap: 2rem; align-items: center; justify-content: space-between; justify-self: start; width: fit-content; min-width: 0; padding: 1.25rem; background: #f4f8f7; }
 .gog-next > div:last-child { display: flex; flex-wrap: wrap; gap: .55rem; justify-content: flex-end; }
-.gog-next a { display: inline-flex; gap: .4rem; align-items: center; padding: .75rem 1rem; border: 1px solid var(--gog-cyan); border-radius: .7rem; background: var(--gog-cyan); color: #052737; font-weight: 800; text-decoration: none; }
-.gog-next a.is-secondary { border-color: rgba(255,255,255,.22); background: transparent; color: #fff; }
+.gog-next a { display: inline-flex; gap: .4rem; align-items: center; padding: .75rem 1rem; border: 1px solid var(--gog-cyan); border-radius: .7rem; background: #f4f8f7; color: #173e46; font-weight: 650; text-decoration: none; }
+.gog-next a.is-secondary { border-color: #d5e3e1; background: transparent; color: #173e46; }
 .gog-next a svg { width: 1rem; }
 
 @media (width <= 1050px) {
@@ -174,11 +181,66 @@
   .gog-result-grid > div { min-height: 5.8rem; }
   .gog-roadmap button > span:last-child { grid-template-columns: 1fr; gap: .35rem; }
   .gog-roadmap em { grid-column: auto; margin-top: .25rem; }
-  .gog-architecture figcaption, .gog-overview figcaption { position: static; border: 0; border-radius: 0; background: rgba(3,20,29,.9); }
-  .gog-context-visual figcaption { position: static; border: 0; border-radius: 0; background: rgba(3,20,29,.9); }
+  .gog-architecture figcaption, .gog-overview figcaption { position: static; border: 0; border-radius: 0; background: #f4f8f7; }
+  .gog-context-visual figcaption { position: static; border: 0; border-radius: 0; background: #f4f8f7; }
   .gog-next > div:last-child { justify-content: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .gog-shell * { scroll-behavior: auto !important; transition: none !important; }
+}
+
+.gog-navigation,
+.gog-context-details { border: 1px solid #d5e3e1; border-radius: .9rem; background: #fff; }
+.gog-navigation > summary,
+.gog-context-details > summary { padding: .9rem 1rem; font-weight: 650; cursor: pointer; }
+.gog-context-details { margin-top: 1.25rem; }
+.gog-context-details .gog-overview { border: 0; border-radius: 0; }
+.gog-navigation .gog-quick-nav { border: 0; padding: 0 .7rem .7rem; background: transparent; }
+.gog-quick-nav span { background: #e4efed; }
+.gog-facility-grid { gap: .65rem; margin-top: 1rem; }
+.gog-facility-grid button { padding: 1rem; }
+.gog-facility-grid button span { padding-right: .25rem; }
+.gog-facility-grid button.is-active { background: var(--gog-cyan); }
+.gog-facility-grid button.is-active,
+.gog-facility-grid button.is-active small,
+.gog-facility-grid button.is-active > svg,
+.gog-facility-grid button.is-active strong svg { color: #fff; }
+.gog-priority-panel { background: #edf6f3; }
+.gog-continue { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1rem; padding: .7rem 1rem; border: 1px solid var(--gog-cyan); border-radius: .75rem; color: #fff; background: var(--gog-cyan); text-decoration: none; font-weight: 650; }
+.gog-continue svg { flex: 0 0 auto; width: 1.1rem; }
+.gog-result-grid > div { background: #fff; min-height: 6rem; }
+.gog-results > button,
+.gog-next a:not(.is-secondary) { color: #fff; background: var(--gog-cyan); }
+.gog-result-note { padding: .85rem; border: 1px solid #e9d8ae; border-radius: .7rem; background: #fff7e7; color: #72511f; }
+.gog-result-note svg { color: #72511f; }
+.gog-progress i { background: var(--gog-cyan); }
+.gog-roadmap article.is-complete { background: #edf6f0; border-color: #94b49f; }
+.gog-roadmap .is-complete .gog-step-marker { background: var(--gog-cyan); color: #fff; }
+.gog-overview figure img { display: block; height: auto; min-height: 0; }
+.gog-overview figcaption,
+.gog-architecture figcaption,
+.gog-context-visual figcaption { position: static; border: 0; border-radius: 0; background: #f4f8f7; color: var(--gog-muted); }
+.gog-shell :is(button, a, summary, input):focus-visible { outline: 3px solid var(--gog-cyan); outline-offset: 3px; }
+.gog-number-input:focus-within { outline: 2px solid var(--gog-cyan); outline-offset: 2px; }
+
+@media (width <= 720px) {
+  .gog-section { padding: 1rem; }
+  .gog-facility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gog-facility-grid button { flex-direction: column; gap: .5rem; padding: .85rem; }
+  .gog-facility-grid button small { display: none; }
+  .gog-facility-grid button strong { font-size: var(--fs-sm); }
+  .gog-priority-panel { padding: .85rem; gap: .65rem; }
+  .gog-input-panel,
+  .gog-results { padding: .85rem; }
+  .gog-result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gog-roadmap button { gap: .6rem; padding: .75rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gog-facility-grid button:not(.is-active):hover,
+  .gog-quick-nav a:hover { border-color: var(--gog-cyan); background: #e8f2f0; }
+  .gog-results > button:hover,
+  .gog-continue:hover,
+  .gog-next a:not(.is-secondary):hover { background: #07555b; color: #fff; }
 }

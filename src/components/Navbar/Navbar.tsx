@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, type MouseEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -13,6 +14,7 @@ import {
 import './Navbar.css'
 
 export default function Navbar() {
+  const [dismissedSubnav, setDismissedSubnav] = useState<string | null>(null)
   const pathname = usePathname()
   const locale = localeFromPathname(pathname)
   const navItems = getNavigation(locale)
@@ -20,6 +22,10 @@ export default function Navbar() {
   const homePath = localePath('/', locale)
   const isPathActive = (href: string) =>
     pathname === href || (href !== homePath && pathname.startsWith(`${href}/`))
+  const dismissSubnav = (href: string, event: MouseEvent<HTMLAnchorElement>) => {
+    setDismissedSubnav(href)
+    event.currentTarget.blur()
+  }
 
   return (
     <header className="navbar" role="banner">
@@ -49,13 +55,19 @@ export default function Navbar() {
             return (
               <div
                 key={item.label}
-                className={`navbar-item ${item.subNav ? 'has-subnav' : ''}`}
+                className={`navbar-item ${item.subNav ? 'has-subnav' : ''}${dismissedSubnav === item.href ? ' is-subnav-dismissed' : ''}`}
+                onPointerLeave={item.subNav ? (event) => {
+                  if (event.pointerType !== 'mouse') return
+                  setDismissedSubnav((current) => current === item.href ? null : current)
+                } : undefined}
               >
                 <Link
                   href={item.href}
                   className={`navbar-link${isActive ? ' is-active' : ''}`}
                   aria-haspopup={item.subNav ? 'true' : undefined}
                   aria-current={isExactPage ? 'page' : undefined}
+                  onClick={item.subNav ? (event) => dismissSubnav(item.href, event) : undefined}
+                  onFocus={item.subNav ? () => setDismissedSubnav(null) : undefined}
                 >
                   <span className="navbar-text">{item.label}</span>
                 </Link>
@@ -70,6 +82,7 @@ export default function Navbar() {
                           href={sub.href}
                           className={`navbar-subnav-link${isSubActive ? ' is-active' : ''}`}
                           aria-current={isSubActive ? 'page' : undefined}
+                          onClick={(event) => dismissSubnav(item.href, event)}
                         >
                           <span className="navbar-text">{sub.label}</span>
                         </Link>

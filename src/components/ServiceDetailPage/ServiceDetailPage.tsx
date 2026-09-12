@@ -18,6 +18,8 @@ import {
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
+import ServiceGallery from './ServiceGallery'
+import ServiceProjectSelector from './ServiceProjectSelector'
 import ServiceTabs from './ServiceTabs'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import {
@@ -30,6 +32,9 @@ import {
   recoveredThaiServicePromises,
   type ServiceDetailBlock,
 } from '@/data/service-page-details'
+import { toProjectSummary } from '@/lib/project-summaries'
+import { selectServiceProjects } from '@/lib/service-projects'
+import { listPublicProjects } from '@/server/public-projects'
 import './ServiceDetailPage.css'
 
 type ServiceDetailPageProps = {
@@ -45,14 +50,12 @@ type ServiceUiCopy = {
   processIntro: string
   detailsEyebrow: string
   detailsTitle: string
-  detailsIntro: string
   galleryEyebrow: string
   galleryTitle: string
+  projectsEyebrow: string
+  projectsTitle: string
+  noMatchingProjects: string
   fieldPhoto: string
-  ctaEyebrow: string
-  ctaTitle: string
-  ctaText: string
-  allServices: string
 }
 
 const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
@@ -64,16 +67,12 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
       'เริ่มจากโจทย์ของพื้นที่ เก็บข้อมูลที่จำเป็น แล้วจึงเลือกวิธีทำงานและเกณฑ์ตรวจรับที่เหมาะสมกับโครงการ',
     detailsEyebrow: 'ความเชี่ยวชาญเฉพาะงาน',
     detailsTitle: 'รายละเอียดบริการ',
-    detailsIntro:
-      'เรียบเรียงจากข้อมูลบริการเดิมของบริษัท และปรับโครงสร้างให้อ่านง่ายขึ้นโดยคงสาระทางเทคนิคที่สำคัญ',
     galleryEyebrow: 'จากพื้นที่ปฏิบัติงาน',
     galleryTitle: 'ภาพการทำงานจริงของทีมสยามกราวด์วอเตอร์',
+    projectsEyebrow: 'โครงการตัวอย่าง',
+    projectsTitle: 'ผลงานที่เกี่ยวข้องกับบริการนี้',
+    noMatchingProjects: 'ยังไม่มีโครงการตัวอย่างที่เผยแพร่สำหรับบริการนี้',
     fieldPhoto: 'ภาพจากการปฏิบัติงานของสยามกราวด์วอเตอร์',
-    ctaEyebrow: 'เริ่มต้นโครงการ',
-    ctaTitle: 'ส่งข้อมูลพื้นที่และความต้องการใช้น้ำให้ทีมงาน',
-    ctaText:
-      'แจ้งตำแหน่งโครงการ ปริมาณน้ำที่ต้องการ ข้อมูลบ่อเดิม หรืออาการผิดปกติ เพื่อให้ทีมที่เกี่ยวข้องประเมินเบื้องต้น',
-    allServices: 'ดูบริการทั้งหมด',
   },
   en: {
     chooseService: 'Choose a service',
@@ -83,16 +82,12 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
       'We begin with the site objective, collect the evidence that matters, then define a suitable method and measurable acceptance criteria.',
     detailsEyebrow: 'Specialist capability',
     detailsTitle: 'Service details',
-    detailsIntro:
-      'A clear technical view of the work, decisions and deliverables behind this service.',
     galleryEyebrow: 'From the field',
     galleryTitle: 'Siam Groundwater teams at work',
+    projectsEyebrow: 'Example projects',
+    projectsTitle: 'Projects related to this service',
+    noMatchingProjects: 'No published example projects are available for this service yet.',
     fieldPhoto: 'Siam Groundwater field operation',
-    ctaEyebrow: 'Start a project',
-    ctaTitle: 'Share your site and water requirements with our team',
-    ctaText:
-      'Send the location, required flow, existing well records or operating symptoms for an initial technical review.',
-    allServices: 'View all services',
   },
   zh: {
     chooseService: '选择服务',
@@ -102,14 +97,12 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
       '从场地目标出发，收集关键资料，再确定合适的工作方法和可衡量的验收标准。',
     detailsEyebrow: '专项能力',
     detailsTitle: '服务详情',
-    detailsIntro: '清晰说明该项服务所涉及的技术工作、判断依据与交付内容。',
     galleryEyebrow: '现场实录',
     galleryTitle: '暹罗地下水团队现场工作',
+    projectsEyebrow: '项目案例',
+    projectsTitle: '与此服务相关的项目',
+    noMatchingProjects: '此服务目前还没有已发布的项目案例。',
     fieldPhoto: '暹罗地下水现场作业照片',
-    ctaEyebrow: '启动项目',
-    ctaTitle: '将场地与用水需求发送给我们的团队',
-    ctaText: '请提供位置、所需流量、既有井资料或运行异常，以便进行初步技术评估。',
-    allServices: '查看全部服务',
   },
   ja: {
     chooseService: 'サービスを選ぶ',
@@ -119,15 +112,12 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
       '敷地の目的から始め、必要な根拠を集めたうえで、適切な方法と測定可能な検収基準を定めます。',
     detailsEyebrow: '専門技術',
     detailsTitle: 'サービス詳細',
-    detailsIntro: 'このサービスを支える技術作業、判断、成果物をわかりやすく説明します。',
     galleryEyebrow: '現場から',
     galleryTitle: 'サイアム・グラウンドウォーターの現場作業',
+    projectsEyebrow: 'プロジェクト事例',
+    projectsTitle: 'このサービスに関連する実績',
+    noMatchingProjects: 'このサービスの公開済み事例はまだありません。',
     fieldPhoto: 'サイアム・グラウンドウォーターの現場作業写真',
-    ctaEyebrow: 'プロジェクトを始める',
-    ctaTitle: '敷地情報と必要水量をお知らせください',
-    ctaText:
-      '所在地、必要流量、既存井戸資料、運転上の症状をお送りいただければ、初期技術確認を行います。',
-    allServices: 'すべてのサービスを見る',
   },
 }
 
@@ -138,12 +128,152 @@ const serviceIcons: Record<ServiceKey, LucideIcon> = {
   consult: Stethoscope,
 }
 
+const serviceTabTitles: Record<
+  LocalizedLocale,
+  Record<ServiceKey, string>
+> = {
+  th: {
+    survey: 'สำรวจศึกษา',
+    drilling: 'เจาะ ก่อสร้าง',
+    maintenance: 'ซ่อมบำรุง',
+    consult: 'แก้ไขปัญหา',
+  },
+  en: {
+    survey: 'Survey & study',
+    drilling: 'Drilling & construction',
+    maintenance: 'Maintenance',
+    consult: 'Troubleshooting',
+  },
+  zh: {
+    survey: '勘探研究',
+    drilling: '钻井施工',
+    maintenance: '维护保养',
+    consult: '问题解决',
+  },
+  ja: {
+    survey: '調査・検討',
+    drilling: '掘削・施工',
+    maintenance: '保守・整備',
+    consult: '問題解決',
+  },
+}
+
 const scopeIcons: LucideIcon[] = [
   MapPinned,
   Droplets,
   CircleGauge,
   ClipboardCheck,
 ]
+
+const serviceScopeCopy: Record<
+  LocalizedLocale,
+  Record<ServiceKey, string[]>
+> = {
+  th: {
+    survey: [
+      'ทบทวนข้อมูลพื้นที่และความต้องการใช้น้ำ',
+      'ประเมินธรณีวิทยาและความเสี่ยงของพื้นที่',
+      'สำรวจภาคสนามและประเมินจุดเจาะ',
+      'จัดลำดับจุดเจาะและจัดทำรายงานโครงการ',
+    ],
+    drilling: [
+      'ยืนยันจุดเจาะและทางเข้าพื้นที่',
+      'ออกแบบโครงสร้างบ่อและเกณฑ์ตรวจรับ',
+      'เจาะบ่อ บันทึกชั้นดิน และก่อสร้างบ่อ',
+      'พัฒนาบ่อ สูบทดสอบ และส่งมอบเอกสาร',
+    ],
+    maintenance: [
+      'ตรวจประวัติและอาการผิดปกติของบ่อ',
+      'ล้างบ่อและตรวจซ่อมเครื่องสูบ',
+      'ปรับระดับเครื่องสูบและระบบควบคุม',
+      'ทดสอบประสิทธิภาพและวางแผนติดตาม',
+    ],
+    consult: [
+      'ตรวจสาเหตุอัตราสูบต่ำและระดับน้ำลด',
+      'วิเคราะห์ทราย ความขุ่น และความเสียหายของบ่อ',
+      'ตรวจความเค็ม ความเป็นกรด และการปนเปื้อน',
+      'วางแผนซ่อม เปลี่ยน หรือปรับการใช้งาน',
+    ],
+  },
+  en: {
+    survey: [
+      'Review site records and water demand',
+      'Assess geology and site risks',
+      'Survey the site and evaluate drilling points',
+      'Rank drilling points and deliver the report',
+    ],
+    drilling: [
+      'Confirm the drilling point and site access',
+      'Define the well design and acceptance criteria',
+      'Drill, log the geology and construct the well',
+      'Develop, pump-test and document the well',
+    ],
+    maintenance: [
+      'Review the well history and symptoms',
+      'Clean the well and inspect or repair the pump',
+      'Adjust the pump depth and control system',
+      'Retest performance and plan monitoring',
+    ],
+    consult: [
+      'Diagnose low flow and falling water levels',
+      'Check sand, turbidity and well damage',
+      'Trace salinity, acidity and contamination',
+      'Plan repairs, replacement or operating changes',
+    ],
+  },
+  zh: {
+    survey: [
+      '审查场地资料与用水需求',
+      '评估地质条件与场地风险',
+      '开展现场调查并评估井位',
+      '排定井位并提交项目报告',
+    ],
+    drilling: [
+      '确认井位与施工通道',
+      '确定井身结构与验收标准',
+      '钻进、记录地层并完成成井',
+      '洗井、抽水试验并提交资料',
+    ],
+    maintenance: [
+      '审查井史与异常现象',
+      '洗井并检查或维修水泵',
+      '调整水泵深度与控制系统',
+      '复测性能并制定监测计划',
+    ],
+    consult: [
+      '诊断低流量与水位下降',
+      '检查出砂、浑浊与井体损坏',
+      '追查盐分、酸性与污染来源',
+      '制定修复、更换或运行调整方案',
+    ],
+  },
+  ja: {
+    survey: [
+      '敷地資料と必要水量を確認',
+      '地質条件と敷地リスクを評価',
+      '現地調査と掘削候補地点の評価',
+      '候補地点を順位付けして報告書を作成',
+    ],
+    drilling: [
+      '掘削地点と搬入経路を確認',
+      '井戸構造と検収基準を設定',
+      '掘削・地層記録・井戸施工',
+      '井戸開発・揚水試験・資料引渡し',
+    ],
+    maintenance: [
+      '井戸履歴と異常症状を確認',
+      '井戸洗浄とポンプ点検・修理',
+      'ポンプ深度と制御設備を調整',
+      '性能を再試験して監視計画を作成',
+    ],
+    consult: [
+      '流量低下と水位低下の原因を診断',
+      '砂・濁り・井戸損傷を確認',
+      '塩分・酸性・汚染経路を調査',
+      '修理・交換・運転変更を計画',
+    ],
+  },
+}
 
 const serviceAssets: Record<
   ServiceKey,
@@ -193,7 +323,7 @@ function buildLocalizedDetails(
   }))
 }
 
-export default function ServiceDetailPage({
+export default async function ServiceDetailPage({
   locale,
   content,
   serviceKey,
@@ -209,6 +339,12 @@ export default function ServiceDetailPage({
       : buildLocalizedDetails(service)
   const promise =
     locale === 'th' ? recoveredThaiServicePromises[serviceKey] : service.short
+  const scopeCards = serviceScopeCopy[locale][serviceKey]
+  const exampleProjects = selectServiceProjects(
+    await listPublicProjects(),
+    serviceKey,
+    'all'
+  ).map((project) => toProjectSummary(project, locale))
   const href = (pathname: string) =>
     localized ? localePath(pathname, locale) : pathname
   const pagePath = href(`/services/${serviceKey}`)
@@ -283,7 +419,7 @@ export default function ServiceDetailPage({
           tabs={SERVICE_KEYS.map((key) => ({
             key,
             href: href(`/services/${key}`),
-            title: content.services.items[key].title,
+            title: serviceTabTitles[locale][key],
           }))}
         />
 
@@ -329,6 +465,7 @@ export default function ServiceDetailPage({
               alt={`${ui.fieldPhoto}: ${service.title}`}
               fill
               priority
+              quality={90}
               sizes="(width <= 900px) 100vw, 48vw"
             />
             <figcaption>
@@ -346,7 +483,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="service-detail-scope-grid">
-            {service.highlights.map((item, index) => {
+            {scopeCards.map((item, index) => {
               const ScopeIcon = scopeIcons[index % scopeIcons.length]
 
               return (
@@ -354,8 +491,9 @@ export default function ServiceDetailPage({
                   <div className="service-detail-card-icon">
                     <ScopeIcon aria-hidden="true" />
                   </div>
-                  <h3>{item}</h3>
-                  <p>{service.process[index] ?? service.short}</p>
+                  <div className="service-detail-card-copy">
+                    <h3>{item}</h3>
+                  </div>
                 </article>
               )
             })}
@@ -372,6 +510,7 @@ export default function ServiceDetailPage({
                 src={assets.gallery[1]}
                 alt={`${ui.fieldPhoto}: ${service.highlights[0]}`}
                 fill
+                quality={90}
                 sizes="(width <= 900px) 100vw, 42vw"
               />
             </figure>
@@ -380,6 +519,7 @@ export default function ServiceDetailPage({
                 src={assets.gallery[2]}
                 alt={`${ui.fieldPhoto}: ${service.highlights[1] ?? service.title}`}
                 fill
+                quality={90}
                 sizes="(width <= 900px) 45vw, 18vw"
               />
             </figure>
@@ -418,14 +558,15 @@ export default function ServiceDetailPage({
           <div className="service-detail-section-heading">
             <p>{ui.detailsEyebrow}</p>
             <h2 id="service-details">{ui.detailsTitle}</h2>
-            <span>{ui.detailsIntro}</span>
           </div>
 
           <div className="service-detail-details-grid">
             {details.map((detail) => (
               <article key={detail.title}>
-                <FileText aria-hidden="true" />
-                <h3>{detail.title}</h3>
+                <div className="service-detail-card-heading">
+                  <FileText aria-hidden="true" />
+                  <h3>{detail.title}</h3>
+                </div>
                 <p>{detail.text}</p>
                 {detail.bullets && (
                   <ul>
@@ -451,52 +592,42 @@ export default function ServiceDetailPage({
               <p className="service-detail-kicker">{ui.galleryEyebrow}</p>
               <h2 id="service-gallery">{ui.galleryTitle}</h2>
             </div>
+          </div>
+
+          <ServiceGallery
+            images={assets.gallery}
+            label={ui.fieldPhoto}
+            serviceTitle={service.title}
+          />
+        </section>
+
+        <section
+          className="service-detail-projects"
+          aria-labelledby="service-projects"
+        >
+          <div className="service-detail-gallery-heading">
+            <div>
+              <p className="service-detail-kicker">{ui.projectsEyebrow}</p>
+              <h2 id="service-projects">{ui.projectsTitle}</h2>
+            </div>
             <Link href={href('/projects')}>
               {content.common.viewProjects}
               <ArrowRight aria-hidden="true" />
             </Link>
           </div>
 
-          <div className="service-detail-gallery-grid">
-            {assets.gallery.map((src, index) => (
-              <figure key={src}>
-                <Image
-                  src={src}
-                  alt={`${ui.fieldPhoto} ${index + 1}: ${service.title}`}
-                  fill
-                  sizes="(width <= 700px) 100vw, 33vw"
-                />
-              </figure>
-            ))}
-          </div>
+          {exampleProjects.length > 0 ? (
+            <ServiceProjectSelector
+              projects={exampleProjects}
+              locale={locale}
+              copy={content.projects}
+            />
+          ) : (
+            <p className="service-detail-projects-empty">
+              {ui.noMatchingProjects}
+            </p>
+          )}
         </section>
-
-        <aside className="service-detail-cta" aria-label={ui.ctaTitle}>
-          <div className="service-detail-cta-icon">
-            <ServiceIcon aria-hidden="true" />
-          </div>
-          <div>
-            <p>{ui.ctaEyebrow}</p>
-            <h2>{ui.ctaTitle}</h2>
-            <span>{ui.ctaText}</span>
-          </div>
-          <div className="service-detail-cta-actions">
-            <Link
-              href={href('/contact')}
-              className="service-detail-button service-detail-button--primary"
-            >
-              <MessageCircle aria-hidden="true" />
-              {content.common.contactTeam}
-            </Link>
-            <Link
-              href={href('/services')}
-              className="service-detail-button service-detail-button--secondary"
-            >
-              {ui.allServices}
-              <ArrowRight aria-hidden="true" />
-            </Link>
-          </div>
-        </aside>
       </div>
     </main>
   )

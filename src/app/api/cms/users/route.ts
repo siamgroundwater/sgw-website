@@ -73,7 +73,8 @@ export async function POST(request: Request) {
     await recordCmsAudit({ action: 'user.create', actor, changes: createAuditChanges(undefined, user, labels), entity: { id: user.id, label: user.name, type: 'user' }, summary: `Created CMS user ${user.username}` })
     return NextResponse.json({ user }, { status: 201 })
   } catch (error) {
-    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message }, { status: error.status })
+    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message, code: error.code, field: error.field }, { status: error.status })
+    if (error && typeof error === 'object' && 'code' in error && error.code === 11000) return NextResponse.json({ code: 'username_taken', field: 'username' }, { status: 409 })
     return cmsApiError(error, 'Could not create CMS user.')
   }
 }
@@ -91,10 +92,11 @@ export async function PUT(request: Request) {
   try {
     const before = (await listCmsUsers()).find((user) => user.id === id)
     const user = await updateCmsUser({ ...input, id, password: input.password || undefined }, actor.userId)
-    await recordCmsAudit({ action: 'user.update', actor, changes: createAuditChanges(before, user, labels), entity: { id: user.id, label: user.name, type: 'user' }, summary: `Updated CMS user ${user.username}` })
+    await recordCmsAudit({ action: 'user.update', actor, changes: [...createAuditChanges(before, user, labels), ...(input.password ? [{ field: 'Password', before: null, after: 'Changed; all sessions signed out' }] : [])], entity: { id: user.id, label: user.name, type: 'user' }, summary: `Updated CMS user ${user.username}` })
     return NextResponse.json({ user })
   } catch (error) {
-    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message }, { status: error.status })
+    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message, code: error.code, field: error.field }, { status: error.status })
+    if (error && typeof error === 'object' && 'code' in error && error.code === 11000) return NextResponse.json({ code: 'username_taken', field: 'username' }, { status: 409 })
     return cmsApiError(error, 'Could not update CMS user.')
   }
 }
@@ -111,7 +113,7 @@ export async function DELETE(request: Request) {
     await recordCmsAudit({ action: 'user.delete', actor, entity: { id, label: before?.name, type: 'user' }, summary: `Removed CMS user ${before?.username || id}` })
     return NextResponse.json({ ok: true })
   } catch (error) {
-    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message }, { status: error.status })
+    if (error instanceof CmsUserError) return NextResponse.json({ error: error.message, code: error.code, field: error.field }, { status: error.status })
     return cmsApiError(error, 'Could not remove CMS user.')
   }
 }

@@ -14,7 +14,7 @@ export default async function CmsRootLayout({ children }: { children: React.Reac
   const locale = await getCmsLocale()
 
   return (
-    <html lang={locale}>
+    <html lang={locale} data-scroll-behavior="smooth">
       <body className="cms-body">
         <CmsLanguageProvider initialLocale={locale}>{children}</CmsLanguageProvider>
       </body>

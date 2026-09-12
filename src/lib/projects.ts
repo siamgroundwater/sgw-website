@@ -11,11 +11,17 @@ export type ProjectTranslation = {
   title: string
 }
 
+export type ProjectTranslations = {
+  en: ProjectTranslation
+  ja?: ProjectTranslation
+  zh?: ProjectTranslation
+}
+
 export type Project = {
   _id: string
   slug: string
   title: string
-  translations: { en: ProjectTranslation }
+  translations: ProjectTranslations
   year: number | null
   lat: number | null
   lng: number | null
@@ -23,6 +29,7 @@ export type Project = {
   workTypes: string[]
   coverImage: string
   galleryImages: string[]
+  mediaMetadata?: Record<string, { alt: string; caption: string }>
   summary: string
   details: string[]
   category: ProjectCategory[]

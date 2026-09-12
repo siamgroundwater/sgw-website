@@ -27,7 +27,6 @@ export type {
   CmsLearningSource,
   CmsProjectCategory,
   CmsProjectContent,
-  CmsProjectDraft,
   CmsProjectDocument,
   CmsProjectRevisionDocument,
   CmsProjectTranslation,

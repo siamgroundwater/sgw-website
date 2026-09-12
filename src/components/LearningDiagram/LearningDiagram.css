@@ -1,0 +1,15 @@
+.learning-diagram-image { position: relative; isolation: isolate; }
+.learning-diagram-image img { display: block; width: 100%; height: auto; }
+.learning-diagram-markers { position: absolute; inset: 0; pointer-events: none; }
+.learning-diagram-markers > span { position: absolute; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; transform: translate(-50%, -50%); border: 2px solid #fff; border-radius: 50%; color: #fff; background: #075b63; box-shadow: 0 1px 6px #173e4670; font-size: var(--fs-sm); font-weight: 600; }
+.learning-diagram-caption .learning-diagram-title { display: block; color: #173e46; font-size: var(--fs-md); font-weight: 600; line-height: 1.6; }
+.learning-diagram-caption .learning-diagram-key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; padding: 0; margin: 1rem 0; list-style: none; }
+.learning-diagram-key > li { display: grid; gap: 0.3rem; align-content: start; }
+.learning-diagram-key strong { display: flex; align-items: center; gap: 0.65rem; color: #173e46; font-weight: 500; }
+.learning-diagram-key strong > span { display: grid; flex: 0 0 1.8rem; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; color: #fff; background: #075b63; font-size: var(--fs-sm); }
+.learning-diagram-caption .learning-diagram-key p { color: #48656b; margin: 0.3rem 0 0; line-height: 1.8; }
+.learning-diagram-caption .learning-diagram-note { margin: 0; padding-top: 0.8rem; border-top: 1px solid #d5e3e1; color: #48656b; line-height: 1.8; }
+@media (width <= 700px) {
+  .learning-diagram-caption .learning-diagram-key { grid-template-columns: 1fr; gap: 0.9rem; }
+  .learning-diagram-markers > span { width: 1.6rem; height: 1.6rem; }
+}

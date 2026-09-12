@@ -22,7 +22,7 @@ import {
 } from '../src/lib/cms-staged-media-token.ts'
 import {
   validateLearningInput,
-  validateProjectForPublishing,
+  validateProjectForSave,
   validateProjectInput,
   validateServiceInput,
 } from '../src/lib/cms-validation.ts'
@@ -135,25 +135,49 @@ test('project validation accepts complete SGW data and rejects unsafe values', (
     status: 'active',
     summary: 'ข้อมูลโครงการ',
     title: 'โครงการตัวอย่าง',
-    translations: { en: { details: ['Scope'], location: 'Bangkok', summary: 'Project information', title: 'Example project' } },
+    translations: {
+      en: { details: ['Scope'], location: 'Bangkok', summary: 'Project information', title: 'Example project' },
+      ja: { details: ['  '], location: '', summary: '', title: '' },
+      zh: { details: ['施工范围'], location: ' 曼谷 ', summary: '', title: '示例项目' },
+    },
     workTypes: ['groundwater-survey'],
     year: 2026,
   })
   assert.equal(valid.errors, null)
   assert.deepEqual(valid.data.category, ['factory'])
-  assert.equal(validateProjectForPublishing(valid.data), null)
+  assert.equal(validateProjectForSave(valid.data), null)
   const multiCategory = validateProjectInput({ ...valid.data, category: ['factory', 'government'] })
   assert.deepEqual(multiCategory.data?.category, ['factory', 'government'])
   assert.deepEqual(valid.data.workTypes, ['groundwater-survey'])
+  assert.deepEqual(valid.data.translations.zh, {
+    details: ['施工范围'],
+    location: '曼谷',
+    summary: '',
+    title: '示例项目',
+  })
+  assert.equal(valid.data.translations.ja, undefined)
+  const withJapanese = validateProjectInput({
+    ...valid.data,
+    translations: {
+      ...valid.data.translations,
+      ja: { details: [' 作業範囲 '], location: ' バンコク ', summary: ' ', title: ' サンプルプロジェクト ' },
+    },
+  })
+  assert.deepEqual(withJapanese.data?.translations.ja, {
+    details: ['作業範囲'],
+    location: 'バンコク',
+    summary: '',
+    title: 'サンプルプロジェクト',
+  })
   assert.ok(validateProjectInput({ ...valid.data, category: 'factory' }).errors?.category)
   assert.ok(validateProjectInput({ ...valid.data, category: [] }).errors?.category)
   assert.ok(validateProjectInput({ ...valid.data, workTypes: ['งานสำรวจน้ำบาดาล'] }).errors?.workTypes)
-  assert.equal(validateProjectForPublishing({
+  assert.equal(validateProjectForSave({
     ...valid.data,
     translations: { en: { details: [], location: '', summary: '', title: '' } },
   }), null)
-  assert.ok(validateProjectForPublishing({ ...valid.data, summary: '' })?.summary)
-  assert.ok(validateProjectForPublishing({ ...valid.data, coverImage: '' })?.coverImage)
+  assert.ok(validateProjectForSave({ ...valid.data, summary: '' })?.summary)
+  assert.ok(validateProjectForSave({ ...valid.data, coverImage: '' })?.coverImage)
 
   const incompleteCoordinates = validateProjectInput({ ...valid.data, lng: null })
   assert.ok(incompleteCoordinates.errors?.lat)
@@ -231,11 +255,8 @@ test('CMS routes exist and mutation APIs require same-origin checks', () => {
     'auth/logout',
     'projects',
     'projects/media',
-    'services',
-    'learning',
-    'media',
+    'account/password',
     'users',
-    'import',
   ]
   for (const route of mutationRoutes) {
     const source = readFileSync(path.join(root, 'src', 'app', 'api', 'cms', ...route.split('/'), 'route.ts'), 'utf8')
@@ -251,24 +272,38 @@ test('CMS stylesheet follows SGW sizing rules', () => {
   assert.match(css, /font-size:\s*var\(--fs-sm\)/i)
   assert.match(css, /html\s*\{[\s\S]*?overflow-x:\s*hidden[\s\S]*?overscroll-behavior-x:\s*none/i)
   assert.match(css, /\.cms-body\s*\{[\s\S]*?overflow-x:\s*hidden[\s\S]*?overscroll-behavior-x:\s*none/i)
-  assert.match(css, /\.cms-sidebar-layer\s*\{[\s\S]*?overflow:\s*hidden[\s\S]*?visibility:\s*hidden/i)
-  assert.match(css, /\.cms-sidebar\s*\{[\s\S]*?inline-size:\s*min\(320px,\s*100vw\)[\s\S]*?transform:\s*translate3d\(100%,\s*0,\s*0\)/i)
-  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\] \.cms-sidebar\s*\{\s*transform:\s*translate3d\(0,\s*0,\s*0\)/i)
+  assert.match(css, /\.cms-shell\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/i)
+  assert.match(css, /\.cms-shell\s*\{[\s\S]*?--cms-navbar-height:\s*68px[\s\S]*?padding-top:\s*var\(--cms-navbar-height\)/i)
+  assert.match(css, /\.cms-navbar\s*\{[\s\S]*?position:\s*fixed[\s\S]*?display:\s*grid[\s\S]*?grid-template-columns:\s*44px minmax\(0,\s*1fr\) 44px/i)
+  assert.match(css, /\.cms-navigation-drawer\s*\{[\s\S]*?position:\s*absolute[\s\S]*?height:\s*100dvh[\s\S]*?overflow-y:\s*auto/i)
+  assert.doesNotMatch(css, /\.cms-sidebar-desktop|\.cms-mobile-bar|\.cms-mobile-drawer/i)
   assert.match(css, /\.cms-select-pill\s*\{[\s\S]*?overflow-wrap:\s*anywhere/i)
   assert.match(css, /\.cms-editor\s*\{[\s\S]*?touch-action:\s*pan-y pinch-zoom/i)
 })
 
-test('CMS mobile drawer cannot leave the document horizontally shifted', () => {
+test('CMS navigation uses one stable left-side drawer at every screen size', () => {
   const shell = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsShell.tsx'), 'utf8')
   const css = readFileSync(path.join(root, 'src', 'app', 'cms', 'cms.css'), 'utf8')
-  assert.doesNotMatch(shell, /document\.body\.style\.overflow/)
-  assert.match(shell, /document\.scrollingElement\.scrollLeft\s*=\s*0/)
-  assert.match(shell, /window\.visualViewport/)
-  assert.match(shell, /--cms-visual-viewport-right/)
-  assert.match(shell, /\[open, pathname\]/)
-  assert.match(css, /\.cms-mobile-toggle\s*\{[\s\S]*?position:\s*fixed[\s\S]*?top:\s*max\(18px,\s*env\(safe-area-inset-top\)\)[\s\S]*?right:\s*calc\(var\(--cms-visual-viewport-right,\s*0px\)/i)
-  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\]\s*\{[\s\S]*?pointer-events:\s*none/i)
-  assert.match(css, /\.cms-sidebar\s*\{[\s\S]*?pointer-events:\s*auto/i)
+  const compactLayoutIndex = css.indexOf('@media (width <= 700px)')
+  assert.doesNotMatch(shell, /createPortal|visualViewport|matchMedia/)
+  assert.doesNotMatch(shell, /cms-mobile|cms-sidebar-desktop|cms-navbar-context|cms-navbar-brand|cms-sidebar-signout/)
+  assert.match(shell, /cms-navbar-menu-button[\s\S]*?aria-controls="cms-navigation-drawer"[\s\S]*?aria-expanded=\{navigationOpen\}/)
+  assert.match(shell, /cms-navbar-logo[\s\S]*?logo_SGW_white\.svg/)
+  assert.match(shell, /cms-navbar-signout[\s\S]*?aria-label=\{copy\.signOut\}[\s\S]*?onClick=\{signOut\}/)
+  assert.match(shell, /cms-drawer-scrim[\s\S]*?onClick=\{closeNavigation\}/)
+  assert.match(shell, /document\.body\.style\.overflow = 'hidden'/)
+  assert.match(shell, /document\.addEventListener\('keydown', handleKeyDown\)/)
+  assert.match(shell, /menuButton\?\.focus\(\)/)
+  assert.match(shell, /<aside[\s\S]*?id="cms-navigation-drawer"[\s\S]*?role="dialog"/)
+  assert.match(shell, /target=\{external \? '_blank' : undefined\}/)
+  assert.ok(compactLayoutIndex > 0)
+  assert.ok(css.indexOf('.cms-navbar {') < compactLayoutIndex)
+  assert.ok(css.indexOf('.cms-sidebar-layer {') < compactLayoutIndex)
+  assert.ok(css.indexOf('.cms-navigation-drawer {') < compactLayoutIndex)
+  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\][\s\S]*?pointer-events:\s*auto[\s\S]*?visibility:\s*visible/i)
+  assert.match(css, /\.cms-navigation-drawer\s*\{[\s\S]*?left:\s*0[\s\S]*?transform:\s*translate3d\(-100%,\s*0,\s*0\)/i)
+  assert.match(css, /\.cms-sidebar-layer\[data-open='true'\] \.cms-navigation-drawer\s*\{[\s\S]*?transform:\s*translate3d\(0,\s*0,\s*0\)/i)
+  assert.match(css, /@media \(width <= 700px\)[\s\S]*?\.cms-form-actions\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)[\s\S]*?justify-content:\s*stretch/i)
 })
 
 test('orphan media cleanup is scheduled and secured by Vercel', () => {
@@ -292,106 +327,38 @@ test('orphan media cleanup is scheduled and secured by Vercel', () => {
   )
 })
 
-test('CMS project library uses scannable responsive cards', () => {
-  const manager = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsProjectsManager.tsx'), 'utf8')
-  const editor = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsProjectEditor.tsx'), 'utf8')
-  const newPage = readFileSync(path.join(root, 'src', 'app', 'cms', 'projects', 'new', 'page.tsx'), 'utf8')
-  const editPage = readFileSync(path.join(root, 'src', 'app', 'cms', 'projects', '[id]', 'page.tsx'), 'utf8')
-  const css = readFileSync(path.join(root, 'src', 'app', 'cms', 'cms.css'), 'utf8')
-  const deferredImages = readFileSync(path.join(root, 'src', 'components', 'cms', 'CmsDeferredProjectImages.tsx'), 'utf8')
-  const projectMediaRoute = readFileSync(path.join(root, 'src', 'app', 'api', 'cms', 'projects', 'media', 'route.ts'), 'utf8')
-  const projectRoute = readFileSync(path.join(root, 'src', 'app', 'api', 'cms', 'projects', 'route.ts'), 'utf8')
-  const stagedMedia = readFileSync(path.join(root, 'src', 'server', 'cms', 'staged-project-media.ts'), 'utf8')
-  const revalidation = readFileSync(path.join(root, 'src', 'server', 'cms', 'revalidate.ts'), 'utf8')
-  const projectInputType = readFileSync(path.join(root, 'src', 'types', 'cms.ts'), 'utf8')
-  const projectDatabaseType = readFileSync(path.join(root, 'src', 'server', 'db', 'types.ts'), 'utf8')
-  const projectContent = readFileSync(path.join(root, 'src', 'server', 'cms', 'content.ts'), 'utf8')
-  const publicProjects = readFileSync(path.join(root, 'src', 'server', 'public-projects.ts'), 'utf8')
-
+test('project architecture keeps one live-save workflow and dedicated pages', () => {
+  const source = name => readFileSync(path.join(root, name), 'utf8')
+  const manager = source('src/components/cms/CmsProjectsManager.tsx')
+  const editor = source('src/components/cms/CmsProjectEditor.tsx')
+  const route = source('src/app/api/cms/projects/route.ts')
+  const preview = source('src/app/cms/projects/[id]/preview/page.tsx')
+  const css = source('src/app/cms/cms.css')
   assert.match(manager, /className="cms-project-grid"/)
   assert.match(manager, /className="cms-project-card"/)
-  assert.match(manager, /className="cms-project-card-meta"/)
-  assert.match(manager, /item\.workTypes\.map\(\(value\) => cmsProjectWorkTypeLabel\(locale, value\)\)\.join\(' · '\)/)
-  assert.doesNotMatch(manager, /cms-project-card-summary/)
-  assert.doesNotMatch(manager, /window\.confirm/)
-  assert.match(manager, /role="dialog" aria-modal="true"/)
-  assert.match(manager, /removalConfirmation !== pendingRemoval\.title/)
-  assert.match(manager, /Type the exact project title to confirm/)
-  assert.match(manager, /Filter projects by category/)
-  assert.match(manager, /href="\/cms\/projects\/new" target="_blank" rel="noopener noreferrer"/)
-  assert.match(manager, /href={`\/cms\/projects\/\$\{item\.id\}`} target="_blank" rel="noopener noreferrer"/)
-  assert.doesNotMatch(manager, /<form/)
-  assert.match(editor, /<form className="cms-form"/)
+  assert.doesNotMatch(manager, /cms-project-card-summary|window\.confirm/)
+  assert.match(manager, /<dialog/)
+  assert.match(manager, /confirmation !== selected\.title/)
+  assert.match(manager, /operationId: mutationId\.current/)
+  assert.match(manager, /target="_blank"/)
+  assert.match(manager, /AbortController/)
+  assert.match(manager, /sgw-cms-projects-changed/)
   assert.match(editor, /CmsDeferredProjectImages/)
-  assert.match(editor, /validateProjectInput\(form\)/)
-  assert.match(editor, /formNoValidate/)
-  assert.match(editor, /allowManualEntry=\{Boolean\(editingId\)\}/)
-  assert.match(editor, /pending-cover-upload/)
-  assert.match(editor, /\/api\/cms\/projects\/media/)
-  assert.match(editor, /cleanUpStaged/)
-  assert.match(editor, /Save draft/)
-  assert.match(editor, /Preview draft/)
-  assert.match(editor, /translations\.en\.title/)
-  assert.match(editor, /<details className="cms-language-section cms-field-full">/)
-  assert.match(editor, /Optional\. Expand or collapse this section\./)
-  assert.match(editor, /onChange=\{\(values\) => set\('details', values\)\}/)
-  assert.match(editor, /onChange=\{\(values\) => setEnglish\('details', values\)\}/)
-  assert.match(editor, /details: \[''\]/)
-  assert.match(editor, /withDefaultDetailSections/)
-  assert.match(editor, /function PillMultiSelect/)
-  assert.match(editor, /aria-pressed=\{selected\}/)
-  assert.match(editor, /exclusiveValue="other"/)
-  assert.match(editor, /options=\{workTypeValues\}/)
-  assert.doesNotMatch(editor, /<select value=\{form\.category\}/)
-  assert.match(editor, /label=\{text\('หมวดหมู่', 'Category'\)\}[\s\S]*label=\{text\('ประเภทงาน', 'Work types'\)\}[\s\S]*text\('ปี', 'Year'\)/)
-  assert.doesNotMatch(editor, /Work types \(English\)|translations\.en\.workTypes/)
-  assert.match(editor, /Add detailed section/)
-  assert.match(editor, /Remove section/)
-  assert.match(editor, /เพิ่มรายละเอียด/)
-  assert.match(editor, /รายละเอียด \(ไทย\)/)
-  assert.match(editor, /removeLabel=\{text\('ลบ', 'Remove section'\)\}/)
-  assert.doesNotMatch(editor, /ประเภทผลงาน|Project type|คีย์ประเภทผลงาน|ป้ายกำกับภายใน|Internal tag such as|businessTypes/)
-  assert.doesNotMatch(editor, /<input required value=\{form\.translations\.en/)
-  assert.doesNotMatch(editor, /<textarea required value=\{form\.translations\.en/)
-  assert.doesNotMatch(editor, /Separate sections with a line containing|blocks\(/)
-  for (const source of [editor, projectInputType, projectDatabaseType, projectContent, publicProjects]) {
-    assert.doesNotMatch(source, /legacyPostId|legacyUrl/)
-  }
-  for (const source of [editor, projectInputType, projectDatabaseType, projectContent, publicProjects]) {
-    assert.doesNotMatch(source, /businessTypes|projectType/)
-  }
-  assert.doesNotMatch(projectInputType, /publicId:\s*number/)
-  assert.doesNotMatch(projectDatabaseType, /publicId:\s*number/)
-  assert.doesNotMatch(publicProjects, /getPublicProjectByLegacyId|\bpublicId\b/)
-  assert.doesNotMatch(deferredImages, /not uploaded until you save the draft or publish|ยังไม่อัปโหลดจนกว่าจะกดบันทึก/)
-  assert.match(deferredImages, /allowManualEntry/)
-  assert.match(deferredImages, /cms-required/)
-  assert.doesNotMatch(deferredImages, /fetch\(/)
-  assert.match(projectMediaRoute, /createStagedProjectMediaToken/)
-  assert.match(projectMediaRoute, /rollbackStagedProjectMedia/)
-  assert.match(projectMediaRoute, /registerStagedProjectMedia/)
-  assert.match(projectRoute, /rollbackQuietly\(staged\)/)
-  assert.match(projectRoute, /newProjectMediaIsStaged/)
-  assert.match(projectRoute, /UNSTAGED_NEW_PROJECT_MEDIA/)
-  assert.match(projectRoute, /publishCmsProject/)
-  assert.match(projectRoute, /restoreCmsProjectRevision/)
-  assert.match(stagedMedia, /cleanupExpiredStagedProjectMedia/)
-  assert.match(revalidation, /revalidatePath/)
-  assert.doesNotMatch(revalidation, /legacyPublicId/)
-  assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', 'projects', '[id]', 'preview', 'page.tsx')), true)
-  assert.equal(existsSync(path.join(root, 'src', 'app', 'api', 'health', 'route.ts')), true)
-  assert.equal(existsSync(path.join(root, 'src', 'app', 'api', 'cron', 'cleanup-project-media', 'route.ts')), true)
-  assert.match(newPage, /requireCmsPage\('projects:write'\)/)
-  assert.match(editPage, /getCmsProjectById\(id\)/)
-  assert.doesNotMatch(manager, /<table className="cms-table">/)
+  assert.doesNotMatch(editor, /Save draft|Preview draft|intent: 'publish'|action: 'unpublish'/)
+  assert.match(editor, /type="submit" disabled=/)
+  assert.match(editor, /beforeunload/)
+  assert.match(editor, /expectedUpdatedAt/)
+  assert.match(editor, /operationId/)
+  assert.match(preview, /ProjectDetailView/)
+  assert.match(route, /runProjectOperation/)
+  assert.match(route, /validateProjectForSave/)
+  assert.doesNotMatch(route, /publishCmsProject|restoreCmsProjectRevision/)
   assert.match(css, /\.cms-project-grid\s*{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/)
-  assert.match(css, /\.cms-project-card-media\s*{[^}]*aspect-ratio:\s*4\s*\/\s*3/)
   assert.doesNotMatch(css, /\.cms-project-card-heading h3\s*{[^}]*(?:min-height|max-height)/)
-  assert.match(css, /\.cms-body\s*{[^}]*background-color:\s*var\(--cms-bg\)\s*!important/)
-  assert.match(css, /\.cms-project-card-actions \.cms-button-secondary\s*{[^}]*color:\s*var\(--cms-ink\)/)
-  assert.match(css, /\.cms-language-section\s*{/)
-  assert.match(css, /\.cms-detail-section-list\s*{/)
-  assert.match(css, /\.cms-select-pill\.is-selected\s*{/)
-  assert.match(css, /@media \(width <= 1180px\)[\s\S]*\.cms-project-grid\s*{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/)
-  assert.match(css, /@media \(width <= 700px\)[\s\S]*\.cms-project-grid\s*{[^}]*grid-template-columns:\s*1fr/)
+  for (const name of ['services', 'learning', 'media', 'import']) {
+    assert.equal(existsSync(path.join(root, 'src/app/api/cms', name, 'route.ts')), false)
+  }
+  // Browser tests verify rendering, mobile interactions, actual database mutation,
+  // optional translations, server search, soft deletion, and operation replay.
+  assert.ok(existsSync(path.join(root, 'tests/e2e/cms.spec.ts')))
 })

@@ -9,6 +9,8 @@ import type {
   CmsServiceDocument,
   CmsStagedProjectMediaDocument,
   CmsUserDocument,
+  CmsProjectOperationDocument,
+  CmsOperationalEventDocument,
 } from './types'
 
 export const cmsCollectionNames = {
@@ -19,7 +21,17 @@ export const cmsCollectionNames = {
   services: 'cmsServices',
   stagedProjectMedia: 'cmsStagedProjectMedia',
   users: 'cmsUsers',
+  projectOperations: 'cmsProjectOperations',
+  operationalEvents: 'cmsOperationalEvents',
 } as const
+
+export function getCmsProjectOperationsCollection() {
+  return getMongoCollection<CmsProjectOperationDocument>(cmsCollectionNames.projectOperations)
+}
+
+export function getCmsOperationalEventsCollection() {
+  return getMongoCollection<CmsOperationalEventDocument>(cmsCollectionNames.operationalEvents)
+}
 
 export function getCmsAuditLogsCollection() {
   return getMongoCollection<CmsAuditLogDocument>(cmsCollectionNames.auditLogs)

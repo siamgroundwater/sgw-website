@@ -1,0 +1,55 @@
+.learning-progress {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #cbd8d9;
+  border-radius: 0.75rem;
+  background: #f5f9f8;
+  color: #243d42;
+}
+
+.learning-progress .learning-progress-save {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.learning-progress input[type='checkbox'] {
+  position: static;
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 1;
+  accent-color: #11675c;
+}
+
+.learning-progress p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+}
+
+.learning-progress-status { font-weight: 600; }
+.learning-progress-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.learning-progress-actions button {
+  min-height: 44px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #607e80;
+  border-radius: 0.5rem;
+  color: #243d42;
+  background: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.learning-progress :is(button, input):focus-visible { outline: 3px solid #09645c; outline-offset: 3px; }
+.learning-progress button:disabled { opacity: 0.55; cursor: default; text-decoration: none; }
+@media (hover: hover) and (pointer: fine) {
+  .learning-progress-actions button:not(:disabled):hover { background: #e5f2ed; }
+}

@@ -18,13 +18,13 @@ function attemptKey(request: Request, username: string) {
   return `${address}:${username.trim().toLowerCase()}`
 }
 
-function isBlocked(key: string) {
+function blockedSeconds(key: string) {
   const attempt = attempts.get(key)
   const now = Date.now()
-  if (!attempt) return false
-  if (attempt.lockedUntil > now) return true
+  if (!attempt) return 0
+  if (attempt.lockedUntil > now) return Math.ceil((attempt.lockedUntil - now) / 1000)
   if (now - attempt.startedAt > attemptWindowMs) attempts.delete(key)
-  return false
+  return 0
 }
 
 function recordFailure(key: string) {
@@ -62,13 +62,17 @@ export async function POST(request: Request) {
     }
 
     const key = attemptKey(request, username)
-    if (isBlocked(key)) {
+    const remaining = blockedSeconds(key)
+    if (remaining) {
       return NextResponse.json(
         { error: 'Too many failed attempts. Try again later.' },
-        { status: 429 }
+        { status: 429, headers: { 'Retry-After': String(remaining) } }
       )
     }
 
+    // Issue time precedes credential verification so a simultaneous password reset
+    // also revokes a login that was already in flight with the old password.
+    const issuedAt = Date.now()
     const user = await authenticateCmsUser(username, password)
     if (!user) {
       recordFailure(key)
@@ -77,7 +81,7 @@ export async function POST(request: Request) {
 
     attempts.delete(key)
     const response = NextResponse.json({ user })
-    setCmsSessionCookie(response, createCmsSessionToken(user))
+    setCmsSessionCookie(response, createCmsSessionToken(user, issuedAt))
     return response
   } catch (error) {
     return cmsApiError(error, 'Could not sign in to the CMS.')

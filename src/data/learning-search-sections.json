@@ -1,0 +1,830 @@
+[
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "concept",
+    "hash": "gb-concept",
+    "content": {
+      "th": {
+        "title": "น้ำบาดาลมาจากไหน?",
+        "text": "น้ำฝนบางส่วนซึมลงดิน แล้วสะสมในช่องว่างของทราย กรวด หรือรอยแตกของหิน เมื่อช่องว่างเหล่านี้มีน้ำเต็ม เราเรียกน้ำส่วนนี้ว่า “น้ำบาดาล” เริ่มจากเรื่องใกล้ตัว บริเวณที่ช่องว่างอิ่มตัวด้วยน้ำเรียกว่าเขตอิ่มน้ำ ส่วนดินหรือหินที่กักเก็บและให้น้ำได้ในปริมาณที่นำมาใช้ประโยชน์ได้ เรียกว่า “ชั้นหินให้น้ำ” แต่ละชนิดรับน้ำและตอบสนองต่อการสูบต่างกัน อ่านภาพจากบนลงล่าง: ฝนซึมผ่านดิน → น้ำสะสมในช่องว่างของชั้นทราย กรวด หรือหิน → น้ำเคลื่อนที่ไปยังบ่อหรือแหล่งน้ำผิวดิน ภาพนี้เป็นแบบจำลองเพื่ออธิบาย ไม่ใช่หน้าตัดของพื้นที่จริง เขตไม่อิ่มน้ำ ระดับน้ำบาดาล ชั้นหินให้น้ำ ชั้นกั้นน้ำ หินแตกร้าว ทำไมบ่อใกล้กันจึงให้น้ำไม่เท่ากัน? น้ำบาดาลส่วนใหญ่เคลื่อนผ่านช่องว่างเล็ก ๆ และรอยแตก ไม่ใช่แม่น้ำใต้ดินขนาดใหญ่ ช่องว่างเหล่านี้เชื่อมต่อกันต่างกันในแต่ละจุด บ่อใกล้กันจึงอาจมีความลึก ปริมาณน้ำ และคุณภาพน้ำต่างกันมาก อ่านเพิ่ม: ชั้นหินให้น้ำแต่ละแบบต่างกันอย่างไร? ชั้นน้ำไร้แรงดัน น้ำซึมลงมาเติมจากด้านบน ผิวบนของชั้นนี้คือระดับน้ำบาดาล ระดับน้ำอาจเปลี่ยนตามฝนและฤดูกาลได้เร็ว และมักเสี่ยงรับสิ่งปนเปื้อนจากผิวดินมากกว่าชั้นน้ำที่มีชั้นกั้น ตรวจแหล่งมลพิษใกล้บ่อ ผนึกปากบ่อให้ดี และติดตามระดับน้ำต่างฤดูกาล ชั้นน้ำมีแรงดัน ถูกคั่นด้วยชั้นซึมผ่านต่ำ น้ำอยู่ระหว่างชั้นดินหรือหินที่น้ำผ่านได้ยาก เมื่อเจาะถึงระดับน้ำในบ่ออาจสูงกว่าหลังคาชั้นน้ำเพราะมีแรงดัน ต้องออกแบบการกรุและอุดซีเมนต์ไม่ให้ชั้นน้ำต่างคุณภาพเชื่อมถึงกัน และไม่ควรตีความคำว่า “มีแรงดัน” ว่าให้น้ำไม่จำกัด ชั้นหินแตกร้าว น้ำอยู่ตามแนวแตกของหิน ในหินแข็ง ปริมาณน้ำขึ้นกับจำนวน การเชื่อมต่อ และทิศทางของรอยแตก ไม่ได้ขึ้นกับความลึกเพียงอย่างเดียว ตำแหน่งเจาะและการสำรวจโครงสร้างธรณีมีความสำคัญสูง ผลของบ่อข้างเคียงอาจใช้เทียบตรง ๆ ไม่ได้"
+      },
+      "en": {
+        "title": "Where does groundwater come from?",
+        "text": "Some rain soaks into the ground and collects in the spaces between sand, gravel or cracks in rock. Where those spaces are filled with water, that water is groundwater. Start with the basics The area where openings are filled with water is the saturated zone. Material that can store and transmit useful quantities of water is called an aquifer. Different aquifer types receive water and respond to pumping differently. Read from top to bottom: rain soaks through soil → water collects in sand, gravel or rock → water moves toward wells or surface water. This illustration explains the concept; it is not a cross-section of a specific site. Unsaturated zone Water table Aquifer Low-permeability layer Fractured rock Why can nearby wells give different amounts of water? Most groundwater moves through small spaces and cracks, rather than giant underground rivers. Those spaces connect differently from place to place, so nearby wells can differ greatly in depth, water quantity and quality. Read more: how do aquifer types differ? Unconfined aquifer Water can soak in from above Its upper surface is the water table. It may respond quickly to rain and seasons and is often more exposed to surface contamination than a confined aquifer. Check nearby pollution sources, seal the wellhead properly and track water levels across seasons. Confined aquifer Bounded by low-permeability layers Water is held under pressure between layers that transmit water poorly, so the water level in a well may rise above the top of the aquifer. Casing and grout must prevent mixing between aquifers. Pressure does not mean unlimited yield. Fractured-rock aquifer Water follows connected fractures In hard rock, yield depends on the number, opening, orientation and connection of fractures rather than depth alone. Structural interpretation and careful siting are critical; a nearby well is not a guaranteed analogue."
+      },
+      "zh": {
+        "title": "地下水从哪里来？",
+        "text": "部分雨水渗入地下，汇集在砂、砾石的孔隙或岩石裂隙中。当这些空间充满水时，其中的水就是地下水。 从基础开始 孔隙被水充满的区域称为饱和带。能够储存并传输可利用水量的地层称为含水层。不同类型的含水层接受补给和响应抽水的方式不同。 从上往下看：雨水渗入土壤 → 水汇集在砂砾或岩石中 → 水向水井或地表水体移动。这是用于解释概念的示意图，并非某个实际场地的剖面。 非饱和带 地下水位 含水层 弱透水层 裂隙岩体 为什么相邻水井的出水量也会不同？ 多数地下水经过细小的孔隙和裂缝流动，并非大型地下河。这些空间在各处的连通方式不同，所以相邻水井的深度、水量和水质也可能差异很大。 了解更多：不同含水层有什么区别？ 潜水含水层 水可从上方渗入补充 上表面是地下水位，可能较快随降雨和季节变化。与有隔水覆盖的承压含水层相比，通常更容易受地表污染影响。 检查附近污染源，做好井口密封，并记录不同季节的水位。 承压含水层 夹在弱透水层之间 地下水处于压力状态，井中水位可高于含水层顶部。 套管和固井必须防止不同含水层串通；承压并不代表水量无限。 裂隙岩含水层 水沿连通裂隙流动 硬岩区出水量取决于裂隙数量、开度、方向与连通性，而非只取决于深度。 构造分析和井位选择十分关键，邻井不能作为保证。"
+      },
+      "ja": {
+        "title": "地下水はどこから来る？",
+        "text": "雨の一部は地面にしみ込み、砂や砂利の隙間、岩の亀裂にたまります。こうした隙間が水で満たされているとき、その水を地下水と呼びます。 身近なところから 隙間が水で満たされた部分は飽和帯です。利用できる量の水を蓄え、通す地層を帯水層と呼びます。種類によって水の補給や揚水への反応が異なります。 上から順に見てください：雨が土にしみ込む → 砂礫や岩の隙間に水がたまる → 井戸や地表水へ移動する。これは仕組みを説明する図で、特定の敷地の断面ではありません。 不飽和帯 地下水面 帯水層 難透水層 亀裂岩盤 近くの井戸でも、水量が違うのはなぜ？ 地下水の多くは、小さな隙間や割れ目を通って移動します。大きな地下の川とは限りません。隙間のつながり方は場所ごとに異なるため、近くの井戸でも深さ、水量、水質が大きく違うことがあります。 詳しく読む：帯水層の種類と違い 不圧帯水層 上から水がしみ込んで補給される 上面が地下水面です。雨や季節に合わせて水位が早く変わることがあり、被圧帯水層より地表の汚染を受けやすい傾向があります。 近くの汚染源を調べ、井戸口を適切に密閉し、季節ごとの水位を記録します。 被圧帯水層 水を通しにくい層に挟まれる 水が圧力を受け、井戸水位が帯水層上面より高くなることがあります。 ケーシングとグラウトで異なる帯水層の混合を防ぎます。被圧でも水量は無限ではありません。 亀裂性岩盤帯水層 つながった岩の割れ目に水がある 硬岩では深度だけでなく亀裂の数、開口、方向、連続性が揚水量を支配します。 構造解析と井戸位置選定が重要で、近隣井戸は保証になりません。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "thailand",
+    "hash": "gb-thailand",
+    "content": {
+      "th": {
+        "title": "แผนที่บอกได้ไหมว่าเจาะตรงไหนจะมีน้ำ?",
+        "text": "แผนที่ช่วยประเมินเบื้องต้นว่าพื้นที่นั้นมีชั้นน้ำแบบใด ลึกประมาณไหน และอาจได้ปริมาณกับคุณภาพน้ำอย่างไร แต่ยังต้องสำรวจจุดจริง เพราะแผนที่ไม่รับรองผลเจาะของแต่ละบ่อ รู้จักพื้นที่ของคุณ แอ่งตะกอนและที่ราบลุ่ม มักพบชั้นทรายและกรวดสลับดินเหนียวหลายชั้น บางแห่งมีทั้งชั้นน้ำจืดและชั้นน้ำเค็มต่างระดับกัน ระวังการเชื่อมชั้นน้ำด้วยการกรุหรืออุดซีเมนต์ไม่เหมาะสม และเฝ้าระวังการทรุดตัวเมื่อมีการสูบมากในพื้นที่ ภาคตะวันออกเฉียงเหนือ บางพื้นที่มีชั้นเกลือหิน ทำให้น้ำบาดาลเค็มหรือมีแร่ธาตุละลายอยู่มากได้ ให้ผู้เชี่ยวชาญใช้ผลสำรวจ ผลวัดในหลุมเจาะ และตัวอย่างน้ำร่วมกัน เพื่อแยกช่วงน้ำจืดกับน้ำเค็ม พื้นที่หินแข็งและภูเขา น้ำมักอยู่ในรอยแตก รอยเลื่อน หรือชั้นหินผุ ปริมาณน้ำจึงเปลี่ยนมากตามตำแหน่ง สำรวจแนวโครงสร้างและข้อจำกัดหน้างานก่อนกำหนดจุดเจาะ พร้อมยอมรับความไม่แน่นอนที่สูงกว่าชั้นตะกอน เริ่มจากข้อมูลทางการ กรมทรัพยากรน้ำบาดาลให้บริการแผนที่น้ำบาดาลรายจังหวัดและข้อมูลบ่อใกล้เคียงผ่าน Badan4Thai ใช้เพื่อวางแผนสำรวจ ไม่ควรใช้แทนการตรวจพื้นที่และออกแบบโดยผู้เชี่ยวชาญ ดูข้อมูล Badan4Thai"
+      },
+      "en": {
+        "title": "Can a map tell you where drilling will find water?",
+        "text": "A map helps estimate the aquifer type, likely depth, water quantity and quality in an area. The actual site still needs investigation: a map does not guarantee the result of an individual well. Understand your site Sedimentary basins and river plains Sand and gravel aquifers may alternate with clay, sometimes with fresh and saline water at different depths. Prevent vertical mixing with suitable casing and grout; monitor land-subsidence risk where regional pumping is intensive. Northeastern Thailand Rock-salt layers can make groundwater salty or rich in dissolved minerals in some areas. Have specialists combine survey results, measurements inside the borehole and water samples to distinguish fresh and salty water zones. Hard-rock and upland areas Groundwater is commonly stored in weathered zones, joints and faults, creating strong location-to-location variation. Map structures and site constraints before drilling and plan for greater uncertainty than in continuous sedimentary aquifers. Begin with official data The Department of Groundwater Resources provides provincial groundwater maps and nearby-well information through Badan4Thai. Use them to plan investigation, not to replace site inspection and professional design. Open Badan4Thai information"
+      },
+      "zh": {
+        "title": "地图能告诉你在哪里钻井有水吗？",
+        "text": "地图可以初步估计当地含水层类型、深度、水量和水质。实际井位仍需调查，因为地图不能保证每口井的钻探结果。 了解自己的场地 沉积盆地与河流平原 砂砾含水层常与黏土层互层，不同深度可能分别出现淡水和咸水。 通过合适套管和固井防止串层，并在区域大量开采处关注地面沉降。 泰国东北部 部分地区有岩盐层，地下水可能较咸，或含有较多溶解的矿物质。 请专业人员综合调查结果、孔内测量和水样，区分淡水与咸水层段。 硬岩与山地区 地下水多赋存在风化带、节理和断层中，井位差异大。 钻探前分析构造与施工条件，并为较高不确定性预留方案。 从官方资料开始 泰国地下水资源厅通过 Badan4Thai 提供分府地下水图和邻近水井资料，可用于规划勘查，但不能代替现场调查和专业设计。 查看 Badan4Thai 信息"
+      },
+      "ja": {
+        "title": "地図で、水が出る場所はわかる？",
+        "text": "地図は地域の帯水層、深さ、水量、水質を見積もる手がかりになります。ただし、個々の井戸の結果を保証するものではないため、実際の掘削地点の調査が必要です。 自分の敷地を知る 堆積盆地・河川平野 砂礫帯水層と粘土層が互層し、深度によって淡水と塩水が分かれる場合があります。 適切なケーシング・グラウトで層間流動を防ぎ、広域過剰揚水地域では地盤沈下に注意します。 タイ東北部 一部には岩塩層があり、地下水に塩分や溶けた鉱物が多く含まれることがあります。 専門家が調査結果、掘削孔内の測定、水試料を合わせて、淡水と塩水の区間を判断します。 硬岩・丘陵地域 風化帯、節理、断層に地下水が存在し、地点差が大きくなります。 掘削前に地質構造と施工条件を確認し、不確実性を計画に含めます。 公的資料から始める タイ地下水資源局はBadan4Thaiで県別地下水図と周辺井戸情報を提供しています。調査計画に利用し、現地調査と専門設計の代替にはしません。 Badan4Thai情報を見る"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "workflow",
+    "hash": "gb-workflow",
+    "content": {
+      "th": {
+        "title": "ก่อนเจาะบ่อ ต้องเตรียมอะไรบ้าง?",
+        "text": "เริ่มจากน้ำที่ต้องใช้ แล้วตรวจพื้นที่และใบอนุญาต ขั้นตอนต่อไปนี้ช่วยให้คุยขอบเขตงานกับทีมสำรวจและผู้รับจ้างได้ชัดเจน วางแผนก่อนลงทุน สิ่งที่ควรได้ ต้องใช้น้ำเท่าไร? สรุปปริมาณน้ำต่อวัน ช่วงที่ใช้มากที่สุด ชั่วโมงเดินระบบ คุณภาพที่ต้องการ และแหล่งน้ำสำรอง ตารางน้ำเข้า น้ำใช้ และน้ำเก็บสำรอง (Water balance) พร้อมเงื่อนไขออกแบบเบื้องต้น ศึกษาข้อมูลเดิมและข้อจำกัดพื้นที่ ตรวจแผนที่น้ำบาดาล ข้อมูลบ่อใกล้เคียง ธรณีวิทยา ทางเข้าเครื่องเจาะ สาธารณูปโภค และแหล่งเสี่ยงปนเปื้อน แผนสำรวจและจุดเสี่ยงของโครงการ ควรเจาะตรงไหน? ตรวจพื้นที่ร่วมกับข้อมูลดิน หิน และน้ำใต้ดิน หากจำเป็นให้ใช้เครื่องมือสำรวจใต้ผิวดินเพื่อช่วยเปรียบเทียบจุดเจาะ จุดเจาะเป้าหมายพร้อมข้อมูลและเหตุผลที่เลือก ตรวจข้อกฎหมายก่อนเริ่มงาน ยืนยันพื้นที่ควบคุม หน่วยงานผู้รับคำขอ ใบอนุญาตเจาะ ผู้รับจ้างที่มีคุณสมบัติ และเงื่อนไขเฉพาะโครงการ เอกสารอนุมัติและขอบเขตงานที่ถูกต้อง ระหว่างเจาะต้องบันทึกอะไร? บันทึกดินและหินที่พบในแต่ละความลึก แล้วออกแบบท่อกรุ ท่อกรอง กรวด และซีเมนต์ผนึกตามชั้นน้ำจริง บันทึกชั้นดินหินและข้อมูลบ่อ (Well log) พร้อมแบบบ่อที่ก่อสร้างจริง พัฒนาบ่อและสูบทดสอบ ล้างเศษตะกอนจากงานเจาะ ทำให้กรวดกรุจัดตัว แล้ววัดอัตราสูบ ระดับน้ำตามเวลา และการฟื้นตัว อัตราสูบแนะนำและข้อมูลเลือกปั๊ม วิเคราะห์น้ำและส่งมอบระบบ เก็บตัวอย่างหลังพัฒนาบ่อด้วยวิธีที่เหมาะสม วิเคราะห์ตามวัตถุประสงค์ และบันทึกค่าฐานก่อนใช้งาน ผลแล็บ เอกสารบ่อ คู่มือ และแผนติดตาม อย่าข้ามขั้นตอนใบอนุญาต ข้อกำหนดและแบบฟอร์มอาจเปลี่ยนแปลงตามพื้นที่และประเภทการใช้ ก่อนเจาะหรือใช้น้ำบาดาลให้ตรวจสอบข้อมูลล่าสุดกับกรมทรัพยากรน้ำบาดาลหรือพนักงานน้ำบาดาลประจำท้องที่ อ่านคู่มือกฎหมายและใบอนุญาต"
+      },
+      "en": {
+        "title": "What should you prepare before drilling?",
+        "text": "Start with the water you need, then check the site and permits. These steps help you agree a clear scope with the survey team and contractor. Plan before investing What you should receive How much water do you need? List daily water use, the busiest periods, operating hours, required quality and backup sources. A record of water coming in, being used and stored (water balance), plus initial design requirements Review existing evidence and constraints Check groundwater maps, nearby wells, geology, rig access, utilities and contamination hazards. Investigation plan and risk register Where should the well go? Inspect the site alongside soil, rock and groundwater information. Where useful, use subsurface survey equipment to compare drilling locations. A target location with the evidence and reasons for choosing it Confirm regulatory requirements Verify the responsible authority, drilling and use permits, contractor qualifications and project conditions. Valid approvals and compliant scope What should be recorded during drilling? Record soil and rock at each depth, then design the casing, screen, gravel and sealing grout for the aquifers found. A depth-by-depth ground and borehole record (well log), plus drawings of the well as actually built Develop and pump-test the well Remove drilling fines, stabilize the intake zone and record flow, water level and recovery over time. Recommended operating rate and pump basis Analyze water and hand over the asset Sample correctly after development, analyze for the intended use and record an operating baseline. Laboratory report, well file and monitoring plan Do not skip permits Requirements and forms can vary by area and use. Confirm the latest requirements with the Department of Groundwater Resources or the responsible local groundwater officer before drilling or abstraction. Read the law and permit guide"
+      },
+      "zh": {
+        "title": "钻井前需要准备什么？",
+        "text": "先明确需要多少水，再检查场地和许可。以下步骤帮助你与勘查团队、承包方谈清工作范围。 投资前先规划 应取得的资料 需要多少水？ 列出日用水量、用水最多的时段、运行小时、所需水质和备用水源。 进水、用水和储水记录（水量平衡，Water balance），以及初步设计条件 审查资料与场地限制 查看地图、邻井、地质、钻机通道、地下管线和污染风险。 勘查计划和风险清单 在哪里钻井？ 结合现场检查与土、岩石和地下水资料；必要时借助地下探测设备比较井位。 目标井位，以及选择它的资料和理由 确认法规要求 核实主管单位、钻井与取水许可、承包方资格和项目条件。 有效许可和合规工作范围 钻井时需要记录什么？ 记录每个深度的土和岩石，再根据实际含水层设计套管、滤管、砾料和水泥密封。 按深度记录地层和钻井信息的井记录（Well log），以及实际完工的井结构图 洗井与抽水试验 清除钻井细料并连续记录流量、水位和恢复。 建议运行流量和选泵依据 水质分析与交付 按用途正确采样，建立运行基线并整理完整井档案。 化验报告、井档案与监测计划 不要跳过许可 各地区和用途的要求可能不同，钻井或取水前应向泰国地下水资源厅或当地主管人员确认最新规定。 阅读法规与许可指南"
+      },
+      "ja": {
+        "title": "井戸を掘る前に、何を準備する？",
+        "text": "まず必要な水量を整理し、敷地と許可を確認します。以下の手順で、調査チームや施工業者と作業範囲を具体的に話し合えます。 投資前に計画する 受け取る資料 水はどれだけ必要？ 1日の水量、最も多く使う時間帯、運転時間、必要水質、予備水源を整理します。 入る水・使う水・蓄える水の記録（水収支、Water balance）と初期設計条件 既存資料と敷地制約を確認 地下水図、近隣井戸、地質、搬入路、埋設物、汚染リスクを確認します。 調査計画とリスク一覧 どこに井戸を掘る？ 現地を確認し、土・岩・地下水の資料と合わせて検討します。必要に応じて地下を調べる機器で候補地点を比較します。 掘削候補地点と、それを選んだ資料・理由 法規要件を確認 担当機関、掘削・利用許可、業者資格、個別条件を確認します。 有効な許可と適法な作業範囲 掘削中に何を記録する？ 深さごとの土や岩を記録し、実際の帯水層に合わせて管、スクリーン、砂利、密封用セメントを設計します。 深さごとの地層・掘削情報（井戸記録、Well log）と実際に完成した井戸の図面 井戸仕上げ・揚水試験 掘削で出た細かい土砂を除き、流量、水位、回復を連続測定します。 推奨運転流量とポンプ選定根拠 水質分析・引渡し 用途に合う採水・分析を行い、運転基準値と井戸台帳を整えます。 分析書、井戸資料、監視計画 許可手続きを省略しない 地域と用途により要件が異なるため、掘削・取水前にタイ地下水資源局または所管担当者へ最新要件を確認してください。 法規・許可ガイドを読む"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "well",
+    "hash": "gb-well",
+    "content": {
+      "th": {
+        "title": "แต่ละส่วนของบ่อช่วยอะไร?",
+        "text": "บ่อต้องรับน้ำจากชั้นที่เลือก ควบคุมทราย และป้องกันน้ำต่างชั้นไหลปนกัน จึงต้องออกแบบทั้งตัวบ่อ ปั๊ม และจุดตรวจวัดให้ทำงานร่วมกัน รู้จักส่วนประกอบ ภาพจำลองการสูบทดสอบ: เมื่อสูบ ระดับน้ำรอบบ่อลดลง การวัดว่าสูบน้ำได้เท่าไรและระดับน้ำเปลี่ยนตามเวลาอย่างไร ช่วยประเมินการทำงานของบ่อ ภาพนี้ไม่ใช่แบบก่อสร้างจริง ปากบ่อและฐานคอนกรีต ยกปากบ่อและระบายน้ำออกจากบ่อ ลดโอกาสให้น้ำสกปรกไหลย้อนลงแนวกรุ ท่อกรุและซีเมนต์ผนึก ท่อกรุช่วยพยุงผนังบ่อ ซีเมนต์ปิดช่องว่างรอบท่อในช่วงที่ออกแบบ เพื่อไม่ให้น้ำต่างชั้นไหลปนกัน ท่อกรองและกรวดกรุ ช่องเปิดของท่อให้น้ำเข้า ส่วนกรวดรอบท่อช่วยควบคุมทราย ต้องเลือกขนาดให้เหมาะกับเม็ดดินและทรายของชั้นน้ำ เครื่องสูบและท่อส่ง ติดตั้งตามระดับน้ำขณะสูบ อัตราสูบแนะนำ ความลึกบ่อ และเงื่อนไขระบายความร้อนของมอเตอร์ จุดวัดและเก็บตัวอย่าง ควรเข้าถึงการวัดระดับน้ำ อัตราการไหล แรงดัน กระแสไฟ และจุดเก็บตัวอย่างที่เป็นตัวแทน เอกสารก่อสร้างจริง ระบุความลึก ขนาดท่อ ช่วงท่อกรอง กรวด ซีเมนต์ ปั๊ม และผลทดสอบ เพื่อใช้ดูแลตลอดอายุบ่อ"
+      },
+      "en": {
+        "title": "What does each part of a well do?",
+        "text": "A well must collect water from the chosen layer, control sand and prevent water from different layers mixing. The well structure, pump and measurement points need to work together. Meet the components Illustrated pumping test: pumping lowers the water level around the well. Measuring how much water is pumped and how levels change over time helps assess the well. This is not a construction drawing. Wellhead and concrete apron Keep the casing above ground level and drain dirty water away from the well. Casing and sealing grout Casing supports the borehole wall. Grout seals the space around it at designed depths to stop water from different layers mixing. Screen and gravel pack Screen openings let water in; the surrounding gravel helps control sand. Their sizes must suit the grains in the aquifer. Pump and rising main Select and position the pump from tested flow, pumping level, well depth and motor-cooling requirements. Measurement and sampling access Provide access for water level, flow, pressure, current and a representative sampling point. As-built file Record depths, diameters, screen, gravel, grout, pump and tests for the entire service life."
+      },
+      "zh": {
+        "title": "水井的每个部分有什么作用？",
+        "text": "水井需要从选定地层取水、控制砂粒，并避免不同地层的水混合。因此井结构、水泵和测量点需要配合设计。 认识各个部件 抽水试验示意：抽水会使井周水位下降。测量抽出了多少水，以及水位随时间如何变化，有助于评价水井。这不是施工图。 井口与混凝土台 井口高出地面并把污水排离水井。 套管与水泥密封 套管支撑井壁，水泥封住设计深度内管外的空隙，避免不同地层的水混合。 滤管与砾料 滤管开口让水进入，周围砾料帮助控制砂粒。开口和砾料尺寸必须适合含水层的土砂颗粒。 水泵与扬水管 根据试验流量、动水位、井深和电机冷却条件选择。 监测与采样接口 保留水位、流量、压力、电流和代表性采样位置。 竣工档案 记录深度、管径、滤管、砾料、固井、水泵和试验结果。"
+      },
+      "ja": {
+        "title": "井戸の部品は、それぞれ何をする？",
+        "text": "井戸は選んだ地層から水を取り、砂を抑え、異なる地層の水が混ざるのを防ぎます。井戸の構造、ポンプ、測定点を一緒に設計する必要があります。 各部の役割を知る 揚水試験の模式図です。水をくみ上げると井戸周辺の水位が下がります。水量と水位の時間変化を測り、井戸の働きを評価します。施工図ではありません。 井戸口・コンクリート台 井戸口を地表より高くし、汚水が井戸から離れる方向へ流れるようにします。 保護管と密封用セメント 保護管（ケーシング）が孔壁を支え、設計した深さの管周りをセメントで密封して地層間の水の混合を防ぎます。 取水管と周りの砂利 取水管（スクリーン）の開口から水を入れ、周りの砂利で砂を抑えます。開口と砂利の大きさは地層の粒に合わせます。 ポンプ・揚水管 試験流量、動水位、井深、モーター冷却条件から選定します。 測定・採水口 水位、流量、圧力、電流、代表採水点を確保します。 完成図書 深度、管径、スクリーン、砂利、グラウト、ポンプ、試験結果を記録します。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "pumping",
+    "hash": "gb-pumping",
+    "content": {
+      "th": {
+        "title": "สูบน้ำแล้ว ระดับน้ำลดลงเท่าไร?",
+        "text": "การสูบทดสอบ (Pumping test) ดูว่าสูบน้ำได้เท่าไรและระดับน้ำเปลี่ยนอย่างไร ตัวเลขด้านล่างเป็นตัวอย่างให้ลองปรับ ให้วัดความลึกของระดับน้ำก่อนสูบและขณะสูบจากจุดเดียวกันที่ปากบ่อ ลองอ่านผลสูบทดสอบ ความลึกระดับน้ำก่อนสูบ (ระดับน้ำสถิต) ความลึกระดับน้ำขณะสูบ ปริมาณน้ำที่สูบต่อชั่วโมง ระดับน้ำลดลง น้ำที่ได้ต่อระยะน้ำลด 1 เมตร คำนวณค่านี้ได้เมื่อระดับน้ำขณะสูบลึกกว่าก่อนสูบ ตัวเลขนี้บอกอะไร และยังไม่บอกอะไร? ระยะน้ำลด (Drawdown) = ความลึกระดับน้ำขณะสูบ − ความลึกก่อนสูบ เช่น จาก 12 เป็น 27 เมตร ระดับน้ำลดลง 15 เมตร ความจุจำเพาะของบ่อ (Specific capacity) = อัตราสูบ ÷ ระยะน้ำลด เช่น 30 ÷ 15 = 2 ลูกบาศก์เมตรต่อชั่วโมง ต่อระยะน้ำลด 1 เมตร ใช้เทียบเมื่อเงื่อนไขและระยะเวลาทดสอบใกล้เคียงกัน ค่าสูงไม่ได้ยืนยันว่าสูบได้เท่านั้นตลอดไป ปริมาณที่สูบได้ระยะยาวโดยไม่เกิดผลกระทบที่ยอมรับไม่ได้ (Sustainable yield) ต้องประเมินทั้งพื้นที่ รวมผลต่อแหล่งน้ำและสิ่งแวดล้อม การทดสอบจริงต้องบันทึกอัตราสูบ ระดับน้ำตามเวลา และการฟื้นตัวหลังหยุดสูบ ให้ผู้เชี่ยวชาญเลือกอัตราใช้งานโดยดูชั้นน้ำ โครงสร้างบ่อ ระดับจุ่มปั๊ม ฤดูกาล และบ่อข้างเคียงร่วมกัน เปิดเครื่องมือคำนวณฉบับเต็ม"
+      },
+      "en": {
+        "title": "How far does the water level fall when you pump?",
+        "text": "A pumping test measures how much water is pumped and how the water level responds. The numbers below are examples to try. Measure depth to water before and during pumping from the same point at the wellhead. Explore a pumping test Depth to water before pumping (static level) Depth to water during pumping Water pumped per hour Fall in water level Water per 1 metre of water-level fall This needs a pumping level deeper than the level before pumping. What do these numbers tell you—and what do they not? Drawdown is the fall in water level: pumping depth minus depth before pumping. From 12 to 27 metres means a 15-metre fall. Specific capacity is pumping rate divided by drawdown. For example, 30 ÷ 15 = 2 cubic metres per hour per metre of fall. Compare values only under similar conditions and test durations. A high value does not confirm that this rate can continue forever. Sustainable yield means the amount that can be pumped long term without unacceptable effects; it needs a wider assessment of water resources and the environment. Real tests record flow, water level over time and recovery after stopping. Specialists set operating rates using the aquifer, well structure, pump submergence, seasons and nearby wells together. Open the full calculator"
+      },
+      "zh": {
+        "title": "抽水后，水位下降了多少？",
+        "text": "抽水试验（Pumping test）测量抽水量与水位变化。下面的数值只是供你调整的示例。抽水前与抽水中，都应从井口同一个参照点测量水位深度。 试着读懂抽水结果 抽水前的水位深度（静水位） 抽水中的水位深度 每小时抽水量 水位下降距离 水位每下降1米的出水量 抽水中的水位深度大于抽水前时，才能计算此值。 这些数字能说明什么，不能说明什么？ 水位降深（Drawdown）= 抽水中的水位深度 − 抽水前深度。例如从12米变为27米，水位下降15米。 单位降深出水量（Specific capacity）= 每小时抽水量 ÷ 降深。例如30 ÷ 15 = 每米降深每小时2立方米。应在相近试验条件和持续时间下比较。 数值高不保证能永远按此速度抽水。可持续开采量（Sustainable yield）指长期抽取而不造成不可接受影响的水量，需要综合评价区域水资源和环境。 实际试验须记录流量、水位随时间的变化及停泵后的恢复。专业人员应综合含水层、井结构、水泵淹没深度、季节和邻井确定运行流量。 打开完整计算工具"
+      },
+      "ja": {
+        "title": "水をくむと、水位はどれだけ下がる？",
+        "text": "揚水試験（Pumping test）は、くみ上げた水量と水位の変化を測る試験です。下の数値は操作用の例です。運転前と運転中の水面までの深さは、井戸口の同じ基準点から測ります。 揚水試験を読んでみる 運転前の水面までの深さ（静水位） 運転中の水面までの深さ 1時間にくみ上げる水量 水位が下がった距離 水位低下1メートル当たりの水量 運転中の水位が運転前より深い場合に計算できます。 この数値で何がわかり、何はわからない？ 水位低下量（Drawdown）は運転中の水面深さから運転前の深さを引いた値です。12メートルから27メートルなら15メートルの低下です。 比湧出量（Specific capacity）は揚水量を水位低下量で割った値です。30 ÷ 15なら、水位低下1メートル当たり毎時2立方メートルです。近い試験条件・試験時間で比較します。 値が高くても、その水量を永久にくめる保証にはなりません。持続可能な揚水量（Sustainable yield）は、長期にわたり許容できない影響を生じずにくめる量で、地域の水資源と環境の評価が必要です。 実際の試験は流量、水位の時間変化、停止後の回復を記録します。専門家が帯水層、井戸構造、ポンプの水没深さ、季節、近隣井戸を合わせて運転水量を決めます。 完全版計算ツールを開く"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "quality",
+    "hash": "gb-quality",
+    "content": {
+      "th": {
+        "title": "น้ำใสแล้ว ใช้หรือดื่มได้เลยไหม?",
+        "text": "ยังสรุปไม่ได้ แม้บ่อให้น้ำพอ ก็ต้องตรวจคุณภาพแยกต่างหาก เลือกรายการตรวจให้ตรงกับการใช้ เช่น ดื่ม ผลิตอาหาร หล่อเย็น รดน้ำ หรือสุขาภิบาล แต่ละงานต้องการคุณภาพน้ำต่างกัน ตรวจให้ตรงกับการใช้ สี กลิ่น และความใสไม่ยืนยันความปลอดภัย ต้องเก็บตัวอย่างอย่างถูกวิธีและใช้ผลจากห้องปฏิบัติการ กายภาพและค่าพื้นฐาน สี ความขุ่น กลิ่น pH การนำไฟฟ้า และของแข็งละลาย ช่วยคัดกรองปัญหา ติดตามแนวโน้ม และเลือกกระบวนการปรับปรุงเบื้องต้น แร่ธาตุและเคมี เหล็ก แมงกานีส ความกระด้าง คลอไรด์ ฟลูออไรด์ ไนเตรต สารหนู และรายการตามความเสี่ยงพื้นที่ มีผลต่อสุขภาพ รสชาติ คราบ ตะกรัน การกัดกร่อน และกระบวนการผลิต จุลชีววิทยา โคลิฟอร์ม E. coli และตัวชี้วัดที่มาตรฐานการใช้น้ำกำหนด สำคัญสำหรับน้ำบริโภค อาหาร และงานที่มีโอกาสสัมผัสคน รายการเฉพาะกิจกรรม โลหะหนัก สารอินทรีย์ สารกำจัดศัตรูพืช หรือพารามิเตอร์ของกระบวนการ กำหนดจากประวัติพื้นที่ แหล่งมลพิษใกล้เคียง และข้อกำหนดของผู้ใช้น้ำ ความเค็มเป็นประเด็นสำคัญในบางพื้นที่ ภาคกลางตอนล่างและบางส่วนของภาคตะวันออกเฉียงเหนืออาจพบชั้นน้ำเค็มต่างสาเหตุ การแยกช่วงน้ำจืด–น้ำเค็มต้องใช้ข้อมูลหลายชนิดร่วมกัน และต้องออกแบบบ่อไม่ให้เชื่อมชั้นน้ำ ดูมาตรฐานคุณภาพน้ำบาดาลเพื่อการบริโภค"
+      },
+      "en": {
+        "title": "If the water is clear, can you use or drink it?",
+        "text": "You cannot tell yet. Even when there is enough water, quality needs a separate check. Choose tests for the intended use, such as drinking, food production, cooling, irrigation or sanitation. Each needs different water quality. Test for the intended use Color, smell and clarity do not confirm safety. Collect samples correctly and use laboratory results. Physical and baseline Color, turbidity, odor, pH, conductivity and dissolved solids Screen problems, establish trends and guide preliminary treatment. Minerals and chemistry Iron, manganese, hardness, chloride, fluoride, nitrate, arsenic and site-risk parameters Affect health, taste, staining, scale, corrosion and process performance. Microbiology Coliforms, E. coli and indicators required by the applicable standard Critical for drinking, food and human-contact uses. Activity-specific risks Metals, organics, pesticides or process-specific parameters Set from land-use history, nearby hazards and user requirements. Salinity matters in some Thai settings Lower Central Thailand and parts of the Northeast may contain saline intervals for different geological reasons. Distinguishing fresh and saline zones requires multiple lines of evidence and a well design that does not connect them. View the DGR drinking-water standard"
+      },
+      "zh": {
+        "title": "水清澈，就能直接使用或饮用吗？",
+        "text": "还不能判断。水量够用，也需要单独检查水质。饮用、食品生产、冷却、灌溉和卫生等用途，对水质的要求不同，应据此选择检测项目。 按用途选择检测 颜色、气味和清澈度不能证明安全。应正确采样，并依据实验室检测结果判断。 物理与基础指标 颜色、浊度、气味、pH、电导率、溶解固体 筛查问题、建立趋势并初选处理工艺。 矿物与化学指标 铁、锰、硬度、氯化物、氟化物、硝酸盐、砷及场地风险指标 影响健康、味道、结垢、腐蚀和生产。 微生物指标 大肠菌群、E. coli 及适用标准要求的指标 饮用、食品和人体接触用途尤为重要。 活动专项风险 金属、有机物、农药或工艺指标 依据土地历史、附近污染源和使用要求确定。 泰国部分地区需关注咸水 泰国中部下游和东北部的部分区域可能因不同地质原因存在咸水层。区分淡咸水需综合多种资料，成井结构不得造成串层。 查看地下水饮用水质标准"
+      },
+      "ja": {
+        "title": "透明な水なら、そのまま使える・飲める？",
+        "text": "まだ判断できません。水量が十分でも、水質は別に確認します。飲用、食品製造、冷却、散水、衛生など、用途ごとに必要な水質が違うため、検査項目を合わせます。 用途に合う検査を選ぶ 色、臭い、透明度は安全の証明になりません。正しく採水し、試験室の結果で判断します。 物理・基礎項目 色、濁度、臭気、pH、電気伝導度、溶解性固形物 問題のスクリーニング、傾向管理、初期処理検討に使います。 鉱物・化学項目 鉄、マンガン、硬度、塩化物、フッ化物、硝酸、ヒ素、地域リスク項目 健康、味、着色、スケール、腐食、工程に影響します。 微生物 大腸菌群、E. coli、適用基準の指標 飲用、食品、人体接触用途で重要です。 活動固有リスク 金属、有機物、農薬、工程固有項目 土地利用履歴、近隣汚染源、利用条件から決めます。 タイの一部地域では塩水に注意 タイ中部低地と東北部の一部には異なる地質要因による塩水層があります。複数資料で淡水・塩水を区分し、井戸で層を接続しない設計が必要です。 地下水飲用水質基準を見る"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "operation",
+    "hash": "gb-operation",
+    "content": {
+      "th": {
+        "title": "จะรู้ได้อย่างไรว่าบ่อเริ่มมีปัญหา?",
+        "text": "เก็บค่าตอนส่งมอบไว้เป็นจุดอ้างอิง แล้วเทียบกับค่าที่วัดในเงื่อนไขใกล้เคียงกันภายหลัง รอบตรวจแต่ละบ่ออาจต่างกัน ขึ้นกับความสำคัญของระบบ คุณภาพน้ำ ชั่วโมงใช้งาน และเงื่อนไขใบอนุญาต ดูแลหลังเริ่มใช้งาน ควรจดอะไรไว้บ้าง? อัตราการไหลและชั่วโมงทำงาน เปรียบเทียบปริมาณน้ำกับเวลาเดินเครื่อง เพื่อเห็นกำลังผลิตและความต้องการที่เปลี่ยนไป ระดับน้ำสถิตและขณะสูบ ใช้ดูการเปลี่ยนของชั้นน้ำ การอุดตัน และความเหมาะสมของอัตราสูบ แรงดัน กระแส และพลังงาน ความผิดปกติอาจชี้ไปที่ปั๊ม ท่อ วาล์ว ไฟฟ้า หรือระดับน้ำที่เปลี่ยน ความขุ่น ทราย และคุณภาพน้ำ เทียบกับค่าฐานและเกณฑ์การใช้ ไม่รอจนสีหรือกลิ่นเปลี่ยนชัดเจน เจอสัญญาณเหล่านี้ ให้หาสาเหตุก่อนเพิ่มขนาดปั๊ม น้ำไหลน้อยลง ทั้งที่ระดับน้ำใกล้เดิม สูบเท่าเดิม แต่ระดับน้ำลดลงมากกว่าเดิม มีทราย ความขุ่น กลิ่น หรือความเค็มเพิ่มขึ้น กระแสไฟ แรงดัน เสียง หรือแรงสั่นเปลี่ยน หลังหยุดสูบ ระดับน้ำกลับคืนช้ากว่าเดิมอย่างต่อเนื่อง เช็กลิสต์ก่อนตัดสินใจลงทุน ลองทำเครื่องหมายเฉพาะรายการที่โครงการมีข้อมูลยืนยันแล้ว รู้ปริมาณน้ำเข้า น้ำใช้ น้ำสำรอง และช่วงที่ใช้มากที่สุด ตรวจแผนที่และข้อมูลบ่อใกล้เคียงแล้ว ตรวจทางเข้าเครื่องเจาะและแหล่งเสี่ยงปนเปื้อนแล้ว ตรวจเงื่อนไขใบอนุญาตและผู้รับผิดชอบแล้ว ตกลงให้ส่งบันทึกชั้นดินหินและแบบบ่อที่ก่อสร้างจริงแล้ว ตกลงวิธีสูบทดสอบและรายงานที่จะได้รับแล้ว เลือกรายการตรวจน้ำให้ตรงกับการใช้งานแล้ว มีแผนจดค่าตรวจวัดและดูแลบ่อหลังส่งมอบแล้ว ข้อมูลพร้อมสำหรับคุยขอบเขตงาน รายการที่ควรเตรียมเพิ่ม"
+      },
+      "en": {
+        "title": "How can you spot a developing well problem?",
+        "text": "Keep handover readings as a reference, then compare later readings taken under similar conditions. Inspection schedules vary with system importance, water quality, operating hours and permit conditions. Care after handover What should you write down? Flow and operating hours Relate delivered volume to runtime and changing demand. Static and pumping water levels Track aquifer response, clogging and whether the abstraction rate remains appropriate. Pressure, current and energy Changes can reveal pump, pipe, valve, electrical or water-level problems. Turbidity, sand and water quality Compare against the baseline and end-use criteria before visible deterioration. Find the cause before installing a larger pump Less water flows while the water level stays similar. At the same pumping rate, the water level falls further. Sand, turbidity, odor or salinity increases. Current, pressure, sound or vibration changes. After stopping, the water level consistently recovers more slowly. Pre-investment readiness checklist Mark only items supported by project evidence. Know water supply, use, storage and busiest periods Reviewed maps and nearby-well data Checked rig access and contamination risks Confirmed permits and responsible parties Agreed to receive ground records and drawings of the completed well Agreed the pumping-test method and report Chosen water tests for the intended use Planned readings and well care after handover Ready for a scope discussion Items still to prepare"
+      },
+      "zh": {
+        "title": "怎样发现水井开始出现问题？",
+        "text": "保留交付时的读数作为参照，再与以后在相近条件下测得的数据比较。检查频率因系统重要性、水质、运行小时和许可条件而异。 投用后的维护 应该记录哪些数据？ 流量与运行小时 比较供水量、运行时间和需求变化。 静水位与动水位 观察含水层响应、堵塞和抽水量是否合适。 压力、电流与能耗 变化可能来自水泵、管路、阀门、电气或水位。 浊度、砂和水质 在明显恶化前与基线和用途标准比较。 出现这些变化，先查原因再换更大水泵 出水变少，但水位与之前相近。 抽水量相同，水位却下降更多。 砂、浊度、气味或盐度增加。 电流、压力、声音或振动改变。 停泵后，水位持续比以前恢复得慢。 投资前准备清单 只勾选已有资料支持的项目。 已明确进水、用水、储水和用水最多的时段 已审查地图与邻井资料 已检查钻机通道与污染风险 已确认许可和责任单位 已约定交付地层记录和实际完工井结构图 已约定抽水试验方法和报告 已按用途选择水质检测项目 已计划交付后的读数记录和维护 可以进入工作范围讨论 仍需准备的项目"
+      },
+      "ja": {
+        "title": "井戸の不調に、どう気づく？",
+        "text": "引渡し時の数値を残し、後で近い条件で測った数値と比較します。検査の間隔は、設備の重要度、水質、運転時間、許可条件によって異なります。 使い始めてからの手入れ 何を記録しておく？ 流量・運転時間 供給量、運転時間、需要変化を比較します。 静水位・動水位 帯水層応答、目詰まり、揚水量の妥当性を確認します。 圧力・電流・エネルギー ポンプ、配管、バルブ、電気、水位の異常を検知します。 濁度・砂・水質 目に見える悪化前に基準値と用途条件に比較します。 こんな変化があれば、大型ポンプに替える前に原因を調べる 水位は近い値なのに、出る水が減った。 同じ水量をくんでも、水位が以前より下がる。 砂、濁り、臭い、塩分が増えた。 電流、圧力、音、振動が変わった。 停止後の水位の戻りが、継続して遅くなった。 投資前準備チェック 資料で確認できた項目だけ選択してください。 入る水・使う水・蓄える水と、最も多く使う時間帯がわかる 地図と近隣井戸資料を確認済み 搬入路と汚染リスクを確認済み 許可と担当者を確認済み 地層記録と実際の完成図面の受取りを合意済み 揚水試験の方法と報告書を合意済み 用途に合う水質検査項目を選択済み 引渡し後の測定記録と手入れを計画済み 作業範囲協議の準備完了 追加準備項目"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-basics-thailand",
+    "key": "glossary",
+    "hash": "gb-glossary",
+    "content": {
+      "th": {
+        "title": "คำศัพท์ที่ควรรู้",
+        "text": "ชั้นหินให้น้ำ (Aquifer): ชั้นดินหรือหินที่ช่องว่างอิ่มน้ำ และสามารถกักเก็บกับส่งน้ำให้ใช้ประโยชน์ได้ ระดับน้ำบาดาล (Water table): ผิวบนของบริเวณที่ช่องว่างมีน้ำเต็มในชั้นน้ำไร้แรงดัน เหนือขึ้นไปยังมีทั้งอากาศและน้ำในช่องว่าง การเติมน้ำบาดาล (Recharge): น้ำที่ซึมลงไปจนถึงเขตอิ่มน้ำและเติมแหล่งน้ำบาดาล น้ำฝนที่ตกลงมาไม่ได้กลายเป็นน้ำบาดาลทั้งหมด ระดับน้ำสถิต (Static water level): ระดับน้ำในบ่อก่อนสูบหรือหลังหยุดสูบและปล่อยให้ฟื้นตัวตามเงื่อนไขทดสอบ ต้องระบุจุดอ้างอิงและเวลาที่วัด ระยะน้ำลด (Drawdown): ระยะที่ระดับน้ำลดลงจากก่อนสูบ เมื่อวัดความลึกจากจุดเดียวกัน ให้ลบความลึกก่อนสูบออกจากความลึกขณะสูบ ความจุจำเพาะของบ่อ (Specific capacity): อัตราสูบหารด้วยระยะน้ำลด บอกว่าสูบน้ำได้เท่าไรต่อระดับน้ำที่ลดลง 1 เมตร ต้องระบุอัตราสูบและระยะเวลาทดสอบเมื่อนำไปเปรียบเทียบ ตารางสมดุลน้ำ (Water balance): ในแผนโครงการ คือการสรุปน้ำเข้า น้ำออก และการเปลี่ยนของน้ำที่เก็บไว้ในช่วงเวลาเดียวกัน เพื่อเทียบแหล่งน้ำกับความต้องการใช้ บันทึกข้อมูลบ่อ (Well log): บันทึกสิ่งที่พบตามความลึก เช่น ชั้นดินหินและข้อมูลระหว่างเจาะ ใช้ร่วมกับแบบบ่อที่ก่อสร้างจริงเพื่อดูแลบ่อภายหลัง ปริมาณสูบที่ยั่งยืน (Sustainable yield): ปริมาณที่สูบได้ในระยะยาวโดยไม่เกิดผลกระทบที่ยอมรับไม่ได้ต่อแหล่งน้ำและสิ่งแวดล้อม ต้องประเมินทั้งระบบ ไม่ได้อ่านจากผลสูบทดสอบครั้งเดียว การพัฒนาบ่อ (Well development): การนำตะกอนจากงานเจาะออกและจัดสภาพรอบท่อกรอง เพื่อให้น้ำไหลเข้าบ่อได้ดีและลดทราย"
+      },
+      "en": {
+        "title": "Essential glossary",
+        "text": "Aquifer: A layer of soil or rock whose spaces are water-filled and which can store and supply useful quantities of water. Water table: The top of the water-filled zone in an unconfined aquifer. Above it, spaces contain both air and water. Recharge: Water that reaches the saturated zone and replenishes groundwater. Not all rainfall becomes groundwater. Static water level: The water level before pumping, or after stopping and allowing recovery under the test conditions. Record the reference point and measurement time. Drawdown: How far water falls from its pre-pumping level. For depths measured from the same point, subtract the pre-pumping depth from the pumping depth. Specific capacity: Pumping rate divided by drawdown: water pumped per metre of water-level fall. State the pumping rate and test duration when comparing values. Water balance: For project planning, a record of water coming in, going out and changes in stored water over the same period, used to compare supply with demand. Well log: A depth-by-depth record of ground and drilling observations. Keep it with drawings of the actual completed well for future maintenance. Sustainable yield: The amount that can be pumped long term without unacceptable effects on water resources and the environment. It requires a whole-system assessment, not a single pumping-test result. Well development: Removing drilling sediment and improving the area around the screen so water can enter more easily with less sand."
+      },
+      "zh": {
+        "title": "关键术语",
+        "text": "含水层（Aquifer）: 孔隙充满水，并能储存和提供可利用水量的土层或岩层。 地下水位（Water table）: 潜水含水层中孔隙被水充满区域的上表面。其上方的孔隙同时含有空气和水。 地下水补给（Recharge）: 到达饱和带并补充地下水的水。并非所有降雨都会变成地下水。 静水位（Static water level）: 抽水前，或停泵后按试验条件恢复的水位。需要注明测量参照点和时间。 水位降深（Drawdown）: 水位比抽水前下降的距离。从同一点测量深度时，用抽水中深度减去抽水前深度。 单位降深出水量（Specific capacity）: 抽水量除以水位降深，表示水位每下降1米能抽出的水量。比较时要注明抽水量和试验持续时间。 水量平衡（Water balance）: 项目规划中，在同一时间段记录进水、出水和储水变化，用来比较供水与需求。 井记录（Well log）: 按深度记录地层和钻井时发现的情况。应与实际完工井结构图一同保存，供日后维护使用。 可持续开采量（Sustainable yield）: 长期抽取而不对水资源和环境造成不可接受影响的水量。需要评价整个系统，不能由一次抽水试验确定。 洗井（Well development）: 清除钻井留下的沉积物，改善滤管周围进水条件，让水更容易进入并减少出砂。"
+      },
+      "ja": {
+        "title": "重要用語",
+        "text": "帯水層（Aquifer）: 隙間が水で満たされ、利用できる量の水を蓄えて供給できる土や岩の層。 地下水面（Water table）: 不圧帯水層で隙間が水に満たされた部分の上面。その上の隙間には空気と水の両方があります。 地下水の補給・涵養（Recharge）: 飽和帯まで届いて地下水を補う水。降った雨がすべて地下水になるわけではありません。 静水位（Static water level）: 運転前、または停止して試験条件に応じて回復させた水位。測定の基準点と時刻を記録します。 水位低下量（Drawdown）: 運転前から水位が下がった距離。同じ基準点から測る場合、運転中の水面深さから運転前の深さを引きます。 比湧出量（Specific capacity）: 揚水量を水位低下量で割った値。水位低下1メートル当たりにくめる水量を示し、比較には揚水量と試験時間を明記します。 水収支（Water balance）: 計画では、同じ期間に入る水・出る水・貯水量の変化を整理したもの。供給と必要水量を比べます。 井戸記録（Well log）: 深さごとの地層や掘削中の観察を記録した資料。実際の完成図面と一緒に保管し、後の維持管理に使います。 持続可能な揚水量（Sustainable yield）: 水資源や環境に許容できない影響を与えず、長期にわたりくめる水量。全体の仕組みを評価する必要があり、1回の揚水試験だけでは決まりません。 井戸仕上げ（Well development）: 掘削で出た土砂を除き、取水管の周りを整えて、水が入りやすく砂が出にくい状態にする作業。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "choose",
+    "hash": "facility-profile",
+    "content": {
+      "th": {
+        "title": "คุณวางแผนระบบน้ำให้กิจการแบบไหน?",
+        "text": "เลือกประเภทที่ใกล้เคียง เพื่อดูเรื่องที่ควรเตรียมและชื่อช่องกรอกปริมาณน้ำให้ตรงกับงานของคุณ ขั้นที่ 1 โรงงาน โรงแรมและรีสอร์ท เกษตรกรรม สูบลดระดับน้ำ ความต่อเนื่องของกระบวนการ คุณภาพเฉพาะจุด และผลกระทบต่อการผลิต พีกตามจำนวนผู้เข้าพัก ฤดูกาล สุขอนามัย ซักรีด ครัว และภูมิทัศน์ ความต้องการน้ำตามชนิดพืช ฤดูกาล ระบบให้น้ำ คุณภาพน้ำ และต้นทุนพลังงาน ควบคุมน้ำใต้ดินรอบหลุมขุด เสถียรภาพพื้นที่ การระบาย และผลกระทบข้างเคียง ประเด็นที่ควรยืนยันก่อน แยกน้ำสำหรับการผลิต หล่อเย็น หม้อไอน้ำ และการใช้งานทั่วไป กำหนดคุณภาพรับเข้าเครื่องจักรและผลกระทบเมื่อหยุดน้ำ ตรวจข้อกำหนดโรงงาน สิ่งแวดล้อม และการระบายน้ำร่วมด้วย แยกน้ำสำหรับห้องพัก ครัว ซักรีด สระ ระบบปรับอากาศ และภูมิทัศน์ ตรวจพีกของอัตราเข้าพัก งานจัดเลี้ยง ฤดูแล้ง และช่วงไฟฟ้าดับ กำหนดจุดตรวจคุณภาพน้ำดื่ม น้ำใช้ และน้ำสำหรับภูมิทัศน์ให้ชัด คำนวณจากพื้นที่ ชนิดพืช วิธีให้น้ำ และช่วงพีกจริง ตรวจคุณภาพน้ำต่อดิน พืช ระบบน้ำหยด หัวพ่น และการอุดตัน วางบ่อพัก การแบ่งโซน และเวลาเดินปั๊มให้สอดคล้องกับพลังงานและใบอนุญาต มีข้อมูลชั้นดิน ระดับน้ำใต้ดิน และผลทดสอบก่อนกำหนดจำนวนปั๊ม ออกแบบปั๊มหลักและปั๊มสำรอง จุดวัดระดับน้ำ การตกตะกอน และทางระบายที่อนุญาต ติดตามการทรุดตัว น้ำขุ่น ผลกระทบต่อบ่อและอาคารข้างเคียง พร้อมแผนฉุกเฉิน"
+      },
+      "en": {
+        "title": "What kind of operation are you planning for?",
+        "text": "Choose the closest type to see what to prepare and tailor the water-use fields to your work. Step 1 Factory Hotel and resort Agriculture Dewatering Process continuity, use-specific quality and production impact. Occupancy peaks, seasonality, hygiene, laundry, kitchens and landscapes. Crop demand, seasons, irrigation method, water quality and energy cost. Groundwater control around an excavation, stability, discharge and neighbouring impacts. Confirm these early Separate process, cooling, boiler and domestic water Define machine inlet quality and the cost of interruption Check factory, environmental and discharge obligations too Separate rooms, kitchen, laundry, pools, HVAC and landscape loads Check occupancy, events, dry-season demand and power-outage exposure Define sampling points for drinking, domestic and landscape water Calculate from crop, area, irrigation method and real peak period Check effects of water quality on soil, crops, emitters and clogging Coordinate storage, zones and pump hours with power and permit limits Use ground profile, groundwater levels and testing before sizing pumps Provide duty/standby capacity, level monitoring, settlement and an approved outlet Monitor settlement, turbidity and impacts on nearby wells and structures with an emergency plan"
+      },
+      "zh": {
+        "title": "您要为哪类业务规划用水？",
+        "text": "选择最接近的类型，查看应准备的资料，并调整用水量填写项目。 第 1 步 工厂 酒店与度假村 农业 施工降水 工艺连续性、分用途水质和停水损失。 入住高峰、季节性、卫生、洗衣、厨房与景观用水。 作物需求、季节、灌溉方式、水质与能源成本。 基坑周边地下水控制、稳定性、排放及邻近影响。 应优先确认 区分工艺、冷却、锅炉和生活用水 确定设备进水水质与停水影响 同时核查工厂、环保和排放要求 区分客房、厨房、洗衣、泳池、空调和景观负荷 核查入住率、活动、旱季需求与停电风险 明确饮用、生活与景观用水取样点 按作物、面积、灌溉方式和真实高峰期计算 核查水质对土壤、作物、滴头和堵塞的影响 让储水、分区与抽水时间符合供电和许可限制 在确定泵量前取得地层、地下水位与试验资料 设置主备能力、水位监测、沉淀处理和获批排放口 监测沉降、浊度及对邻井和建筑的影响，并备有应急方案"
+      },
+      "ja": {
+        "title": "どの用途の水システムを計画しますか？",
+        "text": "近い用途を選ぶと、準備する内容と使用水量の入力項目を確認できます。 ステップ 1 工場 ホテル・リゾート 農業 工事排水 工程継続性、用途別水質、生産停止の影響。 稼働率ピーク、季節性、衛生、ランドリー、厨房、植栽。 作物需要、季節、灌漑方式、水質、エネルギー費。 掘削周辺の地下水制御、安定、放流、近隣影響。 初期に確認する項目 工程、冷却、ボイラー、生活用水を分ける 設備入口水質と断水影響を定義する 工場・環境・排水要件も確認する 客室、厨房、ランドリー、プール、空調、植栽を分ける 稼働率、イベント、乾季、停電リスクを確認する 飲用・生活・植栽用水の採水点を決める 作物、面積、灌漑方式、実際のピーク期から計算する 土壌・作物・散水器・目詰まりへの水質影響を確認する 貯留、ゾーン、揚水時間を電力と許可条件に合わせる ポンプ台数決定前に地層、水位、試験資料を得る 主予備容量、水位監視、沈殿処理、許可された放流先を設ける 沈下、濁度、近隣井戸・構造物への影響を監視し緊急計画を持つ"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "calculator",
+    "hash": "water-balance",
+    "content": {
+      "th": {
+        "title": "ต้องใช้น้ำวันละเท่าไร?",
+        "text": "กรอกปริมาณเฉลี่ยต่อวันจากมิเตอร์ บิลน้ำ บันทึกการผลิต หรือประมาณการที่มีที่มา ผลลัพธ์เป็นข้อมูลวางแผนเบื้องต้น ไม่ใช่คำรับรองว่าบ่อจะให้น้ำได้ตามต้องการ ขั้นที่ 2 ปริมาณน้ำตามจุดใช้ สมมติฐานการออกแบบ กระบวนการหลัก / ห้องพัก ซักรีดและทำความสะอาด ครัว อาหาร และเครื่องดื่ม หล่อเย็น / ปรับอากาศ / น้ำเติมหม้อไอน้ำ ภูมิทัศน์ สระ และงานภายนอก อื่น ๆ และการสูญเสียที่ทราบ ม³/วัน สัดส่วนที่ต้องการให้น้ำบาดาลรองรับ ชั่วโมงสูบที่วางแผนต่อวัน เผื่อเติบโต/ความไม่แน่นอน ชั่วโมงสำรองเมื่อแหล่งหลักหยุด ปริมาตรถังที่ใช้งานได้จริง กรอบออกแบบเบื้องต้น ความต้องการปัจจุบัน ความต้องการหลังเผื่อ เป้าหมายน้ำบาดาล อัตราสูบเฉลี่ยที่ต้องการ น้ำสำรองที่ต้องใช้ ความจุถังรวมโดยประมาณ ต้องยืนยันอัตราสูบด้วยการสูบทดสอบ ตรวจความยั่งยืนของชั้นน้ำ และตรวจเงื่อนไขใบอนุญาต ก่อนเลือกปั๊มหรือรับประกันกำลังผลิต คัดลอกสรุปโครงการ คัดลอกแล้ว ข้อมูลตั้งต้นโครงการน้ำบาดาล เริ่มจากกรอกปริมาณน้ำอย่างน้อยหนึ่งจุดใช้"
+      },
+      "en": {
+        "title": "How much water do you need each day?",
+        "text": "Enter average daily use from meters, bills, production records or traceable estimates. Results are preliminary planning values—not a guarantee of well yield. Step 2 Demand by end use Design assumptions Core process / guest rooms Laundry and cleaning Kitchen, food and beverage Cooling / HVAC / boiler makeup Landscape, pools and outdoor use Other and known losses m³/day Target groundwater share Planned pumping hours/day Growth/uncertainty allowance Backup duration when source stops Usable fraction of tank Preliminary design frame Current demand Demand with allowance Groundwater target Average required pumping rate Required usable storage Approximate nominal tank Confirm yield by pumping test, aquifer sustainability and permit conditions before selecting a pump or guaranteeing output. Copy project brief Copied Groundwater project starting brief Enter at least one end-use demand to begin"
+      },
+      "zh": {
+        "title": "每天需要多少水？",
+        "text": "输入来自水表、账单、生产记录或可追溯估算的日均用量。结果仅用于前期规划，不保证井的出水量。 第 2 步 按用途统计 设计假设 核心工艺 / 客房 洗衣与清洁 厨房、餐饮 冷却 / 空调 / 锅炉补水 景观、泳池和室外 其他及已知损耗 m³/天 地下水目标占比 计划每日抽水小时 增长/不确定性余量 主水源中断备用小时 水箱可用比例 初步设计框架 当前需求 含余量需求 地下水目标量 平均所需抽水量 所需可用储水 估算名义水箱 选泵或承诺产水量前，必须通过抽水试验、含水层可持续性和许可条件确认。 复制项目简报 已复制 地下水项目前期资料 请至少输入一项用水量"
+      },
+      "ja": {
+        "title": "1日にどれくらい水が必要ですか？",
+        "text": "メーター、請求書、生産記録、根拠のある推計から日平均使用量を入力します。結果は予備計画値であり、井戸揚水量の保証ではありません。 ステップ 2 用途別需要 設計前提 主要工程 / 客室 ランドリー・清掃 厨房・飲食 冷却 / 空調 / ボイラー補給 植栽・プール・屋外 その他・既知の損失 m³/日 地下水の目標比率 計画揚水時間/日 成長・不確実性の余裕 主水源停止時の予備時間 タンク有効率 予備設計フレーム 現在需要 余裕込み需要 地下水目標量 必要平均揚水量 必要有効貯留量 概算公称タンク容量 ポンプ選定や水量保証の前に、揚水試験、帯水層の持続性、許可条件で確認してください。 プロジェクト要件をコピー コピーしました 地下水プロジェクト初期要件 少なくとも1用途の水量を入力してください"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "roadmap",
+    "hash": "project-roadmap",
+    "content": {
+      "th": {
+        "title": "เตรียมข้อมูลให้ครบก่อนเดินหน้าต่อ",
+        "text": "ติ๊กเมื่อมีข้อมูลหรือผลส่งมอบจริง แถบความพร้อมบอกว่ายังขาดอะไร ไม่ใช่การอนุมัติให้เริ่มงาน ขั้นที่ 3 ความพร้อม สรุปการใช้น้ำและความต่อเนื่องที่ต้องการ ยืนยันปริมาณน้ำเข้า–ออก ช่วงที่ใช้มากที่สุด คุณภาพแต่ละจุดใช้ เวลาที่หยุดระบบได้ และแหล่งสำรอง เกณฑ์ออกแบบและข้อมูลการใช้น้ำแต่ละช่วงเวลา ตรวจพื้นที่ ข้อมูลเดิม และข้อจำกัด ตรวจพิกัด สิทธิในที่ดิน ทางเข้าเครื่องเจาะ แหล่งปนเปื้อน ระบบท่อเดิม บ่อใกล้เคียง และ SmartGIS แผนผังพื้นที่และรายการความเสี่ยง ยืนยันกฎหมายและขอบเขตผู้รับผิดชอบ ตรวจผู้รับคำขอ ใบอนุญาตเจาะ ใบอนุญาตใช้ ผู้รับจ้างที่มีคุณสมบัติ และข้อกำหนดกิจการอื่นที่เกี่ยวข้อง รายการใบอนุญาตและผู้รับผิดชอบแต่ละรายการ สำรวจ ออกแบบ และเจาะตามข้อมูลจริง เลือกจุดด้วยข้อมูลอุทกธรณีวิทยา บันทึกชั้นดินหิน และปรับแบบบ่อตามชั้นน้ำที่พบ บันทึกชั้นดินหินและแบบบ่อตามที่ก่อสร้างจริง พัฒนาบ่อ สูบทดสอบ และตรวจน้ำ เก็บข้อมูลอัตราสูบ ระดับลด การฟื้นตัว ทราย และตัวอย่างน้ำด้วยวิธีที่เหมาะสม อัตราสูบแนะนำ ค่าฐานอ้างอิง และผลตรวจน้ำ ออกแบบระบบปรับปรุง ถัง และระบบสำรอง เลือกกระบวนการจากผลตรวจจริง แยกคุณภาพตามจุดใช้ และวางอุปกรณ์หลัก–สำรอง ท่อทางเลี่ยง มิเตอร์ และสัญญาณเตือน แผนผังท่อและเครื่องมือวัด (P&ID) รายการอุปกรณ์ และแนวทางควบคุม ทดสอบ ส่งมอบ และวางแผนเดินระบบ ทดสอบทั้งระบบภายใต้การใช้งานจริง อบรมผู้ปฏิบัติงาน และกำหนดตัวชี้วัด จุดเก็บตัวอย่าง และอะไหล่สำคัญ บันทึกรับมอบ คู่มือเดินระบบและบำรุงรักษา และค่าฐานอ้างอิง"
+      },
+      "en": {
+        "title": "Gather the evidence before moving ahead",
+        "text": "Tick only when the input or deliverable is ready. Progress shows what is missing; it is not approval to start work. Step 3 readiness Define demand and service level Confirm water coming in and going out, busiest periods, quality by use, acceptable downtime and backup supply. Design requirements and water use through the day Review site, records and constraints Check coordinates, land rights, rig access, pollution risks, existing pipes, nearby wells and SmartGIS. Site plan and risk register Confirm permits and responsibility Verify drilling/use permits, receiving authority, qualified parties and other facility obligations. Permit checklist and the person responsible for each Survey, design and drill to evidence Select the target from hydrogeology and update construction to the formations encountered. Record of soil/rock layers and the well as actually built Develop, pump-test and analyse Measure discharge, drawdown, recovery, sand and representative water quality. Recommended yield, baseline and laboratory results Design treatment, storage and backup Use test results; define duty/standby equipment, meters, alarms, bypasses and quality zones. Piping and instrument diagram (P&ID), equipment list and control plan Commission, hand over and operate Test under real-use conditions, train operators, and agree performance measures, sampling points and essential spares. Acceptance record, operation and maintenance manual, and baseline readings"
+      },
+      "zh": {
+        "title": "资料齐全后再推进下一步",
+        "text": "取得资料或成果后再勾选。进度显示还缺什么，不代表已获准开工。 第 3 步 准备度 确定需求与服务水平 确认进水量与出水量、用水高峰、各用途水质、可接受停水时间和备用水源。 设计要求和一天内各时段的用水量 核查场地、既有资料和限制 核查坐标、土地权利、钻机通道、污染风险、既有管网、邻井和SmartGIS。 场地平面图与风险清单 确认许可与责任人 确认钻井和用水许可、受理机关、合格承包方及其他经营许可义务。 许可清单及每项负责人 依据证据调查、设计与钻井 依据水文地质选择井位，并按实际钻遇地层调整井结构。 土层岩层记录和实际建成的水井结构 洗井、抽水试验与水质分析 记录流量、降深、恢复、含砂量及有代表性的水质。 建议开采量、基线和实验室结果 设计处理、储水和备用系统 依据检测结果设置主备设备、仪表、报警、旁路和水质分区。 管道与仪表图（P&ID）、设备表和控制说明 调试、移交与运行 按实际用水情况试运行，培训人员，并确定性能指标、取样点和关键备件。 验收记录、运维手册和基线"
+      },
+      "ja": {
+        "title": "必要な資料をそろえてから次へ進む",
+        "text": "資料や成果物がそろったらチェックします。進捗は不足項目を示すもので、着工の承認ではありません。 ステップ 3 準備度 需要とサービスレベルを定義 入ってくる水量と使われる水量、使用ピーク、用途別水質、許容停止時間、予備水源を確認します。 設計条件と時間帯別の使用水量 敷地・既存資料・制約を確認 座標、土地権利、掘削機アクセス、汚染リスク、既設配管、近隣井戸、SmartGISを確認します。 配置図とリスク台帳 許認可と責任者を確認 掘削・使用許可、申請先、有資格者、施設に関係する他の義務を確認します。 許認可の一覧と各項目の担当者 根拠に基づく調査・設計・掘削 水文地質から位置を選定し、実際の地層に合わせて井戸構造を更新します。 土や岩の層の記録と実際に完成した井戸の構造 井戸洗浄・揚水試験・水質分析 流量、水位低下、回復、砂、有効な水質試料を記録します。 推奨揚水量、基準値、分析結果 処理・貯留・予備システム設計 分析結果から主予備機、計器、警報、バイパス、水質区分を定義します。 配管・計装図（P&ID）、機器一覧、制御の方針 試運転・引渡し・運用 実際の使用条件で試験し、担当者を教育します。性能の確認項目、採水点、重要な予備品も決めます。 検収記録、運転・保守手順書、基準値"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "architecture",
+    "hash": "system-design",
+    "content": {
+      "th": {
+        "title": "ให้บ่อ ระบบปรับปรุง ถัง และจุดใช้ทำงานร่วมกัน",
+        "text": "ระบบที่ดีไม่ใช่เพียงน้ำออกจากบ่อ แต่ต้องควบคุมคุณภาพ แรงดัน การสำรอง และการหยุดซ่อมโดยไม่ทำให้กิจการเสี่ยง ขั้นที่ 4 แผนผังระบบน้ำบาดาลที่มีบ่อ ปั๊ม ระบบปรับปรุง ถัง แหล่งสำรอง และจุดใช้งานหลายประเภท เส้นทางตัวอย่าง: บ่อที่ป้องกันการปนเปื้อน → ถังน้ำดิบ/จุดเก็บตัวอย่าง → ระบบปรับปรุง → ถังน้ำดี → จุดใช้ แหล่งสำรองและอุปกรณ์สำรอง ต้องทดสอบได้จริง แยก “ปริมาณ” ออกจาก “คุณภาพ” บ่ออาจให้น้ำพอแต่คุณภาพไม่เหมาะกับทุกจุดใช้ จึงควรแยกขั้นตอนปรับปรุงคุณภาพน้ำและเกณฑ์น้ำตามการใช้งาน ใช้ถังพักให้เวลาสูบและเวลาใช้น้ำไม่ต้องตรงกัน ออกแบบถังตามปริมาณน้ำที่ใช้แต่ละช่วงเวลา เพื่อช่วยลดการเปิด–ปิดปั๊มบ่อย และให้ระบบปรับปรุงน้ำทำงานตามที่ออกแบบ อุปกรณ์เสียจุดเดียว ต้องไม่ทำให้ระบบสำรองหยุดด้วย ทบทวนแหล่งน้ำสำรอง ปั๊ม ไฟฟ้า ชุดควบคุม และชิ้นส่วนสำคัญ พร้อมวิธีสลับระบบที่ผู้ปฏิบัติงานทำได้ ติดมิเตอร์ตรงคำถาม อย่างน้อยต้องตอบได้ว่าบ่อสูบเท่าไร ระบบสูญเสียตรงไหน คุณภาพหลังปรับปรุงเป็นอย่างไร และจุดใดใช้น้ำมากที่สุด"
+      },
+      "en": {
+        "title": "Make the well, treatment, tank and users work as one system",
+        "text": "A successful system controls quality, pressure, backup and maintenance—not merely water flowing from a well. Step 4 Resilient groundwater system with well, treatment, storage, backup and multiple end uses Typical path: protected well → raw buffer and sampling → treatment → treated storage → end use. Backup and standby equipment must be testable. Separate quantity from quality Adequate yield does not mean one quality suits every use. Define treatment and acceptance by duty. Use storage so pumping and water use can happen at different times Size the tank for water use through the day. This helps reduce repeated pump starts and keeps treatment working as designed. Keep one equipment failure from stopping the backup too Review source, pumps, power, controls and critical spares, plus a practical changeover procedure. Meter the questions that matter Know abstraction, losses, post-treatment quality and which end use creates the peak."
+      },
+      "zh": {
+        "title": "让水井、处理、储水和用户作为一个系统运行",
+        "text": "合格系统必须控制水质、压力、备用和检修，而不只是井里有水。 第 4 步 含水井、水处理、储水、备用水源及多用途供水的韧性系统 典型流程：受保护井口 → 原水缓冲与取样 → 水处理 → 净水储存 → 用水点。备用设备必须能够实际测试。 区分水量与水质 出水量足够不代表所有用途都适用同一水质；应按用途设定处理与验收标准。 用储水错开抽水与用水时间 按一天内各时段的用水量配置水箱，帮助减少水泵频繁启停，并让处理设备按设计要求运行。 避免一台设备故障使备用系统也停机 检查水源、水泵、供电、控制和关键备件，并建立可执行的切换步骤。 让仪表回答关键问题 应能看出取水量、损耗、处理后水质以及造成高峰的具体用途。"
+      },
+      "ja": {
+        "title": "井戸・処理・タンク・使用先を一体で機能させる",
+        "text": "良いシステムは水が出るだけでなく、水質、圧力、予備、保守停止を管理します。 ステップ 4 井戸、水処理、貯留、予備水源、複数用途を備えた地下水システム 代表的な流れ：保護された井戸 → 原水バッファと採水 → 処理 → 処理水タンク → 使用先。予備設備は実際に試験できることが重要です。 水量と水質を分ける 十分な揚水量でも、全用途に同じ水質が適するとは限りません。用途別に処理と検収基準を定めます。 貯水で揚水と使用の時間をずらす 時間帯別の使用水量からタンク容量を決めます。ポンプの頻繁な起動停止を減らし、処理設備を設計に沿って運転する助けになります。 1台の故障で予備系統も止まらないようにする 水源、ポンプ、電源、制御、重要予備品と、実行可能な切替手順を確認します。 必要な問いを計測する 取水量、損失、処理後水質、ピークを作る用途が分かる計器を配置します。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "handover",
+    "hash": "handover-operation",
+    "content": {
+      "th": {
+        "title": "ตรวจอะไรบ้างก่อนรับมอบระบบ?",
+        "text": "ระบุรายการนี้ในขอบเขตงานและผูกการจ่ายเงินกับผลทดสอบที่ตกลงกันก่อนเริ่มงาน ขั้นที่ 5 ตัวบ่อและสมรรถนะ บันทึกชั้นดินหิน ขนาด วัสดุ ช่วงท่อกรอง และช่วงอุดซีเมนต์ ผลพัฒนาบ่อ สูบทดสอบ ระดับน้ำ และการคืนตัวของระดับน้ำ อัตราสูบแนะนำ ข้อจำกัดการเดินบ่อ และค่าฐานทราย คุณภาพและระบบปรับปรุง บันทึกการเก็บและส่งต่อสิ่งส่งตรวจ และผลตรวจน้ำก่อน–หลังระบบ เกณฑ์รับมอบแยกตามจุดใช้และวัตถุประสงค์การใช้งาน แผนผังท่อและเครื่องมือวัด ค่าควบคุม สัญญาณเตือน ข้อมูลความปลอดภัยสารเคมี (SDS) และวัสดุสิ้นเปลือง ไฟฟ้า เครื่องกล และระบบควบคุม กราฟสมรรถนะปั๊ม จุดทำงาน อุปกรณ์ป้องกันมอเตอร์ และผลทดสอบ การสลับอุปกรณ์หลัก–สำรอง แหล่งน้ำสำรอง และไฟสำรอง ป้ายระบุอุปกรณ์ รายการอะไหล่ และแบบตามที่ก่อสร้างจริง กฎหมายและการปฏิบัติงาน ใบอนุญาต เอกสารรายงาน และผู้รับผิดชอบต่ออายุ คู่มือเดินระบบและบำรุงรักษา ตารางบำรุงรักษา และบันทึกอบรม ค่าฐานอ้างอิง: อัตราไหล แรงดัน ระดับน้ำ คุณภาพน้ำ พลังงาน และการสั่น"
+      },
+      "en": {
+        "title": "What should you check before accepting the system?",
+        "text": "Put these deliverables in the scope and agree measurable payment gates before work begins. Step 5 Well and performance Soil/rock-layer record, materials, and screen and seal depths Development, pumping test, levels and recovery data Recommended yield, operating limits and sand baseline Quality and treatment Sampling and sample-handover records, plus raw and treated water test results Acceptance limits by end use Piping and instrument diagram, control settings, alarms, chemical safety data sheets (SDS) and consumables Mechanical, electrical and controls Pump curve, duty point, motor protection and test records Duty/standby, backup source and backup power tests Equipment tags, spares list and as-built drawings Compliance and operation Permits, reporting and renewal owners Operation and maintenance manual, maintenance plan and training records Flow, pressure, level, quality, energy and vibration baselines"
+      },
+      "zh": {
+        "title": "验收系统前应检查什么？",
+        "text": "开工前把成果列入范围，并把付款节点与可测测试结果关联。 第 5 步 井体与性能 钻井记录、材料、滤管与封隔深度 洗井、抽水试验、水位与恢复数据 建议开采量、运行限制与含砂基线 水质与处理 样品交接记录及原水/处理后检测结果 按用途设置验收限值 管道与仪表图、控制设定、报警、化学品安全数据表（SDS）及耗材 机电与控制 泵曲线、工况点、电机保护及测试记录 主备泵、备用水源和备用电源测试 设备标签、备件清单及竣工图 合规与运维 许可证、报告要求与续期责任人 运维手册、维护计划和培训记录 流量、压力、水位、水质、能耗和振动基线"
+      },
+      "ja": {
+        "title": "引き渡し前に何を確認しますか？",
+        "text": "着工前に成果物を仕様へ入れ、測定可能な試験結果を支払条件にします。 ステップ 5 井戸と性能 土や岩の層の記録、材質、取水管と遮水部分の深度 洗浄、揚水試験、水位、回復データ 推奨揚水量、運転制限、砂の基準値 水質と処理 試料管理記録と原水・処理水分析結果 用途別の検収限界値 配管・計装図、制御設定、警報、化学品の安全データシート（SDS）、消耗品 機械・電気・制御 ポンプ曲線、運転点、電動機保護、試験記録 主予備機、予備水源、予備電源の試験 機器タグ、予備品表、完成図 法令と運用 許可、報告、更新の責任者 運転・保守手順書、保守計画、教育記録 流量、圧力、水位、水質、電力、振動の基準値"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-guide-factory-hotel-resort",
+    "key": "operate",
+    "hash": "handover-operation",
+    "content": {
+      "th": {
+        "title": "ดูแนวโน้มก่อนระบบหยุด ไม่รอให้เกิดเหตุ",
+        "text": "ความถี่จริงขึ้นกับใบอนุญาต คู่มือผู้ผลิต ความเสี่ยง และวัตถุประสงค์ใช้งาน ตารางนี้เป็นกรอบเริ่มต้นให้ทีมกำหนดขั้นตอนปฏิบัติงานของตนเอง การดูแลหลังรับมอบ ทุกกะ / ทุกวัน ตรวจสัญญาณเตือน อัตราไหล แรงดัน ระดับน้ำในถัง สี กลิ่น เสียง และการสั่นผิดปกติ บันทึกเดินระบบและเหตุผิดปกติ รายสัปดาห์ ตรวจการรั่ว หัวบ่อ ตู้ควบคุม สารเคมีและวัสดุสิ้นเปลือง และทดสอบปั๊มสำรองตามขั้นตอน รายการตรวจสภาพ รายเดือน ทบทวนปริมาณสูบ เทียบปริมาณน้ำเข้า–ออก พลังงานต่อม³ ระดับน้ำ และหน้าที่รายงานตามใบอนุญาต สรุปสมรรถนะรายเดือน ตามความเสี่ยง/แผน เก็บตัวอย่างน้ำ สอบเทียบมิเตอร์ บำรุงรักษาปั๊ม/ระบบปรับปรุง และซ้อมรับมือเหตุฉุกเฉิน ประวัติผลตรวจน้ำ สอบเทียบ และบำรุงรักษา"
+      },
+      "en": {
+        "title": "See deterioration before the system stops",
+        "text": "Actual intervals depend on permits, manufacturer guidance, risk and intended use. Use this as a starting point for your site operating procedures. After handover Each shift / daily Check alarms, flow, pressure, levels, unusual appearance/odour, sound and vibration. Operator log and exceptions Weekly Inspect leaks, wellhead, panels and consumables; test standby equipment using the agreed operating procedure. Inspection checklist Monthly Review pumped volume, water coming in and going out, energy per m³, water levels and permit reporting duties. Performance review Risk-based / planned Sample water, calibrate meters, maintain equipment and rehearse emergency response. Lab, calibration and maintenance history"
+      },
+      "zh": {
+        "title": "在系统停机前看到劣化",
+        "text": "实际周期取决于许可、厂家要求、风险和用途。请以此为起点编写现场操作规程。 按趋势运维 每班 / 每日 检查报警、流量、压力、液位、异常颜色或气味、噪声与振动。 运行日志与异常记录 每周 检查泄漏、井口、控制柜和耗材；按已确定的操作规程测试备用设备。 检查清单 每月 复核抽水量、进出水量、每立方米能耗、水位及许可报告义务。 月度性能复核 按风险 / 计划 取样、校准仪表、维护设备并演练应急响应。 检测、校准和维护历史"
+      },
+      "ja": {
+        "title": "停止する前に劣化を見つける",
+        "text": "実際の周期は許可、メーカー、リスク、用途によります。現場の運転手順を作る際の出発点にしてください。 傾向で運転管理 各シフト / 毎日 警報、流量、圧力、水位、色・臭い、音、振動を確認します。 運転日誌と異常記録 毎週 漏れ、井戸口、制御盤、消耗品を点検し、定めた運転手順に従って予備機を試験します。 点検チェックリスト 毎月 揚水量、入水量と使用水量、m³当たり電力、水位、許可に基づく報告を確認します。 月次性能レビュー リスク / 計画に応じて 採水、計器校正、機器保全、緊急対応訓練を行います。 分析・校正・保全履歴"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "triage",
+    "hash": "gcs-triage",
+    "content": {
+      "th": {
+        "title": "อาการเดียว อาจมีหลายสาเหตุ",
+        "text": "เลือกอาการหลักเพื่อดูสาเหตุที่ควรตรวจ ข้อมูลที่ต้องเก็บ และสิ่งที่ไม่ควรทำ การ์ดนี้เป็นแนวทางคัดกรอง ไม่ใช่คำวินิจฉัยจากระยะไกล เริ่มจากความปลอดภัย หยุดหรือลดการสูบทันที เมื่อพบสัญญาณเหล่านี้ ปั๊มทำงานแห้ง เกิดเสียงคาวิเทชัน สั่น หรือร้อนผิดปกติ ทรายเพิ่มขึ้นอย่างฉับพลัน น้ำขุ่นจัด หรือมีชิ้นส่วนวัสดุบ่อ กระแสไฟ แรงดัน หรืออุณหภูมิมอเตอร์ผิดปกติและตัดซ้ำ คุณภาพน้ำเปลี่ยนฉับพลัน มีกลิ่นสารเคมี น้ำมัน หรือสงสัยการปนเปื้อน เลือกอาการหลัก กดเพื่อดูแนวทางตรวจสอบ น้ำไหลน้อยลง มีทรายหรือน้ำขุ่น คุณภาพน้ำเปลี่ยน ปั๊มตัดหรือกินไฟสูง ผลผลิตลด ความดันตก หรือใช้เวลาสูบนานขึ้น ระดับน้ำสถิตลดจากฤดูกาล ภัยแล้ง หรือบ่อใกล้เคียง ตะแกรงและกรวดกรุอุดตันจากตะกรัน ตะกอน หรือชีวภาพ ปั๊มสึก ท่อรั่ว วาล์วเปิดไม่สุด หรือไฟฟ้าผิดปกติ อัตราการไหลและความดันเทียบค่าฐาน ระดับน้ำสถิต ระดับขณะสูบ และการคืนตัว แรงดันไฟ กระแสไฟ และตำแหน่งวาล์ว ยืนยันเครื่องมือวัด แล้วทดสอบที่อัตราสูบเดิมก่อนเปลี่ยนขนาดปั๊ม อย่าเพิ่มปั๊มให้ใหญ่ขึ้นทันที เพราะอาจเร่งน้ำลดและดึงทราย หากระยะน้ำลดมากขึ้นหรือปั๊มเกือบพ้นน้ำ ให้หยุดและให้ผู้เชี่ยวชาญสูบทดสอบ เห็นเม็ดทราย ตะกอน น้ำขุ่น หรืออุปกรณ์สึกเร็วกว่าปกติ ตะแกรงชำรุดหรือช่องเปิดไม่เหมาะกับชั้นหิน กรวดกรุเคลื่อน การพัฒนาบ่อไม่สมบูรณ์ หรือตะกอนเต็มก้นบ่อ สูบแรงเกินสมรรถนะบ่อ ทำให้ความเร็วผ่านตะแกรงสูง ตัวอย่างก่อนและหลังเริ่มสูบ พร้อมเวลาที่เก็บ ปริมาณ/ขนาดเม็ดทรายและอัตราการสูบ ความลึกบ่อปัจจุบันเทียบข้อมูลก่อสร้าง ลดอัตราสูบ เก็บตัวอย่างตามเวลา และตรวจว่าทรายลดลงหรือเพิ่มขึ้น อย่าเดินปั๊มต่อด้วยอัตราสูงหรือปล่อยทรายผ่านระบบกรองและถัง ทรายเพิ่มฉับพลันหรือความลึกบ่อลดลงมาก ควรตรวจด้วยกล้องและประเมินโครงสร้างบ่อ สี กลิ่น รส ความเค็ม คราบสนิม หรือตะกรันเปลี่ยนไป เหล็ก แมงกานีส ความกระด้าง หรือสารละลายธรรมชาติเปลี่ยน น้ำเค็มรุก การไหลข้ามชั้นผ่านท่อกรุชำรุด หรือสูบมากเกินไป การปนเปื้อนจากผิวดิน ระบบบำบัด ของเสีย หรือกิจกรรมรอบบ่อ ตัวอย่างจากจุดเก็บที่ถูกต้องส่งห้องปฏิบัติการ EC/TDS, pH, ความขุ่น และพารามิเตอร์ตามการใช้งาน ประวัติฝน น้ำท่วม การซ่อม และกิจกรรมรอบบ่อ แยกน้ำออกจากการใช้งานที่มีความเสี่ยง เก็บตัวอย่างใหม่ และยืนยันผลวิเคราะห์ อย่าตัดสินจากความใสหรือกลิ่นเพียงอย่างเดียว และอย่าผสมน้ำเพื่อกลบค่าโดยไม่มีแบบ สงสัยสารเคมี/จุลชีพ น้ำเค็มเพิ่มเร็ว หรือค่าเกินเกณฑ์ ต้องให้ผู้เชี่ยวชาญประเมินทันที เบรกเกอร์ตัด กระแสสูง พลังงานต่อปริมาตรเพิ่ม หรือแรงดันไม่คงที่ แรงดันตก เฟสไม่สมดุล จุดต่อหลวม หรืออุปกรณ์ควบคุมผิดปกติ ระดับน้ำลดทำให้ระยะยกสูงขึ้น ปั๊มสึก หรือมีทรายขัด ท่ออุดตัน วาล์วผิดตำแหน่ง เช็ควาล์วเสีย หรือมอเตอร์มีปัญหา แรงดันและกระแสแต่ละเฟสขณะเริ่มและเดินเครื่อง อัตราการไหล ความดัน ระดับน้ำขณะสูบ และเวลาเกิดเหตุ ประวัติการตัด สัญญาณเตือน และพลังงานต่อ m³ ให้ช่างไฟที่มีคุณสมบัติตรวจระบบควบคุมและบันทึกค่าพร้อมข้อมูลน้ำ อย่าบายพาสอุปกรณ์ป้องกันหรือรีเซ็ตซ้ำโดยไม่หาสาเหตุ มีกลิ่นไหม้ จุดต่อร้อน เฟสหาย หรือปั๊มตัดซ้ำ ให้แยกแหล่งจ่ายและเรียกผู้เชี่ยวชาญ สาเหตุที่ควรตรวจ ข้อมูลที่ต้องเก็บ ขั้นแรกที่ปลอดภัย อย่าทำ ควรเรียกผู้เชี่ยวชาญเมื่อ"
+      },
+      "en": {
+        "title": "One symptom can have several causes",
+        "text": "Choose the primary symptom to see what to investigate, collect and avoid. This is a screening guide, not a remote diagnosis. Safety first Stop or reduce pumping when any of these appear Dry running, cavitation noise, abnormal vibration or heat A sudden sand surge, extreme turbidity or fragments from the well Abnormal voltage/current/temperature with repeated trips Sudden chemical or petroleum odor, or suspected contamination Choose the main symptom Select a card for a diagnostic pathway Declining flow Sand or turbidity Water-quality change Trips or high energy Yield falls, pressure drops or pumping takes longer. Seasonal, drought or nearby-pumping decline in static level Screen/gravel-pack clogging by mineral, sediment or biological growth Worn pump, leaking pipe, restricted valve or electrical fault Flow and pressure against baseline Static, pumping and recovery levels Voltage, current and valve position Verify instruments, then test at the previous known pumping rate. Do not immediately install a larger pump; it can deepen drawdown and pull sand. Stop and arrange a controlled pumping test if drawdown grows or the intake approaches exposure. Visible grains, sediment, turbidity or accelerated equipment wear. Damaged/mismatched screen Moved gravel pack, incomplete development or filled sump Pumping above safe well performance Timed samples from startup onward Sand amount/size with pumping rate Current depth versus construction record Reduce pumping and collect timed samples to see whether sand rises or clears. Do not keep operating at high flow or send sand through filters and tanks. A sudden surge or major loss of depth warrants structural assessment and possible camera inspection. Changed color, odor, taste, salinity, rust staining or scale. Natural iron, manganese, hardness or dissolved constituents Saline upconing/cross-flow through damaged casing or over-pumping Surface, wastewater, industrial or agricultural contamination Correctly collected laboratory samples EC/TDS, pH, turbidity and use-specific parameters Rain, flood, repair and nearby-activity history Isolate water from sensitive uses, resample and confirm analysis. Do not judge safety from clarity/odor alone or dilute without an engineered plan. Suspected chemical/microbial contamination, rapid salinity rise or exceedance needs prompt specialist review. Trips, high current, rising kWh/m³ or unstable pressure. Voltage drop, phase imbalance, loose connection or control fault Greater lift from lower levels, pump wear or sand abrasion Pipe restriction, valve/check-valve or motor problems Per-phase voltage/current at start and run Flow, pressure, pumping level and event time Trip history, alarms and kWh/m³ Have a qualified electrical technician record controls and electrical values alongside hydraulic data. Never bypass protection or repeatedly reset without finding the cause. Burning odor, hot joints, phase loss or repeated trips require isolation and specialist service. Likely areas to check Collect Safe first action Avoid Escalate when"
+      },
+      "zh": {
+        "title": "同一症状可能有多种原因",
+        "text": "选择主要症状，查看应调查、采集和避免的事项。本工具用于初筛，并非远程诊断。 安全优先 出现以下情况应停泵或降低抽水量 干转、气蚀声、异常振动或过热 突然大量出砂、严重浑浊或出现井体碎片 电压/电流/温度异常且反复跳闸 突然出现化学品或油味，或怀疑污染 选择主要症状 选择卡片查看路径 流量下降 出砂或浑浊 水质变化 跳闸或能耗高 出水量下降、压力降低或抽水时间变长。 季节、干旱或邻井抽水导致静水位下降 矿物、沉积物或生物膜堵塞滤管/砾料 泵磨损、管漏、阀门受限或电气故障 与基准对比的流量和压力 静水位、动水位与恢复水位 电压、电流和阀位 先验证仪表，再按原有已知流量测试。 不要立即换大泵，以免加深降深并带砂。 降深持续增大或泵入口接近露出时应停机并进行受控抽水试验。 可见砂粒、沉积物、浑浊或设备异常磨损。 滤管损坏或开孔不匹配 砾料移动、洗井不充分或沉砂管填满 抽水超过井的安全能力 从启泵开始的定时水样 砂量/粒径与抽水量 当前井深与成井记录 降低抽水量并定时取样，观察砂量趋势。 不要继续高流量运行或让砂进入过滤器和水箱。 突然增砂或井深明显变浅时，应评估井体并考虑井下摄像。 颜色、气味、味道、盐度、锈斑或结垢改变。 天然铁、锰、硬度或溶解物变化 咸水上移、套管损坏导致串层或过量抽水 地表、污水、工业或农业污染 按规范采样并送实验室 EC/TDS、pH、浊度和用途相关指标 降雨、洪水、维修和周边活动历史 暂停敏感用途，重新采样并确认分析结果。 不能只凭清澈/气味判断安全，也不要无设计稀释。 疑似化学/微生物污染、盐度快速上升或超标时应立即处理。 跳闸、电流高、kWh/m³ 上升或压力不稳。 电压降、缺相/不平衡、接头松动或控制故障 水位下降增加扬程、泵磨损或砂磨 管路堵塞、阀门/止回阀或电机问题 启动与运行时各相电压/电流 流量、压力、动水位和故障时间 跳闸记录、报警和 kWh/m³ 由合格电工在记录水力数据的同时检查控制和电气参数。 不要旁路保护或反复复位。 有焦味、接头发热、缺相或反复跳闸时应断电并检修。 可能原因 需要采集 安全的第一步 避免 升级处理条件"
+      },
+      "ja": {
+        "title": "一つの症状に複数の原因があります",
+        "text": "主な症状を選び、調べる原因、記録するデータ、避ける行為を確認します。遠隔診断ではなく一次スクリーニングです。 安全を最優先 次の兆候があれば停止または揚水量を下げる 空運転、キャビテーション音、異常振動・過熱 砂の急増、著しい濁り、井戸部材の破片 電圧・電流・温度異常と繰り返すトリップ 化学品・油の臭い、急な水質変化、汚染の疑い 主症状を選択 カードを選んで診断経路を表示 流量低下 砂・濁り 水質変化 トリップ・高消費電力 揚水量低下、圧力低下、揚水時間の長期化。 季節・干ばつ・周辺揚水による静水位低下 鉱物・沈殿・生物膜によるスクリーン目詰まり ポンプ摩耗、配管漏れ、弁制限、電気不具合 基準値と比較した流量・圧力 静水位、動水位、回復 電圧、電流、弁位置 計器を確認し、以前の既知揚水量で試験します。 すぐに大型ポンプへ変更しないでください。水位低下と揚砂を悪化させます。 水位低下量が増大し吸込口露出の恐れがあれば停止し、揚水試験を行います。 砂粒、沈殿、濁り、機器の早期摩耗。 スクリーン損傷・不適切な開口 砂利充填の移動、不十分な井戸仕上げ、沈砂部閉塞 安全能力を超える揚水 起動後の時間別試料 砂量・粒径と揚水量 現在深度と完成記録 揚水量を下げ、時間別に採水して砂の傾向を確認します。 高流量運転や砂をろ過器・タンクへ流すことは避けます。 砂の急増や大幅な深度減少は、井戸構造とカメラ調査を検討します。 色、臭い、味、塩分、さび、スケールの変化。 鉄、マンガン、硬度、溶存成分 塩水上昇、ケーシング損傷による層間流、過剰揚水 地表、排水、産業・農業由来の汚染 適切に採取した分析試料 EC/TDS、pH、濁度、用途別項目 降雨、洪水、修理、周辺活動履歴 影響の大きい用途から隔離し、再採水して分析を確認します。 透明・無臭だけで安全と判断せず、設計なしに希釈しないでください。 化学・微生物汚染、塩分急増、基準超過は速やかに専門家へ。 トリップ、高電流、kWh/m³増加、圧力不安定。 電圧低下、相不平衡、接続緩み、制御不良 水位低下による揚程増、ポンプ摩耗、砂摩耗 配管閉塞、弁・逆止弁、モーター不具合 始動・運転時の各相電圧/電流 流量、圧力、動水位、発生時刻 トリップ、警報、kWh/m³ 有資格者が水理データと同時に電気値を記録します。 保護装置のバイパスや原因不明の再投入を繰り返さないでください。 焦げ臭、接続部過熱、欠相、反復トリップは電源を隔離します。 確認する原因 記録するデータ 安全な第一手 避けること 専門家対応の目安"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "workflow",
+    "hash": "gcs-workflow",
+    "content": {
+      "th": {
+        "title": "ตรวจจากข้อมูลราคาถูกไปหาหลักฐานเชิงลึก",
+        "text": "ลำดับนี้ช่วยลดการถอดปั๊มหรือฟื้นฟูบ่อโดยไม่รู้สาเหตุ และทำให้เปรียบเทียบผลก่อน–หลังได้ กระบวนการวินิจฉัย ผลลัพธ์ ตั้งค่าฐาน รวบรวมแบบบ่อ รายงานเจาะ รุ่นปั๊ม ผลสูบทดสอบ และผลตรวจน้ำเดิม ค่าปกติที่ใช้อ้างอิง ยืนยันอาการ ตรวจมิเตอร์ วาล์ว รอยรั่ว และถามว่าเริ่มเกิดเมื่อใด เกิดตลอดหรือเป็นช่วง อาการที่วัดซ้ำได้ วัดระบบ บันทึกอัตราการไหล ความดัน แรงดันไฟ กระแสไฟ และพลังงานในเวลาเดียวกัน แยกปั๊ม–ท่อ–ไฟฟ้า วัดระดับน้ำ วัดระดับสถิต ระดับขณะสูบ ระยะน้ำลด และการคืนตัวด้วยอัตราสูบที่ทราบ แยกชั้นน้ำ–บ่อ–ปั๊ม ตรวจน้ำและทราย เก็บตัวอย่างตามเวลา บันทึกความขุ่น ทราย EC/TDS และส่งวิเคราะห์ตามความเสี่ยง หลักฐานคุณภาพและตะกอน ตรวจเชิงลึกตามเหตุ ถอดปั๊ม ตรวจความลึก กล้องบ่อ หรือทดสอบเพิ่มเติมเฉพาะเมื่อข้อมูลชี้นำ ยืนยันสาเหตุทางกายภาพ แก้ไขแบบมีเกณฑ์ เลือกซ่อมปั๊ม ล้าง/ฟื้นฟูบ่อ ซ่อมท่อกรุ ปรับอัตราสูบ หรือปรับปรุงน้ำตามสาเหตุ แผนงานและจุดหยุด ทดสอบยืนยัน วัดค่าหลักและสูบทดสอบซ้ำหลังงาน ก่อนกำหนดปั๊มหรืออัตราสูบใหม่ หลักฐานว่าดีขึ้นจริง หลักสำคัญ เทียบค่าก่อนและหลังที่อัตราสูบ ระยะเวลาสูบ และเงื่อนไขใกล้กัน อย่าสรุปสาเหตุจากตัวเลขเพียงค่าเดียว"
+      },
+      "en": {
+        "title": "Move from low-cost measurements to deeper evidence",
+        "text": "This sequence reduces unnecessary pump removal or blind rehabilitation and gives a before/after comparison. Diagnostic process Output Establish baseline Gather the well log, completion report, pump data, pumping test and historic water quality. Normal reference values Confirm the symptom Check meters, valves and leaks; establish when and under what conditions it occurs. A repeatable symptom Measure the system Record flow, pressure, voltage, current and energy at the same time. Pump–pipe–electrical separation Measure water levels Record static, pumping, drawdown and recovery at a known rate. Aquifer–well–pump separation Check water and sand Take timed samples, document turbidity/sand and test quality by risk and use. Quality and sediment evidence Inspect as indicated Pull the pump, verify depth, camera-inspect or test further only when evidence supports it. Confirmed physical cause Correct with criteria Repair, rehabilitate, adjust pumping or treat water according to the cause. Scope and stop criteria Verify performance Repeat key measurements and a pumping test before final pump sizing. Evidence of real improvement Core principle Compare before-and-after values at similar pumping rates, durations and conditions. Do not diagnose from one number alone."
+      },
+      "zh": {
+        "title": "从低成本测量走向深入证据",
+        "text": "这个顺序可减少盲目提泵或洗井，并支持前后对比。 诊断流程 输出 建立基准 收集成井记录、泵资料、抽水试验和历史水质。 正常参考值 确认症状 检查仪表、阀门和泄漏，明确发生时间和条件。 可重复症状 测量系统 同时记录流量、压力、电压、电流和能耗。 区分泵–管–电 测量水位 在已知流量下记录静水位、动水位、降深和恢复。 区分水层–井–泵 检查水与砂 定时取样并按风险检测浊度、砂和水质。 水质与沉积证据 按证据深入检查 仅在数据支持时提泵、测深、摄像或进一步试验。 确认物理原因 按原因修复 维修、洗井、调整抽水或处理水质，并设验收标准。 工作范围 验证性能 重复关键测量和抽水试验，再确定泵型。 改善证据 核心原则 按相近抽水流量、时长和条件比较前后读数，不要只凭一个数字判断原因。"
+      },
+      "ja": {
+        "title": "低コスト測定から深い証拠へ",
+        "text": "不要なポンプ引上げや根拠のない井戸洗浄を減らし、前後比較を可能にします。 診断プロセス 成果 基準値を作る 井戸台帳、完成記録、ポンプ、揚水試験、過去水質を集めます。 正常時の参照値 症状を確認 計器、弁、漏れを確認し、発生時期・条件を特定します。 再現できる症状 系統を測定 流量、圧力、電圧、電流、電力量を同時に記録します。 ポンプ・配管・電気の切分け 水位を測定 既知流量で静水位、動水位、水位低下量、回復を測定します。 帯水層・井戸・ポンプの切分け 水と砂を確認 時間別試料、濁り、砂、水質をリスクに応じて確認します。 水質・沈殿の証拠 必要に応じ詳細調査 証拠に基づきポンプ引上げ、深度確認、カメラ等を実施します。 物理原因の確認 原因に合わせ修正 修理、井戸洗浄、揚水量調整、水処理を原因別に選びます。 作業範囲と判定基準 性能を検証 主要値と揚水試験を再実施してからポンプを選定します。 改善の証拠 基本原則 揚水量、時間、条件が近い測定値で前後を比べます。1つの数値だけで原因を決めないでください。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "cases",
+    "hash": "gcs-cases",
+    "content": {
+      "th": {
+        "title": "5 กรณีศึกษาแบบอาการ → หลักฐาน → การยืนยัน",
+        "text": "ตัวอย่างจำลองสำหรับฝึกแยกอาการ หลักฐาน และสิ่งที่ต้องตรวจยืนยัน ไม่ใช่ผลวินิจฉัยหรือค่ารับประกันสำหรับบ่อจริง เรียนจากหลักฐาน บริบท อาการ หลักฐานสำคัญ ข้อค้นพบ การแก้ไข วิธียืนยันผล บทเรียน บ่อโรงงานผลิตน้ำลดลง บ่อเดิมมีข้อมูลทดสอบและเดินเครื่องทุกวัน อัตราการไหลลด 35% แต่ปั๊มยังทำงาน ระดับสถิตใกล้เดิม แต่ระยะน้ำลดเพิ่มและการคืนตัวช้าลง ในตัวอย่างนี้ ควรตรวจการอุดตันบริเวณรับน้ำก่อน แต่ยังต้องตรวจยืนยันสาเหตุ ตรวจชนิดตะกรันหรือตะกอนก่อนเลือกวิธีฟื้นฟูบ่อ ยังไม่เพิ่มขนาดปั๊ม สูบทดสอบซ้ำที่อัตราและระยะเวลาใกล้เดิม เปรียบเทียบอัตราสูบหารด้วยระยะน้ำลด (specific capacity) ระดับน้ำก่อนสูบใกล้เดิม แต่ขณะสูบน้ำลดมากขึ้น ควรตรวจประสิทธิภาพบ่อก่อน บ่อเกษตรมีทรายหลังเพิ่มอัตราสูบ เปลี่ยนปั๊มใหม่กำลังสูงกว่าเดิม น้ำขุ่นและมีทรายช่วงสูบต่อเนื่อง ทรายเพิ่มตามอัตราสูบ ความลึกบ่อลด และแรงดันแกว่ง การสูบเกินสมรรถนะร่วมกับปัญหากรวดกรุ/ตะแกรง ลดอัตราสูบ ตรวจความลึกและสภาพตะแกรง แล้วออกแบบแก้ไข เก็บตัวอย่างทรายตามเวลาขณะสูบทดสอบแบบเพิ่มอัตราสูบเป็นขั้น ปั๊มใหญ่ขึ้นไม่ได้ทำให้บ่อให้น้ำได้มากขึ้นอย่างปลอดภัยเสมอ ระบบกรองอุดตันและเกิดคราบแดง โรงแรมใช้น้ำบาดาลผ่านระบบกรอง แรงดันตก ไส้กรองตันเร็ว และสุขภัณฑ์เป็นคราบ เหล็ก/แมงกานีสและความขุ่นหลังสัมผัสอากาศสูงขึ้น การตกตะกอนในบ่อ ท่อ และระบบปรับปรุงน้ำ ทบทวนสภาพบ่อ จุดเติมอากาศ การกรอง และรอบล้างย้อน วิเคราะห์น้ำดิบ–หลังบำบัดและติดตามแรงดันต่าง ปัญหาคุณภาพน้ำกับสมรรถนะระบบมักเชื่อมโยงกัน ความเค็มเพิ่มเฉพาะช่วงสูบหนัก พื้นที่เสี่ยงน้ำกร่อย ใช้บ่อหลายช่วงเวลา EC/TDS เพิ่มเมื่อเดินปั๊มนาน ค่าลดลงหลังพักบ่อ แต่กลับสูงเมื่อเพิ่มอัตราสูบ มีความเสี่ยงดึงน้ำเค็มหรือเกิดการไหลข้ามชั้น ต้องยืนยันโครงสร้างบ่อ ลดอัตราสูบ เก็บตัวอย่างน้ำเป็นช่วงเวลา และตรวจท่อกรุกับช่วงรับน้ำ ติดตาม EC พร้อมอัตราสูบและระดับน้ำหลายรอบ ต้องดูความสัมพันธ์กับเวลาและอัตราสูบ ไม่ใช่ผลตัวอย่างครั้งเดียว ปั๊มตัดและค่าไฟเพิ่ม บ่ออาคารเดินตามแรงดันอัตโนมัติ โอเวอร์โหลดตัดบ่อยและ kWh/m³ สูงขึ้น กระแสไม่สมดุล ระดับสูบต่ำลง และอัตราการไหลลด มีทั้งปัญหาไฟฟ้าและภาระยกน้ำสูงขึ้น จึงต้องแยกสองระบบ แก้ไฟฟ้าโดยช่างที่มีคุณสมบัติ ตรวจปั๊ม และปรับจุดทำงาน วัดกระแสทุกเฟส อัตราไหล ระดับน้ำ และ kWh/m³ หลังแก้ ห้ามสรุปว่าเป็นมอเตอร์หรือบ่อจากเบรกเกอร์ตัดเพียงอย่างเดียว"
+      },
+      "en": {
+        "title": "5 symptom → evidence → verification cases",
+        "text": "Illustrative examples for separating symptoms, evidence and checks still needed. They are not diagnoses or guarantees for a real well. Evidence-based practice Setting Symptom Key evidence Finding Corrective action Verification Lesson Factory well loses output Daily-use well with historic test data Flow down 35%; pump still runs Static level similar, but drawdown increased and recovery slowed In this example, check intake clogging first; measurements alone do not confirm the cause Identify scale or sediment before choosing rehabilitation; do not upsize the pump first Repeat at a similar rate and duration; compare pumping rate divided by drawdown (specific capacity) Similar pre-pumping level but a greater drop during pumping means well performance should be checked first Farm well produces sand after pump upgrade A higher-capacity pump replaced the original Persistent turbidity and sand Sand rises with rate, depth is reduced and pressure fluctuates Over-pumping with gravel-pack/screen concern Reduce rate, verify depth and inspect the intake Timed sand sampling during a controlled step test A bigger pump does not safely create more well capacity Filters clog with red staining Hotel well feeding a treatment system Pressure loss, short filter runs and staining Iron/manganese and post-aeration turbidity increased Precipitation affects the well, pipework and treatment train Review the well, oxidation, filtration and backwash cycle Test raw/treated water and track differential pressure Water quality and hydraulic performance are connected Salinity rises during long pumping Multiple wells in a brackish-risk area EC/TDS rises with runtime Values fall after rest and return at higher rates Possible saline movement or cross-flow needs structural confirmation Reduce rate, time-profile samples and inspect casing/intakes Track EC with rate and water level over repeated cycles Time and pumping rate matter more than one sample Pump trips and energy rises Pressure-controlled building supply Overload trips and higher kWh/m³ Phase imbalance, lower pumping level and lower flow Electrical and lifting-load issues coexist Qualified electrical correction plus pump/duty-point review Recheck phases, flow, water level and kWh/m³ A trip alone cannot distinguish motor from well problems"
+      },
+      "zh": {
+        "title": "5 个症状 → 证据 → 验证案例",
+        "text": "这些模拟例子帮助区分症状、证据和待确认事项，不是实际水井的诊断或保证。 基于证据学习 背景 症状 关键证据 发现 措施 验证 要点 工厂井出水量下降 有历史试验数据的日常用井 流量下降 35%，泵仍运行 静水位相近，但降深增大、恢复变慢 本例应先检查进水段堵塞；仅凭这些读数还不能确认原因 先查明结垢或沉积物类型，再选择修复方法，不先加大泵 按相近流量和时长复测，比较抽水流量除以水位降深（单位涌水量） 抽水前水位相近，但抽水时下降更多，应先检查水井性能 农用井换泵后出砂 换成更大流量的泵 持续浑浊和出砂 砂量随流量增加，井深变浅且压力波动 过量抽水并伴随砾料/滤管问题 降流量、测深并检查进水段 阶梯试验期间定时测砂 大泵不会安全地增加井本身的能力 过滤器堵塞并有红色污渍 酒店井连接水处理系统 压差增大、过滤周期短、出现污渍 铁锰及曝气后浊度上升 沉淀影响井、管路和处理系统 复核井况、氧化、过滤和反洗 检测原水/处理水并跟踪压差 水质与水力性能相互关联 长时间抽水时盐度上升 咸水风险区的多井系统 EC/TDS 随运行时间上升 停泵后下降，高流量时又上升 可能有咸水迁移或串层，需确认井体 降流量、分时取样并查套管/进水段 多个周期同步跟踪 EC、流量和水位 时间和抽水量比单次样品更有意义 泵跳闸且能耗增加 恒压建筑供水 过载跳闸和 kWh/m³ 上升 三相不平衡、动水位下降且流量降低 电气问题与扬程增加并存 电工整改并检查泵和工况点 复测各相、流量、水位和能耗 仅凭跳闸不能区分电机和井的问题"
+      },
+      "ja": {
+        "title": "5つの症状 → 証拠 → 検証ケース",
+        "text": "症状、根拠、確認が必要な点を分けて考えるための想定例です。実際の井戸の診断や保証ではありません。 証拠から学ぶ 背景 症状 重要証拠 所見 対策 検証 学び 工場井戸の揚水量低下 過去試験のある常用井 流量35%低下、ポンプは運転 静水位は同程度、低下量増大、回復遅延 この例では取水部の目詰まりを先に調べます。測定値だけで原因は確定できません 付着物や堆積物の種類を確認してから回復方法を選び、先にポンプを大型化しません 近い揚水量と時間で再試験し、揚水量を水位低下量で割った値（比湧出量）を比較 揚水前の水位が同程度でも、揚水中により大きく下がる場合は井戸性能を先に確認 ポンプ更新後の農業井の揚砂 高容量ポンプへ更新 濁り・砂が継続 流量とともに砂増、深度減、圧力変動 過剰揚水と砂利充填/スクリーン懸念 流量低下、深度確認、取水部調査 段階揚水試験で時間別に砂を測定 大型ポンプは井戸能力を増やさない フィルター閉塞と赤い着色 水処理を持つホテル井 圧損、短い運転周期、着色 鉄・マンガンと曝気後濁度が上昇 沈殿が井戸・配管・処理に影響 井戸、酸化、ろ過、逆洗を見直す 原水/処理水と差圧を追跡 水質と水理性能は関連する 長時間揚水で塩分上昇 汽水リスク地域の複数井 運転時間とともにEC/TDS上昇 休止後低下し高流量で再上昇 塩水移動または層間流の確認が必要 流量低下、時間別採水、ケーシング調査 複数周期でEC・流量・水位を追跡 単一試料より時間と流量の関係が重要 ポンプトリップと電力増 定圧建物給水 過負荷とkWh/m³上昇 相不平衡、動水位低下、流量低下 電気と揚程負荷の複合問題 有資格電気修理とポンプ運転点確認 各相、流量、水位、電力量を再測定 トリップだけでモーター/井戸を断定できない"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "worksheet",
+    "hash": "gcs-worksheet",
+    "content": {
+      "th": {
+        "title": "เปรียบเทียบค่าฐานกับค่าปัจจุบัน",
+        "text": "ใช้ค่าที่วัดด้วยอัตราสูบ ระยะเวลา และเงื่อนไขใกล้กัน ผลลัพธ์ช่วยเลือกสิ่งที่ควรตรวจและเตรียมคุยกับช่าง แบบประเมินภาคสนาม ค่าฐานเดิม ค่าปัจจุบัน อัตราการไหล ระดับน้ำสถิตจากปากบ่อ ระดับน้ำขณะสูบจากปากบ่อ พบทรายหรือน้ำขุ่นผิดปกติ คุณภาพน้ำ/ความเค็มเปลี่ยนชัดเจน แนวทางตรวจลำดับแรก การเปลี่ยนแปลงอัตราไหล ระดับสถิตลึกขึ้น ระยะน้ำลดเปลี่ยน ให้ความสำคัญกับทรายและโครงสร้างบ่อ ลดอัตราสูบและเก็บตัวอย่างตามเวลา ก่อนที่ทรายจะทำให้ปั๊มและระบบเสียหาย วัดปริมาณทราย ความลึกบ่อ และพิจารณากล้องบ่อตามหลักฐาน ให้ความสำคัญกับคุณภาพน้ำ แยกน้ำจากการใช้ที่มีความเสี่ยงและยืนยันด้วยการเก็บตัวอย่าง/ห้องปฏิบัติการ บันทึก EC/TDS, pH, ความขุ่น เวลาสูบ และส่งตรวจตามวัตถุประสงค์ใช้ ตรวจการเปลี่ยนแปลงระดับชั้นน้ำก่อน ระดับสถิตลึกขึ้นอย่างมีนัยสำคัญ อาจเกี่ยวกับฤดูกาล การเติมน้ำ หรือการสูบโดยรอบ ตรวจระดับบ่อข้างเคียงและประวัติฝน สูบทดสอบด้วยอัตราที่ควบคุม พร้อมวัดการคืนตัวของระดับน้ำ ตรวจประสิทธิภาพบ่อและช่วงรับน้ำ น้ำไหลน้อยลงและระดับน้ำลดขณะสูบมากขึ้น ทั้งที่ระดับก่อนสูบใกล้เดิม อาจมีความสูญเสียในบ่อเพิ่ม ต้องตรวจยืนยัน เทียบอัตราสูบหารด้วยระยะน้ำลด ตรวจตะกรันหรือตะกอน แล้ววางแผนตรวจเชิงลึกก่อนฟื้นฟู ตรวจปั๊ม ท่อ วาล์ว และไฟฟ้าก่อน น้ำไหลน้อยลง แต่ระดับก่อนสูบและระยะน้ำลดใกล้เดิม ควรเริ่มตรวจปั๊ม ท่อ วาล์ว และไฟฟ้า บันทึกแรงดัน กระแสไฟ ความดัน ตำแหน่งวาล์ว และตรวจรอยรั่ว/การสึก ยังไม่พบการเปลี่ยนแปลงเด่นจากค่าที่กรอก รักษาการติดตามแนวโน้ม และตรวจว่าค่าถูกวัดด้วยวิธี/เงื่อนไขเดียวกัน บันทึกค่ารายเดือน พร้อมอัตราสูบ ชั่วโมงทำงาน คุณภาพน้ำ และเหตุการณ์รอบบ่อ ขั้นถัดไป ผลนี้เป็นการคัดกรองจากข้อมูลจำกัด ไม่ใช่การวินิจฉัยหรือแบบซ่อม ค่าคลาดเคลื่อน เครื่องมือ และบริบทหน้างานอาจเปลี่ยนข้อสรุปได้ คัดลอกสรุป คัดลอกแล้ว ดาวน์โหลดสรุป สรุปการคัดกรองบ่อน้ำบาดาล วันที่สร้าง ข้อมูลที่กรอก หมายเหตุ"
+      },
+      "en": {
+        "title": "Compare baseline with current performance",
+        "text": "Use readings from similar pumping rates, durations and conditions. The result helps choose what to check and discuss with a technician. Field worksheet Baseline Current Flow rate Static level below wellhead Pumping level below wellhead Abnormal sand or turbidity observed Clear water-quality/salinity change First-priority pathway Flow change Static level deepened Drawdown change Prioritize sand and well integrity Reduce flow and collect timed samples before sand damages the pump and system. Measure sand, verify well depth and consider camera inspection when supported. Prioritize water quality Isolate sensitive uses and confirm with correct sampling and laboratory analysis. Record EC/TDS, pH, turbidity, runtime and use-specific laboratory parameters. Investigate aquifer-level change first A material deepening of static level can reflect season, recharge or surrounding pumping. Review nearby levels/rainfall and run a controlled pumping/recovery test. Investigate well and intake efficiency Less flow with a greater water-level drop during pumping, while the pre-pumping level is similar, may indicate increasing well loss. Confirm the cause. Compare pumping rate divided by water-level drop, and inspect scale or sediment before planning rehabilitation. Check pump, pipe, valve and electrical system first Flow fell while the pre-pumping level and the drop during pumping stayed similar. Start with pump, pipe, valve and electrical checks. Record pressure, current, voltage and valve position; inspect leakage and wear. No strong change in the entered values Continue trend monitoring and confirm measurements used the same method and conditions. Record monthly performance, runtime, quality and surrounding events. Next step This is limited-data screening, not a diagnosis or repair design. Measurement error and site conditions can change the conclusion. Copy summary Copied Download summary Groundwater well screening summary Generated Entered observations Disclaimer"
+      },
+      "zh": {
+        "title": "对比基准与当前性能",
+        "text": "使用抽水流量、时长和条件相近的读数。结果帮助您选择检查重点，并与技术人员沟通。 现场评估表 基准值 当前值 流量 井口以下静水位 井口以下动水位 发现异常砂或浑浊 水质/盐度明显变化 优先检查路径 流量变化 静水位加深 降深变化 优先处理出砂和井体完整性 降低流量并定时取样，避免砂损坏泵和系统。 测砂量、核实井深，并按证据考虑井下摄像。 优先处理水质 暂停敏感用途，并通过规范采样和实验室确认。 记录 EC/TDS、pH、浊度、运行时间和用途相关指标。 先调查水层水位变化 静水位明显加深可能与季节、补给或周边抽水有关。 查看邻井和降雨，并进行受控抽水/恢复试验。 调查井和进水段效率 抽水前水位相近，但出水量减少、抽水时水位下降更多，可能表示井内损失增加。仍需确认原因。 比较抽水流量除以水位降深，并检查结垢或沉积物，再安排深入检查与修复。 先查泵、管路、阀门和电气 流量下降而水位与降深相近。 记录压力、电流、电压和阀位，检查泄漏和磨损。 输入值未显示强烈变化 继续趋势监测，并确认测量方法与条件一致。 每月记录性能、运行时间、水质和周边事件。 下一步 此结果仅为有限数据初筛，并非诊断或维修设计。测量误差和现场条件可能改变结论。 复制摘要 已复制 下载摘要 地下水井初筛摘要 生成日期 输入数据 说明"
+      },
+      "ja": {
+        "title": "基準値と現在性能を比較",
+        "text": "揚水量、時間、条件が近い測定値を使います。結果をもとに、先に調べる項目を技術者と相談してください。 現場評価シート 基準値 現在値 流量 井口からの静水位 井口からの動水位 異常な砂・濁りあり 明確な水質・塩分変化あり 優先確認経路 流量変化 静水位の深化 水位低下量の変化 砂と井戸健全性を優先 砂が機器を損傷する前に流量を下げ、時間別採水を行います。 砂量と井戸深度を測り、証拠に応じカメラ調査を検討します。 水質を優先 影響の大きい用途から隔離し、適切な採水と分析で確認します。 EC/TDS、pH、濁度、運転時間、用途別分析を記録します。 帯水層水位の変化を先に調査 静水位の大幅な深化は季節、涵養、周辺揚水の影響が考えられます。 周辺井戸・降雨を確認し、制御した揚水/回復試験を行います。 井戸・取水部効率を調査 揚水前の水位が同程度で、流量が減り揚水中の水位低下が増えた場合、井戸内の損失増加が考えられます。原因の確認が必要です。 揚水量を水位低下量で割った値を比較し、付着物や堆積物を調べてから詳しい調査と回復方法を計画します。 ポンプ・配管・弁・電気を先に確認 流量低下でも水位と低下量は同程度です。 圧力、電流、電圧、弁位置を記録し、漏れ・摩耗を確認します。 入力値に大きな変化なし 測定方法と条件を確認し、傾向監視を続けます。 性能、運転時間、水質、周辺イベントを毎月記録します。 次の手順 限られたデータによる一次評価であり、診断・修理設計ではありません。誤差や現場条件で結論は変わります。 要約をコピー コピー済み 要約を保存 地下水井一次評価要約 作成日 入力値 注意"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "prevention",
+    "hash": "gcs-prevention",
+    "content": {
+      "th": {
+        "title": "บันทึกเล็กน้อย ช่วยให้วินิจฉัยได้เร็วขึ้นมาก",
+        "text": "ค่าฐานที่สม่ำเสมอทำให้เห็นความเสื่อมก่อนระบบหยุด และช่วยเลือกวิธีซ่อมที่ตรงสาเหตุ ลดปัญหาซ้ำ เช็กลิสต์ข้อมูลประจำบ่อ ครบแล้ว—พร้อมสร้างประวัติค่าฐาน รายการที่ยังควรจัดเก็บ แบบก่อสร้าง ความลึก ช่วงตะแกรง และข้อมูลกรวดกรุ รุ่นปั๊ม ระดับติดตั้ง กราฟปั๊ม และค่าตั้งป้องกัน อัตราการไหล ความดัน ระดับสถิต/ระดับสูบ และการคืนตัว แรงดัน กระแสแต่ละเฟส ชั่วโมงทำงาน และ kWh/m³ ผลวิเคราะห์น้ำ วันที่เก็บ จุดเก็บ และลักษณะตัวอย่าง ประวัติทราย การล้างบ่อ ซ่อมปั๊ม และเหตุการณ์ผิดปกติ ติดตามแนวโน้ม ไม่ใช่แค่ผ่าน/ไม่ผ่าน สมรรถนะบ่อ บันทึกอัตราไหล ระยะน้ำลด และอัตราสูบหารด้วยระยะน้ำลด โดยใช้เงื่อนไขทดสอบใกล้กัน พลังงาน ใช้ kWh/m³ ร่วมกับระดับน้ำและแรงดัน เพื่อเห็นประสิทธิภาพที่ลดลง คุณภาพน้ำ ดูกราฟตามเวลาและช่วงสูบ เพราะค่าบางชนิดเปลี่ยนเมื่อสูบนาน เหตุการณ์ บันทึกภัยแล้ง น้ำท่วม งานก่อสร้าง บ่อใหม่รอบพื้นที่ และการปรับวาล์ว"
+      },
+      "en": {
+        "title": "Small records make later diagnosis much faster",
+        "text": "Consistent baselines expose deterioration before shutdown and help target repair. Prevent recurrence Well-record checklist Complete—ready to build a baseline history Items still to collect Construction log, depth, screen intervals and gravel-pack record Pump model, setting depth, curve and protection settings Flow, pressure, static/pumping levels and recovery Voltage, per-phase current, runtime and kWh/m³ Water results with date, sampling point and sample condition Sand, rehabilitation, pump repair and incident history Track trends, not only pass/fail Well performance Record flow, water-level drop and pumping rate divided by that drop, using comparable test conditions. Energy Use kWh/m³ with water level and pressure to expose lost efficiency. Water quality Plot results over time and runtime because some values drift while pumping. Events Record drought, flood, construction, nearby wells and valve changes."
+      },
+      "zh": {
+        "title": "少量记录能大幅加快诊断",
+        "text": "一致的基准能在停机前发现恶化，并让维修更有针对性。 预防复发 水井资料清单 已完整—可以建立基准历史 仍需收集 成井记录、井深、滤管区间和砾料记录 泵型、安装深度、曲线和保护设定 流量、压力、静/动水位和恢复 电压、各相电流、运行时间和 kWh/m³ 水质结果、日期、采样点和样品状态 出砂、洗井、泵维修和故障历史 看趋势，而不只看合格/不合格 井性能 在相近试验条件下记录流量、水位下降量，以及流量除以下降量的值。 能耗 结合水位与压力分析 kWh/m³。 水质 按时间和运行时长绘图。 事件 记录干旱、洪水、施工、邻井和阀门变化。"
+      },
+      "ja": {
+        "title": "少しの記録で診断は大幅に速くなります",
+        "text": "一貫した基準値は停止前の劣化を見つけ、修理を原因に合わせます。 再発予防 井戸記録チェック 完了—基準履歴を作成できます 未収集項目 完成記録、深度、スクリーン区間、砂利充填 ポンプ型式、設置深度、曲線、保護設定 流量、圧力、静/動水位、回復 電圧、各相電流、運転時間、kWh/m³ 水質結果、日付、採水点、試料状態 砂、洗浄、ポンプ修理、異常履歴 合否だけでなく傾向を見る 井戸性能 近い試験条件で、流量、水位低下量、流量を低下量で割った値を記録。 エネルギー 水位・圧力とともにkWh/m³を確認。 水質 時間と運転時間に対してグラフ化。 イベント 干ばつ、洪水、工事、周辺井戸、弁変更を記録。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-case-studies-problems",
+    "key": "quiz",
+    "hash": "gcs-quiz",
+    "content": {
+      "th": {
+        "title": "คุณจะเริ่มตรวจจากตรงไหน?",
+        "text": "เลือกคำตอบที่ปลอดภัยและใช้หลักฐานมากที่สุด ตรวจความเข้าใจ ถูกต้อง ทบทวน คะแนน ทำอีกครั้ง ยอดเยี่ยม—คุณแยกอาการออกจากสาเหตุได้อย่างเป็นระบบ น้ำไหลลดลง 30% สิ่งแรกที่ควรทำคืออะไร? เปลี่ยนปั๊มให้ใหญ่ขึ้น ยืนยัน flow/pressure และเทียบระดับน้ำกับค่าฐาน เติมสารเคมีล้างบ่อทันที ต้องยืนยันอาการและแยกปั๊ม ท่อ บ่อ และชั้นน้ำก่อนเลือกการแก้ไข ระดับน้ำสถิตใกล้เดิม แต่ระดับขณะสูบลึกขึ้นมาก บอกอะไรได้ดีที่สุด? ความสูญเสียในบ่ออาจเพิ่มขึ้น ยืนยันว่ามอเตอร์เสีย ยืนยันว่าชั้นน้ำแห้งถาวร หากระดับน้ำลดขณะสูบมากขึ้นภายใต้เงื่อนไขใกล้กัน ให้ตรวจประสิทธิภาพบ่อและช่วงรับน้ำก่อน แต่ยังต้องยืนยันสาเหตุ พบทรายเพิ่มขึ้นทันทีหลังเปลี่ยนปั๊ม ควรทำอย่างไร? เพิ่มเวลาสูบให้ทรายหมด ลดอัตราสูบ เก็บตัวอย่าง และตรวจโครงสร้างบ่อ ปิดอุปกรณ์ป้องกันปั๊ม ทรายทำลายปั๊มและอาจบ่งชี้การสูบเกินสมรรถนะหรือความเสียหายของบ่อ น้ำใสและไม่มีกลิ่น หมายความว่าปลอดภัยหรือไม่? ปลอดภัยเสมอ ไม่สามารถสรุปได้ ต้องตรวจตามวัตถุประสงค์ใช้ ปลอดภัยถ้าสูบนาน 10 นาที สารละลายและจุลชีพบางชนิดมองไม่เห็น การเก็บตัวอย่างและผลห้องปฏิบัติการจึงจำเป็น"
+      },
+      "en": {
+        "title": "Where would you start?",
+        "text": "Choose the safest, most evidence-based answer. Knowledge check Correct Review Score Try again Excellent—you are separating symptoms from causes systematically. Flow falls by 30%. What should happen first? Install a larger pump Verify flow/pressure and compare water levels with baseline Chemically clean immediately Confirm and separate pump, pipe, well and aquifer before choosing a remedy. Static level is similar but pumping level is much deeper. What is the best inference? Well loss may have increased The motor is definitely failed The aquifer is permanently dry Higher drawdown under similar conditions points first toward intake/well efficiency, but still needs confirmation. Sand surges after a pump upgrade. What is safest? Pump longer to clear it Reduce rate, sample sand and inspect well integrity Disable pump protection Sand damages equipment and may signal over-pumping or well damage. Clear, odorless water is always safe. True False—test according to intended use True after ten minutes of pumping Many dissolved and microbial hazards are not visible."
+      },
+      "zh": {
+        "title": "您会从哪里开始？",
+        "text": "选择最安全、最有证据的答案。 知识检测 正确 复习 得分 重新作答 很好—您正在系统地区分症状与原因。 流量下降 30%，第一步是什么？ 换大泵 核实流量/压力并与基准水位对比 立即化学洗井 先确认症状并区分泵、管、井和水层。 静水位相近，但动水位深很多，最合理的判断是？ 井损可能增加 电机肯定损坏 水层永久枯竭 相近条件下降深增加，应先调查进水段和井效率。 换泵后突然出砂，最安全的做法是？ 继续抽到砂消失 降流量、取样并检查井体 关闭保护 砂会损坏设备，也可能表示过量抽水或井损坏。 清澈无味的水一定安全吗？ 一定安全 不能确定，应按用途检测 抽十分钟后安全 许多溶解物和微生物不可见。"
+      },
+      "ja": {
+        "title": "どこから調べますか？",
+        "text": "最も安全で証拠に基づく答えを選びます。 理解度確認 正解 確認 得点 もう一度 すばらしい—症状と原因を体系的に分けられています。 流量が30%低下。最初に何をしますか？ 大型ポンプに交換 流量/圧力を確認し水位を基準値と比較 すぐ薬品洗浄 対策前にポンプ・配管・井戸・帯水層を切り分けます。 静水位は同じで動水位が大幅に深い。最もよい推定は？ 井戸損失が増えた可能性 モーター故障確定 帯水層が永久枯渇 同条件で低下量増加なら取水部と井戸効率を先に確認します。 ポンプ更新後に砂が急増。安全な対応は？ 砂が消えるまで運転 流量を下げ、採水し井戸を調査 保護を解除 砂は機器を損傷し、過剰揚水や井戸損傷の兆候です。 透明・無臭の水は常に安全ですか？ はい いいえ、用途に応じ検査 10分揚水すれば安全 目に見えない溶存物質や微生物があります。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "navigator",
+    "hash": "gwl-navigator",
+    "content": {
+      "th": {
+        "title": "โครงการของคุณต้องเปิดกฎหมายชุดใดก่อน?",
+        "text": "ระบุข้อมูลพื้นฐาน ระบบจะแสดงรายการที่ควรตรวจ ไม่ได้ตัดสินว่าอนุญาตได้หรือจัดประเภททางกฎหมายแทนเจ้าหน้าที่ คัดกรองเบื้องต้น ความลึกที่วางแผนหรือความลึกบ่อ เมตรจากผิวดิน สถานะโครงการ กำลังวางแผน/ยังไม่เจาะ มีบ่อหรือกำลังใช้งาน กำลังเลิกใช้หรือบ่อชำรุด ลักษณะการใช้หลัก อุปโภคบริโภค/ที่พักอาศัย เกษตรหรือปศุสัตว์ โรงแรม อาคาร หรือธุรกิจ โรงงานหรือกระบวนการผลิต ปริมาณมาก/กระทบหลายพื้นที่/อาจเป็นประเภท 2–3 พื้นที่กรุงเทพฯ และ 6 จังหวัดเขตวิกฤตการณ์ มีแผนระบายน้ำหรือของเหลวลงบ่อน้ำบาดาล ชุดกฎหมายที่ควรตรวจ ความลึกเกิน 15 เมตร: ตรวจใบอนุญาตตาม พ.ร.บ.น้ำบาดาล ประกาศเขตและความลึก และกฎกระทรวงการขอใบอนุญาต ความลึกไม่เกิน 15 เมตร: อย่าสรุปว่าไม่อยู่ภายใต้กฎหมาย ให้ยืนยันชนิดบ่อ พื้นที่ และประกาศเฉพาะกับพนักงานท้องที่ก่อนดำเนินงาน ก่อนเจาะ: ขอใบอนุญาตเจาะก่อนเริ่มงาน ใช้ช่างเจาะ/ผู้ควบคุมที่มีหนังสือรับรอง และทำตามมาตรฐานทางวิชาการ บ่อที่ใช้งาน: ตรวจใบอนุญาตใช้ เงื่อนไขปริมาณ เครื่องวัด แบบ นบ.11 ค่าใช้น้ำ และวันต่ออายุ เลิกใช้: แจ้งเป็นหนังสือภายใน 15 วัน และดำเนินการอุดกลบ/รายงานตามคำสั่งและประกาศ พ.ศ. 2552 ปริมาณหรือผลกระทบสูง: ให้เจ้าหน้าที่จำแนกประเภทตาม พ.ร.บ.ทรัพยากรน้ำและกฎกระทรวง พ.ศ. 2567 พร้อมแผนบริหารจัดการน้ำ เขตวิกฤตการณ์: ตรวจข้อจำกัดเฉพาะ ค่าอนุรักษ์น้ำบาดาล สัดส่วนแหล่งน้ำ และเงื่อนไขในใบอนุญาต การระบายน้ำลงบ่อเป็นกิจการที่ต้องมีใบอนุญาตเฉพาะและต้องผ่านมาตรฐานป้องกันการปนเปื้อน ไม่ใช่การกำจัดน้ำทั่วไป นำผลนี้ไปยืนยันกับสำนักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด สำนักทรัพยากรน้ำบาดาลเขต หรือสำนักควบคุมกิจการน้ำบาดาลก่อนออกแบบและจัดซื้อ"
+      },
+      "en": {
+        "title": "Which legal set should your project open first?",
+        "text": "Enter basic facts to produce a verification list. This does not classify or approve a project. Preliminary screening Planned or existing depth metres below ground Project stage Planning / not drilled Existing or operating well Closing or failed well Main use Household/accommodation Agriculture/livestock Hotel/building/business Factory/process Large volume/wide impact/possible Type 2–3 Bangkok and six-province critical groundwater zone Planned discharge of water/liquid into a groundwater well Priority legal checks Depth over 15 m: verify Groundwater Act permits, the zone/depth notification and application regulation. At or below 15 m: do not assume exemption; confirm well type, location and any special notification with the local officer. Before drilling: obtain the drilling permit, use appropriately certified supervision and follow technical standards. Operating well: verify use permit, authorized volume, meter, monthly report, charges and renewal date. Closure: give written notice within 15 days and seal/report according to the 2009 notification and officer direction. High volume/impact: request formal classification under the Water Resources Act and 2024 regulations, including a management plan. Critical zone: check specific restrictions, conservation charges, source proportions and permit conditions. Discharge to a well needs its own permit and contamination-prevention standards; it is not ordinary wastewater disposal. Confirm this list with the Provincial Natural Resources and Environment Office, regional DGR office or Bureau of Groundwater Control before design and procurement."
+      },
+      "zh": {
+        "title": "您的项目应先查哪套法规？",
+        "text": "输入基本事实生成核对清单。本工具不代替主管部门分类或审批。 初步筛查 计划或现有井深 地面以下米数 项目阶段 规划中/尚未钻井 已有或运行中的井 停用或损坏井 主要用途 生活/住宿 农业/畜牧 酒店/建筑/商业 工厂/生产 大水量/广泛影响/可能第2–3类 曼谷及周边六府地下水危机区 计划向地下水井排放水或液体 优先法规检查 深度超过15米：核查《地下水法》许可、区域与深度公告及申请法规。 深度不超过15米：不要自行认定豁免；请向当地主管人员确认井型、地点及特别公告。 钻井前：取得钻井许可，使用具备相应资质的监督人员，并遵守技术标准。 运行中的水井：核查取水许可、核准水量、计量表、月报、收费和续期日期。 停用：15日内书面通知，并依2009年公告及主管人员指示封井和报告。 大水量或高影响：依《水资源法》和2024年法规申请正式分类，并提交管理计划。 危机区：核查特别限制、保护费、水源比例和许可条件。 向井内排放需要独立许可及防污染标准，不属于一般废水处置。 设计和采购前，请向府自然资源与环境办公室、地区地下水办公室或地下水管制局确认。"
+      },
+      "ja": {
+        "title": "案件で最初に確認する法令は？",
+        "text": "基本情報から確認リストを示します。法的分類や許可判断ではありません。 一次スクリーニング 計画/既設井の深度 地表面下メートル 事業段階 計画中/未掘削 既設/運転中 廃止/故障井 主な用途 生活・宿泊 農業・畜産 ホテル・建物・事業 工場・生産工程 大規模/広域影響/第2～3種の可能性 バンコクと周辺6県の危機区域 井戸への水・液体の排出計画あり 優先確認事項 深度15メートル超：地下水法の許可、区域・深度告示、申請省令を確認します。 深度15メートル以下でも自己判断で適用除外とせず、井戸種別、所在地、特別告示を地域担当官へ確認します。 掘削前：掘削許可を取得し、適切な有資格監督者と技術基準を使用します。 運転井：利用許可、許可水量、メーター、月次報告、料金、更新日を確認します。 廃止：15日以内に書面で届け出て、2009年告示と担当官の指示に従い埋戻し・報告します。 大規模・高影響：水資源法と2024年規則に基づく正式分類と管理計画を求めます。 危機区域：固有の制限、保全料、水源比率、許可条件を確認します。 井戸への排出には別個の許可と汚染防止基準が必要で、通常の排水処理ではありません。 設計・調達前に県天然資源環境事務所、DGR地方事務所または地下水管理局へ確認してください。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "foundation",
+    "hash": "gwl-foundation",
+    "content": {
+      "th": {
+        "title": "กฎหมาย 5 ชั้นที่ต้องเปิดประกอบกัน",
+        "text": "การอ่านเพียง พ.ร.บ. ฉบับเดียวไม่พอ เพราะรายละเอียดแบบคำขอ มาตรฐานเจาะ ค่าใช้จ่าย และวิธีปฏิบัติอยู่ในกฎหมายลำดับรอง อ่านให้ถูกลำดับ ตัวอย่าง พ.ร.บ.น้ำบาดาล วางคำนิยาม อำนาจรัฐ ใบอนุญาต หน้าที่ การตรวจสอบ อุทธรณ์ และบทกำหนดโทษ มาตรา 16 ห้ามประกอบกิจการโดยไม่มีใบอนุญาต พ.ร.บ.ทรัพยากรน้ำ วางระบบการใช้น้ำสาธารณะประเภทที่ 1–3 และเชื่อมกับโครงการที่มีขนาดหรือผลกระทบสูง ประเภทที่ 2–3 ต้องมีแผนบริหารจัดการน้ำ กฎกระทรวง ลงรายละเอียดประเภทการใช้ คำขอ ใบอนุญาต ค่าธรรมเนียม ค่าใช้น้ำ และค่าอนุรักษ์ อายุใบอนุญาตและรายการเอกสาร ประกาศ กำหนดเขต/ความลึก มาตรฐานวิชาการ แบบ นบ. ผู้ควบคุมงาน และเขตวิกฤตการณ์ เกณฑ์ลึกเกิน 15 เมตรใช้กำหนดขอบเขตตามกฎหมายทั่วประเทศ ไม่ใช่ความลึกที่น้ำบาดาลตามธรรมชาติเริ่มเกิด ระเบียบและเงื่อนไขใบอนุญาต กำหนดวิธีตรวจสถานที่ พิจารณา โอน ต่ออายุ ระบบอิเล็กทรอนิกส์ และรายละเอียดเฉพาะราย เงื่อนไขในใบอนุญาตผูกพันผู้รับใบอนุญาตโดยตรง มาตราหลักที่ควรรู้ก่อนเริ่มโครงการ คำอธิบายด้านล่างเป็นสาระย่อ ให้กดเปิดฉบับปัจจุบันเพื่ออ่านถ้อยคำเต็มและเชิงอรรถ มาตรา 16 ที่ดินของตนเองก็ต้องมีใบอนุญาต ห้ามประกอบกิจการน้ำบาดาลในเขตน้ำบาดาล เว้นแต่ได้รับใบอนุญาตจากอธิบดีหรือผู้ได้รับมอบหมาย มาตรา 18 ใบอนุญาตมี 3 ประเภท ใบอนุญาตเจาะ ใบอนุญาตใช้ และใบอนุญาตระบายน้ำลงบ่อน้ำบาดาล เป็นคนละการอนุญาต มาตรา 20 ใบอนุญาตมีวันสิ้นอายุ พ.ร.บ.กำหนดเพดานอายุ และกฎหมายลำดับรอง/ใบอนุญาตกำหนดอายุจริง ต้องยื่นต่ออายุก่อนสิ้นอายุ มาตรา 22–25/1 ต้องทำตามเงื่อนไขและชำระเงินที่เกี่ยวข้อง ผู้รับใบอนุญาตต้องทำตามใบอนุญาต แสดงใบอนุญาต จัดการใบแทน และชำระค่าใช้/ค่าอนุรักษ์ตามที่กฎหมายกำหนด มาตรา 26–27 เลิกใช้ต้องแจ้งและจัดการบ่อ แจ้งเลิกกิจการภายใน 15 วัน และรื้อถอนหรืออุดกลบตามคำสั่งและมาตรฐานเพื่อไม่ให้บ่อเป็นทางปนเปื้อน เปิด พ.ร.บ.ฉบับปัจจุบันจากกรม"
+      },
+      "en": {
+        "title": "Five legal layers operate together",
+        "text": "The Act alone is not enough: application forms, drilling standards, charges and procedures sit in subordinate instruments. Read in sequence Example Groundwater Act Definitions, authority, permits, duties, inspection, appeals and penalties. Section 16 requires a permit. Water Resources Act Public-water use Types 1–3 and additional controls for larger-impact projects. Types 2–3 require a water-management plan. Ministerial regulations Use categories, applications, permit terms, fees and charges. Documents and permit duration. Notifications Zones/depth, technical standards, DGR forms, certified supervision and critical zones. The nationwide over-15-metre threshold defines legal scope, not the depth where groundwater starts to occur naturally. Procedures and permit conditions Site inspection, transfer, renewal, electronic processing and project-specific terms. Your permit conditions bind the permit holder. Core sections to know before a project These are summaries. Open the current consolidated Act for the full Thai text and amendment notes. Section 16 Land ownership is not a permit Groundwater operations in a groundwater zone require authorization. Section 18 Three separate permit types Drilling, use and discharge-to-well permits are distinct. Section 20 Permits expire The Act sets maximum terms; subordinate rules and the issued permit determine the actual term. Sections 22–25/1 Conditions, display and charges Permit conditions, display/replacement and applicable water/conservation charges remain ongoing duties. Sections 26–27 Closure requires notice and action Notify cessation within 15 days and seal/remove works as legally directed. Open the current consolidated Act"
+      },
+      "zh": {
+        "title": "五个法律层级共同生效",
+        "text": "仅阅读《地下水法》并不够；申请表、技术标准、收费和程序位于下位法规中。 按层次阅读 示例 地下水法 规定定义、主管权限、许可、义务、检查、申诉和处罚。 第16条要求事先取得许可。 水资源法 规定公共水资源第1至3类用水，并对影响较大的项目实施额外管控。 第2至3类须提交水资源管理计划。 部级法规 规定用水类别、申请、许可期限、费用及相关收费。 申请文件和许可有效期。 公告 规定区域与深度、技术标准、DGR表格、持证监督人员和危机区。 全国超过15米的深度界限用于确定法律适用范围，并不表示地下水从该深度才开始存在。 程序规定与许可条件 规定现场检查、转让、续期、电子程序和项目特定条件。 持证人必须遵守许可证条件。 项目开始前应了解的核心条款 以下为摘要。请打开现行合并文本阅读泰文原文和修订注释。 第16条 拥有土地不等于取得许可 在地下水区域开展地下水活动必须取得许可。 第18条 三类许可彼此独立 钻井、取用地下水和向井内排放分别需要许可。 第20条 许可证有有效期 法律规定最长期限；实际期限由下位法规和签发的许可证确定。 第22至25/1条 条件、展示与收费 遵守许可条件、展示或补领许可证，以及缴纳适用的用水费与保护费，均为持续义务。 第26至27条 停用须通知并处理 停用后15日内通知，并依法按指示封井或拆除设施。 打开现行《地下水法》"
+      },
+      "ja": {
+        "title": "5つの法令階層が連動します",
+        "text": "地下水法だけでは不十分です。申請様式、技術基準、料金、手続は下位法令にあります。 階層順に読む 例 地下水法 定義、権限、許可、義務、検査、不服申立て、罰則を定めます。 第16条は事前許可を求めています。 水資源法 公共水資源の第1～3種利用と、影響の大きい事業への追加管理を定めます。 第2～3種には水管理計画が必要です。 省令 利用区分、申請、許可期間、手数料、料金を定めます。 申請書類と許可の有効期間。 告示 区域・深度、技術基準、DGR様式、有資格監督者、危機区域を定めます。 全国の15メートル超という基準は法律の適用範囲を示します。自然の地下水が現れ始める深度ではありません。 手続規程と許可条件 現地検査、譲渡、更新、電子手続、案件固有の条件を定めます。 許可保持者は交付された条件に従います。 着手前に知る主要条文 以下は要約です。現行統合版でタイ語原文と改正注記を確認してください。 第16条 土地所有だけでは許可にならない 地下水区域で地下水事業を行うには許可が必要です。 第18条 3種類の許可は別々 掘削、利用、井戸への排出は、それぞれ別の許可です。 第20条 許可には期限がある 法律が最長期間を定め、実際の期間は下位法令と交付許可で決まります。 第22～25/1条 条件、掲示、料金 許可条件、掲示・再交付、適用される利用料・保全料は継続義務です。 第26～27条 廃止には届出と措置が必要 廃止後15日以内に届け出て、法令と指示に従い埋戻しまたは設備撤去を行います。 現行地下水法を開く"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "lifecycle",
+    "hash": "gwl-lifecycle",
+    "content": {
+      "th": {
+        "title": "วงจรการปฏิบัติตามกฎหมาย 9 ขั้น",
+        "text": "เอกสารและหลักฐานควรถูกวางไว้ในแผนงานตั้งแต่ต้น ไม่ใช่รอแก้หลังเจาะเสร็จ จากพื้นที่ถึงวันอุดกลบ หลักฐานที่ควรเก็บ ยืนยันพื้นที่และความลึก ตรวจเขตน้ำบาดาล เขตวิกฤต หน่วยงานผู้รับคำขอ และข้อจำกัดเฉพาะพื้นที่ แผนที่ พิกัด เอกสารสิทธิ และคำยืนยันหน่วยงาน จำแนกกิจกรรมและประเภทการใช้ แยกเจาะ ใช้ หรือระบาย และประเมินว่าการใช้อาจเข้าประเภทที่ 2–3 หรือไม่ ปริมาณน้ำเข้า–ออก ปริมาณใช้สูงสุด วัตถุประสงค์ และแผนบริหารจัดการน้ำ เตรียมผู้รับผิดชอบและแบบ ใช้ผู้มีหนังสือรับรองตามขนาด/เงื่อนไขงาน และเตรียมแบบคำขอล่าสุด หนังสือรับรอง แบบบ่อ รายการเครื่องจักร และหนังสือยินยอม รับใบอนุญาตเจาะก่อนเริ่ม ห้ามเริ่มเจาะเพียงเพราะยื่นคำขอแล้ว ต้องรอการอนุญาตและอ่านเงื่อนไขทุกข้อ ใบอนุญาตเจาะและหลักฐานการแสดง ณ สถานที่ เจาะและรายงานตามมาตรฐาน บันทึกชั้นดิน/หิน ช่วงกรอง การพัฒนาบ่อ การทดสอบสูบ และตัวอย่างน้ำ รายงานการเจาะและชั้นดินหิน ผลสูบทดสอบ และผลตรวจน้ำ ขอใบอนุญาตใช้ ยื่นผลการเจาะและข้อมูลใช้จริง ก่อนสูบน้ำเพื่อประกอบกิจการตามปกติ ใบอนุญาตใช้ ปริมาณอนุญาต และเงื่อนไขเฉพาะ ติดตั้งวัดและรายงาน ติดตั้งเครื่องวัดที่ตรวจสอบได้ จดค่าตามจริง และส่ง นบ.11 ภายในวันที่ 7 ของเดือนถัดไป รูปมิเตอร์ สมุดบันทึก นบ.11 และใบรับส่งรายงาน ชำระ ต่ออายุ และแจ้งเปลี่ยน ชำระตามงวด ต่ออายุก่อนหมดอายุ และขอแก้ไข/โอน/ใบแทนเมื่อข้อมูลเปลี่ยน ใบเสร็จ ปฏิทินต่ออายุ และหนังสืออนุญาตการเปลี่ยนแปลง แจ้งเลิกและอุดกลบ เมื่อเลิกใช้หรือบ่อชำรุด ให้แจ้งและอุดกลบตามวิธีที่ป้องกันการไหลข้ามชั้น หนังสือแจ้ง แบบ นบ.12 รูปงาน และรายงานอุดกลบ"
+      },
+      "en": {
+        "title": "The nine-step compliance lifecycle",
+        "text": "Evidence belongs in the project schedule from the start—not as a repair after drilling. Site to sealing Keep Confirm zone and depth Check groundwater/critical zone, competent office and local constraints. Coordinates, map, land rights and official confirmation. Classify activity and use Separate drilling, use and discharge; screen potential Type 2–3 use. Water coming in and going out, peak demand, purpose and water-management plan. Prepare qualified parties and forms Use current certified supervision and current forms. Certificates, well design, machinery and consents. Receive drilling permit Filing is not approval; read every condition before mobilization. Issued permit displayed at site. Drill and report correctly Record geology, screen, development, pumping test and samples. Drilling and soil/rock-layer records, pumping-test results and water analysis. Obtain use permit Submit construction/use data before normal abstraction. Use permit, volume and special conditions. Meter and report Maintain a verifiable meter and file NB.11 by the seventh of the following month. Meter photos, logs, filings and receipts. Pay, renew and amend Pay by period, renew before expiry, and obtain approval for changes/transfer. Receipts, calendar and written approvals. Notify and seal On closure, notify and seal against cross-aquifer contamination. Notice, NB.12, photographs and sealing report."
+      },
+      "zh": {
+        "title": "九步合规周期",
+        "text": "从项目开始就应安排证据和文件，不能钻完后再补。 从场地到封井 应保存 确认区域与深度 核查地下水区或危机区、主管办公室及当地限制。 坐标、地图、土地权属和官方确认。 划分活动与用途 区分钻井、取用和排放，并筛查是否可能属于第2至3类用水。 进出水量、最高用水量、用途和水资源管理计划。 准备合资格人员和表格 使用具备现行资质的监督人员和最新表格。 资格证书、井体设计、机械清单和同意文件。 取得钻井许可 提交申请不等于获准；进场前须读懂所有条件。 已签发并在现场展示的许可证。 按标准钻井并报告 记录地层、滤管、洗井、抽水试验和取样。 钻井与地层记录、抽水试验结果及水质分析。 取得取水许可 正常抽取地下水前提交施工和使用资料。 取水许可证、核准水量和特殊条件。 计量并申报 维护可核验的计量表，并在次月7日前提交NB.11。 计量表照片、记录、申报和收据。 缴费、续期和变更 按期缴费、到期前续期，变更或转让须先取得批准。 收据、日历和书面批准。 通知并封井 停用时通知主管部门，并封井以防止含水层之间交叉污染。 通知、NB.12、照片和封井报告。"
+      },
+      "ja": {
+        "title": "9段階の法令遵守サイクル",
+        "text": "掘削後の後追いではなく、開始時から証拠と文書を工程に組み込みます。 敷地から埋戻しまで 保管資料 区域と深度を確認 地下水区域・危機区域、管轄事務所、地域制限を確認します。 座標、地図、土地権利、公式確認。 活動と用途を分類 掘削、利用、排出を分け、第2～3種利用の可能性を確認します。 入水量と使用水量、最大需要、用途、水管理計画。 有資格者と様式を準備 有効な資格を持つ監督者と最新様式を使用します。 資格証明、井戸設計、機械一覧、同意書。 掘削許可を取得 申請は許可ではありません。着手前にすべての条件を確認します。 交付され、現場に掲示した許可証。 基準どおりに掘削・報告 地質、スクリーン、洗浄、揚水試験、試料を記録します。 井戸記録、試験、分析結果。 利用許可を取得 通常揚水の前に施工・利用情報を提出します。 利用許可、許可水量、特別条件。 計量・報告 検証可能なメーターを維持し、翌月7日までにNB.11を提出します。 メーター写真、記録、提出控え、受領証。 支払・更新・変更 期限どおり支払い、満了前に更新し、変更・譲渡は事前承認を得ます。 領収書、日程表、書面承認。 届出・埋戻し 廃止時に届け出て、帯水層間の汚染を防ぐよう埋め戻します。 届出、NB.12、写真、埋戻し報告。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "duties",
+    "hash": "gwl-duties",
+    "content": {
+      "th": {
+        "title": "สิ่งที่ต้องทำต่อเนื่อง ไม่ใช่ทำเฉพาะวันยื่นคำขอ",
+        "text": "กำหนดเวลาอาจเปลี่ยนตามประเภทและเงื่อนไขเฉพาะ ให้ใช้ใบอนุญาตจริงและเอกสารล่าสุดเป็นตัวตั้ง หน้าที่ระหว่างถือใบอนุญาต จังหวะเวลา หลักกฎหมาย แสดงใบอนุญาต แสดงต้นฉบับ ใบแทน หรือรูปแบบอิเล็กทรอนิกส์ตามประกาศไว้ในที่เปิดเผย ณ สถานที่ที่อนุญาต ตลอดเวลาที่ประกอบกิจการ มาตรา 24 และประกาศ พ.ศ. 2566 ใช้ไม่เกินเงื่อนไข ควบคุมปริมาณ อัตราสูบ จุดใช้ และวัตถุประสงค์ให้ตรงกับเงื่อนไขในใบอนุญาต ทุกครั้งที่เดินระบบ มาตรา 22 และใบอนุญาตรายบ่อ ดูแลเครื่องวัด ติดตั้งให้อ่านได้ ไม่ดัดแปลง และแจ้งเมื่อเสีย พร้อมบันทึกข้อมูลสำรองตามที่เจ้าหน้าที่กำหนด ตรวจเป็นประจำ กฎกระทรวง/ประกาศเครื่องวัด รายงาน นบ.11 รายงานปริมาณใช้น้ำจริง หากไม่รายงานอาจถูกประเมินจากปริมาณสูงสุดในใบอนุญาต ภายในวันที่ 7 ของเดือนถัดไป ประกาศแบบรายงานและเงื่อนไขใบอนุญาต ชำระค่าใช้น้ำ ชำระตามปริมาณและงวดที่กฎหมายกำหนด การชำระช้าอาจถูกคิดเพิ่มตามช่วงเวลา รายไตรมาส/ตามใบแจ้ง กฎกระทรวงฉบับที่ 7–9 ติดตามคุณภาพน้ำ ตรวจตามวัตถุประสงค์ใช้และความเสี่ยง โดยเฉพาะน้ำบริโภคหรือพื้นที่อาจกระทบสุขภาพและสิ่งแวดล้อม ตามเงื่อนไขและแผนเฝ้าระวัง มาตรการสาธารณสุขและเงื่อนไขใบอนุญาต ต่ออายุและแก้ไข ยื่นต่ออายุก่อนสิ้นอายุ ขออนุญาตก่อนโอน และแก้ข้อมูลเมื่อข้อเท็จจริงในใบอนุญาตเปลี่ยน ก่อนวันหมดอายุ/ก่อนเปลี่ยน มาตรา 20–21 และระเบียบที่เกี่ยวข้อง แจ้งเหตุและเลิกกิจการ แจ้งเหตุผิดปกติ การเลิกใช้ และดำเนินการกับบ่อให้ปลอดภัยตามคำสั่ง แจ้งเลิกภายใน 15 วัน มาตรา 26–27 และประกาศอุดกลบ ตัวเลขที่ควรใส่ในปฏิทิน วันที่ 7 — ส่งรายงานการใช้น้ำของเดือนก่อน ก่อนวันสิ้นอายุ — ยื่นคำขอต่ออายุ 15 วัน — แจ้งเลิกกิจการนับแต่วันเลิก 30 วัน — ขอใบแทนเมื่อทราบว่าใบอนุญาตสูญหาย/เสียหาย 30 วัน — อุทธรณ์คำสั่งไม่ออก/ไม่ต่อ/ไม่ให้โอน หรือเพิกถอน ตามกรณี"
+      },
+      "en": {
+        "title": "Compliance is continuous",
+        "text": "Exact dates can vary by permit type and conditions; the issued permit and latest official forms control. While licensed Timing Basis Display the permit Display the original, replacement or accepted electronic form visibly at the licensed site. Throughout operation Section 24 / 2023 notification Stay within conditions Control volume, rate, location and purpose to match the permit. Every operating period Section 22 / permit Maintain the meter Keep it readable and untampered; report failure and retain backup data. Routine inspection Meter rules File NB.11 Report actual use; missing usable data can trigger assessment at maximum authorized volume. By the 7th of next month Report notification / permit Pay charges Pay water and applicable conservation charges by legal period. Quarterly / invoice Ministerial regulations 7–9 Monitor quality Test by intended use and risk, especially drinking and sensitive sites. Permit/monitoring plan Health/environment measures Renew and amend Renew before expiry and obtain approval before transfer or material changes. Before expiry/change Sections 20–21 / procedures Report incident/closure Notify cessation and make the well safe as directed. Closure notice within 15 days Sections 26–27 Calendar numbers 7th — previous month’s use report Before expiry — renewal filing 15 days — notice after cessation 30 days — replacement application after learning of loss/damage 30 days — relevant permit/revocation appeal period"
+      },
+      "zh": {
+        "title": "合规是持续义务",
+        "text": "具体日期可能随许可证类型和条件而变化；以正式许可证和最新表格为准。 持证期间 时间 依据 展示许可证 在获准地点显眼处展示许可证原件、补发件或认可的电子形式。 整个运营期间 第24条／2023年公告 遵守许可条件 控制水量、抽水率、地点和用途，使其符合许可证。 每次运行 第22条／许可证 维护计量表 保持清晰可读且不得改动；故障时须报告并保留备用数据。 定期检查 计量表法规 提交NB.11 申报实际用水量；缺少可用数据时，可能按核准最高水量计费。 次月7日前 申报公告／许可证 缴纳费用 在法定期限内缴纳用水费和适用的保护费。 每季度／按账单 第7至9号部级法规 监测水质 按用途和风险检测，尤其是饮用水和敏感地点。 按许可条件／监测计划 健康与环境措施 续期与变更 到期前续期；转让或重大变更前须取得批准。 到期或变更前 第20至21条／程序 报告事故或停用 通知停止使用，并按指示确保水井安全。 停用后15日内通知 第26至27条 应加入日历的日期 每月7日——提交上月用水报告 到期前——提交续期申请 15日内——停用后通知 30日内——得知许可证遗失或损坏后申请补发 30日内——相关拒发、拒续、拒转让或撤销决定的申诉期限"
+      },
+      "ja": {
+        "title": "法令遵守は継続します",
+        "text": "期限は許可種別・条件で変わるため、交付許可と最新様式を優先します。 許可期間中 時期 根拠 許可証を掲示 許可場所の見やすい位置に、原本、再交付証または認められた電子形式を掲示します。 操業期間中 第24条／2023年告示 条件内で利用 水量、揚水率、場所、用途を許可条件に合わせます。 運転の都度 第22条／許可証 メーターを維持 読み取り可能で改変のない状態を保ち、故障を報告して代替記録を保存します。 定期点検 メーター規則 NB.11を提出 実使用量を報告します。利用可能な記録がないと許可最大量で算定される場合があります。 翌月7日まで 報告告示／許可証 料金を支払う 法定期間内に利用料と該当する保全料を支払います。 四半期／請求時 省令第7～9号 水質を監視 用途とリスクに応じ、特に飲用や敏感な場所で検査します。 許可条件／監視計画 保健・環境措置 更新・変更 満了前に更新し、譲渡や重要変更の前に承認を得ます。 満了・変更前 第20～21条／手続 事故・廃止を報告 利用停止を届け出て、指示に従い井戸を安全な状態にします。 廃止後15日以内 第26～27条 カレンダーに入れる期限 毎月7日 — 前月の利用報告 満了前 — 更新申請 15日以内 — 廃止後の届出 30日以内 — 紛失・破損を知った後の再交付申請 30日以内 — 不許可、更新・譲渡拒否または取消しに対する該当不服申立期間"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "library",
+    "hash": "gwl-library",
+    "content": {
+      "th": {
+        "title": "ค้นตามชื่อ ปี เรื่อง และคำสำคัญ",
+        "text": "รายการทุกใบเชื่อมไปยังหน้าทางการที่มีไฟล์เอกสารแนบ ดาวน์โหลดฉบับเต็มจากกรมก่อนอ้างอิงในสัญญา รายงาน หรือคำขอ คลังกฎหมายฉบับจริง ชื่อกฎหมายและคำอธิบายคงภาษาไทยเพื่อไม่ให้การแปลเปลี่ยนความหมายทางกฎหมาย ส่วนเมนูและบทเรียนปรับตามภาษาที่เลือก ค้นกฎหมาย เช่น อุดกลบ, นบ.11, ค่าอนุรักษ์, 2567… กรองตามประเภท ทั้งหมด พ.ร.บ.น้ำบาดาล กฎหมายทรัพยากรน้ำ กฎกระทรวง ประกาศ ระเบียบ แสดงฉบับอ้างอิง/ต้องอ่านร่วมกับฉบับใหม่ รายการ ไม่พบเอกสารที่ตรงกับคำค้นและตัวกรอง ล้างตัวกรอง เปิดเอกสารทางการ ใช้อยู่ ฉบับรวม ต้องอ่านฉบับแก้ไขร่วม อ้างอิง/ตรวจฉบับใหม่ พ.ศ. ต้องการตรวจคลังทั้งหมดของกรม? คลังกลางยังรวมคำสั่ง มอบอำนาจ หนังสือเวียน ข้อหารือ และระเบียบภายใน ซึ่งไม่ได้แสดงทั้งหมดในหน้าสำหรับผู้ประกอบกิจการนี้ เปิดคลังกฎหมายกลางของกรม"
+      },
+      "en": {
+        "title": "Search by title, year, topic or keyword",
+        "text": "Each card links to an official page containing the source attachment. Download the Thai full text before citing it in an application, contract or report. Official instrument library Official law titles and document summaries remain in Thai to avoid changing legal meaning. The learning interface follows the selected language. Search laws Try sealing, NB.11, conservation, 2567… Filter by type All Groundwater Act Water-resources law Ministerial regulation Notification Procedure Show reference/superseded-context documents documents No instrument matches this search and filter. Reset filters Open official document Current Consolidated Read with amendments Reference/check newer text B.E. Need the complete DGR repository? The master repository also contains internal orders, delegations, circulars and legal opinions outside this operator-focused library. Open DGR master law repository"
+      },
+      "zh": {
+        "title": "按名称、年份、主题和关键词检索",
+        "text": "每张卡片链接至带正式附件的政府页面。在申请、合同或报告中引用前请下载泰文全文。 正式法规文件库 正式法规名称和文件摘要保留泰文，避免翻译改变法律含义；学习界面使用所选语言。 搜索法规 例如：อุดกลบ、นบ.11、2567… 按类型筛选 全部 地下水法 水资源法规 部级法规 公告 程序规定 显示参考/需核对新文本的文件 份 没有符合搜索和筛选条件的文件。 清除筛选 打开正式文件 现行 合并文本 须连同修订阅读 参考/核对新文本 佛历 需要DGR完整法规库？ 总库还包含内部命令、授权、通函及法律意见。 打开DGR法规总库"
+      },
+      "ja": {
+        "title": "名称・年・主題・キーワードで検索",
+        "text": "各カードから原本添付の政府ページを開けます。申請・契約・報告書で引用する前にタイ語全文を取得してください。 正式法令ライブラリ 法的意味を変えないよう正式名称と文書要約はタイ語を維持し、学習UIのみ選択言語で表示します。 法令検索 例：อุดกลบ、นบ.11、2567… 種別で絞込 すべて 地下水法 水資源法令 省令 告示 手続規程 参考/新版確認が必要な文書も表示 件 条件に一致する文書がありません。 絞込解除 正式文書を開く 現行 統合版 改正文と併読 参考/新版確認 仏暦 DGR全法令庫が必要ですか？ 総合ライブラリには内部命令、権限委任、通達、法的見解も含まれます。 DGR総合法令庫を開く"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "penalties",
+    "hash": "gwl-penalties",
+    "content": {
+      "th": {
+        "title": "โทษอาญาไม่ใช่ความเสี่ยงเดียว",
+        "text": "นอกจากค่าปรับ อาจมีการริบเครื่องมือ คำสั่งอุดบ่อ แก้ไขความเสียหาย พักหรือเพิกถอนใบอนุญาต และค่าใช้จ่ายจากการหยุดโครงการ ความเสี่ยงทางกฎหมาย มาตรา 36 ทวิ เจาะ/ใช้/ระบายโดยไม่มีใบอนุญาต อาจจำคุกไม่เกิน 6 เดือน หรือปรับไม่เกิน 20,000 บาท หรือทั้งจำทั้งปรับ และศาลอาจสั่งริบเครื่องมือหรืออุดกลบ มาตรา 37 ฝ่าฝืนประกาศมาตรการทางวิชาการ มีโทษปรับไม่เกิน 20,000 บาท และอาจเชื่อมกับคำสั่งแก้ไขหรือเพิกถอน มาตรา 39 ไม่ทำตามเงื่อนไขใบอนุญาต ผู้รับใบอนุญาต ลูกจ้าง หรือตัวแทน อาจถูกปรับไม่เกิน 5,000 บาท มาตรา 33–35 แก้ไขหรือเพิกถอนใบอนุญาต เมื่อข้อเท็จจริงเปลี่ยน เกิดความเสียหายต่อทรัพยากร/สิ่งแวดล้อม/สุขภาพ/แผ่นดินทรุด หรือฝ่าฝืนกฎหมาย อธิบดีมีอำนาจแก้ไขหรือเพิกถอน อย่าตัดสินใจจากจำนวนค่าปรับอย่างเดียว ยอดโทษใน พ.ร.บ.บางมาตราเป็นตัวเลขเก่า แต่ความเสียหายจริงอาจรวมการหยุดงาน ริบเครื่องจักร อุดบ่อ ค่าใช้น้ำย้อนหลัง ความรับผิดสิ่งแวดล้อม และผลต่อใบอนุญาตอื่น"
+      },
+      "en": {
+        "title": "Criminal fines are not the only risk",
+        "text": "Enforcement can include seizure, sealing, corrective directions, revocation, back charges and project delay. Legal exposure Section 36 bis Unlicensed operation Up to six months’ imprisonment, a fine up to THB 20,000, or both; equipment may be forfeited and a court may order sealing. Section 37 Breach of technical notification Fine up to THB 20,000, with possible corrective or permit action. Section 39 Breach of permit condition Permit holder, employee or agent may be fined up to THB 5,000. Sections 33–35 Amendment or revocation DGR may amend or revoke where facts change, harm may occur, or the law/conditions are breached. Do not judge risk only by the fine Some statutory amounts are historic. Real exposure may include shutdown, equipment loss, well sealing, back charges, environmental liability and effects on other approvals."
+      },
+      "zh": {
+        "title": "刑事罚款并非唯一风险",
+        "text": "执法还可能包括扣押、封井、整改、撤销许可、追缴费用和项目延误。 法律风险 第36条之二 无证作业 最高可判处六个月监禁、20,000泰铢罚款，或两者并处；设备可能被没收，法院也可命令封井。 第37条 违反技术公告 最高罚款20,000泰铢，并可能受到整改命令或许可处分。 第39条 违反许可条件 持证人、雇员或代理人最高可被罚款5,000泰铢。 第33至35条 变更或撤销许可 事实变化、可能造成损害或违反法律及许可条件时，DGR可变更或撤销许可。 不要只看罚款金额 部分法定金额制定较早；实际风险还包括停工、设备损失、封井、追缴、环境责任及其他许可影响。"
+      },
+      "ja": {
+        "title": "刑事罰だけがリスクではありません",
+        "text": "差押え、埋戻し、是正命令、許可取消、追徴、事業遅延もあり得ます。 法的リスク 第36条の2 無許可操業 6か月以下の拘禁、20,000バーツ以下の罰金、またはその両方。機材の没収や裁判所による埋戻し命令もあり得ます。 第37条 技術告示違反 20,000バーツ以下の罰金に加え、是正命令や許可処分の可能性があります。 第39条 許可条件違反 許可保持者、従業員、代理人に5,000バーツ以下の罰金が科される場合があります。 第33～35条 許可の変更・取消し 事情変更、損害のおそれ、法令・条件違反がある場合、DGRは許可を変更または取り消すことができます。 罰金額だけで判断しない 法定額が古い条文もあります。実際のリスクには停止、機材損失、埋戻し、追徴、環境責任、他許可への影響が含まれます。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-law-regulation-thailand",
+    "key": "quiz",
+    "hash": "gwl-quiz",
+    "content": {
+      "th": {
+        "title": "อ่านกฎหมายเป็นระบบหรือยัง?",
+        "text": "เลือกคำตอบที่สอดคล้องกับหลักกฎหมายและลดความเสี่ยงที่สุด ตรวจความเข้าใจ ถูกต้อง ควรทบทวน คะแนน ทำอีกครั้ง ยอดเยี่ยม—คุณแยกใบอนุญาต เอกสาร และหน้าที่ต่อเนื่องได้ถูกต้อง เจ้าของที่ดินจะเจาะบ่อเองได้ทันทีหรือไม่? ได้ เพราะเป็นที่ดินตนเอง ไม่ได้ ต้องตรวจเขต/ความลึกและได้รับใบอนุญาตก่อน ได้ถ้าใช้น้ำไม่มาก มาตรา 16 ใช้ไม่ว่าผู้ดำเนินการจะมีกรรมสิทธิ์หรือสิทธิครอบครองที่ดินหรือไม่ ได้รับใบอนุญาตเจาะแล้ว หมายความว่าใช้น้ำเพื่อกิจการได้ทันทีหรือไม่? ได้ทุกกรณี ไม่ได้ ใบอนุญาตเจาะและใบอนุญาตใช้เป็นคนละประเภท ได้ 30 วัน มาตรา 18 แยกใบอนุญาตเจาะ ใช้ และระบายลงบ่อออกจากกัน หากไม่ส่ง นบ.11 จะเกิดอะไรขึ้นได้? ไม่มีผลถ้ามีน้ำมิเตอร์ อาจถูกประเมินจากปริมาณสูงสุดตามใบอนุญาต ใบอนุญาตต่ออายุเอง การไม่มีรายงาน/ค่ามิเตอร์ที่ใช้คำนวณได้ อาจทำให้ประเมินค่าใช้น้ำจากปริมาณสูงสุด เมื่อเลิกใช้บ่อ สิ่งที่ถูกต้องคืออะไร? ทิ้งบ่อไว้และปิดปั๊ม แจ้งเลิกและอุดกลบตามมาตรฐาน/คำสั่ง โอนบ่อให้ผู้รับเหมาโดยไม่แจ้ง บ่อที่ทิ้งไว้อาจเป็นทางไหลปนเปื้อนข้ามชั้น มาตรา 26–27 และประกาศอุดกลบจึงกำหนดขั้นตอน"
+      },
+      "en": {
+        "title": "Can you navigate the legal stack?",
+        "text": "Choose the safest evidence-based answer. Knowledge check Correct Review Score Try again Excellent—you distinguish permits, documents and continuing duties. Can a landowner drill immediately on their own land? Yes, ownership is enough No—check zone/depth and obtain authorization first Yes if volume is small Section 16 applies regardless of ownership or possession. Does a drilling permit automatically authorize normal water use? Always No—drilling and use permits are distinct For 30 days Section 18 separates drilling, use and discharge permits. What may happen if NB.11 is not filed? Nothing if a meter exists Use may be assessed at the authorized maximum The permit renews automatically Missing usable reporting can lead to assessment using maximum authorized volume. What is correct when abandoning a well? Remove the pump only Notify and seal under the standard/direction Transfer it informally Sections 26–27 and the sealing notification address contamination pathways."
+      },
+      "zh": {
+        "title": "您能正确浏览法规体系吗？",
+        "text": "请选择最安全、最有依据的答案。 知识检测 正确 复习 得分 重新作答 很好—您已能区分许可、文件和持续义务。 土地所有人能否立即在自己的土地上钻井？ 可以，拥有土地即可 不可以，须先核查区域和深度并取得许可 用水量少即可 第16条不因经营者拥有或占有土地而免除许可要求。 取得钻井许可后，是否自动可以正常取用地下水？ 任何情况都可以 不可以，钻井许可和取水许可相互独立 可以使用30天 第18条将钻井、取用和向井内排放许可分开规定。 未提交NB.11可能有什么后果？ 有计量表就没有影响 可能按核准最高水量计费 许可证会自动续期 缺少可用于计算的申报或计量数据时，可能按核准最高水量计费。 停用水井时，正确做法是什么？ 只拆除水泵 通知并依标准或指示封井 不通知主管部门，直接转给承包商 第26至27条和封井公告旨在防止废弃井成为跨含水层污染通道。"
+      },
+      "ja": {
+        "title": "法令体系を正しく使えますか？",
+        "text": "最も安全で根拠のある答えを選びます。 理解度確認 正解 確認 得点 もう一度 すばらしい—許可、文書、継続義務を区別できています。 土地所有者は自分の土地ですぐに掘削できますか？ 所有者ならできる できない。区域と深度を確認し、先に許可を得る 少量利用ならできる 第16条は土地の所有・占有にかかわらず適用されます。 掘削許可があれば通常利用も直ちに認められますか？ 常に認められる 認められない。掘削許可と利用許可は別である 30日間だけ認められる 第18条は掘削、利用、井戸への排出を別々の許可としています。 NB.11を提出しないと何が起こり得ますか？ メーターがあれば影響しない 許可最大量で利用量を算定される場合がある 許可が自動更新される 利用可能な報告・計量値がない場合、許可最大量で料金を算定されることがあります。 井戸を廃止するときの正しい対応は？ ポンプだけ外す 届け出て基準または指示に従い埋め戻す 届け出ずに請負業者へ譲る 第26～27条と埋戻し告示は、帯水層間の汚染経路を防ぐためのものです。"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "demand",
+    "hash": "gw-tab-demand",
+    "content": {
+      "th": {
+        "title": "อัตราสูบและความต้องการ",
+        "text": "หาอัตราสูบที่ระบบควรรองรับจากการใช้น้ำรายวัน เพิ่มสัดส่วนน้ำสำรองในความต้องการรายวัน แล้วหารด้วยชั่วโมงสูบ ถังพักตัวอย่างเท่ากับ 25% ของความต้องการเพื่อออกแบบ ไม่รวมรูปแบบการใช้น้ำช่วงพีก ความต้องการใช้น้ำต่อวัน m³/day ชั่วโมงสูบต่อวัน h/day น้ำสำรองและการเติบโต %"
+      },
+      "en": {
+        "title": "Demand & pumping flow",
+        "text": "Estimate the flow the system must support from daily demand. Daily demand includes the reserve allowance and is divided by pumping hours. The example buffer is 25% of design demand; peak demand patterns are not modelled. Daily water demand m³/day Pumping hours per day h/day Reserve and growth allowance %"
+      },
+      "zh": {
+        "title": "需水量与抽水流量",
+        "text": "根据每日需水量估算系统所需流量。 每日需水量加上储备比例后除以抽水时间。示例缓冲储水为设计需水量的25%；不模拟高峰用水规律。 每日需水量 m³/day 每日抽水时间 h/day 储备与增长比例 %"
+      },
+      "ja": {
+        "title": "需要量・揚水量",
+        "text": "1日の需要量から必要なシステム流量を概算します。 1日の需要に予備率を加え、揚水時間で割ります。予備貯水の例は設計需要量の25%で、ピーク時の需要は考慮しません。 1日の水需要 m³/day 1日の揚水時間 h/day 予備・成長率 %"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "storage",
+    "hash": "gw-tab-storage",
+    "content": {
+      "th": {
+        "title": "ถังพักและน้ำสำรอง",
+        "text": "ประเมินปริมาตรใช้งานและขนาดถังขั้นต่ำ สมมติว่าใช้น้ำสม่ำเสมอตลอด 24 ชั่วโมง ขนาดถังคำนึงถึงสัดส่วนปริมาตรที่ใช้งานได้ แต่ยังไม่รวมข้อกำหนดน้ำดับเพลิงหรือช่วงพีก ความต้องการใช้น้ำต่อวัน m³/day ระยะเวลาสำรองน้ำ h สัดส่วนปริมาตรถังที่ใช้งานได้ %"
+      },
+      "en": {
+        "title": "Buffer storage",
+        "text": "Estimate required usable storage and nominal tank volume. Demand is spread evenly over 24 hours. Nominal volume accounts for the usable tank share; fire storage and peak demand requirements are not included. Daily water demand m³/day Required backup duration h Usable share of tank volume %"
+      },
+      "zh": {
+        "title": "缓冲储水",
+        "text": "估算有效储水量和水箱标称容积。 假设24小时均匀用水。标称容积考虑水箱可用比例；不含消防储水及高峰需求。 每日需水量 m³/day 所需备用时间 h 水箱可用容积比例 %"
+      },
+      "ja": {
+        "title": "予備貯水",
+        "text": "有効貯水量とタンク公称容量を概算します。 24時間均等に使用すると仮定します。公称容量は有効容量率を考慮しますが、消防用貯水やピーク需要は含みません。 1日の水需要 m³/day 必要な予備時間 h タンク有効容量率 %"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "energy",
+    "hash": "gw-tab-energy",
+    "content": {
+      "th": {
+        "title": "กำลังปั๊มและค่าไฟ",
+        "text": "ประเมินกำลังไฟ พลังงาน และค่าใช้จ่ายรายเดือน ใช้น้ำความหนาแน่น 1,000 kg/m³ และแรงโน้มถ่วง 9.80665 m/s² เดือนละ 30 วัน ประสิทธิภาพและชั่วโมงเดินเครื่องคงที่ ไม่รวมค่าบริการคงที่และค่าไฟประเภทอื่น อัตราการไหล m³/h เฮดรวมของระบบ m ประสิทธิภาพรวมปั๊มและมอเตอร์ % ชั่วโมงเดินเครื่องต่อวัน h/day ค่าไฟเฉลี่ย THB/kWh"
+      },
+      "en": {
+        "title": "Pump energy & cost",
+        "text": "Estimate pump input power, energy use and monthly cost. Water density is 1,000 kg/m³ and gravity is 9.80665 m/s². A month is 30 days with constant efficiency and operating hours. Fixed charges and other tariffs are excluded. Flow rate m³/h Total dynamic head m Combined pump and motor efficiency % Operating hours per day h/day Average electricity rate THB/kWh"
+      },
+      "zh": {
+        "title": "水泵能耗与费用",
+        "text": "估算输入功率、耗电量和月度费用。 水密度取1,000 kg/m³，重力加速度取9.80665 m/s²。每月按30天，效率与运行时间固定。不含固定费用及其他电价项目。 流量 m³/h 系统总扬程 m 水泵与电机综合效率 % 每日运行时间 h/day 平均电价 THB/kWh"
+      },
+      "ja": {
+        "title": "ポンプ電力・費用",
+        "text": "入力電力、消費電力量、月額費用を概算します。 水密度は1,000 kg/m³、重力加速度は9.80665 m/s²です。1か月を30日とし、効率と運転時間は一定です。基本料金などは含みません。 流量 m³/h 全揚程 m ポンプ・モーター総合効率 % 1日の運転時間 h/day 平均電力単価 THB/kWh"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "well",
+    "hash": "gw-tab-well",
+    "content": {
+      "th": {
+        "title": "ผลสูบทดสอบ",
+        "text": "หาระยะน้ำลดและอัตราสูบต่อระยะน้ำลด ระยะน้ำลด (Drawdown) คือส่วนต่างระหว่างระดับน้ำก่อนสูบกับขณะสูบ ส่วน Specific capacity คืออัตราสูบหารด้วยระยะน้ำลด ใช้เปรียบเทียบเมื่ออัตราสูบ ระยะเวลาทดสอบ และระดับน้ำเริ่มต้นใกล้เคียงกัน ค่านี้ไม่ใช่ปริมาณที่สูบได้อย่างยั่งยืนโดยอัตโนมัติ วัดทั้งสองระดับจากปากบ่อจุดเดียวกัน ระยะน้ำลดต้องมากกว่า 0 ไม่สามารถใช้ผลนี้รับรองปริมาณน้ำที่สูบได้อย่างยั่งยืน ก่อนสูบ: ระยะปากบ่อถึงน้ำที่ฟื้นตัวแล้ว m ระดับน้ำขณะสูบจากปากบ่อ m อัตราสูบขณะทดสอบ m³/h"
+      },
+      "en": {
+        "title": "Pumping-test results",
+        "text": "Find the water-level drop and pumping rate per metre of drop. Drawdown is the change from the pre-pumping water level to the pumping level. Specific capacity is pumping rate divided by drawdown. Compare tests with similar rates, durations and starting levels; this value does not automatically establish sustainable yield. Both water levels use the same wellhead reference. Drawdown must be positive. The result does not establish sustainable yield. Before pumping: recovered depth below wellhead m Pumping water level below wellhead m Pumping-test flow rate m³/h"
+      },
+      "zh": {
+        "title": "抽水试验结果",
+        "text": "计算水位下降量，以及每下降一米对应的抽水量。 降深（Drawdown）是抽水前与抽水时的水位差。比出水量（Specific capacity）是抽水流量除以降深。比较时应采用相近的流量、试验时长和初始水位；该值不能直接确定可持续开采量。 两项水位均以同一井口为基准，降深必须为正。结果不能用于确定可持续开采量。 抽水前：井口至恢复水位的距离 m 井口以下动水位 m 抽水试验流量 m³/h"
+      },
+      "ja": {
+        "title": "揚水試験の結果",
+        "text": "水位の低下量と、低下1m当たりの揚水量を求めます。 水位低下量（Drawdown）は揚水前と揚水中の水位の差です。比湧出量（Specific capacity）は揚水量を水位低下量で割った値です。流量、試験時間、初期水位が近い条件で比較し、この値だけで持続可能な揚水量とは判断しません。 両水位は同じ井戸口を基準とし、水位低下量は正である必要があります。持続可能な揚水量を示すものではありません。 揚水前：井戸口から回復した水面まで m 井戸口からの揚水水位 m 揚水試験流量 m³/h"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "cost",
+    "hash": "gw-tab-cost",
+    "content": {
+      "th": {
+        "title": "เปรียบเทียบต้นทุนน้ำ",
+        "text": "เปรียบเทียบค่าใช้จ่ายรายเดือนของสองแหล่งน้ำ เปรียบเทียบปริมาณน้ำเท่ากันตามจำนวนวันที่กรอก ส่วนต่างบวกหมายถึงน้ำบาดาลถูกกว่า ไม่รวมค่าลงทุนและต้นทุนที่ไม่ได้รวมในราคาต่อหน่วย ความต้องการใช้น้ำต่อวัน m³/day จำนวนวันใช้งานต่อเดือน day/month ต้นทุนน้ำบาดาลต่อหน่วย THB/m³ ต้นทุนแหล่งน้ำเปรียบเทียบต่อหน่วย THB/m³"
+      },
+      "en": {
+        "title": "Water cost comparison",
+        "text": "Compare the monthly operating cost of two water sources. Both sources supply the same volume over the entered operating days. A positive difference means groundwater costs less. Capital costs and costs omitted from unit rates are excluded. Daily water demand m³/day Operating days per month day/month Groundwater unit cost THB/m³ Comparison water unit cost THB/m³"
+      },
+      "zh": {
+        "title": "水源成本比较",
+        "text": "比较两种水源的月度运行成本。 两种水源在输入的运行天数内供水量相同。正差额表示地下水成本更低。不含初始投资及未计入单价的费用。 每日需水量 m³/day 每月运行天数 day/month 地下水单位成本 THB/m³ 对比水源单位成本 THB/m³"
+      },
+      "ja": {
+        "title": "水源コスト比較",
+        "text": "2つの水源の月間運転費を比較します。 入力した運転日数で、両水源が同量を供給すると仮定します。差が正なら地下水の費用が低いことを示します。設備投資と単価に含めない費用は除外します。 1日の水需要 m³/day 月間運転日数 day/month 地下水単価 THB/m³ 比較水源単価 THB/m³"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "pipe",
+    "hash": "gw-tab-pipe",
+    "content": {
+      "th": {
+        "title": "ความเร็วและแรงเสียดทานในท่อ",
+        "text": "ประเมินความเร็วน้ำและเฮดที่เสียไปกับแรงเสียดทาน เฮดสูญเสีย (Head loss) คือพลังงานของน้ำที่เสียไปกับแรงเสียดทาน แสดงเป็นความสูงของน้ำหน่วยเมตร ค่า C ในสมการ Hazen-Williams เกี่ยวกับสภาพผิวภายในท่อ ควรใช้ค่าที่เหมาะกับวัสดุและสภาพท่อจริง ใช้สมการ Hazen-Williams สำหรับท่อตรงที่น้ำไหลเต็มท่อ เส้นผ่านศูนย์กลางต้องเป็นขนาดภายใน ไม่รวมข้อต่อ วาล์ว และความต่างระดับ อัตราการไหล m³/h เส้นผ่านศูนย์กลางภายใน mm ความยาวท่อ m ค่าสัมประสิทธิ์ Hazen-Williams (C) C"
+      },
+      "en": {
+        "title": "Pipe velocity & friction",
+        "text": "Estimate water speed and head lost to pipe friction. Head loss is energy lost to pipe friction, expressed in metres of water. The Hazen-Williams C value represents the internal pipe condition. Use a value appropriate to the actual material and condition. Hazen-Williams estimates friction in a straight, full pipe using its internal diameter. Fittings, valves and elevation changes are excluded. Flow rate m³/h Internal diameter mm Pipe length m Hazen-Williams coefficient (C) C"
+      },
+      "zh": {
+        "title": "管内流速与摩擦",
+        "text": "估算水流速度和管道摩擦造成的水头损失。 水头损失（Head loss）是管道摩擦造成的能量损失，以米水柱表示。Hazen-Williams 的 C 值反映管内壁状况，应根据实际材质和管况选取。 采用Hazen-Williams公式，按实际内径估算直管满管流的摩擦损失。不含管件、阀门及高程变化。 流量 m³/h 内径 mm 管长 m Hazen-Williams系数(C) C"
+      },
+      "ja": {
+        "title": "管内の流速・摩擦",
+        "text": "水の速さと、管の摩擦で失われる水頭を概算します。 損失水頭（Head loss）は管の摩擦で失われるエネルギーを水柱の高さ（m）で表したものです。Hazen-Williams の C 値は管内面の状態を表し、実際の材質と管の状態に合う値を使います。 Hazen-Williams式を用い、内径から満流の直管の摩擦損失を概算します。継手、バルブ、高低差は含みません。 流量 m³/h 内径 mm 管長 m Hazen-Williams係数(C) C"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "pressure",
+    "hash": "gw-tab-pressure",
+    "content": {
+      "th": {
+        "title": "แปลงแรงดันและเฮด",
+        "text": "แปลง bar เป็นเมตรน้ำ kPa และ psi สำหรับตรวจงานภาคสนาม ใช้ความหนาแน่นน้ำ 1,000 kg/m³ และแรงโน้มถ่วง 9.80665 m/s² เป็นการแปลงหน่วยแรงดัน ไม่ใช่เฮดรวมของระบบ แรงดันที่วัดได้ bar"
+      },
+      "en": {
+        "title": "Pressure & head conversion",
+        "text": "Convert bar to metres of water, kPa and psi. Water density is 1,000 kg/m³ and gravity is 9.80665 m/s². This converts pressure units; it does not calculate total dynamic head. Measured pressure bar"
+      },
+      "zh": {
+        "title": "压力与水头换算",
+        "text": "将bar换算为米水柱、kPa和psi。 水密度取1,000 kg/m³，重力加速度取9.80665 m/s²。仅换算压力单位，不计算系统总扬程。 测量压力 bar"
+      },
+      "ja": {
+        "title": "圧力・水頭換算",
+        "text": "barを水頭、kPa、psiへ換算します。 水密度は1,000 kg/m³、重力加速度は9.80665 m/s²です。圧力単位の換算であり、全揚程の計算ではありません。 測定圧力 bar"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "casing",
+    "hash": "gw-tab-casing",
+    "content": {
+      "th": {
+        "title": "ปริมาตรน้ำในบ่อ",
+        "text": "หาปริมาตรน้ำในท่อกรุจากเส้นผ่านศูนย์กลางและความยาวช่วงน้ำ ถือว่าช่วงที่มีน้ำเป็นทรงกระบอกตามเส้นผ่านศูนย์กลางภายในและความยาวที่กรอก ไม่รวมปริมาตรที่ปั๊มหรือท่อภายในแทนที่ เส้นผ่านศูนย์กลางภายใน mm ความยาวช่วงที่มีน้ำ m"
+      },
+      "en": {
+        "title": "Casing water volume",
+        "text": "Calculate volume from diameter and water-column length. The water column is a cylinder using the entered internal diameter and length. Displacement by the pump and internal piping is excluded. Internal diameter mm Water-column length m"
+      },
+      "zh": {
+        "title": "井管水量",
+        "text": "根据内径和水柱长度计算井管内水量。 按输入的内径及长度将水柱视为圆柱体。不扣除水泵及内部管道占据的体积。 内径 mm 水柱长度 m"
+      },
+      "ja": {
+        "title": "ケーシング内水量",
+        "text": "内径と水柱長から井戸内水量を計算します。 入力した内径と長さによる円柱として計算します。ポンプや内部配管が占める容積は差し引きません。 内径 mm 水柱長 m"
+      }
+    }
+  },
+  {
+    "slug": "groundwater-calculator-tools",
+    "key": "motor",
+    "hash": "gw-tab-motor",
+    "content": {
+      "th": {
+        "title": "กระแสมอเตอร์ปั๊ม",
+        "text": "ประเมินกระแสมอเตอร์ 1 เฟสหรือ 3 เฟสจากกำลังและแรงดัน ใช้กำลังเพลา ประสิทธิภาพ และ power factor ที่กรอก ระบบ 3 เฟสถือว่าโหลดสมดุลและใช้แรงดันระหว่างสาย ไม่รวมกระแสเริ่มเดินเครื่อง กำลังเพลามอเตอร์ kW แรงดันไฟฟ้า V Power factor 0–1 ประสิทธิภาพมอเตอร์ %"
+      },
+      "en": {
+        "title": "Pump motor current",
+        "text": "Estimate single- or three-phase motor current. Uses the entered shaft power, efficiency and power factor. Three-phase supply assumes a balanced load and line-to-line voltage. Starting current is excluded. Motor shaft output kW Supply voltage V Power factor 0–1 Motor efficiency %"
+      },
+      "zh": {
+        "title": "水泵电机电流",
+        "text": "估算单相或三相电机运行电流。 使用输入的轴功率、效率与功率因数。三相计算假设负载平衡并采用线电压。不含启动电流。 电机轴输出功率 kW 电源电压 V 功率因数 0–1 电机效率 %"
+      },
+      "ja": {
+        "title": "ポンプモーター電流",
+        "text": "単相・三相モーターの電流を概算します。 入力した軸出力、効率、力率を使います。三相は平衡負荷と線間電圧を仮定します。始動電流は含みません。 モーター軸出力 kW 電源電圧 V 力率 0–1 モーター効率 %"
+      }
+    }
+  }
+]

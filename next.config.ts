@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // A separate output directory prevents isolated CMS tests from disturbing npm run dev.
+  distDir: process.env.SGW_CMS_TEST_BUILD === 'true' ? '.next-cms-test' : '.next',
   images: {
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: 'https',

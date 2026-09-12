@@ -2,6 +2,8 @@ import {
   CMS_PROJECT_CATEGORIES,
   CMS_PROJECT_WORK_TYPES,
   type CmsProjectCategory,
+  type CmsProjectTranslation,
+  type CmsProjectTranslations,
   type CmsProjectWorkType,
   type CmsProjectInput,
   type CmsLearningInput,
@@ -9,6 +11,7 @@ import {
   type CmsStatus,
 } from '../types/cms.ts'
 import { normalizeSlug } from './slug.ts'
+import { hasProjectTranslationContent } from './project-translations.ts'
 
 export type ValidationResult<T> =
   | { data: T; errors: null }
@@ -23,6 +26,20 @@ const serviceKeys: CmsServiceInput['key'][] = [
   'maintenance',
   'consult',
 ]
+
+export const CMS_PROJECT_MAX_GALLERY_IMAGES = 120
+
+function checkProjectTextLimits(body: Record<string, unknown>, errors: Record<string, string>, prefix = '') {
+  const limits = { title: 180, location: 300, summary: 12000, coverImage: 1000, slug: 180 }
+  for (const [field, limit] of Object.entries(limits)) {
+    if (typeof body[field] === 'string' && body[field].trim().length > limit) {
+      errors[`${prefix}${field}`] = `Use ${limit} characters or fewer.`
+    }
+  }
+  if (body.details !== undefined && (!Array.isArray(body.details) || body.details.length > 80 || body.details.some((item) => typeof item !== 'string' || item.trim().length > 6000))) {
+    errors[`${prefix}details`] = 'Use at most 80 detail sections, with up to 6000 characters each.'
+  }
+}
 
 function recordOf(value: unknown): Record<string, unknown> | null {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -40,6 +57,16 @@ function cleanStringList(value: unknown, limit = 100, itemLength = 500) {
     .map((item) => cleanString(item, itemLength))
     .filter(Boolean)
     .slice(0, limit)
+}
+
+function cleanProjectTranslation(value: unknown): CmsProjectTranslation {
+  const translation = recordOf(value)
+  return {
+    details: cleanStringList(translation?.details, 80, 6000),
+    location: cleanString(translation?.location, 300),
+    summary: cleanString(translation?.summary, 12000),
+    title: cleanString(translation?.title, 180),
+  }
 }
 
 function isSafeSlug(value: string) {
@@ -102,10 +129,20 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
   const year = readNumber(body.year)
   const lat = readNumber(body.lat)
   const lng = readNumber(body.lng)
-  const galleryImages = cleanStringList(body.galleryImages, 120, 1000)
+  const galleryImages = cleanStringList(body.galleryImages, CMS_PROJECT_MAX_GALLERY_IMAGES, 1000)
   const translations = recordOf(body.translations)
-  const english = recordOf(translations?.en)
+  const english = cleanProjectTranslation(translations?.en)
+  const chinese = cleanProjectTranslation(translations?.zh)
+  const japanese = cleanProjectTranslation(translations?.ja)
+  const projectTranslations: CmsProjectTranslations = { en: english }
+  if (hasProjectTranslationContent(chinese)) projectTranslations.zh = chinese
+  if (hasProjectTranslationContent(japanese)) projectTranslations.ja = japanese
   const errors: Record<string, string> = {}
+  checkProjectTextLimits(body, errors)
+  for (const locale of ['en', 'zh', 'ja']) {
+    const translation = recordOf(translations?.[locale])
+    if (translation) checkProjectTextLimits(translation, errors, `translations.${locale}.`)
+  }
 
   if (!title) errors.title = 'Project title is required.'
   if (!isSafeSlug(slug)) errors.slug = 'Use a URL-safe slug without spaces or slashes.'
@@ -116,7 +153,7 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
   if (rawWorkTypes.some((item) => !projectWorkTypes.includes(item as CmsProjectWorkType))) {
     errors.workTypes = 'Choose valid project work types.'
   }
-  if (!statusValues.includes(body.status as CmsStatus)) errors.status = 'Choose a valid content status.'
+  if (body.status !== undefined && body.status !== 'active') errors.status = 'Saved projects are live. Use the trash action to remove a project.'
   if (year !== null && (!Number.isInteger(year) || year < 1900 || year > new Date().getFullYear() + 5)) {
     errors.year = 'Enter a valid four-digit year.'
   }
@@ -128,6 +165,34 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
   }
   if (!isSafeAsset(coverImage)) errors.coverImage = 'Use an absolute HTTP(S) URL or a local / path.'
   if (galleryImages.some((image) => !isSafeAsset(image))) errors.galleryImages = 'Every gallery item must be a valid asset URL or local path.'
+  if (!Array.isArray(body.galleryImages) || body.galleryImages.length > CMS_PROJECT_MAX_GALLERY_IMAGES || body.galleryImages.some((item) => typeof item !== 'string' || item.trim().length > 1000)) {
+    errors.galleryImages = `Use at most ${CMS_PROJECT_MAX_GALLERY_IMAGES} gallery images with valid image URLs.`
+  }
+  for (const field of ['year', 'lat', 'lng']) {
+    const raw = body[field]
+    if (raw !== null && raw !== '' && raw !== undefined && (typeof raw === 'boolean' || !Number.isFinite(Number(raw)))) errors[field] = 'Enter a valid number.'
+  }
+  const mediaMetadata: NonNullable<CmsProjectInput['mediaMetadata']> = {}
+  const rawMetadata = recordOf(body.mediaMetadata)
+  const usedMedia = new Set([coverImage, ...galleryImages])
+  if (rawMetadata) {
+    if (Object.keys(rawMetadata).length > CMS_PROJECT_MAX_GALLERY_IMAGES + 1) errors.mediaMetadata = 'Too many image descriptions.'
+    for (const [src, value] of Object.entries(rawMetadata)) {
+      const item = recordOf(value)
+      if (!item || !usedMedia.has(src)) continue
+      if (typeof item.alt !== 'string' || item.alt.length > 300 || typeof item.caption !== 'string' || item.caption.length > 600) {
+        errors.mediaMetadata = 'Image alt text allows 300 characters and captions allow 600 characters.'
+      } else mediaMetadata[src] = { alt: item.alt.trim(), caption: item.caption.trim() }
+    }
+  }
+  const translationSourceHash: NonNullable<CmsProjectInput['translationSourceHash']> = {}
+  const rawHashes = recordOf(body.translationSourceHash)
+  for (const locale of ['en', 'zh', 'ja'] as const) {
+    const hash = rawHashes?.[locale]
+    if (hash === undefined || hash === '') continue
+    if (typeof hash !== 'string' || !/^[a-zA-Z0-9_-]{1,128}$/.test(hash)) errors.translationSourceHash = 'Invalid translation review marker.'
+    else translationSourceHash[locale] = hash
+  }
 
   if (Object.keys(errors).length) return { data: null, errors }
 
@@ -142,27 +207,22 @@ export function validateProjectInput(value: unknown): ValidationResult<CmsProjec
       lng,
       location,
       slug,
-      status: readStatus(body.status),
+      status: 'active',
+      mediaMetadata,
+      translationSourceHash,
       summary,
       title,
-      translations: {
-        en: {
-          details: cleanStringList(english?.details, 80, 6000),
-          location: cleanString(english?.location, 300),
-          summary: cleanString(english?.summary, 12000),
-          title: cleanString(english?.title, 180),
-        },
-      },
+      translations: projectTranslations,
       workTypes,
       year,
     },
   }
 }
 
-export function validateProjectForPublishing(input: CmsProjectInput) {
+export function validateProjectForSave(input: CmsProjectInput) {
   const errors: Record<string, string> = {}
-  if (!input.summary) errors.summary = 'Thai project summary is required before publishing.'
-  if (!input.coverImage) errors.coverImage = 'Cover image is required before publishing.'
+  if (!input.summary) errors.summary = 'Thai project summary is required.'
+  if (!input.coverImage) errors.coverImage = 'Cover image is required.'
   return Object.keys(errors).length ? errors : null
 }
 

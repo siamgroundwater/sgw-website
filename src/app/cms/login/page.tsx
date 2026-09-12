@@ -5,10 +5,14 @@ import CmsLoginForm from '@/components/cms/CmsLoginForm'
 import { CmsLanguageSwitcher } from '@/components/cms/CmsLanguage'
 import { getCurrentCmsUser } from '@/server/cms/guards'
 import { getCmsLocale } from '@/server/cms/locale'
+import { safeCmsReturnTo } from '@/lib/cms-access'
+import '@/components/cms/CmsAccessImprovements.css'
 
 export const dynamic = 'force-dynamic'
 
-export default async function CmsLoginPage() {
+export default async function CmsLoginPage({ searchParams }: { searchParams: Promise<{ returnTo?: string; reauth?: string }> }) {
+  const parameters = await searchParams
+  const returnTo = safeCmsReturnTo(parameters.returnTo)
   const locale = await getCmsLocale()
   const copy = locale === 'th' ? {
     eyebrow: 'พื้นที่จัดการเนื้อหา',
@@ -23,12 +27,13 @@ export default async function CmsLoginPage() {
     setup: 'CMS setup is incomplete. Add MongoDB and session settings from .env.example, then seed the first administrator.',
     signIn: 'Sign in',
   }
+  let user = null
   try {
-    const user = await getCurrentCmsUser()
-    if (user) redirect('/cms/dashboard')
+    user = await getCurrentCmsUser()
   } catch {
     // The setup notice below remains visible when MongoDB or the session secret is not configured.
   }
+  if (user && parameters.reauth !== '1') redirect(returnTo)
 
   const sessionSecret = process.env.CMS_SESSION_SECRET?.trim() || ''
   const configured = Boolean(
@@ -73,7 +78,7 @@ export default async function CmsLoginPage() {
               {copy.setup}
             </p>
           ) : null}
-          <CmsLoginForm />
+          <CmsLoginForm returnTo={returnTo} />
         </section>
       </section>
     </main>

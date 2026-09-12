@@ -1,0 +1,64 @@
+.learning-number-field {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.learning-number-field > label {
+  color: #173e46;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.learning-number-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #819e98;
+  border-radius: 0.65rem;
+  background: #fff;
+}
+
+.learning-number-control:focus-within {
+  outline: 2px solid #086b70;
+  outline-offset: 2px;
+}
+
+.learning-number-control:has([aria-invalid="true"]) {
+  border-color: #a02e25;
+}
+
+.learning-number-control input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 0;
+  border-radius: inherit;
+  color: #173e46;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-sm);
+}
+
+.learning-number-control input:focus {
+  outline: 0;
+}
+
+.learning-number-control > span {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.75rem;
+  border-left: 1px solid #c5d7d2;
+  color: #48656b;
+  font-size: var(--fs-sm);
+}
+
+.learning-number-help,
+.learning-number-error {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.learning-number-help { color: #48656b; }
+.learning-number-error { color: #92251d; }

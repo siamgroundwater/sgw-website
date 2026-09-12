@@ -3,12 +3,13 @@ import 'server-only'
 import { cache } from 'react'
 import { ObjectId } from 'mongodb'
 import { getProjectCategoryLabel } from '@/lib/project-categories'
-import type { Project } from '@/lib/projects'
+import type { Project, ProjectTranslations } from '@/lib/projects'
 import { getCmsProjectsCollection } from '@/server/db'
 import type { CmsProjectDocument } from '@/server/db'
 import { normalizeSlug } from '@/lib/slug'
 import { normalizeCmsProjectCategories } from '@/lib/cms-project-categories'
 import { localizeProjectWorkTypes } from '@/lib/project-work-types'
+import { hasProjectTranslationContent, normalizeProjectTranslation } from '@/lib/project-translations'
 
 function skipDatabaseDuringCiBuild() {
   return (
@@ -17,29 +18,33 @@ function skipDatabaseDuringCiBuild() {
   )
 }
 
+function publicProjectTranslations(document: CmsProjectDocument): ProjectTranslations {
+  const translations: ProjectTranslations = {
+    en: normalizeProjectTranslation(document.translations?.en),
+  }
+  const chinese = normalizeProjectTranslation(document.translations?.zh)
+  const japanese = normalizeProjectTranslation(document.translations?.ja)
+  if (hasProjectTranslationContent(chinese)) translations.zh = chinese
+  if (hasProjectTranslationContent(japanese)) translations.ja = japanese
+  return translations
+}
+
 function toPublicProject(document: CmsProjectDocument): Project {
   if (!document._id) throw new Error('Public project is missing its MongoDB ObjectId.')
-  const english = document.translations?.en
   return {
     _id: document._id.toString(),
     category: normalizeCmsProjectCategories(document.category).map(getProjectCategoryLabel),
     coverImage: document.coverImage,
     details: document.details,
     galleryImages: document.galleryImages,
+    mediaMetadata: document.mediaMetadata,
     lat: document.lat,
     lng: document.lng,
     location: document.location,
     slug: normalizeSlug(document.slug),
     summary: document.summary,
     title: document.title,
-    translations: {
-      en: {
-        details: english?.details || [],
-        location: english?.location || '',
-        summary: english?.summary || '',
-        title: english?.title || '',
-      },
-    },
+    translations: publicProjectTranslations(document),
     workTypes: localizeProjectWorkTypes(document.workTypes, 'th'),
     year: document.year,
   }

@@ -18,6 +18,8 @@ import {
   getLocalizedProjectPresentation,
   localizeProject,
 } from '../src/i18n/projects.ts'
+import { toProjectSummary } from '../src/lib/project-summaries.ts'
+import { hasProjectTranslationContent, normalizeProjectTranslation, projectDetailSections } from '../src/lib/project-translations.ts'
 
 function collectStrings(value, result = []) {
   if (typeof value === 'string') {
@@ -46,7 +48,7 @@ test('locale helpers preserve the current route when switching language', () => 
   })
 })
 
-test('project presentation keeps every category and uses English content for non-Thai details', () => {
+test('project presentation keeps every category and applies selected, English, then Thai fallback per field', () => {
   const thai = getLocalizedContent('th')
   const presentation = getLocalizedProjectPresentation(
     { category: ['ภาครัฐ', 'โรงงาน'] },
@@ -71,8 +73,20 @@ test('project presentation keeps every category and uses English content for non
       en: {
         details: ['English detail'],
         location: 'Bangkok',
-        summary: 'English summary',
+        summary: '',
         title: 'English title',
+      },
+      zh: {
+        details: [],
+        location: '',
+        summary: '中文摘要',
+        title: '中文项目名称',
+      },
+      ja: {
+        details: ['日本語の詳細'],
+        location: 'バンコク',
+        summary: '',
+        title: '',
       },
     },
     workTypes: ['งานสำรวจน้ำบาดาล'],
@@ -80,13 +94,71 @@ test('project presentation keeps every category and uses English content for non
   }
 
   assert.equal(localizeProject(project, 'th').title, 'ชื่อภาษาไทย')
-  for (const locale of ['en', 'zh', 'ja']) {
-    const localized = localizeProject(project, locale)
-    assert.equal(localized.title, 'English title')
-    assert.equal(localized.location, 'Bangkok')
-    assert.equal(localized.summary, 'English summary')
-    assert.deepEqual(localized.details, ['English detail'])
+  const english = localizeProject(project, 'en')
+  assert.equal(english.title, 'English title')
+  assert.equal(english.location, 'Bangkok')
+  assert.equal(english.summary, 'สรุปภาษาไทย')
+  assert.deepEqual(english.details, ['English detail'])
+
+  const chinese = localizeProject(project, 'zh')
+  assert.equal(chinese.title, '中文项目名称')
+  assert.equal(chinese.location, 'Bangkok')
+  assert.equal(chinese.summary, '中文摘要')
+  assert.deepEqual(chinese.details, ['English detail'])
+
+  const japanese = localizeProject(project, 'ja')
+  assert.equal(japanese.title, 'English title')
+  assert.equal(japanese.location, 'バンコク')
+  assert.equal(japanese.summary, 'สรุปภาษาไทย')
+  assert.deepEqual(japanese.details, ['日本語の詳細'])
+
+  const chineseSummary = toProjectSummary(project, 'zh')
+  assert.equal(chineseSummary.title, '中文项目名称')
+  assert.equal(chineseSummary.location, 'Bangkok')
+
+  const legacyProject = { ...project, translations: { en: project.translations.en } }
+  assert.equal(localizeProject(legacyProject, 'zh').title, 'English title')
+  assert.equal(localizeProject(legacyProject, 'ja').summary, 'สรุปภาษาไทย')
+
+  const whitespaceProject = {
+    ...project,
+    translations: {
+      en: { details: ['   '], location: ' ', summary: ' ', title: ' ' },
+      zh: { details: ['  '], location: '  ', summary: '  ', title: '  ' },
+    },
   }
+  const chineseWithThaiFallback = localizeProject(whitespaceProject, 'zh')
+  assert.equal(chineseWithThaiFallback.title, 'ชื่อภาษาไทย')
+  assert.equal(chineseWithThaiFallback.location, 'กรุงเทพฯ')
+  assert.equal(chineseWithThaiFallback.summary, 'สรุปภาษาไทย')
+  assert.deepEqual(chineseWithThaiFallback.details, ['รายละเอียดภาษาไทย'])
+
+  const japaneseSummary = toProjectSummary(project, 'ja')
+  assert.equal(japaneseSummary.title, 'English title')
+  assert.equal(japaneseSummary.location, 'バンコク')
+  assert.equal(toProjectSummary(whitespaceProject, 'en').title, 'ชื่อภาษาไทย')
+})
+
+test('project translation normalization safely removes malformed and blank data', () => {
+  const normalized = normalizeProjectTranslation({
+    details: [' First section ', null, 42, '   ', 'Second section'],
+    location: 100,
+    summary: ' Summary ',
+    title: ['not text'],
+  })
+
+  assert.deepEqual(normalized, {
+    details: ['First section', 'Second section'],
+    location: '',
+    summary: 'Summary',
+    title: '',
+  })
+  assert.equal(hasProjectTranslationContent(normalized), true)
+  assert.equal(hasProjectTranslationContent(normalizeProjectTranslation(null)), false)
+  assert.deepEqual(
+    projectDetailSections('Project summary', ['Project summary', ' First detail ', 'Second detail']),
+    [' First detail ', 'Second detail']
+  )
 })
 
 test('every localized navigation points into its own locale', () => {

@@ -15,7 +15,8 @@ export async function GET(request: Request) {
   }
   try {
     const result = await cleanupExpiredStagedProjectMedia()
-    return NextResponse.json({ ok: true, ...result })
+    const ok = result.failed === 0
+    return NextResponse.json({ ok, ...result }, { status: ok ? 200 : 503 })
   } catch (error) {
     console.error('Expired project media cleanup failed', error)
     return NextResponse.json({ error: 'Project media cleanup failed.', ok: false }, { status: 500 })

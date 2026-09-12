@@ -1,0 +1,14 @@
+.cms-library-actions, .cms-library-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.cms-panel-header > .cms-library-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.cms-library-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.cms-library-filters .cms-search { grid-column: 1 / -1; }
+.cms-library-count { padding: 12px 0; color: var(--cms-muted); }
+.cms-library-pagination { justify-content: center; margin-top: 24px; }
+.cms-project-library { min-width: 0; }
+.cms-confirm-dialog.cms-native-confirm { width: 540px; max-height: calc(100dvh - 32px); overflow: auto; margin: auto; border: 1px solid var(--cms-line); color: var(--cms-ink); }
+.cms-native-confirm:not([open]) { display: none; }
+.cms-native-confirm::backdrop { background: rgba(4, 31, 38, 0.6); }
+.cms-native-confirm .cms-confirm-header { display: flex; justify-content: space-between; }
+.cms-native-confirm .cms-field { margin-block: 20px; }
+@media (width <= 700px) { .cms-library-filters { grid-template-columns: minmax(0, 1fr); } }
+@media (width <= 580px) { .cms-confirm-dialog.cms-native-confirm { width: calc(100% - 32px); } }

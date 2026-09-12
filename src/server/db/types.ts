@@ -1,7 +1,18 @@
 import type { ObjectId } from 'mongodb'
-import type { CmsProjectCategory, CmsProjectWorkType } from '@/types/cms'
+import type { CmsProjectRecord } from '@/types/cms'
+import type {
+  CmsProjectCategory,
+  CmsProjectTranslation,
+  CmsProjectTranslations,
+  CmsProjectWorkType,
+} from '@/types/cms'
 
-export type { CmsProjectCategory, CmsProjectWorkType }
+export type {
+  CmsProjectCategory,
+  CmsProjectTranslation,
+  CmsProjectTranslations,
+  CmsProjectWorkType,
+}
 
 export type CmsDocumentStatus = 'draft' | 'active' | 'archived'
 export type CmsUserRole = 'admin' | 'editor' | 'viewer'
@@ -15,6 +26,8 @@ export type CmsTimestampedDocument = {
 }
 
 export type CmsUserDocument = CmsTimestampedDocument & {
+  sessionVersion?: number
+  sessionsRevokedAt?: Date
   email?: string
   lastLoginAt?: Date
   name: string
@@ -25,18 +38,9 @@ export type CmsUserDocument = CmsTimestampedDocument & {
   usernameLower: string
 }
 
-export type CmsProjectTranslation = {
-  details: string[]
-  location: string
-  summary: string
-  title: string
-}
-
-export type CmsProjectTranslations = {
-  en: CmsProjectTranslation
-}
-
 export type CmsProjectContent = {
+  mediaMetadata?: Record<string, { alt: string; caption: string }>
+  translationSourceHash?: Partial<Record<'en' | 'ja' | 'zh', string>>
   category: CmsProjectCategory[]
   coverImage: string
   details: string[]
@@ -52,20 +56,12 @@ export type CmsProjectContent = {
   year: number | null
 }
 
-export type CmsProjectDraft = CmsProjectContent & {
-  savedAt: Date
-  savedBy: string
-}
-
 export type CmsProjectDocument = CmsTimestampedDocument & CmsProjectContent & {
-  draft?: CmsProjectDraft
-  publishedAt?: Date
-  publishedBy?: string
-  publishedVersion?: number
   source: 'cms' | 'public-snapshot'
-  status: CmsDocumentStatus
+  status: 'active' | 'archived'
 }
 
+// Recovery-only records from before single Save. The CMS has no revision workflow.
 export type CmsProjectRevisionDocument = {
   _id?: ObjectId
   content: CmsProjectContent
@@ -90,6 +86,26 @@ export type CmsStagedProjectMediaDocument = {
   expiresAt: Date
   submissionId: string
   userId: string
+  cleanupClaimedAt?: Date
+}
+
+export type CmsProjectOperationDocument = {
+  _id?: ObjectId
+  operationId: string
+  userId: string
+  fingerprint: string
+  item: CmsProjectRecord
+  createdAt: Date
+}
+
+export type CmsOperationalEventDocument = {
+  _id?: ObjectId
+  kind: 'media-cleanup' | 'project-revalidation' | 'audit-write'
+  ok: boolean
+  createdAt: Date
+  counts?: { checked: number; removed: number; preserved: number; failed: number; remaining: number }
+  projectId?: string
+  error?: string
 }
 
 export type CmsServiceBlock = {

@@ -1,5 +1,6 @@
 import type { Project } from '../lib/projects.ts'
 import { localizeProjectWorkTypes } from '../lib/project-work-types.ts'
+import { normalizeProjectTranslation } from '../lib/project-translations.ts'
 import type { LocalizedLocale } from './config.ts'
 import type { LocalizedContent } from './localized-content.ts'
 
@@ -59,14 +60,25 @@ export function getLocalizedProjectPresentation(
 }
 
 export function localizeProject(project: Project, locale: LocalizedLocale): Project {
-  const english = project.translations.en
-  const useEnglish = locale !== 'th'
+  if (locale === 'th') {
+    return {
+      ...project,
+      workTypes: localizeProjectWorkTypes(project.workTypes, locale),
+    }
+  }
+
+  const selected = normalizeProjectTranslation(project.translations[locale])
+  const english = normalizeProjectTranslation(project.translations.en)
   return {
     ...project,
-    details: useEnglish && english.details.length ? english.details : project.details,
-    location: useEnglish ? english.location || project.location : project.location,
-    summary: useEnglish ? english.summary || project.summary : project.summary,
-    title: useEnglish ? english.title || project.title : project.title,
+    details: selected.details.length
+      ? selected.details
+      : english.details.length
+        ? english.details
+        : project.details,
+    location: selected.location || english.location || project.location,
+    summary: selected.summary || english.summary || project.summary,
+    title: selected.title || english.title || project.title,
     workTypes: localizeProjectWorkTypes(project.workTypes, locale),
   }
 }

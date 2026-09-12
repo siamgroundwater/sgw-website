@@ -1,59 +1,49 @@
 # SGW CMS setup
 
-The SGW CMS is a MongoDB-backed workspace at `/cms`. Published projects are live on the public frontend. Saving a draft is private; selecting **Publish** updates public project pages and listings immediately.
+The CMS at /cms manages the live project library, users, accounts, and activity history.
 
-## Included areas
+## Project workflow
 
-- Projects, including location, coordinates, category, work types, cover media, and gallery media
-- Thai-first and English project content, private draft preview, explicit publishing, unpublishing, and published-version restore
-- The four SGW service records with repeatable technical detail blocks
-- Learning-center article records with repeatable sections and official sources
-- Role-based CMS users: administrator, content editor, and read-only viewer
-- Same-origin protected mutation APIs, signed HTTP-only sessions, login throttling, and 365-day audit history
-- A guarded import that copies the current public SGW snapshot into MongoDB without overwriting records already edited in CMS
+There is one **Save** action. A successful save updates the website immediately.
+There are no draft, publish, unpublish, or version-publication controls.
 
-## 1. Configure MongoDB and session security
+1. Open New project or an existing project in its own tab.
+2. Enter Thai content, category/work-type selections, location and optional coordinates.
+3. Optionally add English, Simplified Chinese, and Japanese content.
+4. Select images. They are compressed locally and are not uploaded yet.
+5. Save. Images upload sequentially, then a MongoDB transaction commits the project and its operation receipt.
+6. If validation or a confirmed save fails, only this attempt's owned, unreferenced uploads can be rolled back. If the outcome is uncertain, check or retry the same operation instead of creating another save.
+7. View saved version uses the same detail component as the public website.
 
-Copy `.env.example` to `.env.local`, then set:
+Public detail URLs use MongoDB ObjectIds. Optional fields display the selected language, then English, then Thai. Translation-review indicators help identify content that should be checked again after Thai changes; translations are not automatically rewritten.
 
-```dotenv
-MONGODB_URI=mongodb+srv://...
-MONGODB_DB=siamgroundwater
-CMS_SESSION_SECRET=...
-CMS_COOKIE_SECURE=false
-CRON_SECRET=replace-with-a-random-secret-at-least-24-characters
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
-CLOUDINARY_ROOT_FOLDER=siamgroundwater/cms
-CLOUDINARY_MAX_FILE_SIZE_MB=4
-```
+Image controls support gallery ordering, use-as-cover, enlarged preview, alt text, and captions. Existing galleries may contain up to 120 images; each save can stage one new cover plus up to 12 new gallery images. Never enter raw image URLs in the editor.
 
-Use `CMS_COOKIE_SECURE=false` only for local HTTP development. Use `true` in production.
+Removing a project moves it to **Trash** immediately. Administrators type its exact Thai title to confirm; restoring makes it live immediately. Trash has no automatic permanent deletion. Images referenced by Trash or historical recovery records remain protected.
 
-Cloudinary credentials are server-only. CMS project, service, and learning editors can upload JPG, PNG, WebP, GIF, or AVIF files into isolated folders below `siamgroundwater/cms`. The API checks the authenticated role, request origin, declared MIME type, file signature, and configured file-size limit. Project images are compressed on the client, uploaded during Save or Publish, and registered as staged assets. Failed saves roll them back; the guarded cleanup job removes expired, unreferenced staged assets.
+Unsaved text recovery is browser-local, user-specific and tab-specific, not a server draft. It helps after refresh in the same tab. Files must be selected again after a refresh; closing the tab or clearing browser storage can remove recovery data. Templates are also browser-local and contain only categories, work types, and Thai detail sections.
 
-Keep server-routed uploads at 4 MB or below when deploying to a serverless host with a request-body limit. Larger original-media workflows should use short-lived signed direct uploads rather than raising only the application setting.
+## Configure local and hosted environments
 
-Generate a session secret in PowerShell without placing it in command history:
+Copy .env.example to .env.local for local development. Set:
+- MONGODB_URI and MONGODB_DB
+- CMS_SESSION_SECRET: at least 32 random characters
+- CMS_COOKIE_SECURE=false for local HTTP; true for production HTTPS
+- CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
+- CLOUDINARY_ROOT_FOLDER: a separate root per environment is recommended
+- CLOUDINARY_MAX_FILE_SIZE_MB=4
+- CRON_SECRET: at least 24 random characters for the scheduled cleanup endpoint
 
-```powershell
-$secretBytes = New-Object byte[] 48
-$generator = [Security.Cryptography.RandomNumberGenerator]::Create()
-$generator.GetBytes($secretBytes)
-[Convert]::ToBase64String($secretBytes)
-$generator.Dispose()
-```
+MongoDB must be a replica set or Atlas deployment: single-Save operations use transactions.
+Use separate databases for development, previews, and production. Do not point local work at the production database.
 
-Store the generated result only in `.env.local` and the deployment environment settings.
+On Vercel, set actual values in the project's environment settings. Do not upload .env.local or .env.example as a substitute for those settings. Keep credentials out of Git. .env.example contains placeholders only.
 
-Use a dedicated database for each environment, for example `siamgroundwater_dev`, `siamgroundwater_preview`, and `siamgroundwater`. Do not point local development at the production database.
+## First administrator
 
-## 2. Seed the first administrator
+Set CMS_SEED_USERNAME and CMS_SEED_DISPLAY_NAME, then supply CMS_SEED_PASSWORD securely for the seed script. Passwords must be 12–256 characters.
 
-Set `CMS_SEED_USERNAME` and `CMS_SEED_DISPLAY_NAME` in `.env.local`. Then seed the password temporarily from PowerShell:
-
-```powershell
+~~~powershell
 $seedPassword = Read-Host 'CMS administrator password' -AsSecureString
 $passwordPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($seedPassword)
 try {
@@ -63,70 +53,68 @@ try {
   Remove-Item Env:CMS_SEED_PASSWORD -ErrorAction SilentlyContinue
   [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($passwordPointer)
 }
-```
+~~~
 
-Passwords must contain 12 to 256 characters. The seed script is idempotent: running it again updates the matching administrator account.
+The seed command updates the matching account if it already exists. Never leave a real seed password in a committed file.
 
-## 3. Start and import the current website snapshot
-
-```powershell
-npm run dev
-```
-
-Open `http://localhost:3000/cms`, sign in, and use **Import public snapshot** on the dashboard. The import:
-
-- keeps the existing MongoDB project library and adds service and learning records;
-- refreshes records that still have the `public-snapshot` source;
-- skips any record already edited in CMS;
-- never writes to the current static frontend data files.
-
-## Roles
+## Access
 
 | Role | Access |
 | --- | --- |
-| Administrator | Full content, user, import, removal, and audit access |
-| Content editor | View, create, and update projects, services, and learning records |
-| Viewer | Read-only dashboard and content access |
+| Administrator | Projects, Trash/restore, users, own account, audit history and operational status |
+| Editor | View/create/edit projects, own account and dashboard |
+| Viewer | Read-only projects/dashboard and own account |
 
-The API prevents a user from removing their own administrator access and prevents removal or deactivation of the final active administrator.
+My account requires the current password before changing it. Password changes, admin password resets, deactivation, and removal invalidate old sessions. The final active administrator and your own administrative access are protected.
 
-## Production checklist
+Sessions last eight hours. The CMS warns before expiry and can open sign-in in another tab so editor text remains mounted. An account switch requires reloading the original editor before continuing.
 
-1. Use a production MongoDB project with network restrictions and a least-privilege application user.
-2. Set a unique production `CMS_SESSION_SECRET` and `CMS_COOKIE_SECURE=true`.
-3. Configure MongoDB Atlas backups or point-in-time recovery. Audit logs and published revisions are not backups.
-4. Enable Cloudinary backup/versioning appropriate for the account and keep CMS deletion permissions separate from backup administration.
-5. Keep `.env.local` and `atlas-credentials.env` uncommitted. Only `.env.example` belongs in source control.
-6. Run `npm run check` before deployment.
-7. Verify `/cms/login`, role restrictions, an image upload, a content edit, and their audit entries in the production environment.
+## Database migration
 
-## Credential rotation
+Before switching an existing deployment to this release:
+1. Create and verify the encrypted backup below.
+2. Run npm run migrate:cms-single-save for a read-only check.
+3. If old drafts exist, stop and choose which content should become live. The migration deliberately refuses to discard them.
+4. Apply only to the exact intended database:
 
-If a MongoDB password or Cloudinary API secret has been pasted into chat, logs, or another shared channel, treat it as exposed. After verifying this setup, rotate it in MongoDB Atlas or Cloudinary, update `.env.local` and the deployment environment, restart the application, and re-run the connection checks. Never commit either credential file.
+~~~powershell
+npm run migrate:cms-single-save -- --apply --backup=.cms-backups/<archive>.sgwbackup --confirm-database=<exact-database-name>
+~~~
 
-## Project publishing workflow
+The backup must match current project content. Apply removes obsolete publication fields without changing Thai content or project IDs. Historical revision records remain recovery-only and protect their media; they are not a CMS publication system.
 
-1. **Save draft** stores edits separately from the currently published project.
-2. **Preview draft** opens a private, authenticated preview.
-3. **Publish** requires Thai content plus English title, location, and summary. It preserves the previous published version and updates public pages immediately.
-4. **Unpublish** removes the project from the public site but retains it as a CMS draft.
-5. **Restore and publish** republishes a prior preserved version and records the action.
+The retired service/learning/import/manual-media CMS APIs and their unused managers have been removed. Their stored MongoDB data and public website modules have not been deleted.
 
-Project pages use MongoDB ObjectIds. Older numeric project URLs redirect to the corresponding ObjectId URL while the legacy mapping remains in MongoDB. Services and learning records remain separate from the public content modules for now.
+## Cleanup, monitoring and recovery
 
-## Scheduled cleanup and monitoring
+Vercel Cron runs staged-image cleanup daily at 02:23 UTC (09:23 Bangkok). Set CRON_SECRET in Vercel Production; GitHub does not need it. Failed/partial cleanup returns an error status and records operational information. The admin dashboard shows the last successful run, overdue status, pending images and recent recorded failures.
 
-- Set `CRON_SECRET` only in Vercel Production environment variables. Vercel Cron automatically sends it as a bearer token when invoking the guarded cleanup endpoint. `vercel.json` runs cleanup daily at 02:23 UTC (09:23 Asia/Bangkok), which is compatible with both Hobby and paid Vercel plans. GitHub does not need this secret.
-- Until the main domain points to Vercel with a trusted certificate, monitoring defaults to `https://siamgroundwater.vercel.app`; set the optional GitHub Actions repository variable `MONITOR_BASE_URL` when the production origin changes.
-- Monitor `GET /api/health` externally.
-- Run `npm run monitor:production` for a production HTTP smoke check.
+GET /api/health checks MongoDB connectivity and required media configuration; it does not prove Cloudinary is reachable. Existing production HTTP monitoring remains available through npm run monitor:production. The monitoring workflow still needs a reachable deployment URL.
 
-The quality workflow intentionally sets `SGW_CI_SKIP_DATABASE=true` so pull-request builds can validate the complete Next.js application without receiving production MongoDB credentials. This bypass is accepted only when GitHub Actions also provides `CI=true`; regular local and Vercel builds still require MongoDB.
+npm run media:review -- --report performs a read-only Cloudinary inventory and writes an ignored report. An unused committed asset becomes a *manual review candidate* only after 30 days of observed non-use. The tool does not delete anything; verify references in every database sharing the Cloudinary account before a separate deletion decision.
 
-## End-to-end checks
+Use [CMS recovery runbook](docs/CMS_RECOVERY.md) for encrypted backups and isolated restore drills.
 
-After `npm run build` and `npm run start -- --port 3003`, run `npm run test:e2e`.
+## Repeatable checks
 
-`npm run test:e2e:cms` must run only against an isolated database whose name includes `dev`, `test`, `preview`, or `staging`. The runner creates a temporary administrator and project, verifies draft isolation, bilingual publishing, legacy redirects, unpublishing, revision restore, exercises API archival, and then removes all temporary users, projects, revisions, and related test audit entries. Set `E2E_BASE_URL` when the test server is not running on port 3003.
+~~~powershell
+npm run check
+npm run test:e2e:cms
+npm run test:e2e:cms:media
+~~~
 
-`npm run test:e2e:orphan-media` creates one isolated Cloudinary test image and expired staging record, runs the authenticated cleanup endpoint, verifies both are removed, and repeats cleanup in `finally`. It also refuses production-named databases.
+The CMS runner starts its own server and allocates an exact, fresh sgw_test_* database. It creates random temporary accounts and removes that database afterward. It never uses the configured database as the test target. The default suite makes no Cloudinary writes. The opt-in media suite creates small images in a unique test namespace and removes those exact test assets after removing their test references.
+
+GitHub quality checks use a local disposable MongoDB replica set and no production secrets. They cover login, permissions, account/session handling, full-library search, live saving, conflict/retry recovery, Trash, language fallback, saved previews, local compression, mobile resizing, dialogs, and audit filters. The real-media suite is deliberately not run in pull requests with provider credentials.
+
+### Verification completed — 2026-09-12
+
+- 128 unit/source tests; ESLint; TypeScript; hover-capability checks; optimized Next.js build (406 generated pages).
+- 17 isolated CMS browser tests, including interrupted saves, conflicts, image-description recovery, browser history guards and strict Trash dialogs.
+- 50 existing desktop/touch learning-page regression tests.
+- Real Cloudinary upload/commit/replay/rollback/cleanup tests: four temporary assets and two temporary projects cleaned up.
+- 79 development projects migrated; follow-up migration dry run found zero remaining changes.
+- Read-only media inventory: 675 assets, all referenced; zero deletion candidates.
+- Encrypted backup and isolated restore verified; original content and media preserved.
+
+This validation did not deploy the site, migrate a production database, configure paid provider backups, or copy the backup/key off this machine. Those are separate rollout/recovery decisions. Browser-local text recovery is available on older browsers, but same-document Back/Forward confirmation requires Navigation API support.

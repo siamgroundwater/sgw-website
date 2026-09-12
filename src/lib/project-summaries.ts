@@ -1,7 +1,7 @@
 import type { Project } from './projects'
 import type { ProjectCategory } from './project-categories'
 import type { LocalizedLocale } from '../i18n/config.ts'
-import { localizeProjectWorkTypes } from './project-work-types.ts'
+import { localizeProject } from '../i18n/projects.ts'
 
 export type ProjectSummary = {
   _id: string
@@ -16,14 +16,7 @@ export type ProjectSummary = {
 }
 
 export function toProjectSummary(project: Project, locale: LocalizedLocale = 'th'): ProjectSummary {
-  const english = project.translations?.en
-  const localized = locale === 'th' || !english
-    ? project
-    : {
-        ...project,
-        location: english.location || project.location,
-        title: english.title || project.title,
-      }
+  const localized = localizeProject(project, locale)
   return {
     _id: localized._id,
     category: localized.category,
@@ -32,7 +25,7 @@ export function toProjectSummary(project: Project, locale: LocalizedLocale = 'th
     lng: localized.lng,
     location: localized.location,
     title: localized.title,
-    workTypes: localizeProjectWorkTypes(project.workTypes, locale),
+    workTypes: localized.workTypes,
     year: localized.year,
   }
 }

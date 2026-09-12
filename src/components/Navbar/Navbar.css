@@ -163,6 +163,10 @@ background-color: rgba(1, 53, 58, 0.98);
 }
 }
 
+.navbar-item.is-subnav-dismissed .navbar-subnav {
+  display: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
 
 .navbar-subnav:hover{

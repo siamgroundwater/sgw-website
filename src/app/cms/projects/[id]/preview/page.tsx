@@ -1,45 +1,63 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { projectWorkTypeLabel } from '@/lib/project-work-types'
-import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlider'
+import ProjectDetailView from '@/components/ProjectDetailView/ProjectDetailView'
 import CmsShell from '@/components/cms/CmsShell'
 import { getCmsProjectById } from '@/server/cms/content'
 import { requireCmsPage } from '@/server/cms/page-guard'
 import { getCmsLocale } from '@/server/cms/locale'
+import { isLocalizedLocale, localeInfo, SITE_LOCALES, type LocalizedLocale } from '@/i18n/config'
+import { getLocalizedContent } from '@/i18n/localized-content'
+import { getProjectCategoryLabel } from '@/lib/project-categories'
+import type { Project } from '@/lib/projects'
+import '@/app/(site)/projects/[id]/page.css'
+import './preview.css'
 
 export const dynamic = 'force-dynamic'
 
-export default async function CmsProjectPreviewPage({ params }: { params: Promise<{ id: string }> }) {
+const previewLocaleLabels: Record<LocalizedLocale, string> = { th: 'ไทย', en: 'EN', zh: '中文', ja: '日本語' }
+
+export default async function CmsProjectPreviewPage({ params, searchParams }: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ locale?: string | string[] }>
+}) {
   const session = await requireCmsPage('projects:view')
-  const locale = await getCmsLocale()
+  const cmsLocale = await getCmsLocale()
   const { id } = await params
+  const requestedLocale = (await searchParams).locale
+  const previewLocale = typeof requestedLocale === 'string' && isLocalizedLocale(requestedLocale) ? requestedLocale : cmsLocale
   const item = await getCmsProjectById(id).catch(() => null)
   if (!item) notFound()
-  const english = locale === 'en'
-  const translated = item.translations.en
-  const title = english ? translated.title || item.title : item.title
-  const location = english ? translated.location || item.location : item.location
-  const summary = english ? translated.summary || item.summary : item.summary
-  const details = english && translated.details.length ? translated.details : item.details
-  const workTypes = item.workTypes.map((workType) => projectWorkTypeLabel(english ? 'en' : 'th', workType))
-  const images = Array.from(new Set([item.coverImage, ...item.galleryImages].filter(Boolean)))
+  const englishCms = cmsLocale === 'en'
+  const project: Project = {
+    _id: item.id,
+    category: item.category.map(getProjectCategoryLabel),
+    coverImage: item.coverImage,
+    details: item.details,
+    galleryImages: item.galleryImages,
+    mediaMetadata: item.mediaMetadata,
+    lat: item.lat,
+    lng: item.lng,
+    location: item.location,
+    slug: item.slug,
+    summary: item.summary,
+    title: item.title,
+    translations: item.translations,
+    workTypes: item.workTypes,
+    year: item.year,
+  }
 
-  return (
-    <CmsShell eyebrow={english ? 'Draft preview' : 'ตัวอย่างฉบับร่าง'} title={title} session={session}>
-      <section className="cms-preview-banner">
-        <strong>{english ? 'Private preview' : 'ตัวอย่างส่วนตัว'}</strong>
-        <span>{english ? 'Only signed-in CMS users can view this page.' : 'เฉพาะผู้ใช้ CMS ที่เข้าสู่ระบบแล้วเท่านั้นที่ดูหน้านี้ได้'}</span>
-        <Link href={`/cms/projects/${id}`}>{english ? 'Back to editor' : 'กลับไปหน้าแก้ไข'}</Link>
-      </section>
-      <article className="cms-project-preview">
-        {images.length ? <ProjectMediaSlider images={images} locale={english ? 'en' : 'th'} projectNumber={id} title={title} /> : null}
-        <header><p>{item.year || '—'} · {location}</p><h2>{title}</h2></header>
-        <dl>
-          <div><dt>{english ? 'Work types' : 'ประเภทงาน'}</dt><dd>{workTypes.join(' · ') || '—'}</dd></div>
-        </dl>
-        <p>{summary}</p>
-        {details.map((detail, index) => <p key={`${index}-${detail.slice(0, 20)}`}>{detail}</p>)}
-      </article>
-    </CmsShell>
-  )
+  return <CmsShell eyebrow={englishCms ? 'Saved project' : 'ผลงานที่บันทึกแล้ว'} title={item.title} session={session}>
+    <section className="cms-preview-banner">
+      <strong>{englishCms ? 'Saved version · public page layout' : 'ฉบับที่บันทึกแล้ว · รูปแบบเดียวกับหน้าเว็บไซต์'}</strong>
+      <span>{englishCms ? 'Unsaved edits are not shown here.' : 'การแก้ไขที่ยังไม่บันทึกจะไม่แสดงในหน้านี้'}</span>
+      <time dateTime={item.updatedAt}>{englishCms ? 'Last saved: ' : 'บันทึกล่าสุด: '}{new Intl.DateTimeFormat(englishCms ? 'en-GB' : 'th-TH', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.updatedAt))}</time>
+      <nav className="cms-preview-locales" aria-label={englishCms ? 'Preview language' : 'ภาษาสำหรับดูตัวอย่าง'}>
+        {SITE_LOCALES.map((locale) => <Link aria-current={locale === previewLocale ? 'page' : undefined} href={'/cms/projects/' + id + '/preview?locale=' + locale} key={locale} lang={localeInfo[locale].htmlLang}>{previewLocaleLabels[locale]}</Link>)}
+      </nav>
+      <Link href={'/cms/projects/' + id}>{englishCms ? 'Back to editor' : 'กลับไปหน้าแก้ไข'}</Link>
+    </section>
+    <div className="cms-project-public-preview" lang={localeInfo[previewLocale].htmlLang}>
+      <ProjectDetailView embedded locale={previewLocale} content={getLocalizedContent(previewLocale)} project={project} />
+    </div>
+  </CmsShell>
 }

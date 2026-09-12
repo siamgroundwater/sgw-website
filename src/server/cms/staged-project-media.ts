@@ -10,6 +10,8 @@ import { deleteCmsImages, isCmsOwnedMediaPublicId } from '@/server/cloudinary/me
 import { getCmsProjectMediaUrlsInUse } from './content'
 import { getCmsStagedProjectMediaCollection } from '@/server/db'
 import type { CmsMediaAsset } from '@/types/cms-media'
+import type { ClientSession } from 'mongodb'
+import { recordCmsOperationalEvent } from './operations'
 
 const stagedMediaMaxAgeSeconds = 30 * 60
 let stagedIndexPromise: Promise<void> | null = null
@@ -23,7 +25,10 @@ async function ensureStagedMediaIndexes() {
         collection.createIndex({ 'asset.publicId': 1 }, { unique: true }),
         collection.createIndex({ submissionId: 1, userId: 1 }),
       ])
-    })()
+    })().catch((error) => {
+      stagedIndexPromise = null
+      throw error
+    })
   }
   await stagedIndexPromise
 }
@@ -69,7 +74,8 @@ export async function registerStagedProjectMedia(
 export async function verifyStagedProjectMediaTokens(
   tokens: unknown,
   submissionId: unknown,
-  user: CmsAuditActor
+  user: CmsAuditActor,
+  session?: ClientSession
 ) {
   await ensureStagedMediaIndexes()
   if (tokens === undefined && submissionId === undefined) return []
@@ -101,29 +107,44 @@ export async function verifyStagedProjectMediaTokens(
       expiresAt: { $gt: new Date() },
       submissionId,
       userId: user.userId,
-    })
+      cleanupClaimedAt: { $exists: false },
+    }, { session })
     if (registered !== verified.length) throw new Error('INVALID_STAGED_MEDIA')
   }
   return verified
 }
 
-export async function commitStagedProjectMedia(payloads: CmsStagedMediaTokenPayload[]) {
+export async function commitStagedProjectMedia(payloads: CmsStagedMediaTokenPayload[], session?: ClientSession) {
   if (!payloads.length) return
   await ensureStagedMediaIndexes()
-  await (await getCmsStagedProjectMediaCollection()).deleteMany({
+  const result = await (await getCmsStagedProjectMediaCollection()).deleteMany({
     'asset.publicId': { $in: payloads.map(({ asset }) => asset.publicId) },
-  })
+    cleanupClaimedAt: { $exists: false },
+    expiresAt: { $gt: new Date() },
+  }, { session })
+  if (result.deletedCount !== payloads.length) throw new Error('INVALID_STAGED_MEDIA')
 }
 
 export async function rollbackStagedProjectMedia(payloads: CmsStagedMediaTokenPayload[]) {
   if (!payloads.length) return { preserved: [], removed: [] }
   await ensureStagedMediaIndexes()
-  const inUse = await getCmsProjectMediaUrlsInUse(payloads.map(({ asset }) => asset.src))
-  const removable = payloads.filter(({ asset }) => !inUse.has(asset.src))
+  const collection = await getCmsStagedProjectMediaCollection()
+  const claimed = []
+  for (const payload of payloads) {
+    const row = await collection.findOneAndUpdate({
+      'asset.publicId': payload.asset.publicId,
+      userId: payload.userId,
+      submissionId: payload.submissionId,
+      cleanupClaimedAt: { $exists: false },
+    }, { $set: { cleanupClaimedAt: new Date() } }, { returnDocument: 'after' })
+    if (row) claimed.push(payload)
+  }
+  const inUse = await getCmsProjectMediaUrlsInUse(claimed.map(({ asset }) => asset.src))
+  const removable = claimed.filter(({ asset }) => !inUse.has(asset.src))
   const removed = await deleteCmsImages(removable.map(({ asset }) => asset.publicId))
   const finished = new Set([
     ...removed,
-    ...payloads.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId),
+    ...claimed.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId),
   ])
   if (finished.size) {
     await (await getCmsStagedProjectMediaCollection()).deleteMany({
@@ -131,7 +152,7 @@ export async function rollbackStagedProjectMedia(payloads: CmsStagedMediaTokenPa
     })
   }
   return {
-    preserved: payloads.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId),
+    preserved: claimed.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId),
     removed,
   }
 }
@@ -139,21 +160,44 @@ export async function rollbackStagedProjectMedia(payloads: CmsStagedMediaTokenPa
 export async function cleanupExpiredStagedProjectMedia(limit = 200) {
   await ensureStagedMediaIndexes()
   const collection = await getCmsStagedProjectMediaCollection()
-  const rows = await collection.find({ expiresAt: { $lte: new Date() } }).sort({ expiresAt: 1 }).limit(Math.min(limit, 500)).toArray()
-  if (!rows.length) return { checked: 0, preserved: 0, removed: 0 }
-  const inUse = await getCmsProjectMediaUrlsInUse(rows.map(({ asset }) => asset.src))
-  const removable = rows.filter(({ asset }) => !inUse.has(asset.src))
-  const removed = await deleteCmsImages(removable.map(({ asset }) => asset.publicId))
-  const finished = new Set([
-    ...removed,
-    ...rows.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId),
-  ])
-  if (finished.size) {
-    await collection.deleteMany({ 'asset.publicId': { $in: Array.from(finished) } })
+  const now = new Date()
+  const retryBefore = new Date(now.getTime() - 15 * 60 * 1000)
+  const eligible = {
+    expiresAt: { $lte: now },
+    $or: [{ cleanupClaimedAt: { $exists: false } }, { cleanupClaimedAt: { $lte: retryBefore } }],
   }
-  return {
-    checked: rows.length,
-    preserved: rows.filter(({ asset }) => inUse.has(asset.src)).length,
-    removed: removed.length,
+  let checked = 0
+  let preserved = 0
+  let removed = 0
+  try {
+    const rows = await collection.find(eligible).sort({ expiresAt: 1 }).limit(Math.max(1, Math.min(limit, 500))).toArray()
+    const claimed = []
+    for (const row of rows) {
+      const item = await collection.findOneAndUpdate(
+        { _id: row._id, ...eligible },
+        { $set: { cleanupClaimedAt: now } },
+        { returnDocument: 'after' }
+      )
+      if (item) claimed.push(item)
+    }
+    checked = claimed.length
+    const inUse = await getCmsProjectMediaUrlsInUse(claimed.map(({ asset }) => asset.src))
+    const removable = claimed.filter(({ asset }) => !inUse.has(asset.src))
+    const removedIds = await deleteCmsImages(removable.map(({ asset }) => asset.publicId))
+    const preservedIds = claimed.filter(({ asset }) => inUse.has(asset.src)).map(({ asset }) => asset.publicId)
+    removed = removedIds.length
+    preserved = preservedIds.length
+    const finished = [...removedIds, ...preservedIds]
+    if (finished.length) await collection.deleteMany({ 'asset.publicId': { $in: finished }, cleanupClaimedAt: now })
+    const remaining = await collection.countDocuments({ expiresAt: { $lte: new Date() } })
+    const counts = { checked, preserved, removed, failed: checked - preserved - removed, remaining }
+    await recordCmsOperationalEvent({ kind: 'media-cleanup', ok: counts.failed === 0, counts })
+    return counts
+  } catch (error) {
+    await recordCmsOperationalEvent({
+      kind: 'media-cleanup', ok: false,
+      error: 'Media cleanup could not finish. Inspect the server logs and retry.',
+    })
+    throw error
   }
 }

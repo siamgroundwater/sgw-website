@@ -1,0 +1,21 @@
+.cms-project-public-preview {
+  min-width: 0;
+  width: 100%;
+  border-radius: 1rem;
+  background: #071e2b;
+  color: #fff;
+}
+
+.cms-project-public-preview .project-detail-content h1,
+.cms-project-public-preview .project-detail-record h2,
+.cms-project-public-preview .project-detail-facts dd {
+  color: #fff;
+}
+
+.cms-project-public-preview .project-detail-primary {
+  color: #052c33;
+}
+
+.cms-project-public-preview .project-detail-breadcrumb a {
+  color: #a5f3fc;
+}

@@ -30,11 +30,82 @@ const toolbarCopy: Record<
   ja: { maximum: '最大表示数', items: '件', viewAll: 'すべての実績を見る', showMore: 'さらに表示' },
 }
 
+export function ProjectCards({
+  projects,
+  locale,
+  copy,
+  className = '',
+}: {
+  projects: ProjectSummary[]
+  locale?: LocalizedLocale
+  copy?: LocalizedContent['projects']
+  className?: string
+}) {
+  const gridClassName = `projects-grid display-posts-listing${className ? ` ${className}` : ''}`
+
+  return (
+    <div className={gridClassName}>
+      {projects.map((project) => {
+        const presentation = copy
+          ? getLocalizedProjectPresentation(project, copy)
+          : undefined
+        const href = locale
+          ? localePath(`/projects/${project._id}`, locale)
+          : `/projects/${project._id}`
+
+        return (
+          <Link
+            key={project._id}
+            href={href}
+            className="listing-item project-card"
+            aria-label={`${copy?.details ?? 'ดูรายละเอียดโครงการ'} ${project.title}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="image project-card-image-wrapper">
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                width={800}
+                height={600}
+                sizes="(width <= 640px) 100vw, (width <= 1024px) 50vw, 25vw"
+                className="project-card-image"
+                loading="lazy"
+              />
+            </div>
+
+            <h3
+              className="Project-Title title SP-textHead5 removeUnderLine"
+              style={{ textAlign: 'center', marginBottom: 0 }}
+            >
+              {project.title}
+            </h3>
+
+            <div className="project-card-meta">
+              {project.year && <span>{project.year}</span>}
+              <span>{project.location}</span>
+            </div>
+
+            <p className="project-type-of-work SP-textHead6" style={{ textAlign: 'center' }}>
+              {project.workTypes.join(' · ') || presentation?.typeLabel}
+            </p>
+
+            <p className="project-category SP-textHead6" style={{ textAlign: 'center' }}>
+              {presentation?.categoryLabel ?? project.category.join(' • ')}
+            </p>
+          </Link>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function ProjectsSection({
   projects,
   locale,
   copy,
   showHistoryMap = false,
+  showIntro = true,
   headingLevel = 'h2',
   featured = false,
   initialItemsPerPage = 10,
@@ -43,6 +114,7 @@ export default function ProjectsSection({
   locale?: LocalizedLocale
   copy?: LocalizedContent['projects']
   showHistoryMap?: boolean
+  showIntro?: boolean
   headingLevel?: 'h1' | 'h2'
   featured?: boolean
   initialItemsPerPage?: Exclude<ItemsPerPage, 'all'>
@@ -89,7 +161,7 @@ export default function ProjectsSection({
         <Heading className="elementor-heading-title elementor-size-default">
           {copy?.title ?? 'ตัวอย่าง โครงการของเรา'}
         </Heading>
-        {copy?.intro && <p className="projects-intro">{copy.intro}</p>}
+        {showIntro && copy?.intro && <p className="projects-intro">{copy.intro}</p>}
 
         {showHistoryMap && (
           <LegacyProjectMapSection locale={locale ?? 'th'} />
@@ -145,59 +217,7 @@ export default function ProjectsSection({
         </div>
       </div>
 
-      <div className="projects-grid display-posts-listing">
-        {displayedProjects.map((project) => {
-          const presentation = copy
-            ? getLocalizedProjectPresentation(project, copy)
-            : undefined
-          const href = locale
-            ? localePath(`/projects/${project._id}`, locale)
-            : `/projects/${project._id}`
-
-          return (
-            <Link
-              key={project._id}
-              href={href}
-              className="listing-item project-card"
-              aria-label={`${copy?.details ?? 'ดูรายละเอียดโครงการ'} ${project.title}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="image project-card-image-wrapper">
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  width={800}
-                  height={600}
-                  sizes="(width <= 640px) 100vw, (width <= 1024px) 50vw, 25vw"
-                  className="project-card-image"
-                  loading="lazy"
-                />
-              </div>
-
-              <h3
-                className="Project-Title title SP-textHead5 removeUnderLine"
-                style={{ textAlign: 'center', marginBottom: 0 }}
-              >
-                {project.title}
-              </h3>
-
-              <div className="project-card-meta">
-                {project.year && <span>{project.year}</span>}
-                <span>{project.location}</span>
-              </div>
-
-              <p className="project-type-of-work SP-textHead6" style={{ textAlign: 'center' }}>
-                {project.workTypes.join(' · ') || presentation?.typeLabel}
-              </p>
-
-              <p className="project-category SP-textHead6" style={{ textAlign: 'center' }}>
-                {presentation?.categoryLabel ?? project.category.join(' • ')}
-              </p>
-            </Link>
-          )
-        })}
-      </div>
+      <ProjectCards projects={displayedProjects} locale={locale} copy={copy} />
 
       {!featured &&
         itemsPerPage !== 'all' &&

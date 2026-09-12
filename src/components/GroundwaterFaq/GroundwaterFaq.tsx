@@ -1,12 +1,10 @@
 'use client'
 
-import Image from 'next/image'
+import LearningDiagram from '@/components/LearningDiagram/LearningDiagram'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import {
-  AlertTriangle,
   ArrowRight,
-  BookOpenCheck,
   CheckCircle2,
   ChevronDown,
   CircleDollarSign,
@@ -14,11 +12,9 @@ import {
   Droplets,
   ExternalLink,
   FileCheck2,
-  Filter,
   FlaskConical,
   Gauge,
   HardHat,
-  HelpCircle,
   Info,
   Landmark,
   LifeBuoy,
@@ -186,17 +182,34 @@ export default function GroundwaterFaq({ locale = 'th', localized = false }: { l
   const [situation, setSituation] = useState<Situation>('new')
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set(['where-to-start']))
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [pendingQuestion, setPendingQuestion] = useState<{ id: string; focus: boolean } | null>(null)
   const localLink = (path: string) => localized ? localePath(path, locale) : path
 
   useEffect(() => {
-    const id = window.location.hash.replace('#faq-', '')
-    if (!id || !groundwaterFaqItems.some((item) => item.id === id)) return
-    const timeout = window.setTimeout(() => {
+    const readHash = () => {
+      const match = /^#faq-([a-z0-9-]+)$/.exec(window.location.hash)
+      const id = match?.[1]
+      if (!id || !groundwaterFaqItems.some((item) => item.id === id)) return
+      setQuery('')
+      setCategory('all')
       setOpenIds((current) => new Set(current).add(id))
-      document.getElementById(`faq-${id}`)?.scrollIntoView({ block: 'center' })
-    }, 50)
-    return () => window.clearTimeout(timeout)
+      setPendingQuestion({ id, focus: false })
+    }
+    const timeout = window.setTimeout(readHash, 0)
+    window.addEventListener('hashchange', readHash)
+    return () => { window.clearTimeout(timeout); window.removeEventListener('hashchange', readHash) }
   }, [])
+
+  useEffect(() => {
+    if (!pendingQuestion) return
+    const frame = window.requestAnimationFrame(() => {
+      const question = document.getElementById(`faq-question-${pendingQuestion.id}`)
+      if (!question) return
+      if (pendingQuestion.focus) question.focus({ preventScroll: true })
+      question.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [pendingQuestion])
 
   const filteredItems = useMemo(() => {
     const term = query.trim().toLocaleLowerCase(locale)
@@ -213,8 +226,12 @@ export default function GroundwaterFaq({ locale = 'th', localized = false }: { l
   const structuredData = { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: groundwaterFaqItems.map((item) => ({ '@type': 'Question', name: item.question[locale], acceptedAnswer: { '@type': 'Answer', text: `${item.answer[locale]} ${item.action[locale]}` } })) }
 
   const openQuestion = (id: string) => {
+    if (!groundwaterFaqItems.some((item) => item.id === id)) return
+    setQuery('')
+    setCategory('all')
     setOpenIds((current) => new Set(current).add(id))
-    window.setTimeout(() => document.getElementById(`faq-${id}`)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }), 50)
+    window.history.replaceState(window.history.state, '', `#faq-${id}`)
+    setPendingQuestion({ id, focus: true })
   }
 
   const toggleQuestion = (id: string) => {
@@ -230,7 +247,7 @@ export default function GroundwaterFaq({ locale = 'th', localized = false }: { l
     const url = `${window.location.origin}${window.location.pathname}#faq-${id}`
     try {
       await navigator.clipboard.writeText(url)
-      window.history.replaceState(null, '', `#faq-${id}`)
+      window.history.replaceState(window.history.state, '', `#faq-${id}`)
       setCopiedId(id)
       window.setTimeout(() => setCopiedId((current) => current === id ? null : current), 1800)
     } catch {
@@ -242,46 +259,38 @@ export default function GroundwaterFaq({ locale = 'th', localized = false }: { l
     <article className="gwf-guide">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
-      <section className="gwf-overview">
-        <div className="gwf-stats">
-          <div><HelpCircle aria-hidden="true" /><span>{copy.stats.questions}</span><strong>{groundwaterFaqItems.length}</strong></div>
-          <div><Filter aria-hidden="true" /><span>{copy.stats.topics}</span><strong>{Object.keys(copy.categories).length}</strong></div>
-          <div><Landmark aria-hidden="true" /><span>{copy.stats.sources}</span><strong>{Object.keys(groundwaterFaqSourceLinks).length}</strong></div>
-          <div><BookOpenCheck aria-hidden="true" /><span>{copy.stats.reviewed}</span><strong>{locale === 'th' ? '4 ส.ค. 2569' : '04 Aug 2026'}</strong></div>
+      <section className="gwf-library" id="gwf-library">
+        <header className="gwf-section-heading"><p>{copy.library.eyebrow}</p><h2>{copy.library.title}</h2><span>{copy.library.intro}</span></header>
+        <div className="gwf-library-controls">
+          <label htmlFor="gwf-search"><span>{copy.library.searchLabel}</span><div><Search aria-hidden="true" /><input id="gwf-search" type="search" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder={copy.library.searchPlaceholder} />{query && <button type="button" onClick={() => { setQuery(''); document.getElementById('gwf-search')?.focus() }} aria-label={copy.library.reset}><X aria-hidden="true" /></button>}</div></label>
+          <details className="gwf-category-filter"><summary>{copy.library.filterLabel}</summary><div role="group" aria-label={copy.library.filterLabel}><button type="button" aria-pressed={category === 'all'} className={category === 'all' ? 'is-active' : ''} onClick={() => setCategory('all')}><Sparkles aria-hidden="true" />{copy.library.all}</button>{(Object.keys(copy.categories) as GroundwaterFaqCategory[]).map((value) => { const Icon = categoryIcons[value]; return <button type="button" key={value} aria-pressed={category === value} className={category === value ? 'is-active' : ''} onClick={() => setCategory(value)}><Icon aria-hidden="true" />{copy.categories[value]}</button> })}</div></details>
+          <div className="gwf-library-meta"><span role="status"><strong>{filteredItems.length}</strong> {copy.library.results}</span><button type="button" onClick={() => setOpenIds(allVisibleOpen ? new Set() : new Set(filteredItems.map((item) => item.id)))}>{allVisibleOpen ? <X aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}{allVisibleOpen ? copy.library.collapseAll : copy.library.expandAll}</button></div>
         </div>
-        <div className="gwf-summary"><h2>{copy.summaryTitle}</h2><ul>{copy.summaryItems.map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul></div>
+
+        <details className="gwf-safety-note" open><summary>{copy.urgentPanel.title}</summary><div><p>{copy.urgentPanel.eyebrow}</p><ul>{copy.urgentPanel.items.map((item) => <li key={item}>{item}</li>)}</ul></div></details>
+
+        {filteredItems.length > 0 ? <div className="gwf-faq-list">{filteredItems.map((item) => { const Icon = categoryIcons[item.category]; const isOpen = openIds.has(item.id); return <article className={`gwf-faq-item ${isOpen ? 'is-open' : ''}`} id={`faq-${item.id}`} key={item.id}><button type="button" className="gwf-question" id={`faq-question-${item.id}`} aria-expanded={isOpen} aria-controls={`faq-answer-${item.id}`} onClick={() => toggleQuestion(item.id)}><span className="gwf-question-copy"><small>{copy.categories[item.category]}{item.popular && <em>{copy.library.popular}</em>}{item.urgent && <em className="is-urgent">{copy.library.urgent}</em>}</small><strong><span className="gwf-question-icon"><Icon aria-hidden="true" /></span>{item.question[locale]}</strong></span><ChevronDown className="gwf-chevron" aria-hidden="true" /></button><div className="gwf-answer" id={`faq-answer-${item.id}`} hidden={!isOpen} role="region" aria-labelledby={`faq-question-${item.id}`}><div><span>{copy.library.answer}</span><p>{item.answer[locale]}</p></div><aside><div><strong><CheckCircle2 aria-hidden="true" />{copy.library.action}</strong><p>{item.action[locale]}</p></div></aside><footer><div>{item.sources.map((source) => <a href={groundwaterFaqSourceLinks[source]} target="_blank" rel="noopener noreferrer" key={source}>{copy.sources.labels[source]}<ExternalLink aria-hidden="true" /></a>)}</div><button type="button" onClick={() => copyQuestionLink(item.id)}><Clipboard aria-hidden="true" />{copiedId === item.id ? copy.library.copied : copy.library.copyLink}</button></footer></div></article> })}</div> : <div className="gwf-empty"><Search aria-hidden="true" /><p>{copy.library.noResults}</p><button type="button" onClick={() => { setQuery(''); setCategory('all'); document.getElementById('gwf-search')?.focus() }}>{copy.library.reset}</button></div>}
       </section>
 
-      <aside className="gwf-notice"><Info aria-hidden="true" /><div><h2>{copy.noticeTitle}</h2><p>{copy.noticeText}</p></div></aside>
+      <aside className="gwf-notice"><div><h2><Info aria-hidden="true" />{copy.noticeTitle}</h2><p>{copy.noticeText}</p></div></aside>
 
-      <figure className="gwf-system-figure"><Image src="/images/learning/groundwater-faq/well-to-building.webp" alt={copy.imageAlt.system} width={1600} height={900} sizes="(width <= 900px) 100vw, 1408px" priority /><figcaption>{copy.imageCaption.system}</figcaption></figure>
+      <figure className="gwf-system-figure"><LearningDiagram kind="system" locale={locale} src="/images/learning/groundwater-faq/well-to-building.webp" alt={copy.imageAlt.system} /></figure>
 
       <section className="gwf-navigator">
         <header><p>{copy.navigator.eyebrow}</p><h2>{copy.navigator.title}</h2><span>{copy.navigator.intro}</span></header>
         <div className="gwf-navigator-layout">
-          <div className="gwf-situations"><strong>{copy.navigator.prompt}</strong>{(Object.keys(copy.navigator.situations) as Situation[]).map((value) => <button type="button" key={value} className={situation === value ? 'is-active' : ''} onClick={() => setSituation(value)}>{value === 'new' ? <HardHat aria-hidden="true" /> : value === 'permit' ? <FileCheck2 aria-hidden="true" /> : value === 'lowFlow' ? <Gauge aria-hidden="true" /> : value === 'quality' ? <FlaskConical aria-hidden="true" /> : value === 'pump' ? <Wrench aria-hidden="true" /> : <CircleDollarSign aria-hidden="true" />}{copy.navigator.situations[value]}</button>)}</div>
-          <div className="gwf-recommended"><strong>{copy.navigator.resultTitle}</strong><ol>{recommendedItems.map((item, index) => <li key={item.id}><span>{index + 1}</span><div><p>{item.question[locale]}</p><button type="button" onClick={() => openQuestion(item.id)}>{copy.navigator.openAnswer}<ArrowRight aria-hidden="true" /></button></div></li>)}</ol><small><Info aria-hidden="true" />{copy.navigator.verify}</small></div>
+          <div className="gwf-situations" role="group" aria-label={copy.navigator.prompt}><strong>{copy.navigator.prompt}</strong>{(Object.keys(copy.navigator.situations) as Situation[]).map((value) => <button type="button" key={value} aria-pressed={situation === value} aria-controls="gwf-recommended" className={situation === value ? 'is-active' : ''} onClick={() => setSituation(value)}>{value === 'new' ? <HardHat aria-hidden="true" /> : value === 'permit' ? <FileCheck2 aria-hidden="true" /> : value === 'lowFlow' ? <Gauge aria-hidden="true" /> : value === 'quality' ? <FlaskConical aria-hidden="true" /> : value === 'pump' ? <Wrench aria-hidden="true" /> : <CircleDollarSign aria-hidden="true" />}{copy.navigator.situations[value]}</button>)}</div>
+          <div className="gwf-recommended" id="gwf-recommended" aria-live="polite"><strong>{copy.navigator.resultTitle}</strong><ol>{recommendedItems.map((item, index) => <li key={item.id}><span>{index + 1}</span><div><p>{item.question[locale]}</p><button type="button" onClick={() => openQuestion(item.id)}>{copy.navigator.openAnswer}<ArrowRight aria-hidden="true" /></button></div></li>)}</ol><small><Info aria-hidden="true" />{copy.navigator.verify}</small></div>
         </div>
       </section>
 
-      <aside className="gwf-urgent"><AlertTriangle aria-hidden="true" /><div><p>{copy.urgentPanel.eyebrow}</p><h2>{copy.urgentPanel.title}</h2><ul>{copy.urgentPanel.items.map((item) => <li key={item}>{item}</li>)}</ul></div></aside>
+      <section className="gwf-quality-section"><header><p>{copy.qualitySection.eyebrow}</p><h2>{copy.qualitySection.title}</h2><span>{copy.qualitySection.text}</span></header><figure><LearningDiagram kind="quality" locale={locale} src="/images/learning/groundwater-faq/sample-to-treatment.webp" alt={copy.imageAlt.quality} /></figure></section>
 
-      <section className="gwf-library" id="gwf-library">
-        <header className="gwf-section-heading"><p>{copy.library.eyebrow}</p><h2>{copy.library.title}</h2><span>{copy.library.intro}</span></header>
-        <div className="gwf-library-controls">
-          <label htmlFor="gwf-search"><span>{copy.library.searchLabel}</span><div><Search aria-hidden="true" /><input id="gwf-search" type="search" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder={copy.library.searchPlaceholder} />{query && <button type="button" onClick={() => setQuery('')} aria-label={copy.library.reset}><X aria-hidden="true" /></button>}</div></label>
-          <div className="gwf-category-filter"><strong>{copy.library.filterLabel}</strong><div><button type="button" className={category === 'all' ? 'is-active' : ''} onClick={() => setCategory('all')}><Sparkles aria-hidden="true" />{copy.library.all}</button>{(Object.keys(copy.categories) as GroundwaterFaqCategory[]).map((value) => { const Icon = categoryIcons[value]; return <button type="button" key={value} className={category === value ? 'is-active' : ''} onClick={() => setCategory(value)}><Icon aria-hidden="true" />{copy.categories[value]}</button> })}</div></div>
-          <div className="gwf-library-meta"><span><strong>{filteredItems.length}</strong> {copy.library.results}</span><button type="button" onClick={() => setOpenIds(allVisibleOpen ? new Set() : new Set(filteredItems.map((item) => item.id)))}>{allVisibleOpen ? <X aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}{allVisibleOpen ? copy.library.collapseAll : copy.library.expandAll}</button></div>
-        </div>
-
-        {filteredItems.length > 0 ? <div className="gwf-faq-list">{filteredItems.map((item) => { const Icon = categoryIcons[item.category]; const isOpen = openIds.has(item.id); return <article className={`gwf-faq-item ${isOpen ? 'is-open' : ''}`} id={`faq-${item.id}`} key={item.id}><button type="button" className="gwf-question" aria-expanded={isOpen} aria-controls={`faq-answer-${item.id}`} onClick={() => toggleQuestion(item.id)}><span className="gwf-question-icon"><Icon aria-hidden="true" /></span><span className="gwf-question-copy"><small>{copy.categories[item.category]}{item.popular && <em>{copy.library.popular}</em>}{item.urgent && <em className="is-urgent">{copy.library.urgent}</em>}</small><strong>{item.question[locale]}</strong></span><ChevronDown className="gwf-chevron" aria-hidden="true" /></button>{isOpen && <div className="gwf-answer" id={`faq-answer-${item.id}`}><div><span>{copy.library.answer}</span><p>{item.answer[locale]}</p></div><aside><CheckCircle2 aria-hidden="true" /><div><strong>{copy.library.action}</strong><p>{item.action[locale]}</p></div></aside><footer><div>{item.sources.map((source) => <a href={groundwaterFaqSourceLinks[source]} target="_blank" rel="noopener noreferrer" key={source}>{copy.sources.labels[source]}<ExternalLink aria-hidden="true" /></a>)}</div><button type="button" onClick={() => copyQuestionLink(item.id)}><Clipboard aria-hidden="true" />{copiedId === item.id ? copy.library.copied : copy.library.copyLink}</button></footer></div>}</article> })}</div> : <div className="gwf-empty"><Search aria-hidden="true" /><p>{copy.library.noResults}</p><button type="button" onClick={() => { setQuery(''); setCategory('all') }}>{copy.library.reset}</button></div>}
-      </section>
-
-      <section className="gwf-quality-section"><header><p>{copy.qualitySection.eyebrow}</p><h2>{copy.qualitySection.title}</h2><span>{copy.qualitySection.text}</span></header><figure><Image src="/images/learning/groundwater-faq/sample-to-treatment.webp" alt={copy.imageAlt.quality} width={1600} height={900} sizes="(width <= 900px) 100vw, 1408px" /><figcaption>{copy.imageCaption.quality}</figcaption></figure></section>
+      <p className="gwf-review-date">{copy.stats.reviewed}: {locale === 'th' ? '4 ส.ค. 2569' : '04 Aug 2026'}</p>
 
       <section className="gwf-sources"><div><p>{copy.sources.eyebrow}</p><h2>{copy.sources.title}</h2><span>{copy.sources.text}</span></div><ul>{(Object.keys(groundwaterFaqSourceLinks) as GroundwaterFaqSource[]).map((source) => <li key={source}><a href={groundwaterFaqSourceLinks[source]} target="_blank" rel="noopener noreferrer">{copy.sources.labels[source]}<ArrowRight aria-hidden="true" /></a></li>)}</ul></section>
 
-      <section className="gwf-next"><div><ShieldCheck aria-hidden="true" /><div><h2>{copy.next.title}</h2><p>{copy.next.text}</p></div></div><nav><Link href={localLink('/contact')}>{copy.next.contact}<ArrowRight aria-hidden="true" /></Link><Link href={localLink('/learn/groundwater-calculator-tools')}>{copy.next.tools}</Link><Link href={localLink('/learn/groundwater-law-regulation-thailand')}>{copy.next.law}</Link></nav></section>
+      <section className="gwf-next"><div><h2><ShieldCheck aria-hidden="true" />{copy.next.title}</h2><p>{copy.next.text}</p></div><nav><Link href={localLink('/contact')}>{copy.next.contact}<ArrowRight aria-hidden="true" /></Link><Link href={localLink('/learn/groundwater-calculator-tools')}>{copy.next.tools}</Link><Link href={localLink('/learn/groundwater-law-regulation-thailand')}>{copy.next.law}</Link></nav></section>
     </article>
   )
 }

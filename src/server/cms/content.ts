@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { ObjectId } from 'mongodb'
+import { ObjectId, type ClientSession, type Filter, type Sort } from 'mongodb'
 import {
   getCmsLearningCollection,
   getCmsProjectRevisionsCollection,
@@ -19,7 +19,7 @@ import type {
   CmsLearningRecord,
   CmsProjectInput,
   CmsProjectRecord,
-  CmsProjectRevisionRecord,
+  CmsProjectTranslations,
   CmsServiceInput,
   CmsServiceRecord,
   CmsStatus,
@@ -27,6 +27,7 @@ import type {
 import { normalizeSlug } from '@/lib/slug'
 import { normalizeCmsProjectCategories } from '@/lib/cms-project-categories'
 import { normalizeProjectWorkTypes } from '@/lib/project-work-types'
+import { hasProjectTranslationContent, normalizeProjectTranslation } from '@/lib/project-translations'
 
 export class CmsContentError extends Error {
   status: number
@@ -77,27 +78,31 @@ export async function ensureCmsContentIndexes() {
         ),
         learning.createIndex({ status: 1, updatedAt: -1 }),
       ])
-    })()
+    })().catch((error) => {
+      indexPromise = null
+      throw error
+    })
   }
   await indexPromise
 }
 
-type CmsPublishActor = { displayName: string; userId: string }
+type CmsProjectActor = { displayName: string; userId: string }
 
-function projectTranslations(input: { translations?: CmsProjectDocument['translations'] }) {
-  const english = input.translations?.en
-  return {
-    en: {
-      details: english?.details || [],
-      location: english?.location || '',
-      summary: english?.summary || '',
-      title: english?.title || '',
-    },
+function projectTranslations(input: { translations?: CmsProjectDocument['translations'] }): CmsProjectTranslations {
+  const translations: CmsProjectTranslations = {
+    en: normalizeProjectTranslation(input.translations?.en),
   }
+  const chinese = normalizeProjectTranslation(input.translations?.zh)
+  const japanese = normalizeProjectTranslation(input.translations?.ja)
+  if (hasProjectTranslationContent(chinese)) translations.zh = chinese
+  if (hasProjectTranslationContent(japanese)) translations.ja = japanese
+  return translations
 }
 
 function projectContentFromInput(input: CmsProjectInput): CmsProjectContent {
   return {
+    mediaMetadata: input.mediaMetadata || {},
+    translationSourceHash: input.translationSourceHash || {},
     category: input.category,
     coverImage: input.coverImage,
     details: input.details,
@@ -114,8 +119,10 @@ function projectContentFromInput(input: CmsProjectInput): CmsProjectContent {
   }
 }
 
-function publishedProjectContent(document: CmsProjectDocument): CmsProjectContent {
+function currentProjectContent(document: CmsProjectContent): CmsProjectContent {
   return {
+    mediaMetadata: document.mediaMetadata || {},
+    translationSourceHash: document.translationSourceHash || {},
     category: normalizeCmsProjectCategories(document.category),
     coverImage: document.coverImage,
     details: document.details,
@@ -157,24 +164,23 @@ function throwWriteError(error: unknown): never {
 
 export function serializeCmsProject(document: CmsProjectDocument): CmsProjectRecord {
   if (!document._id) throw new Error('CMS project is missing _id.')
-  const content = document.draft || publishedProjectContent(document)
+  const content = currentProjectContent(document)
   return {
+    mediaMetadata: content.mediaMetadata,
+    translationSourceHash: content.translationSourceHash,
     category: normalizeCmsProjectCategories(content.category),
     coverImage: content.coverImage,
     createdAt: document.createdAt.toISOString(),
     details: content.details,
     galleryImages: content.galleryImages,
-    hasUnpublishedChanges: Boolean(document.draft) || document.status === 'draft',
+    deletedAt: document.deletedAt?.toISOString() || null,
     id: document._id.toString(),
     lat: content.lat,
     lng: content.lng,
     location: content.location,
-    publishedAt: document.publishedAt?.toISOString() || null,
-    publishedBy: document.publishedBy || null,
-    publishedVersion: document.publishedVersion || (document.status === 'active' ? 1 : 0),
     slug: normalizeSlug(content.slug),
     source: document.source,
-    status: document.status,
+    status: document.deletedAt || document.status === 'archived' ? 'archived' : 'active',
     summary: content.summary,
     title: content.title,
     translations: projectTranslations(content),
@@ -227,15 +233,45 @@ function statusFilter(status?: CmsStatus) {
   return status ? { status } : {}
 }
 
-export async function listCmsProjects(status?: CmsStatus) {
+export type CmsProjectQuery = {
+  query?: string
+  category?: string
+  workType?: string
+  sort?: string
+  page?: number | string
+  pageSize?: number | string
+  view?: string
+}
+
+export async function queryCmsProjects(options: CmsProjectQuery = {}) {
   await ensureCmsContentIndexes()
   const collection = await getCmsProjectsCollection()
+  const pageSize = Math.max(1, Math.min(60, Math.floor(Number(options.pageSize) || 12)))
+  const requestedPage = Math.max(1, Math.floor(Number(options.page) || 1))
+  const filter: Filter<CmsProjectDocument> = options.view === 'trash'
+    ? { $or: [{ deletedAt: { $exists: true } }, { status: 'archived' }] }
+    : { deletedAt: { $exists: false }, status: 'active' }
+  const clauses: Filter<CmsProjectDocument>[] = [filter]
+  if (options.category) clauses.push({ category: options.category as CmsProjectInput['category'][number] })
+  if (options.workType) clauses.push({ workTypes: options.workType as CmsProjectInput['workTypes'][number] })
+  const query = options.query?.trim().slice(0, 120)
+  if (query) {
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const fields = ['title', 'location', 'summary', 'slug', 'translations.en.title', 'translations.en.location', 'translations.en.summary', 'translations.zh.title', 'translations.zh.location', 'translations.zh.summary', 'translations.ja.title', 'translations.ja.location', 'translations.ja.summary']
+    clauses.push({ $or: fields.map((field) => ({ [field]: { $regex: escaped, $options: 'i' } })) })
+  }
+  const combined = { $and: clauses }
+  const total = await collection.countDocuments(combined)
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const page = Math.min(requestedPage, totalPages)
+  const sort: Sort = options.sort === 'title' ? { title: 1, _id: 1 } : options.sort === 'year' ? { year: -1, updatedAt: -1, _id: 1 } : { updatedAt: -1, _id: 1 }
   const rows = await collection
-    .find({ deletedAt: { $exists: false }, ...statusFilter(status) })
-    .sort({ year: -1, updatedAt: -1, title: 1 })
-    .limit(300)
+    .find(combined)
+    .sort(sort)
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
     .toArray()
-  return rows.map(serializeCmsProject)
+  return { items: rows.map(serializeCmsProject), total, page, pageSize, totalPages }
 }
 
 export async function listCmsServices(status?: CmsStatus) {
@@ -260,11 +296,11 @@ export async function listCmsLearning(status?: CmsStatus) {
   return rows.map(serializeCmsLearning)
 }
 
-export async function getCmsProjectById(id: string) {
+export async function getCmsProjectById(id: string, includeDeleted = false) {
   await ensureCmsContentIndexes()
   const row = await (await getCmsProjectsCollection()).findOne({
     _id: assertObjectId(id),
-    deletedAt: { $exists: false },
+    ...(includeDeleted ? {} : { deletedAt: { $exists: false }, status: 'active' as const }),
   })
   return row ? serializeCmsProject(row) : null
 }
@@ -273,9 +309,9 @@ export async function getCmsProjectMediaUrlsInUse(urls: string[]) {
   const uniqueUrls = Array.from(new Set(urls.map((value) => value.trim()).filter(Boolean)))
   if (!uniqueUrls.length) return new Set<string>()
   const collection = await getCmsProjectsCollection()
-  const rows = await collection.find(
+  // Preserve historical media until every environment has completed the backed-up migration.
+  const rows = await collection.find<CmsProjectDocument & { draft?: Pick<CmsProjectContent, 'coverImage' | 'galleryImages'> }>(
     {
-      deletedAt: { $exists: false },
       $or: [
         { coverImage: { $in: uniqueUrls } },
         { galleryImages: { $in: uniqueUrls } },
@@ -294,6 +330,14 @@ export async function getCmsProjectMediaUrlsInUse(urls: string[]) {
     if (row.draft && uniqueUrls.includes(row.draft.coverImage)) inUse.add(row.draft.coverImage)
     for (const image of row.draft?.galleryImages || []) {
       if (uniqueUrls.includes(image)) inUse.add(image)
+    }
+  }
+  const revisions = await (await getCmsProjectRevisionsCollection()).find({
+    $or: [{ 'content.coverImage': { $in: uniqueUrls } }, { 'content.galleryImages': { $in: uniqueUrls } }],
+  }, { projection: { content: 1 } }).toArray()
+  for (const row of revisions) {
+    for (const src of [row.content.coverImage, ...row.content.galleryImages]) {
+      if (uniqueUrls.includes(src)) inUse.add(src)
     }
   }
   return inUse
@@ -319,24 +363,17 @@ export async function getCmsLearningById(id: string) {
 
 export async function createCmsProject(
   input: CmsProjectInput,
-  actor: CmsPublishActor,
-  publish = false
+  actor: CmsProjectActor,
+  session?: ClientSession
 ) {
-  await ensureCmsContentIndexes()
   const collection = await getCmsProjectsCollection()
   const now = new Date()
   const document: CmsProjectDocument = {
-    ...projectContentFromInput(input),
-    createdAt: now,
-    publishedAt: publish ? now : undefined,
-    publishedBy: publish ? actor.displayName : undefined,
-    publishedVersion: publish ? 1 : 0,
-    source: 'cms',
-    status: publish ? 'active' : 'draft',
-    updatedAt: now,
+    ...projectContentFromInput(input), createdAt: now, source: 'cms', status: 'active', updatedAt: now,
   }
+  void actor
   try {
-    const result = await collection.insertOne(document)
+    const result = await collection.insertOne(document, { session })
     return serializeCmsProject({ ...document, _id: result.insertedId })
   } catch (error) {
     return throwWriteError(error)
@@ -379,105 +416,32 @@ export async function createCmsLearning(input: CmsLearningInput) {
   }
 }
 
+function expectedProjectDate(value: string | undefined) {
+  const date = value ? new Date(value) : null
+  if (!date || !Number.isFinite(date.getTime())) {
+    throw new CmsContentError('Reload the project before saving; its saved version is required.', 428)
+  }
+  return date
+}
+
 export async function updateCmsProject(
   id: string,
   input: CmsProjectInput,
-  actor: CmsPublishActor,
-  expectedUpdatedAt?: string
+  actor: CmsProjectActor,
+  expectedUpdatedAt: string,
+  session?: ClientSession
 ) {
-  await ensureCmsContentIndexes()
   const collection = await getCmsProjectsCollection()
-  const objectId = assertObjectId(id)
-  try {
-    const current = await collection.findOne({ _id: objectId, deletedAt: { $exists: false } })
-    if (!current) throw new CmsContentError('Project not found.', 404)
-    if (expectedUpdatedAt && current.updatedAt.toISOString() !== expectedUpdatedAt) {
-      throw new CmsContentError('This project changed in another tab. Reload before saving.', 409)
-    }
-    const now = new Date()
-    const content = projectContentFromInput(input)
-    const result = current.status === 'active'
-      ? await collection.findOneAndUpdate(
-          { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
-          {
-            $set: {
-              draft: { ...content, savedAt: now, savedBy: actor.displayName },
-              source: 'cms',
-              updatedAt: now,
-            },
-          },
-          { returnDocument: 'after' }
-        )
-      : await collection.findOneAndUpdate(
-          { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
-          {
-            $set: { ...content, source: 'cms', status: 'draft', updatedAt: now },
-            $unset: { draft: '' },
-          },
-          { returnDocument: 'after' }
-        )
-    if (!result) throw new CmsContentError('This project changed in another tab. Reload before saving.', 409)
-    return serializeCmsProject(result)
-  } catch (error) {
-    if (error instanceof CmsContentError) throw error
-    return throwWriteError(error)
-  }
-}
-
-async function preservePublishedRevision(document: CmsProjectDocument) {
-  if (!document._id || document.status !== 'active') return
-  const revisions = await getCmsProjectRevisionsCollection()
-  const version = document.publishedVersion || 1
-  await revisions.updateOne(
-    { projectId: document._id, version },
-    {
-      $setOnInsert: {
-        content: publishedProjectContent(document),
-        projectId: document._id,
-        publishedAt: document.publishedAt || document.updatedAt,
-        publishedBy: document.publishedBy || 'Imported project snapshot',
-        version,
-      },
-    },
-    { upsert: true }
-  )
-}
-
-export async function publishCmsProject(
-  id: string,
-  input: CmsProjectInput,
-  actor: CmsPublishActor,
-  expectedUpdatedAt?: string
-) {
-  await ensureCmsContentIndexes()
-  const collection = await getCmsProjectsCollection()
-  const objectId = assertObjectId(id)
-  const current = await collection.findOne({ _id: objectId, deletedAt: { $exists: false } })
-  if (!current) throw new CmsContentError('Project not found.', 404)
-  if (expectedUpdatedAt && current.updatedAt.toISOString() !== expectedUpdatedAt) {
-    throw new CmsContentError('This project changed in another tab. Reload before publishing.', 409)
-  }
-  await preservePublishedRevision(current)
-  const now = new Date()
-  const nextVersion = current.status === 'active' ? (current.publishedVersion || 1) + 1 : Math.max(1, (current.publishedVersion || 0) + 1)
+  const previousDate = expectedProjectDate(expectedUpdatedAt)
   try {
     const result = await collection.findOneAndUpdate(
-      { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
-      {
-        $set: {
-          ...projectContentFromInput(input),
-          publishedAt: now,
-          publishedBy: actor.displayName,
-          publishedVersion: nextVersion,
-          source: 'cms',
-          status: 'active',
-          updatedAt: now,
-        },
-        $unset: { draft: '' },
-      },
-      { returnDocument: 'after' }
+      { _id: assertObjectId(id), deletedAt: { $exists: false }, status: 'active', updatedAt: previousDate },
+      { $set: { ...projectContentFromInput(input), source: 'cms', status: 'active', updatedAt: new Date(Math.max(Date.now(), previousDate.getTime() + 1)) } },
+      { returnDocument: 'after', session }
     )
-    if (!result) throw new CmsContentError('This project changed in another tab. Reload before publishing.', 409)
+    // Historical draft/revision fields are retained until the backed-up migration handles them.
+    if (!result) throw new CmsContentError('This project changed or was removed. Reload its latest version before saving.', 409)
+    void actor
     return serializeCmsProject(result)
   } catch (error) {
     if (error instanceof CmsContentError) throw error
@@ -485,88 +449,28 @@ export async function publishCmsProject(
   }
 }
 
-export async function unpublishCmsProject(id: string, actor: CmsPublishActor, expectedUpdatedAt?: string) {
-  await ensureCmsContentIndexes()
-  const collection = await getCmsProjectsCollection()
-  const objectId = assertObjectId(id)
-  const current = await collection.findOne({ _id: objectId, deletedAt: { $exists: false } })
-  if (!current) throw new CmsContentError('Project not found.', 404)
-  if (expectedUpdatedAt && current.updatedAt.toISOString() !== expectedUpdatedAt) {
-    throw new CmsContentError('This project changed in another tab. Reload before unpublishing.', 409)
-  }
-  if (current.status !== 'active') return serializeCmsProject(current)
-  await preservePublishedRevision(current)
-  const result = await collection.findOneAndUpdate(
-    { _id: objectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
-    {
-      $set: { source: 'cms', status: 'draft', updatedAt: new Date() },
-      $unset: { draft: '' },
-    },
-    { returnDocument: 'after' }
-  )
-  if (!result) throw new CmsContentError('Project not found.', 404)
-  void actor
-  return serializeCmsProject(result)
-}
-
-export async function listCmsProjectRevisions(id: string): Promise<CmsProjectRevisionRecord[]> {
-  await ensureCmsContentIndexes()
-  const projectId = assertObjectId(id)
-  const rows = await (await getCmsProjectRevisionsCollection())
-    .find({ projectId })
-    .sort({ version: -1 })
-    .limit(30)
-    .toArray()
-  return rows.map((row) => ({
-    id: row._id?.toString() || '',
-    publishedAt: row.publishedAt.toISOString(),
-    publishedBy: row.publishedBy,
-    version: row.version,
-  }))
-}
-
-export async function restoreCmsProjectRevision(
+export async function restoreCmsProject(
   id: string,
-  revisionId: string,
-  actor: CmsPublishActor,
-  expectedUpdatedAt?: string
+  expectedUpdatedAt: string,
+  session?: ClientSession
 ) {
-  await ensureCmsContentIndexes()
-  const projectId = assertObjectId(id)
-  const revisionObjectId = assertObjectId(revisionId)
-  const [projects, revisions] = await Promise.all([
-    getCmsProjectsCollection(),
-    getCmsProjectRevisionsCollection(),
-  ])
-  const [current, revision] = await Promise.all([
-    projects.findOne({ _id: projectId, deletedAt: { $exists: false } }),
-    revisions.findOne({ _id: revisionObjectId, projectId }),
-  ])
-  if (!current || !revision) throw new CmsContentError('Project revision not found.', 404)
-  if (expectedUpdatedAt && current.updatedAt.toISOString() !== expectedUpdatedAt) {
-    throw new CmsContentError('This project changed in another tab. Reload before restoring.', 409)
-  }
-  await preservePublishedRevision(current)
-  const now = new Date()
-  const nextVersion = Math.max(current.publishedVersion || 0, revision.version) + 1
-  const result = await projects.findOneAndUpdate(
-    { _id: projectId, deletedAt: { $exists: false }, updatedAt: current.updatedAt },
-    {
-      $set: {
-        ...revision.content,
-        publishedAt: now,
-        publishedBy: actor.displayName,
-        publishedVersion: nextVersion,
-        source: 'cms',
-        status: 'active',
-        updatedAt: now,
+  const collection = await getCmsProjectsCollection()
+  const previousDate = expectedProjectDate(expectedUpdatedAt)
+  try {
+    const result = await collection.findOneAndUpdate(
+      { _id: assertObjectId(id), updatedAt: previousDate, $or: [{ deletedAt: { $exists: true } }, { status: 'archived' }] },
+      {
+        $set: { source: 'cms', status: 'active', updatedAt: new Date(Math.max(Date.now(), previousDate.getTime() + 1)) },
+        $unset: { deletedAt: '' },
       },
-      $unset: { draft: '' },
-    },
-    { returnDocument: 'after' }
-  )
-  if (!result) throw new CmsContentError('Project not found.', 404)
-  return serializeCmsProject(result)
+      { returnDocument: 'after', session }
+    )
+    if (!result) throw new CmsContentError('This project changed or is no longer in the trash. Reload before restoring.', 409)
+    return serializeCmsProject(result)
+  } catch (error) {
+    if (error instanceof CmsContentError) throw error
+    return throwWriteError(error)
+  }
 }
 
 export async function updateCmsService(id: string, input: CmsServiceInput) {
@@ -624,9 +528,16 @@ async function softDelete(
   if (!result.matchedCount) throw new CmsContentError('Content not found.', 404)
 }
 
-export async function deleteCmsProject(id: string) {
-  await ensureCmsContentIndexes()
-  await softDelete(id, await getCmsProjectsCollection())
+export async function deleteCmsProject(id: string, expectedUpdatedAt: string, session?: ClientSession) {
+  const previousDate = expectedProjectDate(expectedUpdatedAt)
+  const now = new Date(Math.max(Date.now(), previousDate.getTime() + 1))
+  const result = await (await getCmsProjectsCollection()).findOneAndUpdate(
+    { _id: assertObjectId(id), deletedAt: { $exists: false }, status: 'active', updatedAt: previousDate },
+    { $set: { deletedAt: now, status: 'archived', updatedAt: now } },
+    { returnDocument: 'after', session }
+  )
+  if (!result) throw new CmsContentError('This project changed or was already removed. Reload before removing it.', 409)
+  return serializeCmsProject(result)
 }
 
 export async function deleteCmsService(id: string) {

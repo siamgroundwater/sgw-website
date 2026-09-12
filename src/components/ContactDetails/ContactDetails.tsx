@@ -165,6 +165,15 @@ export default function ContactDetails({
       icon: <Image src="/images/logo/contact/LINE_icon.png" alt="" width={52} height={52} />,
       external: true,
     },
+    {
+      id: 'tiktok',
+      href: 'https://www.tiktok.com/@siamgroundwater.co',
+      title: 'TikTok',
+      detail: '@siamgroundwater.co',
+      copyValue: 'https://www.tiktok.com/@siamgroundwater.co',
+      icon: <Image src="/icons/TikTok.png" alt="" width={52} height={52} />,
+      external: true,
+    },
   ]
 
   const copyText = async (id: string, value: string) => {

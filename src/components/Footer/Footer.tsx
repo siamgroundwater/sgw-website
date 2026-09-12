@@ -12,12 +12,20 @@ import {
 } from '@/i18n/config'
 import './Footer.css'
 
+const directContactCopy = {
+  th: { wasin: 'โทร (คุณวศิน)', toeng: 'โทร (คุณเติ้ง)' },
+  en: { wasin: 'Tel (Wasin)', toeng: 'Tel (Toeng)' },
+  zh: { wasin: '电话（Wasin）', toeng: '电话（Toeng）' },
+  ja: { wasin: '電話（Wasin）', toeng: '電話（Toeng）' },
+}
+
 export default function Footer() {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const currentYear = new Date().getFullYear()
   const pathname = usePathname()
   const locale = localeFromPathname(pathname)
   const copy = navigationCopy[locale]
+  const directContacts = directContactCopy[locale]
 
   useEffect(() => {
     const handleScroll = () => setShowBackToTop(window.scrollY > 300)
@@ -69,6 +77,22 @@ export default function Footer() {
               </p>
               <p className="footer-contact-line">
                 <span className="footer-contact-icon">
+                  <Phone aria-hidden="true" />
+                </span>
+                <a href="tel:0898954757" className="footer-link">
+                  {directContacts.wasin}: 0898954757
+                </a>
+              </p>
+              <p className="footer-contact-line">
+                <span className="footer-contact-icon">
+                  <Phone aria-hidden="true" />
+                </span>
+                <a href="tel:0827447582" className="footer-link">
+                  {directContacts.toeng}: 0827447582
+                </a>
+              </p>
+              <p className="footer-contact-line">
+                <span className="footer-contact-icon">
                   <Printer aria-hidden="true" />
                 </span>
                 <span>{copy.fax} 0-2375-0791-2</span>
@@ -112,6 +136,21 @@ export default function Footer() {
                 <Image
                   src="/images/logo/contact/Facebook_icon.png"
                   alt="Facebook"
+                  width={40}
+                  height={40}
+                />
+              </a>
+
+              <a
+                href="https://www.tiktok.com/@siamgroundwater.co"
+                className="footer-social-item"
+                aria-label="Visit Siam Groundwater on TikTok"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/icons/TikTok.png"
+                  alt="TikTok"
                   width={40}
                   height={40}
                 />

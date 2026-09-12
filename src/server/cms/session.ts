@@ -9,6 +9,7 @@ export const CMS_SESSION_COOKIE_NAME = 'sgw_cms_session'
 export const CMS_SESSION_MAX_AGE_SECONDS = 60 * 60 * 8
 
 export type CmsSessionPayload = {
+  sessionVersion?: number
   displayName: string
   expiresAt: number
   issuedAt: number
@@ -33,12 +34,13 @@ function shouldUseSecureCookie() {
 }
 
 export function createCmsSessionToken(
-  payload: Omit<CmsSessionPayload, 'expiresAt' | 'issuedAt'>
+  payload: Omit<CmsSessionPayload, 'expiresAt' | 'issuedAt'>,
+  issuedAt = Date.now(),
 ) {
   return createCmsSessionTokenValue(
     payload,
     getSessionSecret(),
-    Date.now(),
+    issuedAt,
     CMS_SESSION_MAX_AGE_SECONDS
   )
 }

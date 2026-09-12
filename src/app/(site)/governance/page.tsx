@@ -15,9 +15,9 @@ export default function GovernancePage() {
     <main className="governance-page">
       <section className="governance-header">
         <p className="governance-eyebrow">โครงการรักษ์น้ำบาดาล</p>
-        <p className="governance-title-th">
+        <h1 className="governance-title-th">
           แนวทางบริหารจัดการทรัพยากรน้ำบาดาลอย่างยั่งยืน
-        </p>
+        </h1>
         <p className="governance-description">
           แผ่นสรุปแนวคิดโครงการ “รักษ์น้ำบาดาล” แสดงบทบาทของภาครัฐ ผู้ใช้น้ำ
           และผู้เจาะน้ำบาดาล

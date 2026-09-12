@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Download,
-  MapPin,
   MessageCircle,
   PlayCircle,
 } from 'lucide-react'
@@ -17,8 +16,9 @@ import GroundwaterCaseStudies from '@/components/GroundwaterCaseStudies/Groundwa
 import GroundwaterLawGuide from '@/components/GroundwaterLawGuide/GroundwaterLawGuide'
 import GroundwaterFaq from '@/components/GroundwaterFaq/GroundwaterFaq'
 import GroundwaterOwnerGuide from '@/components/GroundwaterOwnerGuide/GroundwaterOwnerGuide'
+import LearningArticleHeader from '@/components/LearningCenterPage/LearningArticleHeader'
 import LearningCenterPage from '@/components/LearningCenterPage/LearningCenterPage'
-import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlider'
+import ProjectDetailView from '@/components/ProjectDetailView/ProjectDetailView'
 import ServiceDetailPage from '@/components/ServiceDetailPage/ServiceDetailPage'
 import SocialMediaSection from '@/components/home/SocialMediaSection'
 import CustomerHistorySection from '@/components/home/CustomerHistorySection'
@@ -35,6 +35,7 @@ import {
   languageAlternates,
   localeInfo,
   localePath,
+  navigationCopy,
   type LocalizedLocale,
 } from '@/i18n/config'
 import {
@@ -47,8 +48,8 @@ import {
   type LocalizedContent,
   type ServiceKey,
 } from '@/i18n/localized-content'
-import { getLocalizedProjectPresentation, localizeProject } from '@/i18n/projects'
-import { getProjectMapUrl, type Project } from '@/lib/projects'
+import { localizeProject } from '@/i18n/projects'
+import type { Project } from '@/lib/projects'
 import { toProjectSummary, type ProjectSummary } from '@/lib/project-summaries'
 import { getPublicProjectById, listPublicProjects } from '@/server/public-projects'
 import '@/app/(site)/home/page.css'
@@ -362,101 +363,13 @@ function LocalizedServiceDetail({
 function LocalizedProjects({ locale, content, projects }: { locale: LocalizedLocale; content: LocalizedContent; projects: ProjectSummary[] }) {
   return (
     <main className="projects-page" style={{ padding: '1rem' }}>
-      <ProjectsSection projects={projects} locale={locale} copy={content.projects} showHistoryMap headingLevel="h1" />
+      <ProjectsSection projects={projects} locale={locale} copy={content.projects} showHistoryMap showIntro={false} headingLevel="h1" />
     </main>
   )
 }
 
-function LocalizedProjectDetail({ locale, content, project: rawProject }: { locale: LocalizedLocale; content: LocalizedContent; project: Project }) {
-  const project = localizeProject(rawProject, locale)
-  const presentation = getLocalizedProjectPresentation(project, content.projects)
-  const mapUrl = getProjectMapUrl(project)
-  return (
-    <main className="project-detail-page">
-      <nav
-        className="project-detail-breadcrumb"
-        aria-label={content.common.breadcrumbLabel}
-      >
-        <Link href={localePath('/', locale)}>{content.common.home}</Link>
-        <span aria-hidden="true">/</span>
-        <Link href={localePath('/projects', locale)}>
-          {content.projects.title}
-        </Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{project.title}</span>
-      </nav>
-      <article className="project-detail-card">
-        <div className="project-detail-content">
-          <h1>{project.title}</h1>
-          <p className="project-detail-lead">{project.location}</p>
-
-          <dl className="project-detail-facts">
-            {project.year && (
-              <div>
-                <dt>{content.projects.yearLabel}</dt>
-                <dd>{project.year}</dd>
-              </div>
-            )}
-            <div>
-              <dt>{content.projects.location}</dt>
-              <dd>{project.location}</dd>
-            </div>
-            <div>
-              <dt>{content.projects.typeLabel}</dt>
-              <dd>{presentation.typeLabel}</dd>
-            </div>
-            <div>
-              <dt>{content.projects.categoryLabel}</dt>
-              <dd>{presentation.categoryLabel}</dd>
-            </div>
-            {project.workTypes.length > 0 && (
-              <div>
-                <dt>{content.projects.workScopeLabel}</dt>
-                <dd>{project.workTypes.join(' • ')}</dd>
-              </div>
-            )}
-          </dl>
-
-          <section className="project-detail-record">
-            <h2>{content.projects.projectStoryTitle}</h2>
-            <p className="project-detail-story">{project.summary}</p>
-            {project.details.length ? <div className="project-detail-sections">{project.details.map((detail, index) => <p key={`${index}-${detail.slice(0, 24)}`}>{detail}</p>)}</div> : null}
-            <p className="project-detail-source">
-              {content.projects.recoveredRecordNote}
-            </p>
-          </section>
-
-          <div className="project-detail-actions">
-            {mapUrl && (
-              <a
-                href={mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-detail-primary"
-              >
-                <MapPin aria-hidden="true" />
-                {content.projects.mapCta}
-              </a>
-            )}
-            <Link
-              href={localePath('/contact', locale)}
-              className="project-detail-secondary"
-            >
-              <MessageCircle aria-hidden="true" />
-              {content.projects.enquiryCta}
-            </Link>
-          </div>
-        </div>
-
-        <ProjectMediaSlider
-          images={project.galleryImages}
-          locale={locale}
-          projectNumber={project._id}
-          title={project.title}
-        />
-      </article>
-    </main>
-  )
+function LocalizedProjectDetail({ locale, content, project }: { locale: LocalizedLocale; content: LocalizedContent; project: Project }) {
+  return <ProjectDetailView locale={locale} content={content} project={project} />
 }
 
 function LocalizedGovernance({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
@@ -501,8 +414,8 @@ function LocalizedArticlePage({ locale, content, articleSlug }: { locale: Locali
       }`}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
-      <nav className="learning-article-breadcrumb" aria-label={content.common.breadcrumbLabel}><Link href={localePath('/', locale)}>{content.common.home}</Link><span aria-hidden="true">/</span><Link href={localePath('/groundwater-learning', locale)}>{content.learning.title}</Link><span aria-hidden="true">/</span><span aria-current="page">{article.title}</span></nav>
-      <header className="learning-article-hero"><p className="learning-article-eyebrow">{article.eyebrow}</p><h1>{article.title}</h1><p className="learning-article-description">{article.description}</p><p className="learning-article-audience"><strong>{content.common.suitableFor}:</strong> {article.audience}</p></header>
+      <nav className="learning-article-breadcrumb" aria-label={content.common.breadcrumbLabel}><Link href={localePath('/', locale)}>{content.common.home}</Link><span aria-hidden="true">/</span><Link href={localePath('/groundwater-learning', locale)}>{navigationCopy[locale].learning}</Link><span aria-hidden="true">/</span><span aria-current="page">{article.eyebrow}</span></nav>
+      <LearningArticleHeader slug={articleSlug} locale={locale} audience={article.audience} />
       {articleSlug === 'groundwater-calculator-tools' && <GroundwaterCalculator locale={locale} />}
       {articleSlug === 'groundwater-basics-thailand' && <GroundwaterBasics locale={locale} localized />}
       {articleSlug === 'groundwater-case-studies-problems' && <GroundwaterCaseStudies locale={locale} localized />}

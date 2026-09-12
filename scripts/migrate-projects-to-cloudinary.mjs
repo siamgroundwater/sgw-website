@@ -64,15 +64,17 @@ const workTypeKeys = new Map([
   ['งานเจาะบ่อน้ำบาดาล', 'groundwater-well-drilling'],
   ['งานแก้ไขโครงการที่เจาะน้ำบาดาลแล้วมีปัญหา', 'groundwater-project-remediation'],
   ['งานซ่อมบำรุงรักษาบ่อน้ำบาดาล', 'groundwater-well-maintenance'],
-  ['งานเจาะบ่อน้ำแร่คุณภาพดี', 'mineral-water-well-drilling'],
-  ['งานสำรวจศึกษาน้ำแร่', 'mineral-water-survey'],
-  ['งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ', 'dewatering-well-construction'],
-  ['งานแก้ไขปริมาณการใช้น้ำบาดาล', 'groundwater-use-capacity-adjustment'],
+  ['งานเจาะบ่อน้ำแร่คุณภาพดี', 'mineral-water'],
+  ['งานสำรวจศึกษาน้ำแร่', 'mineral-water'],
+  ['งานขุดเจาะก่อสร้างบ่อสูบลดระดับน้ำ', 'other'],
+  ['งานแก้ไขปริมาณการใช้น้ำบาดาล', 'other'],
 ])
 
-function normalizeImportedWorkTypes(value) {
+function normalizeImportedWorkTypes(value, projectType) {
   if (!Array.isArray(value)) return []
-  return [...new Set(value.map((item) => workTypeKeys.get(item) || item).filter(Boolean))]
+  const normalized = [...new Set(value.map((item) => workTypeKeys.get(item) || item).filter(Boolean))]
+  if (projectType === 'island, resort' && !normalized.includes('island-work')) normalized.push('island-work')
+  return normalized
 }
 
 function publicIdFor(rootFolder, project, localPath) {
@@ -133,7 +135,7 @@ function sourceDocument(project, mediaByLocalPath, now) {
     summary: project.summary || '',
     title: project.title || '',
     updatedAt: now,
-    workTypes: normalizeImportedWorkTypes(project.workTypes),
+    workTypes: normalizeImportedWorkTypes(project.workTypes, project.projectType),
     year: Number.isInteger(project.year) ? project.year : null,
   }
 }

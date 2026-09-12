@@ -11,6 +11,7 @@ type ProjectMediaSliderProps = {
   locale: LocalizedLocale
   projectNumber: number | string
   title: string
+  metadata?: Record<string, { alt: string; caption: string }>
 }
 
 const sliderCopy: Record<
@@ -52,6 +53,7 @@ export default function ProjectMediaSlider({
   locale,
   projectNumber,
   title,
+  metadata,
 }: ProjectMediaSliderProps) {
   const uniqueImages = [...new Set(images)]
   const [activeIndex, setActiveIndex] = useState(0)
@@ -59,7 +61,8 @@ export default function ProjectMediaSlider({
   const copy = sliderCopy[locale]
   const hasMultipleImages = uniqueImages.length > 1
   const showDots = hasMultipleImages && uniqueImages.length <= 10
-  const activeImage = uniqueImages[activeIndex] ?? uniqueImages[0]
+  const currentIndex = Math.min(activeIndex, Math.max(0, uniqueImages.length - 1))
+  const activeImage = uniqueImages[currentIndex]
 
   const showImage = (index: number) => {
     const nextIndex =
@@ -71,11 +74,11 @@ export default function ProjectMediaSlider({
     if (!hasMultipleImages) return
     if (event.key === 'ArrowLeft') {
       event.preventDefault()
-      showImage(activeIndex - 1)
+      showImage(currentIndex - 1)
     }
     if (event.key === 'ArrowRight') {
       event.preventDefault()
-      showImage(activeIndex + 1)
+      showImage(currentIndex + 1)
     }
   }
 
@@ -89,7 +92,7 @@ export default function ProjectMediaSlider({
     const distance = endX - touchStartX.current
     touchStartX.current = null
     if (Math.abs(distance) < 45) return
-    showImage(distance > 0 ? activeIndex - 1 : activeIndex + 1)
+    showImage(distance > 0 ? currentIndex - 1 : currentIndex + 1)
   }
 
   return (
@@ -108,7 +111,7 @@ export default function ProjectMediaSlider({
           <figure className="project-detail-media-slide is-active" key={activeImage}>
             <Image
               src={activeImage}
-              alt={`${title} — ${copy.image} ${activeIndex + 1}`}
+              alt={metadata?.[activeImage]?.alt || `${title} — ${copy.image} ${currentIndex + 1}`}
               width={1600}
               height={1200}
               sizes="calc(100vw - 2rem)"
@@ -123,7 +126,7 @@ export default function ProjectMediaSlider({
               type="button"
               className="project-detail-media-arrow is-previous"
               aria-label={copy.previous}
-              onClick={() => showImage(activeIndex - 1)}
+              onClick={() => showImage(currentIndex - 1)}
             >
               <ChevronLeft aria-hidden="true" />
             </button>
@@ -131,7 +134,7 @@ export default function ProjectMediaSlider({
               type="button"
               className="project-detail-media-arrow is-next"
               aria-label={copy.next}
-              onClick={() => showImage(activeIndex + 1)}
+              onClick={() => showImage(currentIndex + 1)}
             >
               <ChevronRight aria-hidden="true" />
             </button>
@@ -149,9 +152,9 @@ export default function ProjectMediaSlider({
             {uniqueImages.map((imageSource, index) => (
               <button
                 type="button"
-                className={index === activeIndex ? 'is-active' : ''}
+                className={index === currentIndex ? 'is-active' : ''}
                 aria-label={`${copy.image} ${index + 1}`}
-                aria-current={index === activeIndex ? 'true' : undefined}
+                aria-current={index === currentIndex ? 'true' : undefined}
                 onClick={() => showImage(index)}
                 key={imageSource}
               />
@@ -160,9 +163,10 @@ export default function ProjectMediaSlider({
         )}
 
         <span className="project-detail-media-count" aria-live="polite">
-          {activeIndex + 1} / {uniqueImages.length}
+          {uniqueImages.length ? currentIndex + 1 : 0} / {uniqueImages.length}
         </span>
       </div>
+      {activeImage && metadata?.[activeImage]?.caption ? <p className="project-detail-media-caption">{metadata[activeImage].caption}</p> : null}
     </section>
   )
 }

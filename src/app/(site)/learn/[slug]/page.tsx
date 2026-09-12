@@ -8,6 +8,7 @@ import GroundwaterCaseStudies from '@/components/GroundwaterCaseStudies/Groundwa
 import GroundwaterLawGuide from '@/components/GroundwaterLawGuide/GroundwaterLawGuide'
 import GroundwaterFaq from '@/components/GroundwaterFaq/GroundwaterFaq'
 import GroundwaterOwnerGuide from '@/components/GroundwaterOwnerGuide/GroundwaterOwnerGuide'
+import LearningArticleHeader from '@/components/LearningCenterPage/LearningArticleHeader'
 import { createThaiPageMetadata } from '@/lib/site-metadata'
 import {
   getLearningArticle,
@@ -82,17 +83,10 @@ export default async function LearningArticlePage({ params }: LearningPageProps)
         <span aria-hidden="true">/</span>
         <Link href="/groundwater-learning">ศูนย์การเรียนรู้</Link>
         <span aria-hidden="true">/</span>
-        <span aria-current="page">{article.title}</span>
+        <span aria-current="page">{article.eyebrow}</span>
       </nav>
 
-      <header className="learning-article-hero">
-        <p className="learning-article-eyebrow">{article.eyebrow}</p>
-        <h1>{article.title}</h1>
-        <p className="learning-article-description">{article.description}</p>
-        <p className="learning-article-audience">
-          <strong>เหมาะสำหรับ:</strong> {article.audience}
-        </p>
-      </header>
+      <LearningArticleHeader slug={slug} audience={article.audience} />
 
       {slug === 'groundwater-calculator-tools' && <GroundwaterCalculator />}
       {slug === 'groundwater-basics-thailand' && <GroundwaterBasics />}

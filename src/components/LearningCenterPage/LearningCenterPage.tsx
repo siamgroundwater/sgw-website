@@ -1,30 +1,11 @@
 import Link from 'next/link'
-import {
-  ArrowRight,
-  BookOpen,
-  Building2,
-  Calculator,
-  CheckCircle2,
-  CircleHelp,
-  GraduationCap,
-  MessageCircle,
-  Scale,
-  Sparkles,
-  TriangleAlert,
-  Users,
-  type LucideIcon,
-} from 'lucide-react'
-import {
-  LEARNING_SLUGS,
-  type LearningSlug,
-  type LocalizedContent,
-} from '@/i18n/localized-content'
+import { BookOpen, Building2, Calculator, CircleHelp, Droplets, Scale, TriangleAlert, Wrench, type LucideIcon } from 'lucide-react'
+import { LEARNING_SLUGS, type LearningSlug, type LocalizedContent } from '@/i18n/localized-content'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
-
-type LearningCenterPageProps = {
-  locale?: LocalizedLocale
-  content: LocalizedContent
-}
+import { learningExperience, learningJourneys } from '@/i18n/learning-experience'
+import { learningSearchCopy } from '@/i18n/learning-search'
+import { createLearningSearchIndex } from '@/data/learning-search-index'
+import LearningSearch from './LearningSearch'
 
 const topicIcons: Record<LearningSlug, LucideIcon> = {
   'groundwater-calculator-tools': Calculator,
@@ -34,105 +15,63 @@ const topicIcons: Record<LearningSlug, LucideIcon> = {
   'groundwater-faq-thailand': CircleHelp,
   'groundwater-guide-factory-hotel-resort': Building2,
 }
+const journeyIcons = [Droplets, Wrench, Calculator]
 
-export default function LearningCenterPage({
-  locale,
-  content,
-}: LearningCenterPageProps) {
-  const hrefFor = (pathname: string) =>
-    locale ? localePath(pathname, locale) : pathname
-
+export default function LearningCenterPage({ locale = 'th', content }: { locale?: LocalizedLocale; content: LocalizedContent }) {
+  const copy = learningExperience[locale]
+  const hrefFor = (slug: LearningSlug) => localePath(`/learn/${slug}`, locale)
   return (
     <main className="groundwater-learning-page">
-      <section className="groundwater-learning-hero" aria-labelledby="learning-title">
-        <div className="groundwater-learning-hero-copy">
-          <p className="groundwater-learning-eyebrow">
-            <GraduationCap aria-hidden="true" />
-            {content.learning.eyebrow}
-          </p>
-          <h1 id="learning-title">{content.learning.title}</h1>
-          <p className="groundwater-learning-intro">{content.learning.intro}</p>
+      <header className="groundwater-learning-hero">
+        <p className="groundwater-learning-eyebrow"><BookOpen aria-hidden="true" />{content.learning.eyebrow}</p>
+        <h1>{copy.title}</h1>
+        <p className="groundwater-learning-intro">{copy.intro}</p>
+      </header>
 
-          <div className="groundwater-learning-actions">
-            <Link
-              href={hrefFor('/learn/groundwater-calculator-tools')}
-              className="groundwater-learning-primary-action"
-            >
-              <Calculator aria-hidden="true" />
-              {content.learning.articles['groundwater-calculator-tools'].eyebrow}
-              <ArrowRight aria-hidden="true" />
-            </Link>
-            <Link
-              href={hrefFor('/learn/groundwater-guide-factory-hotel-resort')}
-              className="groundwater-learning-secondary-action"
-            >
-              <BookOpen aria-hidden="true" />
-              {content.learning.articles['groundwater-guide-factory-hotel-resort'].eyebrow}
-            </Link>
+      <LearningSearch entries={createLearningSearchIndex(locale)} copy={learningSearchCopy[locale]}>
+        <section className="groundwater-learning-start" aria-labelledby="learning-start-title">
+          <h2 id="learning-start-title">{copy.start}</h2>
+          <div className="groundwater-learning-journeys">
+            {copy.journeys.map((journey, index) => {
+              const Icon = journeyIcons[index]
+              return (
+                <article className="groundwater-learning-journey" key={journey.title}>
+                  <h3><span className="groundwater-learning-icon"><Icon aria-hidden="true" /></span>{journey.title}</h3>
+                  <p>{journey.description}</p>
+                  <nav aria-label={journey.title}>
+                    {learningJourneys[index].map((slug) => <Link href={hrefFor(slug)} key={slug}>{copy.topics[slug].title}</Link>)}
+                  </nav>
+                </article>
+              )
+            })}
           </div>
-        </div>
+        </section>
 
-        <aside className="groundwater-learning-start" aria-label={content.learning.topicsTitle}>
-          <div className="groundwater-learning-start-heading">
-            <span><Sparkles aria-hidden="true" /></span>
-            <div>
-              <p>{content.learning.topicsTitle}</p>
-              <strong>{content.learning.topicsIntro}</strong>
-            </div>
-          </div>
-
-          <nav className="groundwater-learning-start-list">
+        <section className="groundwater-learning-library" aria-labelledby="learning-library-title">
+          <h2 id="learning-library-title">{copy.library}</h2>
+          <p>{copy.libraryIntro}</p>
+          <div className="groundwater-learning-start-list">
             {LEARNING_SLUGS.map((slug) => {
-              const article = content.learning.articles[slug]
               const Icon = topicIcons[slug]
               return (
-                <Link href={hrefFor(`/learn/${slug}`)} key={slug}>
-                  <span className="groundwater-learning-start-icon">
-                    <Icon aria-hidden="true" />
-                  </span>
+                <Link href={hrefFor(slug)} key={slug}>
                   <span className="groundwater-learning-start-text">
-                    <small>{article.eyebrow}</small>
-                    <strong>{article.title}</strong>
+                    <strong><Icon aria-hidden="true" />{copy.topics[slug].title}</strong>
+                    <span>{copy.topics[slug].outcome}</span>
+                    <span className="groundwater-learning-read">{learningSearchCopy[locale].read}</span>
                   </span>
-                  <ArrowRight aria-hidden="true" />
                 </Link>
               )
             })}
-          </nav>
-        </aside>
-      </section>
-
-      <section className="groundwater-learning-audience" aria-labelledby="learning-audience-title">
-        <div className="groundwater-learning-audience-heading">
-          <span><Users aria-hidden="true" /></span>
-          <div>
-            <p>{content.learning.eyebrow}</p>
-            <h2 id="learning-audience-title">{content.learning.audienceTitle}</h2>
           </div>
-        </div>
-        <ul>
-          {content.learning.audience.map((item) => (
-            <li key={item}>
-              <CheckCircle2 aria-hidden="true" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+        </section>
 
-      <section className="groundwater-learning-cta">
-        <span className="groundwater-learning-cta-icon">
-          <MessageCircle aria-hidden="true" />
-        </span>
-        <div>
-          <h2>{content.learning.ctaTitle}</h2>
-          <p>{content.learning.ctaText}</p>
-        </div>
-        <Link href={hrefFor('/contact')}>
-          {content.common.contactTeam}
-          <ArrowRight aria-hidden="true" />
-        </Link>
-      </section>
+      </LearningSearch>
+
+      <aside className="groundwater-learning-cta">
+        <div><h2>{content.learning.ctaTitle}</h2><p>{content.learning.ctaText}</p></div>
+        <Link href={localePath('/contact', locale)}>{content.common.contactTeam}</Link>
+      </aside>
     </main>
   )
 }

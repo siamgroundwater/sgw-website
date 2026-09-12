@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useId, useState, type FormEvent } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, CheckCircle2, Eye, EyeOff, LockKeyhole, UserRound } from 'lucide-react'
 import { CMS_USERNAME_STORAGE_KEY } from '@/lib/cms-client'
 import { useCmsLanguage } from './CmsLanguage'
+import { retryAfterSeconds, safeCmsReturnTo } from '@/lib/cms-access'
 
-export default function CmsLoginForm() {
+export default function CmsLoginForm({ returnTo = '/cms/dashboard' }: { returnTo?: string }) {
   const router = useRouter()
   const { locale } = useCmsLanguage()
   const copy = locale === 'th' ? {
@@ -40,10 +41,19 @@ export default function CmsLoginForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [cooldown, setCooldown] = useState(0)
+  const passwordRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const timer = window.setTimeout(() => setCooldown((value) => Math.max(0, value - 1)), 1000)
+    return () => window.clearTimeout(timer)
+  }, [cooldown])
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      const saved = window.localStorage.getItem(CMS_USERNAME_STORAGE_KEY)
+      let saved: string | null = null
+      try { saved = window.localStorage.getItem(CMS_USERNAME_STORAGE_KEY) } catch { /* Storage may be blocked on shared devices. */ }
       if (saved) {
         setUsername(saved)
         setRemember(true)
@@ -54,6 +64,7 @@ export default function CmsLoginForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (submitting || cooldown > 0) return
     setError('')
     setMessage('')
     if (username.trim().length < 3 || password.length < 12) {
@@ -70,15 +81,23 @@ export default function CmsLoginForm() {
       })
       await response.json().catch(() => ({}))
       if (!response.ok) {
-        setError(copy.errorSignIn)
+        if (response.status === 429) {
+          setCooldown(retryAfterSeconds(response.headers.get('Retry-After')))
+          setError(locale === 'th' ? 'ลองเข้าสู่ระบบหลายครั้งเกินไป กรุณารอสักครู่' : 'Too many attempts. Wait before trying again.')
+        } else {
+          setError(response.status === 401 ? (locale === 'th' ? 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' : 'The username or password is incorrect.') : copy.errorSignIn)
+          passwordRef.current?.focus()
+        }
         return
       }
 
-      if (remember) window.localStorage.setItem(CMS_USERNAME_STORAGE_KEY, username.trim())
-      else window.localStorage.removeItem(CMS_USERNAME_STORAGE_KEY)
+      try {
+        if (remember) window.localStorage.setItem(CMS_USERNAME_STORAGE_KEY, username.trim())
+        else window.localStorage.removeItem(CMS_USERNAME_STORAGE_KEY)
+      } catch { /* Successful sign-in does not depend on local storage. */ }
       setPassword('')
       setMessage(copy.message)
-      router.replace('/cms/dashboard')
+      router.replace(safeCmsReturnTo(returnTo))
       router.refresh()
     } catch {
       setError(copy.errorReach)
@@ -96,6 +115,11 @@ export default function CmsLoginForm() {
           <input
             id={usernameId}
             autoComplete="username"
+            autoCapitalize="none"
+            spellCheck={false}
+            minLength={3}
+            maxLength={80}
+            disabled={submitting}
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="admin"
@@ -110,7 +134,11 @@ export default function CmsLoginForm() {
           <LockKeyhole aria-hidden="true" />
           <input
             id={passwordId}
+            ref={passwordRef}
             autoComplete="current-password"
+            minLength={12}
+            maxLength={256}
+            disabled={submitting}
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -138,15 +166,16 @@ export default function CmsLoginForm() {
         {copy.remember}
       </label>
 
-      <button className="cms-button" disabled={submitting} type="submit">
+      <button className="cms-button" disabled={submitting || cooldown > 0} type="submit">
         <LockKeyhole aria-hidden="true" />
-        {submitting ? copy.signingIn : copy.signIn}
+        {submitting ? copy.signingIn : cooldown > 0 ? (locale === 'th' ? `ลองอีกครั้งใน ${cooldown} วินาที` : `Try again in ${cooldown}s`) : copy.signIn}
       </button>
 
       <div aria-live="polite">
         {error ? <p className="cms-error"><AlertCircle aria-hidden="true" />{error}</p> : null}
         {message ? <p className="cms-message"><CheckCircle2 aria-hidden="true" />{message}</p> : null}
       </div>
+      <p className="cms-field-help">{locale === 'th' ? 'ลืมรหัสผ่าน? ติดต่อผู้ดูแลระบบ SGW เพื่อให้ตั้งรหัสผ่านใหม่' : 'Forgot your password? Contact your SGW administrator to reset it.'}</p>
     </form>
   )
 }

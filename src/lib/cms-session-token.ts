@@ -3,6 +3,7 @@ import { isCmsRole } from './cms-permissions.ts'
 import type { CmsSession } from '@/types/cms'
 
 export type CmsSessionTokenPayload = CmsSession & {
+  sessionVersion?: number
   expiresAt: number
   issuedAt: number
 }
@@ -12,7 +13,7 @@ function sign(value: string, secret: string) {
 }
 
 export function createCmsSessionTokenValue(
-  payload: CmsSession,
+  payload: CmsSession & { sessionVersion?: number },
   secret: string,
   issuedAt: number,
   maxAgeSeconds: number
@@ -50,6 +51,7 @@ export function verifyCmsSessionTokenValue(
       !isCmsRole(payload.role) ||
       typeof payload.issuedAt !== 'number' ||
       typeof payload.expiresAt !== 'number' ||
+      (payload.sessionVersion !== undefined && (!Number.isSafeInteger(payload.sessionVersion) || payload.sessionVersion < 0)) ||
       payload.issuedAt > now + 60_000 ||
       payload.expiresAt <= now
     ) {

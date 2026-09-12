@@ -88,7 +88,7 @@
 .project-detail-media-controls {
   min-height: 3.5rem;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1.25rem;
@@ -109,6 +109,12 @@
   grid-column: 3;
   justify-self: end;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.project-detail-media-project {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .project-detail-media-dots {
@@ -168,7 +174,7 @@
   }
 
   .project-detail-media-controls {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.6rem;
     padding-inline: 0.9rem;
   }
@@ -189,4 +195,12 @@
   .project-detail-media-dots button {
     transition: none;
   }
+}
+.project-detail-media-caption {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  color: #e4f3f4;
+  background: #0a2835;
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
 }

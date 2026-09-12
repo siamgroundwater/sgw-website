@@ -5,6 +5,7 @@ import { getCmsUsersCollection } from '@/server/db'
 import type { CmsDocumentStatus, CmsUserDocument, CmsUserRole } from '@/server/db'
 import type { CmsSession, CmsUserRecord } from '@/types/cms'
 import { hashPassword, verifyPassword } from './password'
+import { isCmsSessionRevoked, validateCmsUserForm, type CmsUserErrorCode, type CmsUserField } from '@/lib/cms-access'
 
 export const CMS_PASSWORD_MIN_LENGTH = 12
 
@@ -24,11 +25,15 @@ export type UpdateCmsUserInput = Omit<CreateCmsUserInput, 'password'> & {
 
 export class CmsUserError extends Error {
   status: number
+  code: CmsUserErrorCode
+  field?: CmsUserField
 
-  constructor(message: string, status = 400) {
+  constructor(message: string, status = 400, code: CmsUserErrorCode = 'invalid', field?: CmsUserField) {
     super(message)
     this.name = 'CmsUserError'
     this.status = status
+    this.code = code
+    this.field = field
   }
 }
 
@@ -68,7 +73,7 @@ export function serializeCmsUser(user: CmsUserDocument): CmsUserRecord {
   }
 }
 
-export async function findCmsUserSessionById(userId: string) {
+export async function findCmsUserSessionById(userId: string, issuedAt?: number, sessionVersion?: number) {
   if (!ObjectId.isValid(userId)) return null
   const users = await getCmsUsersCollection()
   const user = await users.findOne({
@@ -76,6 +81,8 @@ export async function findCmsUserSessionById(userId: string) {
     status: 'active',
     deletedAt: { $exists: false },
   })
+  if (user && sessionVersion !== undefined && sessionVersion !== (user.sessionVersion || 0)) return null
+  if (user && sessionVersion === undefined && issuedAt !== undefined && isCmsSessionRevoked(issuedAt, user.sessionsRevokedAt)) return null
   return user ? toSession(user) : null
 }
 
@@ -91,11 +98,11 @@ export async function authenticateCmsUser(username: string, password: string) {
   if (!user?.passwordHash || !verifyPassword(password, user.passwordHash)) return null
 
   const now = new Date()
-  await users.updateOne(
-    { _id: user._id },
+  const result = await users.updateOne(
+    { _id: user._id, passwordHash: user.passwordHash, status: 'active', deletedAt: { $exists: false } },
     { $set: { lastLoginAt: now, updatedAt: now } }
   )
-  return toSession(user)
+  return result.matchedCount ? { ...toSession(user), sessionVersion: user.sessionVersion || 0 } : null
 }
 
 function validateUserInput(input: CreateCmsUserInput, passwordRequired: boolean) {
@@ -104,22 +111,9 @@ function validateUserInput(input: CreateCmsUserInput, passwordRequired: boolean)
   const name = input.name.trim()
   const email = input.email?.trim() || undefined
 
-  if (usernameLower.length < 3 || usernameLower.length > 80) {
-    throw new CmsUserError('Username must contain 3 to 80 characters.')
-  }
-  if (!/^[a-z0-9._-]+$/.test(usernameLower)) {
-    throw new CmsUserError('Username may contain letters, numbers, dots, underscores, and hyphens.')
-  }
-  if (!name || name.length > 120) throw new CmsUserError('Display name is required.')
-  if (email && (!email.includes('@') || email.length > 254)) {
-    throw new CmsUserError('Enter a valid email address.')
-  }
-  if (passwordRequired && input.password.length < CMS_PASSWORD_MIN_LENGTH) {
-    throw new CmsUserError(`Password must contain at least ${CMS_PASSWORD_MIN_LENGTH} characters.`)
-  }
-  if (input.password.length > 256) {
-    throw new CmsUserError('Password must not exceed 256 characters.')
-  }
+  const errors = validateCmsUserForm({ ...input, email: input.email || '' }, !passwordRequired)
+  const first = Object.entries(errors)[0] as [CmsUserField, CmsUserErrorCode] | undefined
+  if (first) throw new CmsUserError('Invalid user details.', 400, first[1], first[0])
 
   return { email, name, username, usernameLower }
 }
@@ -139,7 +133,7 @@ export async function createCmsUser(input: CreateCmsUserInput) {
   const normalized = validateUserInput(input, true)
   const users = await getCmsUsersCollection()
   if (await users.findOne({ usernameLower: normalized.usernameLower })) {
-    throw new CmsUserError('Username already exists.', 409)
+    throw new CmsUserError('Username already exists.', 409, 'username_taken', 'username')
   }
 
   const now = new Date()
@@ -162,7 +156,7 @@ async function assertAdminContinuity(
 ) {
   const users = await getCmsUsersCollection()
   const current = await users.findOne({ _id: userId })
-  if (!current) throw new CmsUserError('User not found.', 404)
+  if (!current) throw new CmsUserError('User not found.', 404, 'not_found')
 
   if (
     current.role === 'admin' &&
@@ -175,7 +169,7 @@ async function assertAdminContinuity(
       deletedAt: { $exists: false },
     })
     if (activeAdmins <= 1) {
-      throw new CmsUserError('The CMS must keep at least one active administrator.')
+      throw new CmsUserError('The CMS must keep at least one active administrator.', 400, 'last_admin', 'status')
     }
   }
 }
@@ -190,8 +184,9 @@ export async function updateCmsUser(input: UpdateCmsUserInput, currentUserId: st
   )
 
   if (input.id === currentUserId && (input.role !== 'admin' || input.status !== 'active')) {
-    throw new CmsUserError('You cannot remove your own administrator access or active status.')
+    throw new CmsUserError('You cannot remove your own administrator access or active status.', 400, 'self_access', 'role')
   }
+  if (input.id === currentUserId && input.password) throw new CmsUserError('Use My account to change your own password.', 400, 'account_password', 'password')
   await assertAdminContinuity(userId, input.role, input.status)
 
   const users = await getCmsUsersCollection()
@@ -199,7 +194,7 @@ export async function updateCmsUser(input: UpdateCmsUserInput, currentUserId: st
     _id: { $ne: userId },
     usernameLower: normalized.usernameLower,
   })
-  if (duplicate) throw new CmsUserError('Username already exists.', 409)
+  if (duplicate) throw new CmsUserError('Username already exists.', 409, 'username_taken', 'username')
 
   const fields: Partial<CmsUserDocument> = {
     ...normalized,
@@ -207,22 +202,26 @@ export async function updateCmsUser(input: UpdateCmsUserInput, currentUserId: st
     status: input.status,
     updatedAt: new Date(),
   }
-  if (input.password) fields.passwordHash = hashPassword(input.password)
+  if (input.password) {
+    fields.passwordHash = hashPassword(input.password)
+    fields.sessionsRevokedAt = new Date()
+  }
+  if (input.status !== 'active') fields.sessionsRevokedAt = new Date()
 
   const result = await users.updateOne(
     { _id: userId, deletedAt: { $exists: false } },
-    { $set: fields }
+    { $set: fields, ...(fields.sessionsRevokedAt ? { $inc: { sessionVersion: 1 } } : {}) }
   )
-  if (!result.matchedCount) throw new CmsUserError('User not found.', 404)
+  if (!result.matchedCount) throw new CmsUserError('User not found.', 404, 'not_found')
   const updated = await users.findOne({ _id: userId })
-  if (!updated) throw new CmsUserError('User not found.', 404)
+  if (!updated) throw new CmsUserError('User not found.', 404, 'not_found')
   return serializeCmsUser(updated)
 }
 
 export async function deleteCmsUser(id: string, currentUserId: string) {
   await ensureCmsUserIndexes()
   if (!ObjectId.isValid(id)) throw new CmsUserError('Invalid user id.')
-  if (id === currentUserId) throw new CmsUserError('You cannot remove your own account.')
+  if (id === currentUserId) throw new CmsUserError('You cannot remove your own account.', 400, 'self_access')
 
   const userId = new ObjectId(id)
   await assertAdminContinuity(userId, 'viewer', 'archived')
@@ -230,7 +229,23 @@ export async function deleteCmsUser(id: string, currentUserId: string) {
   const now = new Date()
   const result = await users.updateOne(
     { _id: userId, deletedAt: { $exists: false } },
-    { $set: { deletedAt: now, status: 'archived', updatedAt: now } }
+    { $set: { deletedAt: now, status: 'archived', updatedAt: now, sessionsRevokedAt: now }, $inc: { sessionVersion: 1 } }
   )
-  if (!result.matchedCount) throw new CmsUserError('User not found.', 404)
+  if (!result.matchedCount) throw new CmsUserError('User not found.', 404, 'not_found')
+}
+
+export async function changeOwnCmsPassword(userId: string, currentPassword: string, newPassword: string) {
+  if (!ObjectId.isValid(userId)) throw new CmsUserError('User not found.', 404, 'not_found')
+  if (newPassword.length < CMS_PASSWORD_MIN_LENGTH || newPassword.length > 256) throw new CmsUserError('Invalid new password.', 400, 'password', 'password')
+  const users = await getCmsUsersCollection()
+  const user = await users.findOne({ _id: new ObjectId(userId), status: 'active', deletedAt: { $exists: false } })
+  if (!user) throw new CmsUserError('User not found.', 404, 'not_found')
+  if (!currentPassword || currentPassword.length > 256 || !verifyPassword(currentPassword, user.passwordHash)) throw new CmsUserError('Current password is incorrect.', 400, 'current_password')
+  if (verifyPassword(newPassword, user.passwordHash)) throw new CmsUserError('Choose a different password.', 400, 'password_reused', 'password')
+  const now = new Date()
+  const changed = await users.updateOne(
+    { _id: user._id, passwordHash: user.passwordHash, status: 'active', deletedAt: { $exists: false } },
+    { $set: { passwordHash: hashPassword(newPassword), sessionsRevokedAt: now, updatedAt: now }, $inc: { sessionVersion: 1 } },
+  )
+  if (!changed.matchedCount) throw new CmsUserError('Account changed. Sign in again.', 409, 'conflict')
 }

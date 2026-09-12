@@ -1,0 +1,13 @@
+.cms-dashboard-content { display: grid; gap: 24px; min-width: 0; }
+.cms-overview-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cms-overview-card { display: grid; gap: 8px; }
+.cms-overview-card strong { font-size: var(--fs-2xl); }
+.cms-dashboard-recent { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 16px; }
+.cms-dashboard-recent li { display: flex; align-items: start; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--cms-line); }
+.cms-dashboard-recent li > div { display: grid; gap: 4px; }
+.cms-dashboard-recent a { text-decoration: underline; text-underline-offset: 3px; color: var(--cms-cyan-deep); }
+.cms-dashboard-recent time { color: var(--cms-muted); }
+.cms-dashboard-status { display: grid; gap: 12px; }
+.cms-dashboard-status > div { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+.cms-dashboard-status dd { margin: 0; font-weight: 600; }
+@media (width <= 700px) { .cms-overview-cards { grid-template-columns: minmax(0, 1fr); } }

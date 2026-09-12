@@ -8,7 +8,8 @@ import { findCmsUserSessionById } from './users'
 export async function getCurrentCmsUser() {
   const payload = await getCmsSessionPayloadFromCookies()
   if (!payload) return null
-  return findCmsUserSessionById(payload.userId)
+  const user = await findCmsUserSessionById(payload.userId, payload.issuedAt, payload.sessionVersion)
+  return user ? { ...user, expiresAt: payload.expiresAt } : null
 }
 
 export async function requireCmsApiUser() {

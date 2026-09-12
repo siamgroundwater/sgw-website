@@ -7,9 +7,13 @@ export default tseslint.config(
   {
     ignores: [
       '.next/**',
+      '.next-cms-test/**',
+      '.cms-backups/**',
       'node_modules/**',
       'public/**',
       'coverage/**',
+      'playwright-report/**',
+      'test-results/**',
       'next-env.d.ts',
       'scripts/file-structure.txt',
     ],

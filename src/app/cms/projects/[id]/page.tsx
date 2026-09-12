@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import CmsProjectEditor from '@/components/cms/CmsProjectEditor'
 import CmsShell from '@/components/cms/CmsShell'
 import { canCmsRole } from '@/lib/cms-permissions'
-import { CmsContentError, getCmsProjectById, listCmsProjectRevisions } from '@/server/cms/content'
+import { CmsContentError, getCmsProjectById } from '@/server/cms/content'
 import { requireCmsPage } from '@/server/cms/page-guard'
 import { getCmsLocale } from '@/server/cms/locale'
 
@@ -18,12 +18,8 @@ export default async function CmsProjectEditorPage({ params, searchParams }: Cms
   const locale = await getCmsLocale()
   const { id } = await params
   let item
-  let revisions
   try {
-    ;[item, revisions] = await Promise.all([
-      getCmsProjectById(id),
-      listCmsProjectRevisions(id),
-    ])
+    item = await getCmsProjectById(id)
   } catch (error) {
     if (error instanceof CmsContentError && error.message === 'Invalid content id.') notFound()
     throw error
@@ -36,12 +32,8 @@ export default async function CmsProjectEditorPage({ params, searchParams }: Cms
       <CmsProjectEditor
         canWrite={canWrite}
         initialItem={item}
-        initialRevisions={revisions}
-        initialMessage={created === 'published'
-          ? (locale === 'th' ? 'สร้างและเผยแพร่ผลงานแล้ว' : 'Project created and published.')
-          : created === 'draft'
-            ? (locale === 'th' ? 'สร้างฉบับร่างแล้ว เว็บไซต์สาธารณะยังไม่แสดงผลงานนี้' : 'Draft created. This project is not visible on the public website yet.')
-            : ''}
+        userId={session.userId}
+        initialMessage={created === '1' ? (locale === 'th' ? 'สร้างผลงานแล้ว เว็บไซต์แสดงข้อมูลนี้ทันที' : 'Project created and visible on the website.') : ''}
       />
     </CmsShell>
   )

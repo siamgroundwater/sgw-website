@@ -10,10 +10,11 @@ export const dynamic = 'force-dynamic'
 export default async function CmsDashboardPage() {
   const session = await requireCmsPage('dashboard:view')
   const locale = await getCmsLocale()
-  const data = await getCmsDashboardData()
+  const canManage = canCmsRole(session.role, 'users:manage')
+  const data = await getCmsDashboardData(canManage)
   return (
     <CmsShell eyebrow={locale === 'th' ? 'ภาพรวมพื้นที่ทำงาน' : 'Workspace overview'} title={locale === 'th' ? 'ภาพรวม' : 'Dashboard'} session={session}>
-      <CmsDashboard data={data} canImport={canCmsRole(session.role, 'imports:manage')} />
+      <CmsDashboard data={data} canManage={canManage} canWrite={canCmsRole(session.role, 'projects:write')} />
     </CmsShell>
   )
 }

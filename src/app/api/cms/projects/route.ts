@@ -1,43 +1,51 @@
 import { NextResponse } from 'next/server'
-import { validateProjectForPublishing, validateProjectInput } from '@/lib/cms-validation'
+import { ObjectId, type ClientSession } from 'mongodb'
+import { validateProjectForSave, validateProjectInput } from '@/lib/cms-validation'
+import { cmsProjectReadPermission } from '@/lib/cms-project-access'
 import { createAuditChanges, recordCmsAudit } from '@/server/cms/audit'
 import {
-  CmsContentError,
-  createCmsProject,
-  deleteCmsProject,
-  getCmsProjectById,
-  listCmsProjectRevisions,
-  listCmsProjects,
-  publishCmsProject,
-  restoreCmsProjectRevision,
-  unpublishCmsProject,
-  updateCmsProject,
+  CmsContentError, createCmsProject, deleteCmsProject, getCmsProjectById,
+  queryCmsProjects, restoreCmsProject, updateCmsProject,
 } from '@/server/cms/content'
+import { getCmsProjectsCollection } from '@/server/db'
 import { requireCmsApiPermission } from '@/server/cms/guards'
 import { cmsApiError, readCmsJsonBody, requireJsonRequest, requireSameOrigin } from '@/server/cms/http'
-import {
-  commitStagedProjectMedia,
-  rollbackStagedProjectMedia,
-  verifyStagedProjectMediaTokens,
-} from '@/server/cms/staged-project-media'
+import { commitStagedProjectMedia, rollbackStagedProjectMedia, verifyStagedProjectMediaTokens } from '@/server/cms/staged-project-media'
+import { getSavedProjectOperation, projectOperationFingerprint, runProjectOperation, validateProjectOperationId } from '@/server/cms/project-operations'
+import { recordCmsOperationalEvent } from '@/server/cms/operations'
 import type { CmsStagedMediaTokenPayload } from '@/lib/cms-staged-media-token'
+import type { CmsProjectInput } from '@/types/cms'
 import { revalidatePublicProject } from '@/server/cms/revalidate'
 
 export const runtime = 'nodejs'
-const labels = { title: 'Title', slug: 'Slug', year: 'Year', category: 'Category', status: 'Status', location: 'Location' }
+const labels = { title: 'Title', slug: 'Slug', year: 'Year', category: 'Category', location: 'Location', summary: 'Summary', details: 'Details', galleryImages: 'Gallery images', coverImage: 'Cover image', translations: 'Translations', workTypes: 'Work types' }
+
+function errorResponse(error: unknown, fallback: string) {
+  if (error instanceof CmsContentError) return NextResponse.json({ error: error.message, fields: error.fields }, { status: error.status })
+  return cmsApiError(error, fallback)
+}
 
 export async function GET(request: Request) {
-  const { response } = await requireCmsApiPermission('projects:view')
-  if (response) return response
+  const params = new URL(request.url).searchParams
+  const { response, user } = await requireCmsApiPermission(cmsProjectReadPermission(params.get('view')))
+  if (response || !user) return response
   try {
-    const url = new URL(request.url)
-    const projectId = url.searchParams.get('projectId')
-    if (url.searchParams.get('revisions') === '1' && projectId) {
-      return NextResponse.json({ items: await listCmsProjectRevisions(projectId) })
+    if (params.has('operationId')) {
+      const item = await getSavedProjectOperation(user.userId, params.get('operationId') || '')
+      return NextResponse.json({ item, pending: !item }, { headers: { 'Cache-Control': 'no-store' } })
     }
-    return NextResponse.json({ items: await listCmsProjects() })
+    if (params.has('id')) {
+      const item = await getCmsProjectById(params.get('id') || '')
+      return NextResponse.json({ item }, { status: item ? 200 : 404, headers: { 'Cache-Control': 'no-store' } })
+    }
+    return NextResponse.json(await queryCmsProjects({
+      query: params.get('query') || undefined, category: params.get('category') || undefined,
+      workType: params.get('workType') || undefined, sort: params.get('sort') || undefined,
+      page: params.get('page') || undefined, pageSize: params.get('pageSize') || undefined,
+      view: params.get('view') || undefined,
+    }), { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
-    return cmsApiError(error, 'Could not load projects.')
+    return errorResponse(error, 'Could not load projects.')
   }
 }
 
@@ -46,219 +54,140 @@ async function bodyFrom(request: Request) {
   if (typeError) return { response: typeError, value: null }
   const parsed = await readCmsJsonBody(request)
   if (parsed.error) return { response: NextResponse.json({ error: parsed.error }, { status: 400 }), value: null }
-  return { response: null, value: parsed.value }
+  if (!parsed.value || typeof parsed.value !== 'object' || Array.isArray(parsed.value)) {
+    return { response: NextResponse.json({ error: 'Invalid project data.' }, { status: 400 }), value: null }
+  }
+  return { response: null, value: parsed.value as Record<string, unknown> }
 }
 
-function stagedMediaIsUsed(
-  staged: CmsStagedMediaTokenPayload[],
-  coverImage: string,
-  galleryImages: string[]
-) {
-  const used = new Set([coverImage, ...galleryImages])
-  return staged.every(({ asset }) => used.has(asset.src))
-}
-
-function newProjectMediaIsStaged(
-  staged: CmsStagedMediaTokenPayload[],
-  coverImage: string,
-  galleryImages: string[]
-) {
-  const stagedUrls = new Set(staged.map(({ asset }) => asset.src))
-  return [coverImage, ...galleryImages]
-    .filter(Boolean)
-    .every((url) => stagedUrls.has(url))
-}
-
-async function rollbackQuietly(staged: CmsStagedMediaTokenPayload[]) {
-  if (!staged.length) return true
+async function refreshProject(projectId: string) {
   try {
-    await rollbackStagedProjectMedia(staged)
-    return true
-  } catch (error) {
-    console.error('Automatic project media rollback failed', error)
+    revalidatePublicProject(projectId)
     return false
-  }
-}
-
-async function commitQuietly(staged: CmsStagedMediaTokenPayload[]) {
-  if (!staged.length) return
-  try {
-    await commitStagedProjectMedia(staged)
   } catch (error) {
-    console.error('Could not clear committed staged project media records', error)
+    console.error('Saved project public refresh failed', error)
+    await recordCmsOperationalEvent({ kind: 'project-revalidation', ok: false, projectId, error: 'Saved project needs public cache refresh.' })
+    return true
   }
 }
 
-async function auditStagedUploads(
-  staged: CmsStagedMediaTokenPayload[],
-  user: Parameters<typeof recordCmsAudit>[0]['actor']
-) {
-  for (const { asset } of staged) {
-    await recordCmsAudit({
-      action: 'media.upload',
-      actor: user,
-      entity: { id: asset.publicId, label: asset.publicId.split('/').at(-1), type: 'media' },
-      metadata: {
-        bytes: asset.bytes,
-        format: asset.format,
-        height: asset.height,
-        width: asset.width,
-      },
-      summary: `Uploaded project image ${asset.publicId}`,
+async function assertAllowedMedia(input: CmsProjectInput, staged: CmsStagedMediaTokenPayload[], sourceId: unknown, session: ClientSession) {
+  const used = new Set([input.coverImage, ...input.galleryImages].filter(Boolean))
+  if (staged.some(({ asset }) => !used.has(asset.src))) throw new CmsContentError('An uploaded image is missing from this save.', 400)
+  const allowed = new Set(staged.map(({ asset }) => asset.src))
+  if (sourceId !== undefined && sourceId !== '') {
+    if (typeof sourceId !== 'string' || !ObjectId.isValid(sourceId)) throw new CmsContentError('Invalid source project.', 400)
+    const source = await (await getCmsProjectsCollection()).findOne({
+      _id: new ObjectId(sourceId), deletedAt: { $exists: false }, status: 'active',
+    }, { session })
+    if (!source) throw new CmsContentError('The source project was removed or changed. Reload before saving.', 409)
+    for (const src of [source.coverImage, ...source.galleryImages]) allowed.add(src)
+  }
+  if ([...used].some((src) => !allowed.has(src))) {
+    throw new CmsContentError('Upload new images through the editor, or copy images from the selected source project.', 400)
+  }
+}
+
+async function save(request: Request, update: boolean) {
+  const originError = requireSameOrigin(request)
+  if (originError) return originError
+  const { response, user } = await requireCmsApiPermission('projects:write')
+  if (response || !user) return response
+  const body = await bodyFrom(request)
+  if (body.response || !body.value) return body.response
+  const raw = body.value
+  let staged: CmsStagedMediaTokenPayload[] = []
+  let operationId = ''
+  let startedWrite = false
+  try {
+    operationId = validateProjectOperationId(raw.operationId)
+    const fingerprint = projectOperationFingerprint(update ? 'PUT' : 'POST', raw)
+    const prior = await getSavedProjectOperation(user.userId, operationId, fingerprint)
+    if (prior) return NextResponse.json({ item: prior, replayed: true, publicRefreshPending: await refreshProject(prior.id) })
+    // Keep verified ownership available for rollback when validation rejects the form.
+    staged = await verifyStagedProjectMediaTokens(raw.stagedMedia, raw.submissionId, user)
+    const result = validateProjectInput(raw)
+    if (result.errors) throw new CmsContentError('Please correct the highlighted fields.', 400, result.errors)
+    const errors = validateProjectForSave(result.data)
+    if (errors) throw new CmsContentError('Complete the required project content before saving.', 400, errors)
+    const id = typeof raw.id === 'string' ? raw.id : ''
+    const expectedUpdatedAt = typeof raw.expectedUpdatedAt === 'string' ? raw.expectedUpdatedAt : ''
+    if (update && !id) throw new CmsContentError('Missing project id.')
+    if (update && !expectedUpdatedAt) throw new CmsContentError('Reload the project before saving; its saved version is required.', 428)
+    const before = update ? await getCmsProjectById(id) : null
+    startedWrite = true
+    const saved = await runProjectOperation(user.userId, operationId, fingerprint, async (session) => {
+      staged = await verifyStagedProjectMediaTokens(raw.stagedMedia, raw.submissionId, user, session)
+      await assertAllowedMedia(result.data, staged, update ? id : raw.sourceProjectId, session)
+      // Removing staging inside the transaction prevents cleanup from racing the content commit.
+      await commitStagedProjectMedia(staged, session)
+      return update
+        ? updateCmsProject(id, result.data, user, expectedUpdatedAt, session)
+        : createCmsProject(result.data, user, session)
     })
-  }
-}
-
-export async function POST(request: Request) {
-  const originError = requireSameOrigin(request)
-  if (originError) return originError
-  const { response, user } = await requireCmsApiPermission('projects:write')
-  if (response || !user) return response
-  const body = await bodyFrom(request)
-  if (body.response) return body.response
-  const raw = body.value as Record<string, unknown> | null
-  let staged: CmsStagedMediaTokenPayload[] = []
-  let committed = false
-  try {
-    staged = await verifyStagedProjectMediaTokens(raw?.stagedMedia, raw?.submissionId, user)
-    const result = validateProjectInput(raw)
-    if (result.errors) {
-      const cleaned = await rollbackQuietly(staged)
-      return NextResponse.json({ error: 'Please correct the highlighted fields.', fields: result.errors, mediaCleanupFailed: !cleaned }, { status: 400 })
+    if (!saved.replayed) {
+      await recordCmsAudit({
+        action: update ? 'content.update' : 'content.create', actor: user,
+        changes: createAuditChanges(before || undefined, saved.item, labels),
+        entity: { id: saved.item.id, label: saved.item.title, type: 'project' },
+        summary: `${update ? 'Saved' : 'Created'} project ${saved.item.title}`,
+      })
+      for (const { asset } of staged) await recordCmsAudit({
+        action: 'media.upload', actor: user, entity: { id: asset.publicId, type: 'media' },
+        metadata: { bytes: asset.bytes, width: asset.width, height: asset.height },
+        summary: 'Uploaded a project image',
+      })
     }
-    if (!stagedMediaIsUsed(staged, result.data.coverImage, result.data.galleryImages)) {
-      throw new Error('INVALID_STAGED_MEDIA')
-    }
-    if (!newProjectMediaIsStaged(staged, result.data.coverImage, result.data.galleryImages)) {
-      throw new Error('UNSTAGED_NEW_PROJECT_MEDIA')
-    }
-    const intent = raw?.intent === 'publish' ? 'publish' : 'save-draft'
-    if (intent === 'publish') {
-      const publishingErrors = validateProjectForPublishing(result.data)
-      if (publishingErrors) {
-        const cleaned = await rollbackQuietly(staged)
-        return NextResponse.json({ error: 'Complete the required Thai content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
+    return NextResponse.json({ ...saved, publicRefreshPending: await refreshProject(saved.item.id) }, { status: update || saved.replayed ? 200 : 201 })
+  } catch (error) {
+    const invalidMedia = error instanceof Error && error.message === 'INVALID_STAGED_MEDIA'
+    if (error instanceof CmsContentError || invalidMedia || !startedWrite) {
+      let mediaCleanupFailed = false
+      if (staged.length) {
+        try { await rollbackStagedProjectMedia(staged) } catch { mediaCleanupFailed = true }
       }
+      if (invalidMedia) return NextResponse.json({ error: 'The uploaded images expired or cleanup already started. Select them again before saving.', mediaCleanupFailed }, { status: 400 })
+      if (error instanceof CmsContentError) return NextResponse.json({ error: error.message, fields: error.fields, mediaCleanupFailed }, { status: error.status })
+      return errorResponse(error, 'Could not save project.')
     }
-    const item = await createCmsProject(result.data, user, intent === 'publish')
-    committed = true
-    await recordCmsAudit({ action: intent === 'publish' ? 'content.publish' : 'content.create', actor: user, changes: createAuditChanges(undefined, item, labels), entity: { id: item.id, label: item.title, type: 'project' }, summary: intent === 'publish' ? `Created and published project ${item.title}` : `Created draft project ${item.title}` })
-    await auditStagedUploads(staged, user)
-    await commitQuietly(staged)
-    if (intent === 'publish') revalidatePublicProject(item.id)
-    return NextResponse.json({ item }, { status: 201 })
-  } catch (error) {
-    if (!committed) await rollbackQuietly(staged)
-    if (error instanceof Error && error.message === 'INVALID_STAGED_MEDIA') {
-      return NextResponse.json({ error: 'Invalid or expired staged project media.' }, { status: 400 })
-    }
-    if (error instanceof Error && error.message === 'UNSTAGED_NEW_PROJECT_MEDIA') {
-      return NextResponse.json({ error: 'Upload new project images through the CMS before saving.' }, { status: 400 })
-    }
-    if (error instanceof CmsContentError) return NextResponse.json({ error: error.message, fields: error.fields }, { status: error.status })
-    return cmsApiError(error, 'Could not create project.')
+    console.error('Project save result could not be confirmed', error)
+    return NextResponse.json({
+      error: 'The save result could not be confirmed. Check this operation before retrying.',
+      pending: true, operationId,
+    }, { status: 503 })
   }
 }
 
-export async function PUT(request: Request) {
-  const originError = requireSameOrigin(request)
-  if (originError) return originError
-  const { response, user } = await requireCmsApiPermission('projects:write')
-  if (response || !user) return response
-  const body = await bodyFrom(request)
-  if (body.response) return body.response
-  const raw = body.value as Record<string, unknown> | null
-  const id = typeof raw?.id === 'string' ? raw.id : ''
-  if (!id) return NextResponse.json({ error: 'Missing project id.' }, { status: 400 })
-  let staged: CmsStagedMediaTokenPayload[] = []
-  let committed = false
-  try {
-    staged = await verifyStagedProjectMediaTokens(raw?.stagedMedia, raw?.submissionId, user)
-    const result = validateProjectInput(raw)
-    if (result.errors) {
-      const cleaned = await rollbackQuietly(staged)
-      return NextResponse.json({ error: 'Please correct the highlighted fields.', fields: result.errors, mediaCleanupFailed: !cleaned }, { status: 400 })
-    }
-    if (!stagedMediaIsUsed(staged, result.data.coverImage, result.data.galleryImages)) {
-      throw new Error('INVALID_STAGED_MEDIA')
-    }
-    const intent = raw?.intent === 'publish' ? 'publish' : 'save-draft'
-    const expectedUpdatedAt = typeof raw?.expectedUpdatedAt === 'string' ? raw.expectedUpdatedAt : undefined
-    if (intent === 'publish') {
-      const publishingErrors = validateProjectForPublishing(result.data)
-      if (publishingErrors) {
-        const cleaned = await rollbackQuietly(staged)
-        return NextResponse.json({ error: 'Complete the required Thai content before publishing.', fields: publishingErrors, mediaCleanupFailed: !cleaned }, { status: 400 })
-      }
-    }
-    const before = await getCmsProjectById(id)
-    const item = intent === 'publish'
-      ? await publishCmsProject(id, result.data, user, expectedUpdatedAt)
-      : await updateCmsProject(id, result.data, user, expectedUpdatedAt)
-    committed = true
-    await recordCmsAudit({ action: intent === 'publish' ? 'content.publish' : 'content.update', actor: user, changes: createAuditChanges(before || undefined, item, labels), entity: { id: item.id, label: item.title, type: 'project' }, summary: intent === 'publish' ? `Published project ${item.title}` : `Saved draft changes for ${item.title}` })
-    await auditStagedUploads(staged, user)
-    await commitQuietly(staged)
-    if (intent === 'publish') revalidatePublicProject(item.id)
-    return NextResponse.json({ item })
-  } catch (error) {
-    if (!committed) await rollbackQuietly(staged)
-    if (error instanceof Error && error.message === 'INVALID_STAGED_MEDIA') {
-      return NextResponse.json({ error: 'Invalid or expired staged project media.' }, { status: 400 })
-    }
-    if (error instanceof CmsContentError) return NextResponse.json({ error: error.message, fields: error.fields }, { status: error.status })
-    return cmsApiError(error, 'Could not update project.')
-  }
-}
+export async function POST(request: Request) { return save(request, false) }
+export async function PUT(request: Request) { return save(request, true) }
 
-export async function PATCH(request: Request) {
-  const originError = requireSameOrigin(request)
-  if (originError) return originError
-  const { response, user } = await requireCmsApiPermission('projects:write')
-  if (response || !user) return response
-  const body = await bodyFrom(request)
-  if (body.response) return body.response
-  const raw = body.value as Record<string, unknown> | null
-  const id = typeof raw?.id === 'string' ? raw.id : ''
-  const action = typeof raw?.action === 'string' ? raw.action : ''
-  const expectedUpdatedAt = typeof raw?.expectedUpdatedAt === 'string' ? raw.expectedUpdatedAt : undefined
-  if (!id) return NextResponse.json({ error: 'Missing project id.' }, { status: 400 })
-  try {
-    const before = await getCmsProjectById(id)
-    if (!before) return NextResponse.json({ error: 'Project not found.' }, { status: 404 })
-    if (action === 'unpublish') {
-      const item = await unpublishCmsProject(id, user, expectedUpdatedAt)
-      await recordCmsAudit({ action: 'content.unpublish', actor: user, entity: { id, label: item.title, type: 'project' }, summary: `Unpublished project ${item.title}` })
-      revalidatePublicProject(id)
-      return NextResponse.json({ item })
-    }
-    if (action === 'restore' && typeof raw?.revisionId === 'string') {
-      const item = await restoreCmsProjectRevision(id, raw.revisionId, user, expectedUpdatedAt)
-      await recordCmsAudit({ action: 'content.restore', actor: user, entity: { id, label: item.title, type: 'project' }, summary: `Restored and published a previous version of ${item.title}` })
-      revalidatePublicProject(id)
-      return NextResponse.json({ item })
-    }
-    return NextResponse.json({ error: 'Invalid project action.' }, { status: 400 })
-  } catch (error) {
-    if (error instanceof CmsContentError) return NextResponse.json({ error: error.message }, { status: error.status })
-    return cmsApiError(error, 'Could not update project publishing state.')
-  }
-}
-
-export async function DELETE(request: Request) {
+async function changeTrash(request: Request, restore: boolean) {
   const originError = requireSameOrigin(request)
   if (originError) return originError
   const { response, user } = await requireCmsApiPermission('projects:delete')
   if (response || !user) return response
-  const id = new URL(request.url).searchParams.get('id') || ''
+  const body = await bodyFrom(request)
+  if (body.response || !body.value) return body.response
+  const raw = body.value
   try {
-    const before = await getCmsProjectById(id)
-    await deleteCmsProject(id)
-    await recordCmsAudit({ action: 'content.archive', actor: user, entity: { id, label: before?.title, type: 'project' }, summary: `Removed project ${before?.title || id}` })
-    revalidatePublicProject(id)
-    return NextResponse.json({ ok: true })
+    if (restore && raw.action !== 'restore') throw new CmsContentError('Invalid project action.')
+    const operationId = validateProjectOperationId(raw.operationId)
+    const fingerprint = projectOperationFingerprint(restore ? 'PATCH' : 'DELETE', raw)
+    const id = typeof raw.id === 'string' ? raw.id : ''
+    const expectedUpdatedAt = typeof raw.expectedUpdatedAt === 'string' ? raw.expectedUpdatedAt : ''
+    const saved = await runProjectOperation(user.userId, operationId, fingerprint, (session) => restore
+      ? restoreCmsProject(id, expectedUpdatedAt, session)
+      : deleteCmsProject(id, expectedUpdatedAt, session))
+    if (!saved.replayed) await recordCmsAudit({
+      action: restore ? 'content.restore' : 'content.archive', actor: user,
+      entity: { id: saved.item.id, label: saved.item.title, type: 'project' },
+      summary: `${restore ? 'Restored' : 'Moved to trash'} project ${saved.item.title}`,
+    })
+    return NextResponse.json({ ...saved, ok: true, publicRefreshPending: await refreshProject(saved.item.id) })
   } catch (error) {
-    if (error instanceof CmsContentError) return NextResponse.json({ error: error.message }, { status: error.status })
-    return cmsApiError(error, 'Could not remove project.')
+    return errorResponse(error, restore ? 'Could not restore project. Check its latest state before retrying.' : 'Could not remove project. Check its latest state before retrying.')
   }
 }
+
+export async function PATCH(request: Request) { return changeTrash(request, true) }
+export async function DELETE(request: Request) { return changeTrash(request, false) }

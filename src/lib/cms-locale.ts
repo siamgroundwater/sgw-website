@@ -79,11 +79,14 @@ export function localizeCmsFieldErrors(locale: CmsLocale, errors: Record<string,
     'Article title is required.': 'กรุณากรอกชื่อบทความ',
     'Choose a valid content status.': 'กรุณาเลือกสถานะเนื้อหาที่ถูกต้อง',
     'Choose a valid project category.': 'กรุณาเลือกหมวดหมู่ผลงานที่ถูกต้อง',
+    'Choose at least one valid project category.': 'เลือกหมวดหมู่ผลงานอย่างน้อยหนึ่งหมวดหมู่',
     'Choose valid project work types.': 'กรุณาเลือกประเภทงานที่ถูกต้อง',
     'Choose a valid SGW service.': 'กรุณาเลือกบริการ SGW ที่ถูกต้อง',
     'Cover image is required before publishing.': 'กรุณาเพิ่มภาพปกก่อนเผยแพร่',
+    'Cover image is required.': 'กรุณาเพิ่มภาพปก',
     'Describe the intended audience.': 'กรุณาอธิบายกลุ่มเป้าหมาย',
     'Enter a valid four-digit year.': 'กรุณากรอกปีแบบสี่หลักที่ถูกต้อง',
+    'Enter a valid number.': 'กรุณากรอกตัวเลขให้ถูกต้อง',
     'Enter both latitude and longitude, or leave both empty.': 'กรอกละติจูดและลองจิจูดให้ครบทั้งคู่ หรือเว้นว่างทั้งคู่',
     'Every gallery item must be a valid asset URL or local path.': 'ภาพแกลเลอรีทุกภาพต้องใช้ URL หรือพาธภายในที่ถูกต้อง',
     'Every section image must use an HTTP(S) URL or a local / path.': 'ภาพประกอบทุกภาพต้องใช้ HTTP(S) URL หรือพาธภายใน',
@@ -98,9 +101,21 @@ export function localizeCmsFieldErrors(locale: CmsLocale, errors: Record<string,
     'Service description is required.': 'กรุณากรอกคำอธิบายบริการ',
     'Service title is required.': 'กรุณากรอกชื่อบริการ',
     'Thai project summary is required before publishing.': 'กรุณากรอกสรุปผลงานภาษาไทยก่อนเผยแพร่',
+    'Thai project summary is required.': 'กรุณากรอกสรุปผลงานภาษาไทย',
+    'This slug or content key is already in use.': 'ลิงก์นี้ถูกใช้แล้ว กรุณาเปลี่ยนลิงก์ของผลงาน',
+    'Saved projects are live. Use the trash action to remove a project.': 'ผลงานที่บันทึกจะแสดงบนเว็บไซต์ ใช้ถังขยะเมื่อต้องการนำผลงานออก',
+    'Use at most 80 detail sections, with up to 6000 characters each.': 'เพิ่มรายละเอียดได้ไม่เกิน 80 ส่วน ส่วนละไม่เกิน 6000 ตัวอักษร',
+    'Use at most 120 gallery images.': 'เพิ่มภาพแกลเลอรีได้ไม่เกิน 120 ภาพ',
+    'Use at most 120 gallery images with valid image URLs.': 'เพิ่มภาพแกลเลอรีได้ไม่เกิน 120 ภาพ และตรวจสอบภาพให้ถูกต้อง',
+    'Too many image descriptions.': 'มีคำอธิบายรูปภาพเกินจำนวนที่รองรับ',
+    'Image alt text allows 300 characters and captions allow 600 characters.': 'ข้อความอธิบายภาพใช้ได้ไม่เกิน 300 ตัวอักษร และคำบรรยายไม่เกิน 600 ตัวอักษร',
+    'Invalid translation review marker.': 'ข้อมูลการตรวจคำแปลไม่ถูกต้อง กรุณาโหลดผลงานใหม่',
     'Use a URL-safe slug without spaces or slashes.': 'ใช้ slug ที่ปลอดภัยสำหรับ URL โดยไม่มีช่องว่างหรือเครื่องหมายทับ',
     'Use a valid HTTP(S) URL or local path.': 'ใช้ HTTP(S) URL หรือพาธภายในที่ถูกต้อง',
     'Use an absolute HTTP(S) URL or a local / path.': 'ใช้ HTTP(S) URL แบบเต็ม หรือพาธภายในที่ขึ้นต้นด้วย /',
   }
-  return Object.fromEntries(Object.entries(errors).map(([field, message]) => [field, translations[message] || message]))
+  return Object.fromEntries(Object.entries(errors).map(([field, message]) => {
+    const characterLimit = /^Use (\d+) characters or fewer\.$/.exec(message)
+    return [field, translations[message] || (characterLimit ? `กรอกได้ไม่เกิน ${characterLimit[1]} ตัวอักษร` : message)]
+  }))
 }

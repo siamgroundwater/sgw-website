@@ -1,6 +1,7 @@
 export type PreparedClientImage = {
   file: File
   id: string
+  originalName: string
   originalBytes: number
   previewUrl: string
 }
@@ -41,6 +42,7 @@ export async function prepareProjectImage(file: File): Promise<PreparedClientIma
     return {
       file,
       id: crypto.randomUUID(),
+      originalName: file.name,
       originalBytes: file.size,
       previewUrl: URL.createObjectURL(file),
     }
@@ -77,6 +79,7 @@ export async function prepareProjectImage(file: File): Promise<PreparedClientIma
     return {
       file: preparedFile,
       id: crypto.randomUUID(),
+      originalName: file.name,
       originalBytes: file.size,
       previewUrl: URL.createObjectURL(preparedFile),
     }

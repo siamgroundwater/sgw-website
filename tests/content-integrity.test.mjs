@@ -9,7 +9,9 @@ import { groundwaterFaqItems, groundwaterFaqSourceLinks } from '../src/data/grou
 import { recoveredThaiServiceDetails } from '../src/data/service-page-details.ts'
 import { sortProjectsNewestFirst } from '../src/lib/project-sort.ts'
 import { toProjectSummary } from '../src/lib/project-summaries.ts'
-import { localizeProjectWorkTypes, normalizeProjectWorkTypes } from '../src/lib/project-work-types.ts'
+import { localizeProjectWorkTypes, normalizeProjectWorkTypes, projectWorkTypeLabel } from '../src/lib/project-work-types.ts'
+import { SERVICE_PROJECT_WORK_TYPES, selectServiceProjects } from '../src/lib/service-projects.ts'
+import { CMS_PROJECT_WORK_TYPES } from '../src/types/cms.ts'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -83,11 +85,65 @@ test('public project listings use a lightweight Cloudinary-backed projection', (
 })
 
 test('project work type keys generate labels for every public language', () => {
+  assert.deepEqual(CMS_PROJECT_WORK_TYPES, [
+    'groundwater-survey',
+    'groundwater-well-drilling',
+    'groundwater-project-remediation',
+    'groundwater-well-maintenance',
+    'mineral-water',
+    'island-work',
+    'other',
+  ])
+  assert.deepEqual(CMS_PROJECT_WORK_TYPES.map((key) => projectWorkTypeLabel('th', key)), [
+    'งานสำรวจน้ำบาดาล',
+    'งานเจาะบ่อน้ำบาดาล',
+    'งานแก้ไขโครงการที่มีปัญหา',
+    'งานซ่อมบำรุง',
+    'งานน้ำแร่',
+    'งานบนเกาะ',
+    'งานอื่นๆ',
+  ])
   assert.deepEqual(normalizeProjectWorkTypes(['งานสำรวจน้ำบาดาล']), ['groundwater-survey'])
+  assert.deepEqual(normalizeProjectWorkTypes(['mineral-water-survey', 'mineral-water-well-drilling']), ['mineral-water'])
+  assert.deepEqual(normalizeProjectWorkTypes(['dewatering-well-construction']), ['other'])
   assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'th'), ['งานสำรวจน้ำบาดาล'])
   assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'en'), ['Groundwater survey'])
   assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'zh'), ['地下水勘探'])
   assert.deepEqual(localizeProjectWorkTypes(['groundwater-survey'], 'ja'), ['地下水調査'])
+})
+
+test('service examples select only projects with the matching work type', () => {
+  assert.deepEqual(SERVICE_PROJECT_WORK_TYPES, {
+    survey: 'groundwater-survey',
+    drilling: 'groundwater-well-drilling',
+    maintenance: 'groundwater-well-maintenance',
+    consult: 'groundwater-project-remediation',
+  })
+
+  const projects = [
+    { id: 'survey-key', workTypes: ['groundwater-survey'] },
+    { id: 'survey-thai', workTypes: ['งานสำรวจน้ำบาดาล'] },
+    {
+      id: 'survey-and-drilling',
+      workTypes: ['groundwater-survey', 'groundwater-well-drilling'],
+    },
+    { id: 'survey-after-limit', workTypes: ['groundwater-survey'] },
+    { id: 'drilling', workTypes: ['groundwater-well-drilling'] },
+    { id: 'maintenance', workTypes: ['groundwater-well-maintenance'] },
+  ]
+
+  assert.deepEqual(
+    selectServiceProjects(projects, 'survey').map((project) => project.id),
+    ['survey-key', 'survey-thai', 'survey-and-drilling']
+  )
+  assert.deepEqual(
+    selectServiceProjects(projects, 'drilling').map((project) => project.id),
+    ['survey-and-drilling', 'drilling']
+  )
+  assert.deepEqual(
+    selectServiceProjects(projects, 'survey', 'all').map((project) => project.id),
+    ['survey-key', 'survey-thai', 'survey-and-drilling', 'survey-after-limit']
+  )
 })
 
 test('learning center exposes six unique complete routes', () => {
@@ -238,7 +294,36 @@ test('service detail pages have complete recovered copy and local field imagery'
     ),
     'utf8'
   )
-
+  const servicePageStyles = readFileSync(
+    path.join(
+      root,
+      'src',
+      'components',
+      'ServiceDetailPage',
+      'ServiceDetailPage.css'
+    ),
+    'utf8'
+  )
+  const serviceGallerySource = readFileSync(
+    path.join(
+      root,
+      'src',
+      'components',
+      'ServiceDetailPage',
+      'ServiceGallery.tsx'
+    ),
+    'utf8'
+  )
+  const serviceProjectSelectorSource = readFileSync(
+    path.join(
+      root,
+      'src',
+      'components',
+      'ServiceDetailPage',
+      'ServiceProjectSelector.tsx'
+    ),
+    'utf8'
+  )
   for (const serviceKey of serviceKeys) {
     const details = recoveredThaiServiceDetails[serviceKey]
     assert.equal(details.length, 4, serviceKey)
@@ -305,6 +390,97 @@ test('service detail pages have complete recovered copy and local field imagery'
   assert.doesNotMatch(servicePageSource, /gallery-ppe-|restored-/)
   assert.match(servicePageSource, /padStart\(2, '0'\)/)
   assert.doesNotMatch(servicePageSource, /0[1-4] \/ \{/)
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-hero-media figcaption\s*\{[\s\S]*?width:\s*fit-content;/
+  )
+  assert.doesNotMatch(
+    servicePageStyles,
+    /\.service-detail-hero h1\s*\{[^}]*line-height:/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-scope-grid article\s*\{[\s\S]*?grid-template-columns:\s*auto 1fr;/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-scope-grid h3\s*\{[\s\S]*?margin:\s*0;/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-details-grid > article\s*\{[\s\S]*?display:\s*flex;[\s\S]*?flex-direction:\s*column;[\s\S]*?height:\s*fit-content;/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-details-grid h3\s*\{[\s\S]*?margin:\s*0;/
+  )
+  assert.match(
+    servicePageSource,
+    /className="service-detail-card-heading"[\s\S]*?<FileText aria-hidden="true" \/>[\s\S]*?<h3>\{detail\.title\}<\/h3>/
+  )
+  assert.match(
+    servicePageSource,
+    /const serviceScopeCopy:[\s\S]*?Record<ServiceKey, string\[]>/
+  )
+  assert.match(
+    servicePageSource,
+    /\{scopeCards\.map\(\(item, index\)[\s\S]*?className="service-detail-card-copy"[\s\S]*?<h3>\{item\}<\/h3>/
+  )
+  assert.doesNotMatch(
+    servicePageSource,
+    /<p>\{service\.process\[index\] \?\? service\.short\}<\/p>/
+  )
+  assert.doesNotMatch(servicePageSource, /<span>\{ui\.detailsIntro\}<\/span>/)
+  assert.match(
+    servicePageSource,
+    /<ServiceGallery[\s\S]*?images=\{assets\.gallery\}[\s\S]*?serviceTitle=\{service\.title\}/
+  )
+  assert.match(
+    servicePageSource,
+    /const serviceTabTitles:[\s\S]*?th: \{[\s\S]*?survey: 'สำรวจศึกษา'[\s\S]*?drilling: 'เจาะ ก่อสร้าง'[\s\S]*?maintenance: 'ซ่อมบำรุง'[\s\S]*?consult: 'แก้ไขปัญหา'[\s\S]*?en: \{[\s\S]*?survey: 'Survey & study'[\s\S]*?drilling: 'Drilling & construction'[\s\S]*?maintenance: 'Maintenance'[\s\S]*?consult: 'Troubleshooting'[\s\S]*?zh: \{[\s\S]*?ja: \{/
+  )
+  assert.match(
+    servicePageSource,
+    /title: serviceTabTitles\[locale\]\[key\]/
+  )
+  assert.match(serviceGallerySource, /setPointerCapture/)
+  assert.match(serviceGallerySource, /track\.scrollLeft =/)
+  assert.match(serviceGallerySource, /onKeyDown=\{handleKeyDown\}/)
+  assert.match(serviceGallerySource, /quality=\{90\}/)
+  assert.equal((servicePageSource.match(/quality=\{90\}/g) ?? []).length, 3)
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-gallery-grid figure\s*\{[\s\S]*?aspect-ratio:\s*5 \/ 4;[\s\S]*?box-shadow:/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-gallery-grid\s*\{[\s\S]*?scrollbar-width:\s*none;[\s\S]*?-ms-overflow-style:\s*none;/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-gallery-grid::\-webkit-scrollbar\s*\{[\s\S]*?display:\s*none;/
+  )
+  assert.match(
+    servicePageSource,
+    /selectServiceProjects\([\s\S]*?await listPublicProjects\(\)[\s\S]*?serviceKey[\s\S]*?'all'[\s\S]*?\)\.map\(\(project\) => toProjectSummary\(project, locale\)\)/
+  )
+  assert.match(
+    servicePageSource,
+    /<ServiceProjectSelector[\s\S]*?projects=\{exampleProjects\}[\s\S]*?locale=\{locale\}[\s\S]*?copy=\{content\.projects\}/
+  )
+  assert.match(serviceProjectSelectorSource, /const displayOptions = \[6, 12, 24\]/)
+  assert.match(serviceProjectSelectorSource, /aria-pressed=\{limit === option\}/)
+  assert.match(serviceProjectSelectorSource, /const \[visibleCount, setVisibleCount\] = useState\(6\)/)
+  assert.match(serviceProjectSelectorSource, /setVisibleCount\(\(count\) => Math\.min\(count \+ limit, projects\.length\)\)/)
+  assert.match(serviceProjectSelectorSource, /className="service-detail-projects-load-more"/)
+  assert.match(serviceProjectSelectorSource, /th: \{[\s\S]*?loadMore: 'แสดงเพิ่มเติม'/)
+  assert.match(serviceProjectSelectorSource, /en: \{[\s\S]*?loadMore: 'Load more'/)
+  assert.match(
+    serviceProjectSelectorSource,
+    /<ProjectCards[\s\S]*?projects=\{visibleProjects\}[\s\S]*?className="service-detail-projects-grid"/
+  )
+  assert.doesNotMatch(servicePageSource, /service-detail-cta/)
+  assert.doesNotMatch(servicePageStyles, /\.service-detail-cta/)
   assert.equal(
     (servicePageSource.match(/hero: '\/images\/services\/[^']+\/legacy-/g) ?? [])
       .length,
@@ -326,7 +502,62 @@ test('historical customer and project assets are available locally', () => {
     path.join(root, 'src', 'components', 'LegacyProjectMapSection', 'LegacyProjectMapSection.tsx'),
     'utf8'
   )
+  const legacyMapStyles = readFileSync(
+    path.join(root, 'src', 'components', 'LegacyProjectMapSection', 'LegacyProjectMapSection.module.css'),
+    'utf8'
+  )
+  const legacyMapViewer = readFileSync(
+    path.join(root, 'src', 'components', 'LegacyProjectMapSection', 'LegacyProjectMapViewer.tsx'),
+    'utf8'
+  )
   assert.doesNotMatch(legacyMapComponent, /openHint/)
+  assert.doesNotMatch(legacyMapComponent, /styles\.(intro|note)/)
+  assert.doesNotMatch(legacyMapStyles, /\.(intro|note)\s*\{/)
+  assert.match(
+    legacyMapStyles,
+    /\.section\s*\{[\s\S]*?grid-template-columns:\s*1fr;/
+  )
+  assert.match(legacyMapComponent, /<LegacyProjectMapViewer/)
+  assert.doesNotMatch(legacyMapComponent, /target="_blank"/)
+  assert.match(legacyMapViewer, /createPortal/)
+  assert.match(legacyMapViewer, /aria-modal="true"/)
+  assert.match(legacyMapViewer, /event\.key === 'Escape'/)
+  assert.match(legacyMapViewer, /event\.key !== 'Tab'/)
+  assert.match(legacyMapViewer, /opener\?\.focus\(\)/)
+  assert.match(legacyMapViewer, /setPointerCapture/)
+  assert.match(legacyMapViewer, /MIN_SCALE = 1/)
+  assert.match(legacyMapViewer, /MAX_SCALE = 4/)
+  assert.match(legacyMapViewer, /ResizeObserver/)
+  assert.match(legacyMapViewer, /passive: false/)
+  assert.match(legacyMapViewer, /window\.matchMedia\('\(width > 1200px\)'\)\.matches/)
+  assert.match(legacyMapViewer, /onPointerDown=\{updateHoverPreview\}/)
+  assert.match(legacyMapViewer, /onPointerMove=\{updateHoverPreview\}/)
+  assert.match(legacyMapViewer, /HOVER_PREVIEW_SCALE = 3\.2/)
+  assert.match(
+    legacyMapViewer,
+    /style\.backgroundPosition = `\$\{backgroundX\}px \$\{backgroundY\}px`/
+  )
+  assert.match(legacyMapViewer, /onPointerCancel=\{hideHoverPreview\}/)
+  assert.match(legacyMapViewer, /onPointerUp=\{hideHoverPreview\}/)
+  assert.match(legacyMapViewer, /<div\s+ref=\{mapPanelRef\}/)
+  assert.doesNotMatch(legacyMapViewer, /<button\s+ref=\{mapPanelRef\}/)
+  assert.doesNotMatch(legacyMapViewer, /magnifierLabel|hoverPreviewLabel|previewHint|zoomCue/)
+  assert.match(legacyMapStyles, /\.canvas\s*\{[\s\S]*?touch-action:\s*none;/)
+  assert.match(
+    legacyMapStyles,
+    /@media \(width > 1200px\)[\s\S]*?\.previewStage\s*\{[\s\S]*?grid-template-columns:\s*auto var\(--hover-preview-width, 27rem\);[\s\S]*?\.mapPanel\s*\{[\s\S]*?touch-action:\s*pan-y;[\s\S]*?\.hoverPreview\s*\{[\s\S]*?width:\s*var\(--hover-preview-width, 27rem\);[\s\S]*?background-size:\s*320% auto;/
+  )
+  assert.match(legacyMapViewer, /--hover-preview-width/)
+  assert.match(legacyMapStyles, /@media \(prefers-reduced-motion: reduce\)/)
+
+  for (const translation of [
+    'เปิดและซูมแผนที่',
+    'Open and zoom map',
+    '打开并缩放地图',
+    '地図を開いて拡大',
+  ]) {
+    assert.ok(legacyMapComponent.includes(translation), translation)
+  }
 })
 
 test('mobile navigation uses an accessible right-side drawer', () => {
@@ -352,6 +583,10 @@ test('mobile navigation uses an accessible right-side drawer', () => {
     path.join(root, 'src', 'components', 'Navbar', 'Navbar.css'),
     'utf8'
   )
+  const desktopComponent = readFileSync(
+    path.join(root, 'src', 'components', 'Navbar', 'Navbar.tsx'),
+    'utf8'
+  )
   assert.match(
     desktopStyles,
     /\.navbar-subnav\s*\{[\s\S]*?width:\s*fit-content;/
@@ -360,6 +595,10 @@ test('mobile navigation uses an accessible right-side drawer', () => {
     desktopStyles,
     /\.navbar-subnav-link\s*\{[\s\S]*?white-space:\s*nowrap;/
   )
+  assert.match(desktopComponent, /const \[dismissedSubnav, setDismissedSubnav\]/)
+  assert.match(desktopComponent, /onClick=\{\(event\) => dismissSubnav\(item\.href, event\)\}/)
+  assert.match(desktopComponent, /onPointerLeave=[\s\S]*?event\.pointerType !== 'mouse'/)
+  assert.match(desktopStyles, /\.navbar-item\.is-subnav-dismissed \.navbar-subnav\s*\{[\s\S]*?display:\s*none;/)
 })
 
 test('contact page uses copyable contact cards and an interactive office map', () => {
@@ -375,6 +614,14 @@ test('contact page uses copyable contact cards and an interactive office map', (
     path.join(root, 'src', 'app', '[locale]', '[[...slug]]', 'page.tsx'),
     'utf8'
   )
+  const footer = readFileSync(
+    path.join(root, 'src', 'components', 'Footer', 'Footer.tsx'),
+    'utf8'
+  )
+  const footerStyles = readFileSync(
+    path.join(root, 'src', 'components', 'Footer', 'Footer.css'),
+    'utf8'
+  )
 
   assert.match(component, /openstreetmap\.org\/export\/embed\.html/)
   assert.match(component, /<iframe/)
@@ -382,6 +629,22 @@ test('contact page uses copyable contact cards and an interactive office map', (
   assert.match(component, /document\.execCommand\('copy'\)/)
   assert.match(component, /google\.com\/maps\/search/)
   assert.match(component, /0105530015432/)
+  assert.match(component, /https:\/\/www\.tiktok\.com\/@siamgroundwater\.co/)
+  assert.match(component, /src="\/icons\/TikTok\.png"/)
+  assert.match(footer, /https:\/\/www\.tiktok\.com\/@siamgroundwater\.co/)
+  assert.match(footer, /src="\/icons\/TikTok\.png"/)
+  assert.match(footer, /href="tel:0898954757"/)
+  assert.match(footer, /href="tel:0827447582"/)
+  assert.match(footer, /โทร \(คุณวศิน\)/)
+  assert.match(footer, /โทร \(คุณเติ้ง\)/)
+  assert.match(footerStyles, /\.footer-contact-area\s*\{[\s\S]*?flex-direction:\s*column;/)
+  assert.match(footerStyles, /\.footer-contact\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*repeat\(3, auto\);[\s\S]*?align-self:\s*center;/)
+  assert.match(footerStyles, /@media \(width <= 1100px\)[\s\S]*?\.footer-contact\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, auto\);/)
+  assert.match(footerStyles, /@media \(width <= 680px\)[\s\S]*?\.footer-contact\s*\{[\s\S]*?grid-template-columns:\s*1fr;/)
+  assert.match(footerStyles, /\.footer-main\s*\{[\s\S]*?grid-template-columns:\s*1fr;[\s\S]*?justify-items:\s*center;/)
+  assert.match(footerStyles, /\.footer-contact-area\s*\{[\s\S]*?justify-self:\s*center;/)
+  assert.match(footerStyles, /\.footer-brand\s*\{[\s\S]*?justify-content:\s*center;[\s\S]*?text-align:\s*center;/)
+  assert.match(footerStyles, /\.footer-social img\s*\{[\s\S]*?border-radius:\s*0\.5rem;/)
   assert.doesNotMatch(defaultPage, /contact-form-section|ContactForm/)
   assert.doesNotMatch(localizedPage, /contact-form-section|ContactForm/)
 })
@@ -477,6 +740,49 @@ test('Thai routes keep localized search metadata and page-level headings', () =>
   assert.match(projectsPage, /<Projects projects=\{projects\} showHistoryMap headingLevel="h1" \/>/)
 })
 
+test('Thai and translated project routes share one page structure', () => {
+  const detailView = readFileSync(
+    path.join(root, 'src', 'components', 'ProjectDetailView', 'ProjectDetailView.tsx'),
+    'utf8'
+  )
+  const thaiDetailPage = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'projects', '[id]', 'page.tsx'),
+    'utf8'
+  )
+  const localizedPage = readFileSync(
+    path.join(root, 'src', 'app', '[locale]', '[[...slug]]', 'page.tsx'),
+    'utf8'
+  )
+  const projectBrowser = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'home', 'projects', 'projects.tsx'),
+    'utf8'
+  )
+
+  assert.match(thaiDetailPage, /<ProjectDetailView/)
+  assert.match(localizedPage, /<ProjectDetailView locale=\{locale\} content=\{content\} project=\{project\} \/>/)
+  assert.ok(
+    detailView.indexOf('<ProjectMediaSlider') <
+      detailView.indexOf('<div className="project-detail-content">')
+  )
+  assert.doesNotMatch(detailView, /content\.projects\.typeLabel/)
+  assert.match(projectBrowser, /showIntro && copy\?\.intro/)
+  assert.match(localizedPage, /showHistoryMap showIntro=\{false\} headingLevel="h1"/)
+})
+
+test('Thai and translated governance pages both expose their title as the page heading', () => {
+  const thaiGovernance = readFileSync(
+    path.join(root, 'src', 'app', '(site)', 'governance', 'page.tsx'),
+    'utf8'
+  )
+  const localizedPage = readFileSync(
+    path.join(root, 'src', 'app', '[locale]', '[[...slug]]', 'page.tsx'),
+    'utf8'
+  )
+
+  assert.match(thaiGovernance, /<h1 className="governance-title-th">/)
+  assert.match(localizedPage, /<h1 className="governance-title-th">\{content\.governance\.title\}<\/h1>/)
+})
+
 test('home project cards and map popup actions open details in a new tab', () => {
   const mapComponent = readFileSync(
     path.join(root, 'src', 'app', '(site)', 'home', 'map', 'map.tsx'),
@@ -529,7 +835,7 @@ test('full projects page can reveal more projects after the grid', () => {
   )
 
   assert.ok(
-    projectBrowser.indexOf('className="projects-grid display-posts-listing"') <
+    projectBrowser.indexOf('<ProjectCards projects={displayedProjects}') <
       projectBrowser.indexOf('className="projects-show-more-wrap"')
   )
   assert.match(projectBrowser, /!featured &&[\s\S]*?displayedProjects\.length < filteredProjects\.length/)
