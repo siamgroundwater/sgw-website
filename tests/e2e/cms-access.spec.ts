@@ -74,11 +74,12 @@ test('account password change rejects an incorrect current password and invalida
   }
 })
 
-test('user editor validates locally, focuses errors, and protects dirty changes on mobile', async ({ page }) => {
+test('dedicated user pages validate locally, protect dirty changes, and expose editing controls', async ({ page }) => {
   await english(page)
   await signIn(page.request)
   await page.goto('/cms/users')
-  await page.getByRole('button', { name: 'Add user', exact: true }).click()
+  await page.getByRole('link', { name: 'Add user', exact: true }).click()
+  await expect(page).toHaveURL(/\/cms\/users\/add$/)
   await expect(page.locator('[name="name"]')).toBeFocused()
   let writes = 0
   page.on('request', request => { if (request.url().endsWith('/api/cms/users') && request.method() === 'POST') writes++ })
@@ -86,6 +87,11 @@ test('user editor validates locally, focuses errors, and protects dirty changes 
   await page.locator('[name="username"]').fill('x')
   await page.locator('[name="email"]').fill('invalid-email')
   await page.locator('[name="password"]').fill('short')
+  await page.locator('[name="passwordConfirmation"]').fill('short')
+  await page.getByRole('button', { name: 'Show password', exact: true }).click()
+  await expect(page.locator('[name="password"]')).toHaveAttribute('type', 'text')
+  await page.getByRole('button', { name: 'Hide password', exact: true }).click()
+  await expect(page.locator('[name="password"]')).toHaveAttribute('type', 'password')
   await page.getByRole('button', { name: 'Save user', exact: true }).click()
   await expect(page.locator('#user-username-error')).toContainText('3–80')
   await expect(page.locator('#user-email-error')).toHaveText('Enter a valid email address.')
@@ -93,13 +99,29 @@ test('user editor validates locally, focuses errors, and protects dirty changes 
   await expect(page.locator('[name="username"]')).toBeFocused()
   expect(writes).toBe(0)
 
+  await page.locator('[name="password"]').fill('new-password-123')
+  await page.locator('[name="passwordConfirmation"]').fill('different-password-456')
+  await page.getByRole('button', { name: 'Save user', exact: true }).click()
+  await expect(page.locator('#user-passwordConfirmation-error')).toHaveText('The passwords do not match.')
+  expect(writes).toBe(0)
+
   page.once('dialog', dialog => dialog.dismiss())
-  await page.getByRole('button', { name: 'Close user editor', exact: true }).click()
+  await page.getByRole('link', { name: 'Cancel', exact: true }).click()
   await expect(page.locator('[name="name"]')).toHaveValue('Validation test')
   page.once('dialog', dialog => dialog.accept())
-  await page.getByRole('button', { name: 'Close user editor', exact: true }).click()
-  await expect(page.locator('#user-editor-title')).toHaveCount(0)
-  await expect(page.getByRole('button', { name: 'Add user', exact: true })).toBeFocused()
+  await page.getByRole('link', { name: 'Cancel', exact: true }).click()
+  await expect(page).toHaveURL(/\/cms\/users$/)
+
+  const usersResponse = await page.request.get('/api/cms/users')
+  const usersPayload = await usersResponse.json() as { users: Array<{ id: string; username: string }> }
+  const editor = usersPayload.users.find(user => user.username === 'qa-editor')
+  expect(editor).toBeTruthy()
+  await page.goto(`/cms/users/edit?id=${editor!.id}`)
+  await expect(page.getByRole('heading', { name: 'Edit CMS user' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Delete user', exact: true })).toBeVisible()
+  await expect(page.locator('[name="username"]')).toHaveValue('qa-editor')
+
+  await page.goto('/cms/users')
   await page.setViewportSize({ width: 390, height: 844 })
   await expect(page.locator('.cms-mobile-field-label').first()).toBeVisible()
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy()

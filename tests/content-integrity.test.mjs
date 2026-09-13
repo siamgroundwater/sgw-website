@@ -12,6 +12,7 @@ import { toProjectSummary } from '../src/lib/project-summaries.ts'
 import { localizeProjectWorkTypes, normalizeProjectWorkTypes, projectWorkTypeLabel } from '../src/lib/project-work-types.ts'
 import { SERVICE_PROJECT_WORK_TYPES, selectServiceProjects } from '../src/lib/service-projects.ts'
 import { CMS_PROJECT_WORK_TYPES } from '../src/types/cms.ts'
+import { companyContact, directContactCopy } from '../src/lib/company-contact.ts'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -631,12 +632,15 @@ test('contact page uses copyable contact cards and an interactive office map', (
   assert.match(component, /0105530015432/)
   assert.match(component, /https:\/\/www\.tiktok\.com\/@siamgroundwater\.co/)
   assert.match(component, /src="\/icons\/TikTok\.png"/)
-  assert.match(footer, /https:\/\/www\.tiktok\.com\/@siamgroundwater\.co/)
-  assert.match(footer, /src="\/icons\/TikTok\.png"/)
-  assert.match(footer, /href="tel:0898954757"/)
-  assert.match(footer, /href="tel:0827447582"/)
-  assert.match(footer, /โทร \(คุณวศิน\)/)
-  assert.match(footer, /โทร \(คุณเติ้ง\)/)
+  assert.match(footer, /companyContact\.social\.map/)
+  assert.equal(companyContact.social.find(social => social.name === 'TikTok').href, 'https://www.tiktok.com/@siamgroundwater.co')
+  assert.equal(companyContact.social.find(social => social.name === 'TikTok').image, '/icons/TikTok.png')
+  assert.match(footer, /href=\{companyContact\.wasin\.href\}/)
+  assert.match(footer, /href=\{companyContact\.toeng\.href\}/)
+  assert.equal(companyContact.wasin.href, 'tel:0898954757')
+  assert.equal(companyContact.toeng.href, 'tel:0827447582')
+  assert.equal(directContactCopy.th.wasin, 'โทร (คุณวศิน)')
+  assert.equal(directContactCopy.th.toeng, 'โทร (คุณเติ้ง)')
   assert.match(footerStyles, /\.footer-contact-area\s*\{[\s\S]*?flex-direction:\s*column;/)
   assert.match(footerStyles, /\.footer-contact\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*repeat\(3, auto\);[\s\S]*?align-self:\s*center;/)
   assert.match(footerStyles, /@media \(width <= 1100px\)[\s\S]*?\.footer-contact\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, auto\);/)

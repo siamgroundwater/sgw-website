@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { assertCmsLoginRedirect, assertMissingProjectPage, assertProjectPage } from './lib/page-response-assertions.mjs'
 
 const baseUrl = (process.env.E2E_BASE_URL || process.argv[2] || 'http://127.0.0.1:3003').replace(/\/$/, '')
 
@@ -23,18 +24,22 @@ const objectId = listing.text.match(/\/projects\/([a-f\d]{24})/i)?.[1]
 assert.ok(objectId, 'Project listing did not contain an ObjectId detail link.')
 
 const detail = await page(`/projects/${objectId}`)
-assert.equal(detail.response.status, 200)
+assertProjectPage(detail.response.status, detail.text, `/projects/${objectId}`)
 assert.match(detail.text, /res\.cloudinary\.com/)
 
 const english = await page(`/en/projects/${objectId}`)
-assert.equal(english.response.status, 200)
+assertProjectPage(english.response.status, english.text, `/en/projects/${objectId}`)
 
-const invalidProject = await fetch(`${baseUrl}/projects/1`, { redirect: 'manual' })
-assert.equal(invalidProject.status, 404, 'Numeric project URLs must not resolve after the ObjectId migration.')
+await Promise.all(['', '/en', '/zh', '/ja'].map(async prefix => {
+  const route = `${prefix}/projects/1`
+  const invalidProject = await page(route, { redirect: 'manual' })
+  assertMissingProjectPage(invalidProject.response.status, invalidProject.text, route)
+}))
 
-const cms = await fetch(`${baseUrl}/cms/projects`, { redirect: 'manual' })
-assert.ok([307, 308].includes(cms.status))
-assert.match((cms.headers.get('location') || '').split(',')[0].trim(), /\/cms\/login/)
+const cms = await page('/cms/projects', { redirect: 'manual' })
+assertCmsLoginRedirect(cms.response.status, cms.text, cms.response.headers.get('location') || '', baseUrl)
+const cmsApi = await page('/api/cms/projects', { redirect: 'manual' })
+assert.equal(cmsApi.response.status, 401, 'Signed-out requests must not access CMS project data.')
 
 const sitemap = await page('/sitemap.xml')
 assert.equal(sitemap.response.status, 200)

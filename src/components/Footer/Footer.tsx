@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ArrowUp, Mail, Phone, Printer } from 'lucide-react'
+import { Mail, Phone, Printer } from 'lucide-react'
+import { companyContact, directContactCopy } from '@/lib/company-contact'
 import {
   localeFromPathname,
   localePath,
@@ -12,33 +12,12 @@ import {
 } from '@/i18n/config'
 import './Footer.css'
 
-const directContactCopy = {
-  th: { wasin: 'โทร (คุณวศิน)', toeng: 'โทร (คุณเติ้ง)' },
-  en: { wasin: 'Tel (Wasin)', toeng: 'Tel (Toeng)' },
-  zh: { wasin: '电话（Wasin）', toeng: '电话（Toeng）' },
-  ja: { wasin: '電話（Wasin）', toeng: '電話（Toeng）' },
-}
-
 export default function Footer() {
-  const [showBackToTop, setShowBackToTop] = useState(false)
   const currentYear = new Date().getFullYear()
   const pathname = usePathname()
   const locale = localeFromPathname(pathname)
   const copy = navigationCopy[locale]
   const directContacts = directContactCopy[locale]
-
-  useEffect(() => {
-    const handleScroll = () => setShowBackToTop(window.scrollY > 300)
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const handleBackToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
     <footer
@@ -71,31 +50,31 @@ export default function Footer() {
                 <span className="footer-contact-icon">
                   <Phone aria-hidden="true" />
                 </span>
-                <a href="tel:027350789" className="footer-link">
-                  {copy.phone} 0-2735-0789
+                <a href={companyContact.office.href} className="footer-link">
+                  {copy.phone} {companyContact.office.value}
                 </a>
               </p>
               <p className="footer-contact-line">
                 <span className="footer-contact-icon">
                   <Phone aria-hidden="true" />
                 </span>
-                <a href="tel:0898954757" className="footer-link">
-                  {directContacts.wasin}: 0898954757
+                <a href={companyContact.wasin.href} className="footer-link">
+                  {directContacts.wasin}: {companyContact.wasin.value}
                 </a>
               </p>
               <p className="footer-contact-line">
                 <span className="footer-contact-icon">
                   <Phone aria-hidden="true" />
                 </span>
-                <a href="tel:0827447582" className="footer-link">
-                  {directContacts.toeng}: 0827447582
+                <a href={companyContact.toeng.href} className="footer-link">
+                  {directContacts.toeng}: {companyContact.toeng.value}
                 </a>
               </p>
               <p className="footer-contact-line">
                 <span className="footer-contact-icon">
                   <Printer aria-hidden="true" />
                 </span>
-                <span>{copy.fax} 0-2375-0791-2</span>
+                <span>{copy.fax} {companyContact.fax}</span>
               </p>
               <p className="footer-contact-line">
                 <span className="footer-contact-icon">
@@ -103,58 +82,26 @@ export default function Footer() {
                 </span>
                 <span>
                   {copy.email}{' '}
-                  <a href="mailto:sgw_th@outlook.com" className="footer-link">
-                    sgw_th@outlook.com
+                  <a href={companyContact.email.href} className="footer-link">
+                    {companyContact.email.value}
                   </a>
                 </span>
               </p>
             </div>
 
             <div className="footer-social">
-              <a
-                href="https://line.me/R/ti/p/@sgw_th?from=page&searchId=sgw_th"
-                className="footer-social-item"
-                aria-label="Add LINE: sgw_th"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/images/logo/contact/LINE_icon.png"
-                  alt="LINE"
-                  width={40}
-                  height={40}
-                />
-              </a>
-
-              <a
-                href="https://www.facebook.com/siamgroundwater"
-                className="footer-social-item"
-                aria-label="Visit Siam Groundwater on Facebook"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/images/logo/contact/Facebook_icon.png"
-                  alt="Facebook"
-                  width={40}
-                  height={40}
-                />
-              </a>
-
-              <a
-                href="https://www.tiktok.com/@siamgroundwater.co"
-                className="footer-social-item"
-                aria-label="Visit Siam Groundwater on TikTok"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/icons/TikTok.png"
-                  alt="TikTok"
-                  width={40}
-                  height={40}
-                />
-              </a>
+              {companyContact.social.map(social => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  className="footer-social-item"
+                  aria-label={social.ariaLabel}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image src={social.image} alt={social.name} width={40} height={40} />
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -166,18 +113,6 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-
-      {showBackToTop && (
-        <button
-          type="button"
-          className="footer-back-to-top"
-          onClick={handleBackToTop}
-          aria-label={copy.backToTop}
-        >
-          <span className="sr-only">{copy.backToTop}</span>
-          <ArrowUp aria-hidden="true" className="footer-back-to-top-icon" />
-        </button>
-      )}
     </footer>
   )
 }

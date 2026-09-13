@@ -17,6 +17,8 @@
     "test:e2e": "node scripts/e2e-smoke.mjs",
     "test:e2e:learning": "playwright test --config playwright.learning.config.ts",
     "test:e2e:learning:routes": "node scripts/e2e-learning-routes.mjs",
+    "test:e2e:loading": "node scripts/check-route-loading.mjs",
+    "test:e2e:contact": "playwright test --config playwright.contact.config.ts",
     "test:e2e:cms": "node scripts/run-e2e-cms-project-workflow.mjs",
     "test:e2e:cms:media": "node scripts/run-e2e-cms-project-workflow.mjs --media",
     "backup:cms": "node scripts/cms-backup.mjs backup",

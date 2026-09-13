@@ -24,8 +24,8 @@ export function isCmsSessionRevoked(issuedAt: number, revokedAt?: Date) {
   return Boolean(revokedAt && issuedAt <= revokedAt.getTime())
 }
 
-export type CmsUserField = 'name' | 'username' | 'email' | 'password' | 'role' | 'status'
-export type CmsUserErrorCode = 'name' | 'username' | 'username_taken' | 'email' | 'password' | 'self_access' | 'last_admin' | 'account_password' | 'current_password' | 'password_reused' | 'not_found' | 'conflict' | 'invalid'
+export type CmsUserField = 'name' | 'username' | 'email' | 'password' | 'passwordConfirmation' | 'role' | 'status'
+export type CmsUserErrorCode = 'name' | 'username' | 'username_taken' | 'email' | 'password' | 'password_mismatch' | 'self_access' | 'last_admin' | 'account_password' | 'current_password' | 'password_reused' | 'not_found' | 'conflict' | 'invalid'
 
 const userMessages: Record<CmsUserErrorCode, { th: string; en: string }> = {
   name: { th: 'กรอกชื่อแสดงไม่เกิน 120 ตัวอักษร', en: 'Enter a display name of up to 120 characters.' },
@@ -33,6 +33,7 @@ const userMessages: Record<CmsUserErrorCode, { th: string; en: string }> = {
   username_taken: { th: 'ชื่อผู้ใช้นี้มีอยู่แล้ว กรุณาเลือกชื่ออื่น', en: 'That username is already in use. Choose another.' },
   email: { th: 'กรอกอีเมลให้ถูกต้อง', en: 'Enter a valid email address.' },
   password: { th: 'รหัสผ่านต้องมี 12–256 ตัวอักษร', en: 'Use a password containing 12–256 characters.' },
+  password_mismatch: { th: 'รหัสผ่านทั้งสองช่องไม่ตรงกัน', en: 'The passwords do not match.' },
   self_access: { th: 'คุณไม่สามารถปิดใช้งานหรือลดสิทธิ์ผู้ดูแลของตัวเองได้', en: 'You cannot disable or remove your own administrator access.' },
   last_admin: { th: 'ต้องมีผู้ดูแลระบบที่เปิดใช้งานอย่างน้อยหนึ่งคน', en: 'Keep at least one active administrator.' },
   account_password: { th: 'เปลี่ยนรหัสผ่านของคุณได้ที่หน้าบัญชีของฉัน', en: 'Change your own password on My account.' },
@@ -47,11 +48,13 @@ export function cmsUserErrorMessage(code: unknown, locale: 'th' | 'en') {
   return userMessages[typeof code === 'string' && code in userMessages ? code as CmsUserErrorCode : 'invalid'][locale]
 }
 
-export function validateCmsUserForm(input: { name: string; username: string; email: string; password: string }, editing: boolean): Partial<Record<CmsUserField, CmsUserErrorCode>> {
+export function validateCmsUserForm(input: { name: string; username: string; email: string; password: string; passwordConfirmation?: string }, editing: boolean): Partial<Record<CmsUserField, CmsUserErrorCode>> {
   const errors: Partial<Record<CmsUserField, CmsUserErrorCode>> = {}
   if (!input.name.trim() || input.name.trim().length > 120) errors.name = 'name'
   if (!/^[a-z0-9._-]{3,80}$/i.test(input.username.trim())) errors.username = 'username'
   if (input.email.trim() && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim()) || input.email.trim().length > 254)) errors.email = 'email'
-  if ((!editing || input.password) && (input.password.length < 12 || input.password.length > 256)) errors.password = 'password'
+  const passwordChanged = !editing || Boolean(input.password) || Boolean(input.passwordConfirmation)
+  if (passwordChanged && (input.password.length < 12 || input.password.length > 256)) errors.password = 'password'
+  if (input.passwordConfirmation !== undefined && passwordChanged && input.password !== input.passwordConfirmation) errors.passwordConfirmation = 'password_mismatch'
   return errors
 }

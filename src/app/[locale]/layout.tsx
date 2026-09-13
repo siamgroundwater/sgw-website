@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import Navbar from '@/components/Navbar/Navbar'
 import NavbarMobile from '@/components/Navbar/mobile/Navbar-mobile'
 import Footer from '@/components/Footer/Footer'
+import ContactFab from '@/components/ContactFab/ContactFab'
 import SiteStructuredData from '@/components/SiteStructuredData/SiteStructuredData'
 import {
   PREFIXED_LOCALES,
@@ -74,6 +75,7 @@ export default async function LocalizedLayout({ children, params }: LayoutProps)
         <NavbarMobile />
         {children}
         <Footer />
+        <ContactFab locale={locale} />
       </body>
     </html>
   )

@@ -23,12 +23,13 @@ test('retry countdown handles numeric and HTTP-date Retry-After values with boun
   assert.equal(retryAfterSeconds('Thu, 01 Jan 2026 00:02:00 GMT', Date.parse('2026-01-01T00:00:00Z')), 120)
 })
 
-test('user field validation matches required, optional, and boundary behavior', () => {
-  const good = { name: 'Site editor', username: 'site.editor', email: 'editor@example.test', password: 'new-password-123' }
+test('user field validation matches required, optional, confirmation, and boundary behavior', () => {
+  const good = { name: 'Site editor', username: 'site.editor', email: 'editor@example.test', password: 'new-password-123', passwordConfirmation: 'new-password-123' }
   assert.deepEqual(validateCmsUserForm(good, false), {})
-  assert.deepEqual(validateCmsUserForm({ ...good, password: '' }, true), {})
-  assert.deepEqual(validateCmsUserForm({ ...good, name: ' ', username: 'ab', email: 'bad@', password: 'short' }, false), { name: 'name', username: 'username', email: 'email', password: 'password' })
-  assert.deepEqual(validateCmsUserForm({ ...good, password: 'x'.repeat(257) }, true), { password: 'password' })
+  assert.deepEqual(validateCmsUserForm({ ...good, password: '', passwordConfirmation: '' }, true), {})
+  assert.deepEqual(validateCmsUserForm({ ...good, name: ' ', username: 'ab', email: 'bad@', password: 'short', passwordConfirmation: 'short' }, false), { name: 'name', username: 'username', email: 'email', password: 'password' })
+  assert.deepEqual(validateCmsUserForm({ ...good, password: 'x'.repeat(257), passwordConfirmation: 'x'.repeat(257) }, true), { password: 'password' })
+  assert.deepEqual(validateCmsUserForm({ ...good, passwordConfirmation: 'different-password' }, false), { passwordConfirmation: 'password_mismatch' })
 })
 
 test('session revocation closes old and simultaneous tokens without revoking later sign-ins', () => {

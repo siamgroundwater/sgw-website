@@ -243,7 +243,7 @@ test('service and learning validation enforce structured content', () => {
 })
 
 test('CMS routes exist and mutation APIs require same-origin checks', () => {
-  const pages = ['login', 'dashboard', 'projects', 'users', 'audit-logs']
+  const pages = ['login', 'dashboard', 'projects', 'users', 'users/add', 'users/edit', 'audit-logs']
   for (const page of pages) {
     assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', page, 'page.tsx')), true, page)
   }

@@ -1232,6 +1232,26 @@ html {
   box-shadow: none;
 }
 
+.cms-password-input .cms-password-toggle {
+  width: 38px;
+  height: 38px;
+  margin-right: -8px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.cms-password-input .cms-password-toggle[aria-pressed='true'] {
+  color: var(--cms-cyan-deep);
+  background: rgba(7, 137, 154, 0.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cms-password-input .cms-password-toggle:hover {
+    color: var(--cms-cyan-deep);
+    background: rgba(7, 137, 154, 0.1);
+  }
+}
+
 .cms-field textarea {
   min-height: 118px;
   resize: vertical;
@@ -1360,6 +1380,14 @@ html {
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 8px 28px rgba(5, 50, 55, 0.12);
   backdrop-filter: blur(12px);
+}
+
+.cms-user-form-actions {
+  justify-content: space-between;
+}
+
+.cms-user-form-actions > .cms-row-actions {
+  padding: 0;
 }
 
 .cms-publishing-status {
@@ -1952,8 +1980,14 @@ html {
   }
 
   .cms-form-actions .cms-button,
-  .cms-form-actions .cms-button-secondary {
+  .cms-form-actions .cms-button-secondary,
+  .cms-form-actions .cms-button-danger {
     width: 100%;
+  }
+
+  .cms-user-form-actions > .cms-row-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cms-language-section > summary,

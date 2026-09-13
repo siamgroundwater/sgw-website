@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { v2 as cloudinary } from 'cloudinary'
 import { MongoClient, ObjectId } from 'mongodb'
+import { assertMissingProjectPage } from './lib/page-response-assertions.mjs'
 
 if (process.argv.includes('--help')) {
   console.log('Opt-in provider suite. Run through scripts/run-e2e-cms-project-workflow.mjs --media to allocate a fresh database/server. Never run against an existing account/database.')
@@ -199,7 +200,9 @@ try {
   await stageExpired(replacement.asset, 'trash-protection')
   assert.equal((await runCleanup()).preserved, 1)
   await assertAssetExists(replacement.asset.publicId)
-  assert.equal((await fetch(baseUrl + '/projects/' + created.item.id)).status, 404)
+  const trashedRoute = '/projects/' + created.item.id
+  const trashedPage = await fetch(baseUrl + trashedRoute, { redirect: 'manual', signal: AbortSignal.timeout(15_000) })
+  assertMissingProjectPage(trashedPage.status, await trashedPage.text(), trashedRoute)
   const restored = await request('/api/cms/projects', 'PATCH', {
     action: 'restore', id: created.item.id, expectedUpdatedAt: trashed.item.updatedAt, operationId: operation(),
   })

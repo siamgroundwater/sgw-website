@@ -128,6 +128,13 @@ export async function listCmsUsers() {
   return rows.map(serializeCmsUser)
 }
 
+export async function getCmsUserById(id: string) {
+  if (!ObjectId.isValid(id)) return null
+  const users = await getCmsUsersCollection()
+  const user = await users.findOne({ _id: new ObjectId(id), deletedAt: { $exists: false } })
+  return user ? serializeCmsUser(user) : null
+}
+
 export async function createCmsUser(input: CreateCmsUserInput) {
   await ensureCmsUserIndexes()
   const normalized = validateUserInput(input, true)

@@ -1,6 +1,7 @@
 import { test, expect, type Page, type APIRequestContext } from '@playwright/test'
 import { MongoClient } from 'mongodb'
 import { randomUUID } from 'node:crypto'
+import { assertMissingProjectPage, assertProjectPage } from '../../scripts/lib/page-response-assertions.mjs'
 
 const database = process.env.CMS_E2E_DATABASE || ''
 if (!/^sgw_test_[0-9]+_[a-f0-9]{8}$/.test(database)) throw new Error('Run CMS browser tests through npm run test:e2e:cms; an isolated database is required.')
@@ -73,10 +74,19 @@ test('live save, idempotent retry, conflict, fallback, Trash and restore use the
   expect(remove.ok(), await remove.text()).toBeTruthy()
   const trashed = (await remove.json()).item
   expect(await db.collection('cmsProjects').countDocuments({ slug: body.slug })).toBe(1)
-  expect((await request.get('/projects/' + first.id)).status()).toBe(404)
+  for (const prefix of ['', '/en', '/zh', '/ja']) {
+    const route = prefix + '/projects/' + first.id
+    const removedPage = await request.get(route, { maxRedirects: 0 })
+    const html = await removedPage.text()
+    assertMissingProjectPage(removedPage.status(), html, route)
+    expect(html).not.toContain(update.title)
+  }
   const restored = await request.patch('/api/cms/projects', { headers: { Origin: origin }, data: { action: 'restore', id: first.id, expectedUpdatedAt: trashed.updatedAt, operationId: randomUUID() } })
   expect(restored.ok(), await restored.text()).toBeTruthy()
-  expect((await request.get('/projects/' + first.id)).status()).toBe(200)
+  const restoredPage = await request.get('/projects/' + first.id)
+  const restoredHtml = await restoredPage.text()
+  assertProjectPage(restoredPage.status(), restoredHtml, '/projects/' + first.id)
+  expect(restoredHtml).toContain(update.title)
   expect((await request.patch('/api/cms/projects', { headers: { Origin: origin }, data: { action: 'unpublish', id: first.id, operationId: randomUUID() } })).status()).toBe(400)
 })
 
