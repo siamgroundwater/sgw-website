@@ -48,6 +48,8 @@ test('the shared loader is accessible, localized, and motion-safe', () => {
   for (const locale of ['th', 'en', 'zh', 'ja']) assert.match(component, new RegExp(`\\b${locale}:`))
   assert.match(styles, /prefers-reduced-motion:\s*reduce/)
   assert.match(styles, /animation:\s*none/)
+  assert.match(styles, /\.logoShell\s*\{[^}]*border:\s*0;[^}]*border-radius:\s*50%;/s)
+  assert.match(styles, /\.logoShell img\s*\{[^}]*border-radius:\s*50%;/s)
 })
 
 test('loading contact details stay complete and shared with the footer', () => {

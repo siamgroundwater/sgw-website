@@ -5,17 +5,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { localePath, type SiteLocale } from '@/i18n/config'
-import { companyContact, directContactCopy } from '@/lib/company-contact'
+import { companyContact } from '@/lib/company-contact'
 import styles from './ContactFab.module.css'
 
-const copy: Record<SiteLocale, { open: string; close: string; line: string; phone: string; email: string; all: string; newTab: string }> = {
-  th: { open: 'เปิดช่องทางติดต่อ', close: 'ปิดช่องทางติดต่อ', line: 'แชตผ่าน LINE', phone: 'โทรสำนักงาน', email: 'อีเมล', all: 'ติดต่อและแผนที่', newTab: 'เปิดในแท็บใหม่' },
-  en: { open: 'Open quick contact', close: 'Close quick contact', line: 'LINE', phone: 'Call the office', email: 'Email', all: 'Contact & directions', newTab: 'Opens in a new tab' },
-  zh: { open: '打开快捷联系方式', close: '关闭快捷联系方式', line: 'LINE', phone: '办公室电话', email: '电子邮箱', all: '联系方式与路线', newTab: '在新标签页中打开' },
-  ja: { open: 'お問い合わせメニューを開く', close: 'お問い合わせメニューを閉じる', line: 'LINE', phone: 'オフィス電話', email: 'メール', all: '連絡先・アクセス', newTab: '新しいタブで開きます' },
+const copy: Record<SiteLocale, { open: string; close: string; line: string; office: string; wasin: string; toeng: string; email: string; location: string; newTab: string }> = {
+  th: { open: 'เปิดช่องทางติดต่อ', close: 'ปิดช่องทางติดต่อ', line: 'LINE', office: 'สำนักงาน', wasin: 'คุณวศิน', toeng: 'คุณเติ้ง', email: 'อีเมล', location: 'ตำแหน่งที่ตั้ง', newTab: 'เปิดในแท็บใหม่' },
+  en: { open: 'Open quick contact', close: 'Close quick contact', line: 'LINE', office: 'Office', wasin: 'Wasin', toeng: 'Toeng', email: 'Email', location: 'Location', newTab: 'Opens in a new tab' },
+  zh: { open: '打开快捷联系方式', close: '关闭快捷联系方式', line: 'LINE', office: '办公室', wasin: 'Wasin', toeng: 'Toeng', email: '电子邮箱', location: '位置', newTab: '在新标签页中打开' },
+  ja: { open: 'お問い合わせメニューを開く', close: 'お問い合わせメニューを閉じる', line: 'LINE', office: 'オフィス', wasin: 'Wasin', toeng: 'Toeng', email: 'メール', location: '所在地', newTab: '新しいタブで開きます' },
 }
 
-type ContactAction = { href: string; label: string; image: string; detail?: string; external?: boolean; internal?: boolean }
+type ContactAction = { href: string; label: string; image: string; detail?: string; paddedIcon?: boolean; compactLabel?: boolean; external?: boolean; internal?: boolean }
 
 function ContactFabMenu({ locale }: { locale: SiteLocale }) {
   const [open, setOpen] = useState(false)
@@ -24,19 +24,17 @@ function ContactFabMenu({ locale }: { locale: SiteLocale }) {
   const toggleRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLElement>(null)
   const text = copy[locale]
-  const contacts = directContactCopy[locale]
   const line = companyContact.social[0]
   const phones = [
-    { ...companyContact.office, label: text.phone },
-    { ...companyContact.wasin, label: contacts.wasin },
-    { ...companyContact.toeng, label: contacts.toeng },
+    { ...companyContact.office, label: text.office },
+    { ...companyContact.wasin, label: text.wasin },
+    { ...companyContact.toeng, label: text.toeng },
   ]
   const actions: ContactAction[] = [
     { href: line.href, label: text.line, detail: '@SGW_TH', image: line.image, external: true },
     ...phones.map(phone => ({ href: phone.href, label: phone.label, detail: phone.value, image: '/icons/Phone-2.png' })),
-    { href: companyContact.email.href, label: text.email, detail: companyContact.email.value, image: '/icons/Email.png' },
-    ...companyContact.social.slice(1).map(social => ({ href: social.href, label: social.name, image: social.image, external: true })),
-    { href: localePath('/contact', locale), label: text.all, image: '/icons/Location.png', internal: true },
+    { href: companyContact.email.href, label: text.email, detail: companyContact.email.value, image: '/icons/Email.png', paddedIcon: true, compactLabel: true },
+    { href: localePath('/contact', locale), label: text.location, image: '/icons/Location.png', paddedIcon: true, internal: true },
   ]
 
   function closeAndFocus() {
@@ -103,11 +101,8 @@ function ContactFabMenu({ locale }: { locale: SiteLocale }) {
       >
         {actions.map(action => {
           const content = <>
-            <span className={styles.label}>
-              <strong>{action.label}</strong>
-              {action.detail ? <small>{action.detail}</small> : null}
-            </span>
-            <span className={styles.icon} aria-hidden="true"><Image src={action.image} width={36} height={36} alt="" /></span>
+            <span className={`${styles.label}${action.compactLabel ? ` ${styles.emailLabel}` : ''}`}>{action.label}:{action.detail ? ` ${action.detail}` : ''}</span>
+            <span className={`${styles.icon}${action.paddedIcon ? ` ${styles.iconPadded}` : ''}`} aria-hidden="true"><Image src={action.image} width={56} height={56} alt="" /></span>
           </>
           const actionProps = {
             className: styles.item,

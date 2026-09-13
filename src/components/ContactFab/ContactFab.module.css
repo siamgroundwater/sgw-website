@@ -54,46 +54,55 @@
 
 .item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 50px;
+  grid-template-columns: minmax(0, 1fr) 56px;
   align-items: center;
   gap: 8px;
   min-width: 0;
-  width: fit-content;
+  width: 100%;
   color: #123b45;
   text-decoration: none;
   border-radius: 12px;
 }
 
 .label {
-  display: grid;
+  display: block;
+  justify-self: end;
   min-width: 0;
-  gap: 2px;
+  max-width: 100%;
   padding: 8px 12px;
   border: 1px solid #c7dfe1;
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 3px 10px rgba(3, 27, 37, 0.12);
+  color: #123b45;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   text-align: right;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
   transition: background-color 160ms ease;
 }
 
-.label strong { color: #123b45; font-size: var(--fs-sm); font-weight: 600; }
-.label small { color: #4c6870; font-size: var(--fs-xs); font-weight: 400; font-variant-numeric: tabular-nums; }
+.label::-webkit-scrollbar { display: none; }
+.emailLabel { padding-inline: 8px; font-size: 0.8125rem; }
 
 .icon {
   display: grid;
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   place-items: center;
   border: 1px solid #c7dfe1;
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 3px 10px rgba(3, 27, 37, 0.16);
+  overflow: hidden;
   transition: background-color 160ms ease;
 }
 
-.icon img { display: block; width: 34px; height: 34px; border-radius: 6px; object-fit: contain; }
+.icon img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.iconPadded { padding: 4px; }
 .root :is(a, button):focus-visible { outline: 3px solid #1cb5c5; outline-offset: 3px; }
 
 @media (hover: hover) and (pointer: fine) {
@@ -114,10 +123,10 @@
   }
   .toggle { width: 60px; height: 60px; }
   .panel { gap: 6px; }
-  .item { grid-template-columns: minmax(0, 1fr) 46px; }
+  .item { grid-template-columns: minmax(0, 1fr) 52px; }
   .label { padding: 6px 10px; }
-  .icon { width: 46px; height: 46px; }
-  .icon img { width: 30px; height: 30px; }
+  .emailLabel { padding-inline: 7px; }
+  .icon { width: 52px; height: 52px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -75,8 +75,8 @@
   width: 7rem;
   height: 7rem;
   place-items: center;
-  border: 1px solid #427175;
-  border-radius: 1.75rem;
+  border: 0;
+  border-radius: 50%;
   background: #064b4e;
   box-shadow: 0 0.75rem 2rem rgba(3, 24, 31, 0.16);
 }
@@ -85,6 +85,7 @@
   display: block;
   width: 5.5rem;
   height: 5.5rem;
+  border-radius: 50%;
   object-fit: contain;
 }
 
@@ -311,7 +312,7 @@
   .card { border-radius: 1.1rem; }
   .hero { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 8px; padding: 24px 20px 32px; border-radius: 1.1rem 1.1rem 0 0; }
   .mark { width: 128px; height: 128px; }
-  .logoShell { width: 88px; height: 88px; border-radius: 22px; }
+  .logoShell { width: 88px; height: 88px; border-radius: 50%; }
   .logoShell img { width: 68px; height: 68px; }
   .intro { width: 100%; justify-items: center; text-align: center; }
   .progress { width: 75%; }

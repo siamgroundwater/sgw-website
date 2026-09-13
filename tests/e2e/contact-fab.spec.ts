@@ -90,7 +90,7 @@ for (const screen of screens) {
         await expect(panel).toHaveJSProperty('tagName', 'NAV')
         await expect(panel.locator('header, h2, button')).toHaveCount(0)
         await expect(root.locator('button')).toHaveCount(1)
-        await expect(panel.locator('a')).toHaveCount(8)
+        await expect(panel.locator('a')).toHaveCount(6)
         expect(await panel.evaluate(element => getComputedStyle(element).backgroundColor), 'Use separate floating actions, not a large background card.').toBe('rgba(0, 0, 0, 0)')
         await expect(panel.locator('a').first()).toBeFocused()
         for (const contact of [companyContact.office, companyContact.wasin, companyContact.toeng, companyContact.email]) {
@@ -99,20 +99,34 @@ for (const screen of screens) {
           await expect(link).toContainText(contact.value)
           await expect(link).toHaveAccessibleName(/\S/)
         }
-        for (const social of companyContact.social) {
-          const link = panel.locator(`a[href="${social.href}"]`)
-          await expect(link).toHaveCount(1)
-          await expect(link).toHaveAttribute('target', '_blank')
-          await expect(link).toHaveAttribute('rel', /noopener/)
-          await expect(link).toHaveAttribute('rel', /noreferrer/)
-          await expect(link).toHaveAccessibleName(new RegExp(social.name, 'i'))
+        const emailLabel = panel.locator(`a[href="${companyContact.email.href}"] > span`).first()
+        expect(await emailLabel.evaluate(element => element.scrollWidth <= element.clientWidth + 1), 'The email text should fit its label without clipping or horizontal scrolling.').toBe(true)
+        await expect(panel.locator('strong, small')).toHaveCount(0)
+        for (const label of await panel.locator('a > span:first-child').all()) {
+          await expect(label).toHaveCSS('white-space', 'nowrap')
         }
-        const facebookLines = await panel.getByText('Facebook', { exact: true }).evaluate(element => {
-          const range = document.createRange()
-          range.selectNodeContents(element)
-          return range.getClientRects().length
-        })
-        expect(facebookLines, 'Do not split the Facebook label in the narrow social buttons.').toBe(1)
+        const iconSizes = await panel.locator('a > span:last-child').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width))
+        expect(iconSizes.every(size => size >= 52), 'Contact icons should be larger while the open/close control keeps its own size.').toBe(true)
+        if (locale === 'th') {
+          for (const line of [
+            'LINE: @SGW_TH',
+            `สำนักงาน: ${companyContact.office.value}`,
+            `คุณวศิน: ${companyContact.wasin.value}`,
+            `คุณเติ้ง: ${companyContact.toeng.value}`,
+            `อีเมล: ${companyContact.email.value}`,
+            'ตำแหน่งที่ตั้ง:',
+          ]) await expect(panel.getByText(line, { exact: true })).toHaveCount(1)
+        }
+        const line = companyContact.social[0]
+        const lineLink = panel.locator(`a[href="${line.href}"]`)
+        await expect(lineLink).toHaveCount(1)
+        await expect(lineLink).toHaveAttribute('target', '_blank')
+        await expect(lineLink).toHaveAttribute('rel', /noopener/)
+        await expect(lineLink).toHaveAttribute('rel', /noreferrer/)
+        await expect(lineLink).toHaveAccessibleName(/LINE/i)
+        for (const removedSocial of companyContact.social.slice(1)) {
+          await expect(panel.locator(`a[href="${removedSocial.href}"]`)).toHaveCount(0)
+        }
         await expect(panel.locator(`a[href="${prefix}/contact"]`)).toHaveCount(1)
         await expectPanelFits(page)
         const actionBounds = await panel.locator('a').evaluateAll(elements => elements.map(element => {
