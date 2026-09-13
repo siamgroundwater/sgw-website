@@ -1,7 +1,4 @@
 📄 .env.example
-📁 .github
-  📁 workflows
-    📄 quality.yml
 📄 .gitignore
 📄 eslint.config.mjs
 📄 next-env.d.ts

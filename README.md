@@ -19,6 +19,10 @@ npm run dev
 
 ## Quality checks
 
+Run these checks manually on your computer. This repository no longer includes
+GitHub Actions test or production-monitor workflows. The Vercel media-cleanup
+schedule in `vercel.json` remains separate and unchanged.
+
 ```bash
 npm run lint
 npm run typecheck
