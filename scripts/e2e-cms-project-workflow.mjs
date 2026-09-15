@@ -87,8 +87,7 @@ async function upload(label) {
   ownAsset(payload.staged.asset)
   return { ...payload.staged, submissionId }
 }
-async function uploadManagedImage(label, section, width = 800, height = 600) {
-  const submissionId = randomUUID()
+async function uploadManagedImage(label, section, width = 800, height = 600, submissionId = randomUUID()) {
   submissionIds.add(submissionId)
   const buffer = await sharp({ create: { width, height, channels: 3, background: '#157f91' } }).png().toBuffer()
   const form = new FormData()
@@ -117,17 +116,19 @@ async function assertPublicImage(pathname, src) {
 }
 async function saveSiteImages(section, images, previous, uploaded) {
   siteMediaSections.add(section)
+  const staged = Array.isArray(uploaded) ? uploaded : uploaded ? [uploaded] : []
+  assert.ok(staged.every(item => item.submissionId === staged[0].submissionId))
   const payload = await request('/api/cms/media', 'PUT', {
     section, images, expectedUpdatedAt: previous.updatedAt,
-    ...(uploaded ? { stagedMedia: [uploaded.token], submissionId: uploaded.submissionId } : {}),
+    ...(staged.length ? { stagedMedia: staged.map(item => item.token), submissionId: staged[0].submissionId } : {}),
   })
   assert.deepEqual(payload.item.images, images)
   assert.equal(payload.item.fallback, false)
   const stored = await database.collection('cmsSiteMedia').findOne({ _id: section })
   assert.deepEqual(stored.images.map(({ src }) => src), images)
-  if (uploaded) {
-    assert.equal(await database.collection('cmsStagedProjectMedia').countDocuments({ 'asset.publicId': uploaded.asset.publicId }), 0)
-    assert.equal(stored.images.find(({ src }) => src === uploaded.asset.src).asset.publicId, uploaded.asset.publicId)
+  for (const item of staged) {
+    assert.equal(await database.collection('cmsStagedProjectMedia').countDocuments({ 'asset.publicId': item.asset.publicId }), 0)
+    assert.equal(stored.images.find(({ src }) => src === item.asset.src).asset.publicId, item.asset.publicId)
   }
   return payload.item
 }
@@ -303,7 +304,9 @@ try {
   const me = await request('/api/cms/auth/me')
   assert.equal(me.user?.userId || me.session?.userId || me.userId, adminId, 'The HTTP server must use the same fresh isolated database')
 
+  assert.ok((await database.collection('cmsStagedProjectMedia').listIndexes().toArray()).some(({ name }) => name === 'publicId_1'), 'The suite must begin with the obsolete production index')
   const firstUpload = await upload('first')
+  assert.equal((await database.collection('cmsStagedProjectMedia').listIndexes().toArray()).some(({ name }) => name === 'publicId_1'), false, 'The application must repair the obsolete staging index')
   const firstBody = {
     ...content(firstUpload.asset, 'first'), operationId: operation(),
     stagedMedia: [firstUpload.token], submissionId: firstUpload.submissionId,
@@ -412,8 +415,15 @@ try {
 
   const aboutInitial = (await request('/api/cms/media?section=about-hero')).item
   assert.equal(aboutInitial.fallback, true)
-  const aboutUpload = await uploadManagedImage('about-slide', 'about-hero', 1800, 600)
-  let aboutSaved = await saveSiteImages('about-hero', [aboutUpload.asset.src, ...aboutInitial.images], aboutInitial, aboutUpload)
+  const aboutSubmission = randomUUID()
+  const aboutUploads = []
+  for (let index = 0; index < 3; index += 1) {
+    aboutUploads.push(await uploadManagedImage('about-slide-' + index, 'about-hero', 1800, 600, aboutSubmission))
+  }
+  assert.equal(await database.collection('cmsStagedProjectMedia').countDocuments({ submissionId: aboutSubmission }), 3, 'All three images must stage before a single Save')
+  const aboutUpload = aboutUploads[0]
+  let aboutSaved = await saveSiteImages('about-hero', [...aboutUploads.map(item => item.asset.src), ...aboutInitial.images], aboutInitial, aboutUploads)
+  console.log('Three About hero images uploaded, staged together, and saved in one submission after index repair.')
   aboutSaved = await saveSiteImages('about-hero', [...aboutSaved.images].reverse(), aboutSaved)
   aboutSaved = await saveSiteImages('about-hero', aboutSaved.images.slice(1), aboutSaved)
   assert.equal(aboutSaved.images.at(-1), aboutUpload.asset.src)

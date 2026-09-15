@@ -32,13 +32,16 @@ export async function readCmsJsonBody(request: Request) {
     return { error: 'Request body is too large.', value: null } as const
   }
 
-  const text = await request.text()
-  if (Buffer.byteLength(text, 'utf8') > maxJsonBytes) {
-    return { error: 'Request body is too large.', value: null } as const
-  }
-
   try {
-    return { error: null, value: JSON.parse(text) as unknown } as const
+    const text = await request.text()
+    if (Buffer.byteLength(text, 'utf8') > maxJsonBytes) {
+      return { error: 'Request body is too large.', value: null } as const
+    }
+    const value: unknown = JSON.parse(text)
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return { error: 'Request body must be a JSON object.', value: null } as const
+    }
+    return { error: null, value: value as Record<string, unknown> } as const
   } catch {
     return { error: 'Invalid JSON request body.', value: null } as const
   }

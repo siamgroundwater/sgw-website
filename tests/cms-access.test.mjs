@@ -66,6 +66,7 @@ function userService(collection) {
     if (name === '@/server/db') return { getCmsUsersCollection: async () => collection }
     if (name === './password') return { hashPassword: hashCmsPassword, verifyPassword: verifyCmsPassword }
     if (name === '@/lib/cms-access') return access
+    if (name === '../db/cms-indexes.ts') return require('../src/server/db/cms-indexes.ts')
     return require(name)
   }
   new Function('require', 'module', 'exports', compiled)(localRequire, module, module.exports)

@@ -1,7 +1,7 @@
 // src/app/(site)/about/hero-slide/HeroSlide.tsx
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import FallbackImage from '@/components/media/FallbackImage'
 import type { SiteLocale } from '@/i18n/config'
 import { siteMediaFallbacks } from '@/lib/site-media'
@@ -84,6 +84,12 @@ type HeroSlideProps = {
   locale?: SiteLocale
 }
 
+type DragState = {
+  pointerId: number
+  startScrollLeft: number
+  startX: number
+}
+
 export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
   const sources = images.length ? images : ABOUT_HERO_FALLBACKS
   const realSlides = sources.map((src, index) => {
@@ -126,6 +132,8 @@ export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
   const [activeIndex, setActiveIndex] = useState(0)
 
   const sliderRef = useRef<HTMLDivElement | null>(null)
+  const dragRef = useRef<DragState | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
 
   // posRef = position index in renderSlides (0..n+1), where real slides are 1..n
   const posRef = useRef(1)
@@ -231,8 +239,65 @@ export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
     if (scrollEndTimerRef.current)
       window.clearTimeout(scrollEndTimerRef.current)
     scrollEndTimerRef.current = window.setTimeout(() => {
-      fixLoopIfNeeded()
+      if (!dragRef.current) fixLoopIfNeeded()
     }, 120)
+  }
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (
+      n <= 1 ||
+      !event.isPrimary ||
+      (event.pointerType === 'mouse' && event.button !== 0)
+    ) return
+
+    const track = sliderRef.current
+    if (!track) return
+
+    updateStep()
+    pauseAutoplay()
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startScrollLeft: track.scrollLeft,
+      startX: event.clientX,
+    }
+    track.setPointerCapture(event.pointerId)
+    setIsDragging(true)
+  }
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const track = sliderRef.current
+    const drag = dragRef.current
+    if (
+      !track ||
+      !drag ||
+      drag.pointerId !== event.pointerId ||
+      !track.hasPointerCapture(event.pointerId)
+    ) return
+
+    const distance = event.clientX - drag.startX
+    if (Math.abs(distance) > 2 && event.cancelable) event.preventDefault()
+    track.scrollLeft = drag.startScrollLeft - distance
+  }
+
+  const finishDragging = (event: PointerEvent<HTMLDivElement>) => {
+    const track = sliderRef.current
+    const drag = dragRef.current
+    if (!track || !drag || drag.pointerId !== event.pointerId) return
+
+    dragRef.current = null
+    if (track.hasPointerCapture(event.pointerId)) {
+      track.releasePointerCapture(event.pointerId)
+    }
+    setIsDragging(false)
+
+    const step = stepRef.current || track.clientWidth
+    const targetPos = Math.max(0, Math.min(n + 1, Math.round(track.scrollLeft / step)))
+    posRef.current = targetPos
+    const targetReal = getRealIndexFromPos(targetPos)
+    activeRef.current = targetReal
+    setActiveIndex(targetReal)
+    scrollToPos(targetPos, reduceMotionRef.current ? 'auto' : 'smooth')
+    pauseThenResume(3000)
   }
 
   const handleDotClick = (realIndex: number) => {
@@ -314,18 +379,27 @@ export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => () => {
+    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current)
+    if (scrollEndTimerRef.current) window.clearTimeout(scrollEndTimerRef.current)
+  }, [])
+
   return (
     <section className="about-hero-slider">
       <div
         ref={sliderRef}
-        className="about-hero-slider-track"
+        className={`about-hero-slider-track${isDragging ? ' is-dragging' : ''}`}
         onScroll={handleScroll}
         onPointerEnter={(event) => { if (event.pointerType === 'mouse') pauseAutoplay() }}
-        onPointerLeave={(event) => { if (event.pointerType === 'mouse') pausedRef.current = false }}
+        onPointerLeave={(event) => {
+          if (event.pointerType === 'mouse' && !dragRef.current) pausedRef.current = false
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishDragging}
+        onPointerCancel={finishDragging}
         onFocusCapture={pauseAutoplay}
         onBlurCapture={() => (pausedRef.current = false)}
-        onTouchStart={pauseAutoplay}
-        onTouchEnd={() => pauseThenResume(3000)}
       >
         {renderSlides.map((slide) => (
           <div
@@ -341,6 +415,7 @@ export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
               className="about-hero-slide-image"
               sizes="(width <= 768px) calc(100vw - 2.5rem), calc(100vw - 3rem)"
               priority={slide.key === realSlides[0].id}
+              draggable={false}
             />
           </div>
         ))}

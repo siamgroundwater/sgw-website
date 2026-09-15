@@ -1,6 +1,8 @@
 import 'server-only'
 
 import { getMongoCollection } from './mongodb'
+import { cmsCollectionNames } from './cms-indexes'
+export { cmsCollectionNames } from './cms-indexes'
 import type {
   CmsAuditLogDocument,
   CmsLearningDocument,
@@ -15,21 +17,6 @@ import type {
   CmsTeamDirectoryDocument,
   CmsTeamOperationDocument,
 } from './types'
-
-export const cmsCollectionNames = {
-  auditLogs: 'cmsAuditLogs',
-  learning: 'cmsLearning',
-  projects: 'cmsProjects',
-  projectRevisions: 'cmsProjectRevisions',
-  services: 'cmsServices',
-  siteMedia: 'cmsSiteMedia',
-  stagedProjectMedia: 'cmsStagedProjectMedia',
-  teamDirectory: 'cmsTeamDirectory',
-  teamOperations: 'cmsTeamOperations',
-  users: 'cmsUsers',
-  projectOperations: 'cmsProjectOperations',
-  operationalEvents: 'cmsOperationalEvents',
-} as const
 
 export function getCmsProjectOperationsCollection() {
   return getMongoCollection<CmsProjectOperationDocument>(cmsCollectionNames.projectOperations)

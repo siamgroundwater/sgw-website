@@ -62,6 +62,9 @@ try {
   })
   databaseCreated = true
   await db.collection('cmsUsers').insertMany(users)
+  // Exercise an upgraded database, not just a clean install: this obsolete
+  // unique index otherwise prevents staging a second image with the new model.
+  if (mediaMode) await db.collection('cmsStagedProjectMedia').createIndex({ publicId: 1 }, { unique: true })
   const projects = Array.from({ length: 150 }, (_, index) => ({
     _id: new ObjectId(), title: 'ผลงานทดสอบ ' + String(index).padStart(3,'0'),
     slug: 'qa-project-' + index, year: 2026, category: index === 149 ? ['government'] : ['factory'],

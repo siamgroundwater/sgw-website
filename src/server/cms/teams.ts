@@ -2,6 +2,7 @@ import 'server-only'
 
 import { createHash } from 'node:crypto'
 import { BSON, ObjectId, type ClientSession } from 'mongodb'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
 import teamGroupsJson from '@/app/(site)/about/teams/teams.json'
 import {
   TEAM_DEPARTMENTS,
@@ -82,9 +83,8 @@ async function ensureCmsTeamIndexes() {
         getCmsTeamOperationsCollection(),
       ])
       await Promise.all([
-        directory.createIndex({ updatedAt: -1 }),
-        operations.createIndex({ userId: 1, operationId: 1 }, { unique: true }),
-        operations.createIndex({ createdAt: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 }),
+        ensureCmsIndexes(directory, 'teamDirectory'),
+        ensureCmsIndexes(operations, 'teamOperations'),
       ])
     })().catch((error) => {
       indexesPromise = null

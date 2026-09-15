@@ -273,8 +273,16 @@ test('about carousel, team tabs and service gallery retain usable layout after r
   const dots = page.locator('.about-hero-slider-dot')
   await expect(dots.first()).toBeVisible()
   if (await dots.count() > 1) {
-    await dots.nth(1).click()
+    const track = page.locator('.about-hero-slider-track')
+    const trackBox = await track.boundingBox()
+    expect(trackBox).not.toBeNull()
+    await page.mouse.move(trackBox!.x + trackBox!.width * 0.8, trackBox!.y + trackBox!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(trackBox!.x + trackBox!.width * 0.15, trackBox!.y + trackBox!.height / 2, { steps: 8 })
+    await page.mouse.up()
     await expect(dots.nth(1)).toHaveClass(/active/)
+    await expect(track).not.toHaveClass(/is-dragging/)
+    await expect.poll(() => track.evaluate(element => element.scrollLeft)).toBeGreaterThan(trackBox!.width)
   }
   for (const width of [390, 1280]) {
     await page.setViewportSize({ width, height: 900 })

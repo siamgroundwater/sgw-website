@@ -2,6 +2,7 @@ import 'server-only'
 import { ObjectId, type Filter } from 'mongodb'
 import { cmsAuditDateRange, type CmsAuditFilters } from '@/lib/cms-audit'
 import { recordCmsOperationalEvent } from './operations'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
 
 import { getCmsAuditLogsCollection, getCmsProjectsCollection } from '@/server/db'
 import type {
@@ -61,11 +62,7 @@ async function ensureIndexes() {
   if (!indexPromise) {
     indexPromise = (async () => {
       const logs = await getCmsAuditLogsCollection()
-      await Promise.all([
-        logs.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
-        logs.createIndex({ createdAt: -1 }),
-        logs.createIndex({ 'entity.type': 1, createdAt: -1 }),
-      ])
+      await ensureCmsIndexes(logs, 'auditLogs')
     })().catch(error => { indexPromise = null; throw error })
   }
   await indexPromise

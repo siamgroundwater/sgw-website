@@ -6,6 +6,7 @@ import type { CmsDocumentStatus, CmsUserDocument, CmsUserRole } from '@/server/d
 import type { CmsSession, CmsUserRecord } from '@/types/cms'
 import { hashPassword, verifyPassword } from './password'
 import { isCmsSessionRevoked, validateCmsUserForm, type CmsUserErrorCode, type CmsUserField } from '@/lib/cms-access'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
 
 export const CMS_PASSWORD_MIN_LENGTH = 12
 
@@ -43,10 +44,7 @@ export function normalizeUsername(username: string) {
 
 export async function ensureCmsUserIndexes() {
   const users = await getCmsUsersCollection()
-  await Promise.all([
-    users.createIndex({ usernameLower: 1 }, { unique: true }),
-    users.createIndex({ status: 1, role: 1 }),
-  ])
+  await ensureCmsIndexes(users, 'users')
 }
 
 function toSession(user: CmsUserDocument): CmsSession {

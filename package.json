@@ -8,6 +8,7 @@
     "build": "next build",
     "prebuild": "node scripts/learning-search-source.mjs --check",
     "check:learning-search": "node scripts/learning-search-source.mjs --check",
+    "check:cms:database": "node --experimental-strip-types scripts/check-cms-database.mjs",
     "update:learning-search": "node scripts/learning-search-source.mjs --write",
     "start": "next start",
     "check:hover": "node scripts/check-hover-capabilities.mjs",

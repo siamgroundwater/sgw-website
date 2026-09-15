@@ -72,6 +72,16 @@ test('contact route validates consent and email before delivery', async () => {
   assert.equal(deliveries.length, 0)
 })
 
+test('contact route safely handles interrupted bodies and oversized JSON with a missing or false length', async () => {
+  const interrupted = request('{}')
+  interrupted.text = async () => { throw new Error('connection interrupted') }
+  assert.equal((await POST(interrupted)).status, 400)
+  for (const headers of [{}, { 'content-length': '10' }]) {
+    assert.equal((await POST(request({ ...valid, details: 'ก'.repeat(5000) }, headers))).status, 413)
+  }
+  assert.equal(deliveries.length, 0)
+})
+
 test('contact route rejects foreign origins and declared oversized requests without delivery', async () => {
   assert.equal((await POST(request(valid, { origin: 'https://foreign.example.invalid' }))).status, 403)
   assert.equal((await POST(request(valid, { origin: 'invalid' }))).status, 403)

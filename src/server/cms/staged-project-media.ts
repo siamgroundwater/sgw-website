@@ -12,6 +12,7 @@ import { getCmsStagedProjectMediaCollection } from '@/server/db'
 import type { CmsMediaAsset } from '@/types/cms-media'
 import type { ClientSession } from 'mongodb'
 import { recordCmsOperationalEvent } from './operations'
+import { ensureCmsStagedMediaIndexes } from './staged-media-indexes'
 
 const stagedMediaMaxAgeSeconds = 30 * 60
 let stagedIndexPromise: Promise<void> | null = null
@@ -20,11 +21,7 @@ async function ensureStagedMediaIndexes() {
   if (!stagedIndexPromise) {
     stagedIndexPromise = (async () => {
       const collection = await getCmsStagedProjectMediaCollection()
-      await Promise.all([
-        collection.createIndex({ expiresAt: 1 }),
-        collection.createIndex({ 'asset.publicId': 1 }, { unique: true }),
-        collection.createIndex({ submissionId: 1, userId: 1 }),
-      ])
+      await ensureCmsStagedMediaIndexes(collection)
     })().catch((error) => {
       stagedIndexPromise = null
       throw error

@@ -30,6 +30,8 @@ import { normalizeSlug } from '@/lib/slug'
 import { normalizeCmsProjectCategories } from '@/lib/cms-project-categories'
 import { normalizeProjectWorkTypes } from '@/lib/project-work-types'
 import { hasProjectTranslationContent, normalizeProjectTranslation } from '@/lib/project-translations'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
+import { ensureCmsStagedMediaIndexes } from './staged-media-indexes'
 
 export class CmsContentError extends Error {
   status: number
@@ -56,29 +58,11 @@ export async function ensureCmsContentIndexes() {
         getCmsStagedProjectMediaCollection(),
       ])
       await Promise.all([
-        projects.createIndex(
-          { slug: 1 },
-          { unique: true, partialFilterExpression: { deletedAt: null } }
-        ),
-        projects.createIndex({ status: 1, year: -1, updatedAt: -1 }),
-        projects.createIndex({ title: 'text', location: 'text', summary: 'text' }),
-        revisions.createIndex({ projectId: 1, version: -1 }, { unique: true }),
-        stagedMedia.createIndex({ expiresAt: 1 }),
-        stagedMedia.createIndex({ 'asset.publicId': 1 }, { unique: true }),
-        stagedMedia.createIndex({ submissionId: 1, userId: 1 }),
-        services.createIndex(
-          { key: 1 },
-          { unique: true, partialFilterExpression: { deletedAt: null } }
-        ),
-        services.createIndex(
-          { slug: 1 },
-          { unique: true, partialFilterExpression: { deletedAt: null } }
-        ),
-        learning.createIndex(
-          { slug: 1 },
-          { unique: true, partialFilterExpression: { deletedAt: null } }
-        ),
-        learning.createIndex({ status: 1, updatedAt: -1 }),
+        ensureCmsIndexes(projects, 'projects'),
+        ensureCmsIndexes(revisions, 'projectRevisions'),
+        ensureCmsStagedMediaIndexes(stagedMedia),
+        ensureCmsIndexes(services, 'services'),
+        ensureCmsIndexes(learning, 'learning'),
       ])
     })().catch((error) => {
       indexPromise = null

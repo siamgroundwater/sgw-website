@@ -6,6 +6,7 @@ import { getMongoClient } from '@/server/db'
 import { getCmsProjectOperationsCollection } from '@/server/db/collections'
 import type { CmsProjectRecord } from '@/types/cms'
 import { CmsContentError, ensureCmsContentIndexes } from './content'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
 
 let indexes: Promise<unknown> | undefined
 
@@ -30,7 +31,7 @@ export function projectOperationFingerprint(method: string, body: Record<string,
 
 async function collectionWithIndexes() {
   const collection = await getCmsProjectOperationsCollection()
-  indexes ||= collection.createIndex({ userId: 1, operationId: 1 }, { unique: true }).catch((error) => {
+  indexes ||= ensureCmsIndexes(collection, 'projectOperations').catch((error) => {
     indexes = undefined
     throw error
   })

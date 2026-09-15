@@ -2,11 +2,12 @@ import 'server-only'
 
 import { getCmsOperationalEventsCollection, getCmsStagedProjectMediaCollection } from '@/server/db/collections'
 import type { CmsOperationalEventDocument } from '@/server/db/types'
+import { ensureCmsIndexes } from '../db/cms-indexes.ts'
 
 export async function recordCmsOperationalEvent(input: Omit<CmsOperationalEventDocument, '_id' | 'createdAt'>) {
   try {
     const collection = await getCmsOperationalEventsCollection()
-    await collection.createIndex({ kind: 1, createdAt: -1 })
+    await ensureCmsIndexes(collection, 'operationalEvents')
     await collection.insertOne({ ...input, error: input.error?.slice(0, 240), createdAt: new Date() })
   } catch (error) {
     console.error('Could not record CMS operational status', error)

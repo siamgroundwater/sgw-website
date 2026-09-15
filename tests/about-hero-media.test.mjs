@@ -50,3 +50,19 @@ test('About routes load managed images server-side and retain requested crops', 
   assert.match(heroStyles, /object-position:\s*center;/)
   assert.match(hero, /sizes="\(width <= 768px\) calc\(100vw - 2\.5rem\), calc\(100vw - 3rem\)"/)
 })
+
+test('About hero supports captured pointer dragging without breaking native vertical touch movement', () => {
+  const hero = source('src/app/(site)/about/hero-slide/HeroSlide.tsx')
+  const heroStyles = source('src/app/(site)/about/hero-slide/hero-slide.css')
+
+  assert.match(hero, /track\.setPointerCapture\(event\.pointerId\)/)
+  assert.match(hero, /track\.scrollLeft = drag\.startScrollLeft - distance/)
+  assert.match(hero, /onPointerDown=\{handlePointerDown\}/)
+  assert.match(hero, /onPointerMove=\{handlePointerMove\}/)
+  assert.match(hero, /onPointerUp=\{finishDragging\}/)
+  assert.match(hero, /onPointerCancel=\{finishDragging\}/)
+  assert.match(hero, /draggable=\{false\}/)
+  assert.match(heroStyles, /touch-action:\s*pan-y;/)
+  assert.match(heroStyles, /\.about-hero-slider-track\.is-dragging\s*\{[\s\S]*?scroll-snap-type:\s*none;/)
+  assert.match(heroStyles, /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?cursor:\s*grab;/)
+})

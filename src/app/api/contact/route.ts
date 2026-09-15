@@ -63,7 +63,15 @@ export async function POST(request: NextRequest) {
 
   let payload: Record<string, unknown>
   try {
-    payload = (await request.json()) as Record<string, unknown>
+    const text = await request.text()
+    if (Buffer.byteLength(text, 'utf8') > MAX_BODY_BYTES) {
+      return NextResponse.json({ message: 'ข้อความมีขนาดใหญ่เกินไป' }, { status: 413 })
+    }
+    const value: unknown = JSON.parse(text)
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return NextResponse.json({ message: 'รูปแบบข้อมูลไม่ถูกต้อง' }, { status: 400 })
+    }
+    payload = value as Record<string, unknown>
   } catch {
     return NextResponse.json({ message: 'รูปแบบข้อมูลไม่ถูกต้อง' }, { status: 400 })
   }

@@ -19,6 +19,7 @@ function matches(row, query) {
 }
 const collection = {
   async createIndex() {},
+  listIndexes() { return { async toArray() { return [] } } },
   find(query) {
     let limit = Infinity
     return { sort() { return this }, limit(value) { limit = value; return this }, async toArray() { return state.rows.filter((row) => matches(row, query)).slice(0, limit) } }
@@ -71,6 +72,7 @@ const hook = registerHooks({
       '@/server/cloudinary/media': 'export const deleteCmsImages = globalThis.__sgwMediaTest.deleteImages; export function isCmsOwnedMediaPublicId() { return true }',
       '@/lib/cms-staged-media-token': 'export function createCmsStagedMediaTokenValue(payload) { return payload }; export function verifyCmsStagedMediaTokenValue(token) { return JSON.parse(token) }',
     }
+    if (specifier === './staged-media-indexes') return { url: new URL('../src/server/cms/staged-media-indexes.ts', import.meta.url).href, shortCircuit: true }
     return specifier in substitutes ? { url: moduleUrl(substitutes[specifier]), shortCircuit: true } : nextResolve(specifier, context)
   },
 })

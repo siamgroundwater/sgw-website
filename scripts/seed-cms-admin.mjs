@@ -1,6 +1,7 @@
 import { randomBytes, scryptSync } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { MongoClient } from 'mongodb'
+import { ensureCmsIndexes } from '../src/server/db/cms-indexes.ts'
 
 function loadEnvFile(path) {
   const values = {}
@@ -49,10 +50,7 @@ await client.connect()
 
 try {
   const users = client.db(dbName).collection('cmsUsers')
-  await Promise.all([
-    users.createIndex({ usernameLower: 1 }, { unique: true }),
-    users.createIndex({ status: 1, role: 1 }),
-  ])
+  await ensureCmsIndexes(users, 'users')
   const now = new Date()
   await users.updateOne(
     { usernameLower: username.toLowerCase() },
