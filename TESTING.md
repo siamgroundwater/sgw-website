@@ -77,12 +77,26 @@ npm run test:e2e:cms:webkit
 Coverage includes account/session changes, project/user/team workflows,
 simultaneous saves and duplicate requests, leader/order consistency, viewer
 write restrictions, upload failure/network interruption/session expiry, and
-backup verification/restore refusal checks. Mocked media failures never contact
+backup verification/restore refusal checks. Separate delayed-JavaScript probes
+test that password fields cannot enter a native submission URL. They use public
+dummy text and intercept submission navigations before they reach the server.
+Mocked media failures never contact
 Cloudinary. Backup tests use generated keys, archives and isolated restore
 targets; existing `.cms-backups` archives and `recovery.key` are not replaced.
 
 Browser-specific artifacts are in `test-results/cms-workflows-chromium`,
 `test-results/cms-workflows-firefox`, and `test-results/cms-workflows-webkit`.
+For a focused diagnostic run, use a title filter; it still creates an isolated
+database and must not run alongside another CMS suite:
+
+```powershell
+npm run test:e2e:cms -- "--grep=before client hydration"
+```
+
+Focused runs use a separate `-focused` artifact directory. They are not a
+replacement for the complete suite. Traces can contain throwaway test-account
+credentials; do not publish raw traces/server logs. Runner diagnostic logs strip
+URL query values in case a faulty native form submission includes them.
 
 ### Real media integration
 

@@ -1,5 +1,20 @@
 import { test, expect, type Page } from '@playwright/test'
 
+const blockedWrites = new WeakMap<Page, string[]>()
+test.beforeEach(async ({ page, context }) => {
+  const writes: string[] = []
+  blockedWrites.set(page, writes)
+  await context.route('**/*', route => {
+    const request = route.request()
+    if (['GET', 'HEAD'].includes(request.method())) return route.continue()
+    writes.push(`${request.method()} ${new URL(request.url()).pathname}`)
+    return route.abort('blockedbyclient')
+  })
+})
+test.afterEach(async ({ page }) => {
+  expect(blockedWrites.get(page), 'Copying contact information must not submit it to any service.').toEqual([])
+})
+
 async function clipboard(page: Page, primary: 'success' | 'denied' | 'missing', fallback: 'success' | 'false' | 'throw') {
   await page.addInitScript(({ primary, fallback }) => {
     const observations: { values: string[]; fallbackCalls: number } = { values: [], fallbackCalls: 0 }

@@ -4,7 +4,7 @@ import { defineConfig } from '@playwright/test'
 // Next.js, and its browser contexts block every non-read HTTP request.
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: ['compatibility.spec.ts', 'contact-details-resilience.spec.ts'],
+  testMatch: ['compatibility.spec.ts', 'compatibility-hydration.spec.ts', 'contact-details-resilience.spec.ts'],
   outputDir: './test-results/compatibility',
   fullyParallel: true,
   workers: 2,

@@ -5,14 +5,20 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
 
 if (process.argv.includes('--help')) {
-  console.log('Use npm run test:e2e:cms for isolated browser tests, optionally --browser=firefox or --browser=webkit, or npm run test:e2e:cms:media for temporary provider upload tests. All allocate and remove their own test database. Run these suites sequentially; CMS_E2E_PORT selects an unused local port.')
+  console.log('Use npm run test:e2e:cms for isolated browser tests, optionally --browser=firefox or --browser=webkit and --grep=title-pattern, or npm run test:e2e:cms:media for temporary provider upload tests. All allocate and remove their own test database. Run these suites sequentially; CMS_E2E_PORT selects an unused local port.')
   process.exit(0)
 }
 const flags = process.argv.slice(2)
-if (flags.some(value => value !== '--media' && !/^--browser=(chromium|firefox|webkit)$/.test(value))) throw new Error('Unknown argument. Use --help.')
+if (flags.some(value => value !== '--media' && !/^--browser=(chromium|firefox|webkit)$/.test(value) && !value.startsWith('--grep='))) throw new Error('Unknown argument. Use --help.')
 if (flags.filter(value => value.startsWith('--browser=')).length > 1) throw new Error('Select only one browser.')
-if (flags.includes('--media') && flags.some(value => value.startsWith('--browser='))) throw new Error('The real-provider suite uses its own Chromium workflow; do not combine --media and --browser.')
+if (flags.includes('--media') && flags.some(value => value.startsWith('--browser=') || value.startsWith('--grep='))) throw new Error('The real-provider suite uses its own Chromium workflow; do not combine --media with browser or title filters.')
 const browserName = flags.find(value => value.startsWith('--browser='))?.slice('--browser='.length) || 'chromium'
+if (flags.filter(value => value.startsWith('--grep=')).length > 1) throw new Error('Select only one title filter.')
+const titleFilter = flags.find(value => value.startsWith('--grep='))?.slice('--grep='.length)
+if (titleFilter !== undefined) {
+  if (!titleFilter || titleFilter.length > 200) throw new Error('Title filter must contain 1-200 characters.')
+  new RegExp(titleFilter)
+}
 try { process.loadEnvFile('.env.local') } catch {}
 if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is required. Tests create a NEW isolated database.')
 const sourceDatabase = process.env.MONGODB_DB
@@ -33,6 +39,13 @@ function start(args, env, stdio = 'inherit') {
   return child
 }
 const done = child => new Promise((resolve, reject) => { child.once('error', reject); child.once('exit', code => code === 0 ? resolve() : reject(new Error('Test process exited with code ' + code))) })
+function safeServerOutput(output) {
+  // Even temporary test credentials must not be printed if an unhydrated form
+  // accidentally issues a native GET. Keep the path, not any query values.
+  return output.replace(/(\b(?:GET|POST|PUT|PATCH|DELETE)\s+[^\s?]+)\?[^\s]*/g, '$1?[query redacted]')
+    .replaceAll(password, '[test credential redacted]')
+    .replaceAll(secret, '[test secret redacted]')
+}
 try {
   try {
     await fetch(baseURL, { signal: AbortSignal.timeout(1000) })
@@ -79,10 +92,10 @@ try {
     try { if ((await fetch(baseURL + '/cms/login', { signal: AbortSignal.timeout(5000) })).ok) { ready = true; break } } catch {}
     await delay(1000)
   }
-  if (!ready) { console.error(output); throw new Error('Isolated CMS server did not become ready.') }
+  if (!ready) { console.error(safeServerOutput(output)); throw new Error('Isolated CMS server did not become ready.') }
   console.log('Running CMS checks against isolated database ' + database + (mediaMode ? ' (temporary Cloudinary test images only).' : ' (no Cloudinary writes).'))
-  try { await done(start(mediaMode ? ['scripts/e2e-cms-project-workflow.mjs'] : ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.cms.config.ts', '--output', 'test-results/cms-workflows-' + browserName], env)) }
-  catch (error) { console.error(output); throw error }
+  try { await done(start(mediaMode ? ['scripts/e2e-cms-project-workflow.mjs'] : ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.cms.config.ts', '--output', 'test-results/cms-workflows-' + browserName + (titleFilter ? '-focused' : ''), ...(titleFilter ? ['--grep', titleFilter] : [])], env)) }
+  catch (error) { console.error(safeServerOutput(output)); throw error }
 } finally {
   await Promise.all([...children].map(child => new Promise(resolve => { child.once('exit', resolve); child.kill() })))
   // Only the exact fresh database allocated by this process can be removed.

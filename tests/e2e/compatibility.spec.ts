@@ -5,16 +5,44 @@ const calculatorPath = '/en/learn/groundwater-calculator-tools'
 const basicsPath = '/en/learn/groundwater-basics-thailand'
 const progressKey = 'sgw:learning-progress:basics:v1'
 const runtimeErrors = new WeakMap<Page, string[]>()
+const nativeErrors = new WeakMap<Page, string[]>()
+const resourceDiagnostics = new WeakMap<Page, string[]>()
 const blockedWrites = new WeakMap<Page, string[]>()
 
-test.beforeEach(async ({ page, context }) => {
+test.beforeEach(async ({ page, context, browserName, baseURL }) => {
   const errors: string[] = []
+  const uncaught: string[] = []
+  const diagnostics: string[] = []
   const writes: string[] = []
   runtimeErrors.set(page, errors)
+  nativeErrors.set(page, uncaught)
+  resourceDiagnostics.set(page, diagnostics)
   blockedWrites.set(page, writes)
-  const watch = (openedPage: Page) => openedPage.on('pageerror', error => errors.push(error.message))
+  const origin = new URL(baseURL!).origin
+  const watch = (openedPage: Page) => openedPage.on('pageerror', error => {
+    // WebKit reports canceled same-origin Next prefetch resource diagnostics as
+    // pageerror. Preserve those messages, and independently check real window
+    // errors/unhandled rejections below. Every other pageerror still fails.
+    const match = /^Fetch API cannot load (https?:\/\/\S+) due to access control checks\.(?:\n|$)/.exec(error.stack || '')
+    if (browserName === 'webkit' && match) {
+      const url = new URL(match[1])
+      if (url.origin === origin && url.searchParams.get('_rsc')) {
+        diagnostics.push(error.stack || error.message)
+        return
+      }
+    }
+    errors.push(error.message)
+  })
   watch(page)
   context.on('page', watch)
+  await context.exposeBinding('__compatibilityRuntimeError', (_source, error: string) => { uncaught.push(error) })
+  await context.addInitScript(() => {
+    const report = (window as typeof window & { __compatibilityRuntimeError: (message: string) => Promise<void> }).__compatibilityRuntimeError
+    window.addEventListener('error', event => {
+      if (event instanceof ErrorEvent) void report(`window error: ${event.message}`)
+    })
+    window.addEventListener('unhandledrejection', event => { void report(`unhandled rejection: ${String(event.reason)}`) })
+  })
   await context.route('**/*', route => {
     const request = route.request()
     if (['GET', 'HEAD'].includes(request.method())) return route.continue()
@@ -25,7 +53,13 @@ test.beforeEach(async ({ page, context }) => {
   })
 })
 
-test.afterEach(async ({ page }) => {
+test.afterEach(async ({ page }, testInfo) => {
+  const diagnostics = resourceDiagnostics.get(page) || []
+  if (diagnostics.length) await testInfo.attach('webkit-prefetch-resource-diagnostics', {
+    body: Buffer.from(JSON.stringify(diagnostics, null, 2)),
+    contentType: 'application/json',
+  })
+  expect(nativeErrors.get(page) || [], 'No window errors or unhandled promise rejections.').toEqual([])
   expect(runtimeErrors.get(page) || [], 'No uncaught browser errors during the complete workflow.').toEqual([])
   expect(blockedWrites.get(page) || [], 'Public reading workflows must not submit contact or CMS data.').toEqual([])
 })
@@ -37,6 +71,10 @@ async function openPage(page: Page, path: string) {
   // container. Wait for displayed content before geometry or interaction checks.
   await expect(page.locator('main h1').first()).toBeVisible()
   await expect(page.locator('main h1').first()).not.toBeEmpty()
+  // This suite compares hydrated interactions across browser engines. Early
+  // typing is tested separately in compatibility-hydration.spec.ts so waiting
+  // for application scripts here cannot silently erase that regression.
+  await page.waitForLoadState('networkidle')
   await page.evaluate(() => document.fonts.ready)
 }
 
@@ -199,6 +237,7 @@ test('checklist opt-in persists across locales and forgetting propagates to an a
 
 test('project map dialog zooms, traps keyboard focus, resets and restores page scrolling', async ({ page }) => {
   await openPage(page, '/en/projects')
+  await expectNoHorizontalOverflow(page)
   const opener = page.getByRole('button', { name: 'Open and zoom map', exact: true })
   await opener.scrollIntoViewIfNeeded()
   const originalScroll = await page.evaluate(() => window.scrollY)
