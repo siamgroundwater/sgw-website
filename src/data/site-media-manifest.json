@@ -1,0 +1,66 @@
+{
+  "service-survey": {
+    "fallbacks": [
+      "/images/services/survey/legacy-01.jpg",
+      "/images/services/survey/legacy-01.jpg",
+      "/images/services/survey/legacy-02.jpg",
+      "/images/services/survey/legacy-03.jpg"
+    ],
+    "minimum": 2,
+    "maximum": 13
+  },
+  "service-drilling": {
+    "fallbacks": [
+      "/images/services/drilling/legacy-01.jpg",
+      "/images/services/drilling/legacy-01.jpg",
+      "/images/services/drilling/legacy-02.jpg",
+      "/images/services/drilling/legacy-03.jpg"
+    ],
+    "minimum": 2,
+    "maximum": 13
+  },
+  "service-maintenance": {
+    "fallbacks": [
+      "/images/services/maintenance/legacy-01.jpg",
+      "/images/services/maintenance/legacy-01.jpg",
+      "/images/services/maintenance/legacy-02.jpg",
+      "/images/services/maintenance/legacy-03.jpg"
+    ],
+    "minimum": 2,
+    "maximum": 13
+  },
+  "service-consult": {
+    "fallbacks": [
+      "/images/services/consult/legacy-03.jpg",
+      "/images/services/consult/legacy-03.jpg",
+      "/images/services/consult/legacy-02.jpg",
+      "/images/services/consult/legacy-01.jpg"
+    ],
+    "minimum": 2,
+    "maximum": 13
+  },
+  "project-map": {
+    "fallbacks": [
+      "/images/customers/legacy-project-map.jpg"
+    ],
+    "minimum": 1,
+    "maximum": 1
+  },
+  "governance": {
+    "fallbacks": [
+      "/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png"
+    ],
+    "minimum": 1,
+    "maximum": 1
+  },
+  "about-hero": {
+    "fallbacks": [
+      "/images/about/slide/about-slide-1.jpg",
+      "/images/about/slide/about-slide-2.jpg",
+      "/images/about/slide/about-slide-3.jpg",
+      "/images/about/slide/about-slide-4.jpg"
+    ],
+    "minimum": 1,
+    "maximum": 12
+  }
+}

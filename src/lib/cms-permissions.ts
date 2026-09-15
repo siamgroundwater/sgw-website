@@ -9,6 +9,7 @@ export type CmsPermission =
   | 'learning:view'
   | 'learning:write'
   | 'learning:delete'
+  | 'media:view'
   | 'media:write'
   | 'projects:view'
   | 'projects:write'
@@ -16,6 +17,9 @@ export type CmsPermission =
   | 'services:view'
   | 'services:write'
   | 'services:delete'
+  | 'teams:view'
+  | 'teams:write'
+  | 'teams:delete'
   | 'users:manage'
 
 export const cmsRoleLabels: Record<CmsUserRole, string> = {
@@ -38,6 +42,7 @@ export const cmsRolePermissions: Record<CmsUserRole, readonly CmsPermission[]> =
     'learning:view',
     'learning:write',
     'learning:delete',
+    'media:view',
     'media:write',
     'projects:view',
     'projects:write',
@@ -45,23 +50,31 @@ export const cmsRolePermissions: Record<CmsUserRole, readonly CmsPermission[]> =
     'services:view',
     'services:write',
     'services:delete',
+    'teams:view',
+    'teams:write',
+    'teams:delete',
     'users:manage',
   ],
   editor: [
     'dashboard:view',
     'learning:view',
     'learning:write',
+    'media:view',
     'media:write',
     'projects:view',
     'projects:write',
     'services:view',
     'services:write',
+    'teams:view',
+    'teams:write',
   ],
   viewer: [
     'dashboard:view',
     'learning:view',
+    'media:view',
     'projects:view',
     'services:view',
+    'teams:view',
   ],
 }
 

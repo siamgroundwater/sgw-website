@@ -1,15 +1,17 @@
 'use client'
 
-import Image from 'next/image'
+import FallbackImage from '@/components/media/FallbackImage'
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 
 type ServiceGalleryProps = {
+  fallbackImages?: readonly string[]
   images: readonly string[]
   label: string
   serviceTitle: string
 }
 
 export default function ServiceGallery({
+  fallbackImages = [],
   images,
   label,
   serviceTitle,
@@ -80,18 +82,22 @@ export default function ServiceGallery({
       onPointerCancel={stopDragging}
       onLostPointerCapture={stopDragging}
     >
-      {images.map((image, index) => (
-        <figure key={image}>
-          <Image
-            src={image}
-            alt={`${label}: ${serviceTitle} ${index + 1}`}
-            fill
-            quality={90}
-            sizes="(width <= 700px) 78vw, (width <= 900px) 48vw, 36vw"
-            draggable={false}
-          />
-        </figure>
-      ))}
+      {images.map((image, index) => {
+        const fallbackSrc = fallbackImages[index] || fallbackImages[0] || image
+        return (
+          <figure key={`${image}-${index}`}>
+            <FallbackImage
+              src={image}
+              fallbackSrc={fallbackSrc}
+              alt={`${label}: ${serviceTitle} ${index + 1}`}
+              fill
+              quality={90}
+              sizes="(width <= 700px) 78vw, (width <= 900px) 48vw, 36vw"
+              draggable={false}
+            />
+          </figure>
+        )
+      })}
     </div>
   )
 }

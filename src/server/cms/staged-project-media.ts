@@ -44,10 +44,11 @@ function getSecret() {
 export function createStagedProjectMediaToken(
   asset: CmsMediaAsset,
   submissionId: string,
-  userId: string
+  userId: string,
+  target = 'project'
 ) {
   return createCmsStagedMediaTokenValue(
-    { asset, submissionId, userId },
+    { asset, submissionId, target, userId },
     getSecret(),
     Date.now(),
     stagedMediaMaxAgeSeconds
@@ -57,25 +58,49 @@ export function createStagedProjectMediaToken(
 export async function registerStagedProjectMedia(
   asset: CmsMediaAsset,
   submissionId: string,
-  userId: string
+  userId: string,
+  target = 'project'
 ) {
   await ensureStagedMediaIndexes()
   const collection = await getCmsStagedProjectMediaCollection()
   const createdAt = new Date()
-  await collection.insertOne({
+  const document = {
     asset,
     createdAt,
     expiresAt: new Date(createdAt.getTime() + stagedMediaMaxAgeSeconds * 1000),
     submissionId,
+    target,
     userId,
-  })
+  }
+  try {
+    await collection.insertOne(document)
+  } catch (error) {
+    // An insert can commit before its acknowledgement is interrupted. Confirm
+    // the exact row so a safe retry is idempotent without using overlapping
+    // parent/child equality paths in a MongoDB upsert.
+    const existing = await collection.findOne({ 'asset.publicId': asset.publicId }).catch(() => null)
+    const exactAsset = existing && Object.entries(asset).every(([key, value]) =>
+      existing.asset[key as keyof CmsMediaAsset] === value
+    )
+    if (
+      existing &&
+      exactAsset &&
+      existing.submissionId === submissionId &&
+      existing.userId === userId &&
+      (existing.target || 'project') === target &&
+      existing.expiresAt > new Date() &&
+      !existing.cleanupClaimedAt
+    ) return
+    throw error
+  }
 }
 
 export async function verifyStagedProjectMediaTokens(
   tokens: unknown,
   submissionId: unknown,
   user: CmsAuditActor,
-  session?: ClientSession
+  session?: ClientSession,
+  target = 'project'
 ) {
   await ensureStagedMediaIndexes()
   if (tokens === undefined && submissionId === undefined) return []
@@ -96,7 +121,13 @@ export async function verifyStagedProjectMediaTokens(
   )) {
     throw new Error('INVALID_STAGED_MEDIA')
   }
-  const verified = payloads as CmsStagedMediaTokenPayload[]
+  const verified = (payloads as CmsStagedMediaTokenPayload[]).map((payload) => ({
+    ...payload,
+    target: payload.target || 'project',
+  }))
+  if (verified.some((payload) => payload.target !== target)) {
+    throw new Error('INVALID_STAGED_MEDIA')
+  }
   if (new Set(verified.map(({ asset }) => asset.publicId)).size !== verified.length) {
     throw new Error('INVALID_STAGED_MEDIA')
   }
@@ -108,6 +139,9 @@ export async function verifyStagedProjectMediaTokens(
       submissionId,
       userId: user.userId,
       cleanupClaimedAt: { $exists: false },
+      ...(target === 'project'
+        ? { $or: [{ target: 'project' }, { target: { $exists: false } }] }
+        : { target }),
     }, { session })
     if (registered !== verified.length) throw new Error('INVALID_STAGED_MEDIA')
   }
@@ -135,6 +169,9 @@ export async function rollbackStagedProjectMedia(payloads: CmsStagedMediaTokenPa
       'asset.publicId': payload.asset.publicId,
       userId: payload.userId,
       submissionId: payload.submissionId,
+      ...((payload.target || 'project') === 'project'
+        ? { $or: [{ target: 'project' }, { target: { $exists: false } }] }
+        : { target: payload.target }),
       cleanupClaimedAt: { $exists: false },
     }, { $set: { cleanupClaimedAt: new Date() } }, { returnDocument: 'after' })
     if (row) claimed.push(payload)

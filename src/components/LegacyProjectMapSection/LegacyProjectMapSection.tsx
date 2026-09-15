@@ -1,5 +1,7 @@
 import { MapPinned } from 'lucide-react'
 import type { LocalizedLocale } from '@/i18n/config'
+import { siteMediaFallbacks } from '@/lib/site-media'
+import { getPublicSiteMediaImages } from '@/server/cms/site-media'
 import LegacyProjectMapViewer, {
   type LegacyMapViewerCopy,
 } from './LegacyProjectMapViewer'
@@ -74,13 +76,14 @@ const copyByLocale: Record<LocalizedLocale, LegacyMapCopy> = {
   },
 }
 
-export default function LegacyProjectMapSection({
+export default async function LegacyProjectMapSection({
   locale = 'th',
 }: {
   locale?: LocalizedLocale
 }) {
   const copy = copyByLocale[locale]
-  const imagePath = '/images/customers/legacy-project-map.jpg'
+  const fallbackImagePath = siteMediaFallbacks['project-map'][0]
+  const [imagePath = fallbackImagePath] = await getPublicSiteMediaImages('project-map')
 
   return (
     <aside className={styles.section} aria-labelledby="legacy-project-map-title">
@@ -93,7 +96,9 @@ export default function LegacyProjectMapSection({
       </div>
 
       <LegacyProjectMapViewer
+        key={imagePath}
         imagePath={imagePath}
+        fallbackImagePath={fallbackImagePath}
         imageAlt={copy.imageAlt}
         copy={copy}
       />

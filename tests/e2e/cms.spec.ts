@@ -38,6 +38,49 @@ test('login redirects authenticated users and project search covers every saved 
   await expect(page).toHaveURL(/\/cms\/dashboard$/)
 })
 
+test('website-media cards open accessible editors with static previews and confirmed removal', async ({ page }) => {
+  await login(page, '/cms/media')
+  const cards = page.locator('a.cms-site-media-card')
+  await expect(cards).toHaveCount(7)
+  await expect(cards.locator('a, button')).toHaveCount(0)
+
+  const mapCard = cards.filter({ has: page.locator('[id="cms-site-media-title-project-map"]') })
+  await expect(mapCard).toHaveCount(1)
+  await expect(mapCard).toHaveAccessibleName(/แผนที่ผลงาน|Project map/)
+
+  const popupPromise = page.waitForEvent('popup')
+  await mapCard.click()
+  const editor = await popupPromise
+  await editor.waitForLoadState('domcontentloaded')
+  await expect(editor).toHaveURL(/\/cms\/media\/project-map$/)
+  await expect(editor.locator('.cms-media-preview-button, .cms-image-dialog')).toHaveCount(0)
+
+  const previewImage = editor.locator('.cms-project-images-fit .cms-media-preview-static img')
+  await expect(previewImage).toBeVisible()
+  await expect.poll(() => previewImage.evaluate((image) => {
+    const element = image as HTMLImageElement
+    if (!element.naturalWidth || !element.naturalHeight) return 1
+    const box = element.getBoundingClientRect()
+    return Math.abs((box.width / box.height) - (element.naturalWidth / element.naturalHeight))
+  })).toBeLessThan(0.02)
+
+  const item = editor.locator('.cms-media-item')
+  const remove = item.getByRole('button', { name: /นำภาพ 1 ออก|Remove image 1/ })
+  await remove.click()
+  const confirmation = editor.locator('.cms-image-remove-dialog')
+  await expect(confirmation).toBeVisible()
+  await confirmation.getByRole('button', { name: /ยกเลิก|Cancel/ }).click()
+  await expect(confirmation).not.toBeVisible()
+  await expect(remove).toBeFocused()
+  await expect(item).toHaveCount(1)
+
+  await remove.click()
+  await confirmation.getByRole('button', { name: /นำออก|Remove/ }).click()
+  await expect(confirmation).not.toBeVisible()
+  await expect(item).toHaveCount(0)
+  await expect(editor.getByRole('button', { name: /เลือกภาพ|Select image/ })).toBeFocused()
+})
+
 test('live save, idempotent retry, conflict, fallback, Trash and restore use the same data', async ({ request }) => {
   await loginApi(request)
   const response = await request.get('/api/cms/projects?id=' + sourceId)

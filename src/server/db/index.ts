@@ -5,8 +5,11 @@ export {
   getCmsProjectsCollection,
   getCmsProjectRevisionsCollection,
   getCmsServicesCollection,
+  getCmsSiteMediaCollection,
   getCmsUsersCollection,
   getCmsStagedProjectMediaCollection,
+  getCmsTeamDirectoryCollection,
+  getCmsTeamOperationsCollection,
 } from './collections'
 export {
   getMongoClient,
@@ -33,8 +36,15 @@ export type {
   CmsProjectTranslations,
   CmsServiceBlock,
   CmsServiceDocument,
+  CmsSiteMediaDocument,
+  CmsSiteMediaItem,
   CmsTimestampedDocument,
   CmsStagedProjectMediaDocument,
+  CmsTeamDirectoryDocument,
+  CmsTeamDocument,
+  CmsTeamMemberDocument,
+  CmsTeamOperationDocument,
+  CmsTeamOperationResult,
   CmsUserDocument,
   CmsUserRole,
 } from './types'

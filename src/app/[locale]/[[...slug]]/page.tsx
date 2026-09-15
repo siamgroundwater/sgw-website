@@ -5,7 +5,6 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import {
   ArrowLeft,
   ArrowRight,
-  Download,
   MessageCircle,
   PlayCircle,
 } from 'lucide-react'
@@ -19,6 +18,8 @@ import GroundwaterOwnerGuide from '@/components/GroundwaterOwnerGuide/Groundwate
 import LearningArticleHeader from '@/components/LearningCenterPage/LearningArticleHeader'
 import LearningCenterPage from '@/components/LearningCenterPage/LearningCenterPage'
 import ProjectDetailView from '@/components/ProjectDetailView/ProjectDetailView'
+import GovernancePageView from '@/components/GovernancePage/GovernancePageView'
+import LegacyProjectMapSection from '@/components/LegacyProjectMapSection/LegacyProjectMapSection'
 import ServiceDetailPage from '@/components/ServiceDetailPage/ServiceDetailPage'
 import SocialMediaSection from '@/components/home/SocialMediaSection'
 import CustomerHistorySection from '@/components/home/CustomerHistorySection'
@@ -51,7 +52,10 @@ import {
 import { localizeProject } from '@/i18n/projects'
 import type { Project } from '@/lib/projects'
 import { toProjectSummary, type ProjectSummary } from '@/lib/project-summaries'
+import type { PublicPersonnelGroup } from '@/lib/team-directory'
 import { getPublicProjectById, listPublicProjects } from '@/server/public-projects'
+import { getPublicSiteMediaImages } from '@/server/cms/site-media'
+import { getPublicTeamDirectory } from '@/server/cms/teams'
 import '@/app/(site)/home/page.css'
 import '@/app/(site)/about/page.css'
 import '@/app/(site)/contact/page.css'
@@ -254,7 +258,17 @@ function LocalizedHome({
   )
 }
 
-function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
+function LocalizedAbout({
+  locale,
+  content,
+  heroImages,
+  personnelGroups,
+}: {
+  locale: LocalizedLocale
+  content: LocalizedContent
+  heroImages: string[]
+  personnelGroups: PublicPersonnelGroup[]
+}) {
   const awards = [
     { src: '/images/about/award/award-1.png', width: 138, height: 328 },
     { src: '/images/about/award/award-2.png', width: 358, height: 326 },
@@ -280,7 +294,7 @@ function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content:
         </div>
       </section>
 
-      <HeroSlide />
+      <HeroSlide images={heroImages} locale={locale} />
 
       <section className="about-content">
         <div className="about-content-Introduction">
@@ -326,7 +340,7 @@ function LocalizedAbout({ locale, content }: { locale: LocalizedLocale; content:
           </div>
         </div>
 
-        <HomeTeam title={content.about.teamTitle} locale={locale} />
+        <HomeTeam title={content.about.teamTitle} locale={locale} personnelGroups={personnelGroups} />
       </section>
     </main>
   )
@@ -363,7 +377,7 @@ function LocalizedServiceDetail({
 function LocalizedProjects({ locale, content, projects }: { locale: LocalizedLocale; content: LocalizedContent; projects: ProjectSummary[] }) {
   return (
     <main className="projects-page" style={{ padding: '1rem' }}>
-      <ProjectsSection projects={projects} locale={locale} copy={content.projects} showHistoryMap showIntro={false} headingLevel="h1" />
+      <ProjectsSection projects={projects} locale={locale} copy={content.projects} showHistoryMap showIntro={false} headingLevel="h1" historyMap={<LegacyProjectMapSection locale={locale} />} />
     </main>
   )
 }
@@ -372,7 +386,7 @@ function LocalizedProjectDetail({ locale, content, project }: { locale: Localize
   return <ProjectDetailView locale={locale} content={content} project={project} />
 }
 
-function LocalizedGovernance({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
+async function LocalizedGovernance({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
   const downloadLabel: Record<LocalizedLocale, string> = {
     th: 'ดาวน์โหลดโปสเตอร์',
     en: 'Download poster',
@@ -380,12 +394,8 @@ function LocalizedGovernance({ locale, content }: { locale: LocalizedLocale; con
     ja: 'ポスターをダウンロード',
   }
 
-  return (
-    <main className="governance-page">
-      <section className="governance-header"><p className="governance-eyebrow">{content.governance.eyebrow}</p><h1 className="governance-title-th">{content.governance.title}</h1><p className="governance-description">{content.governance.intro}</p></section>
-      <section className="governance-poster-section"><div className="governance-poster-frame"><div className="governance-poster-inner"><Image src="/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png" alt={content.governance.commitmentTitle} width={1200} height={1700} className="governance-poster-image" priority /></div></div><a className="governance-download-button" href="/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png" download="Poster_โครงการรักษ์น้ำบาดาล.png"><Download aria-hidden="true" />{downloadLabel[locale]}</a></section>
-    </main>
-  )
+  const [imageSrc = ''] = await getPublicSiteMediaImages('governance')
+  return <GovernancePageView eyebrow={content.governance.eyebrow} title={content.governance.title} description={content.governance.intro} imageAlt={content.governance.commitmentTitle} imageSrc={imageSrc} downloadLabel={downloadLabel[locale]} />
 }
 
 function LocalizedLearning({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
@@ -459,7 +469,12 @@ export default async function LocalizedPage({ params }: LocalizedPageProps) {
     const projects = (await listPublicProjects()).map((project) => toProjectSummary(project, locale))
     return <LocalizedHome locale={locale} content={content} projects={projects} />
   }
-  if (slug.length === 1 && first === 'about') return <LocalizedAbout locale={locale} content={content} />
+  if (slug.length === 1 && first === 'about') {
+    const personnelGroupsPromise = getPublicTeamDirectory(locale)
+    const heroImages = await getPublicSiteMediaImages('about-hero')
+    const personnelGroups = await personnelGroupsPromise
+    return <LocalizedAbout locale={locale} content={content} heroImages={heroImages} personnelGroups={personnelGroups} />
+  }
   if (slug.length === 1 && first === 'services') return <LocalizedServices locale={locale} content={content} />
   if (slug.length === 2 && first === 'services' && second && isServiceKey(second)) return <LocalizedServiceDetail locale={locale} content={content} serviceKey={second} />
   if (slug.length === 1 && first === 'projects') {

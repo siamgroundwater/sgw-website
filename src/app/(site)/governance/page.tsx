@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import { Download } from 'lucide-react'
+import GovernancePageView from '@/components/GovernancePage/GovernancePageView'
+import { getPublicSiteMediaImages } from '@/server/cms/site-media'
 import { createThaiPageMetadata } from '@/lib/site-metadata'
 import './page.css'
 
@@ -10,42 +10,17 @@ export const metadata = createThaiPageMetadata({
   pathname: '/governance',
 })
 
-export default function GovernancePage() {
-  return (
-    <main className="governance-page">
-      <section className="governance-header">
-        <p className="governance-eyebrow">โครงการรักษ์น้ำบาดาล</p>
-        <h1 className="governance-title-th">
-          แนวทางบริหารจัดการทรัพยากรน้ำบาดาลอย่างยั่งยืน
-        </h1>
-        <p className="governance-description">
-          แผ่นสรุปแนวคิดโครงการ “รักษ์น้ำบาดาล” แสดงบทบาทของภาครัฐ ผู้ใช้น้ำ
-          และผู้เจาะน้ำบาดาล
-        </p>
-      </section>
+export default async function GovernancePage() {
+  const [imageSrc = ''] = await getPublicSiteMediaImages('governance')
 
-      <section className="governance-poster-section">
-        <div className="governance-poster-frame">
-          <div className="governance-poster-inner">
-            <Image
-              src="/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png"
-              alt="Poster โครงการรักษ์น้ำบาดาล แสดงโครงสร้าง Governance น้ำบาดาล"
-              width={1200}
-              height={1700}
-              className="governance-poster-image"
-              priority
-            />
-          </div>
-        </div>
-        <a
-          className="governance-download-button"
-          href="/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png"
-          download="Poster_โครงการรักษ์น้ำบาดาล.png"
-        >
-          <Download aria-hidden="true" />
-          ดาวน์โหลดโปสเตอร์
-        </a>
-      </section>
-    </main>
+  return (
+    <GovernancePageView
+      eyebrow="โครงการรักษ์น้ำบาดาล"
+      title="แนวทางบริหารจัดการทรัพยากรน้ำบาดาลอย่างยั่งยืน"
+      description="แผ่นสรุปแนวคิดโครงการ “รักษ์น้ำบาดาล” แสดงบทบาทของภาครัฐ ผู้ใช้น้ำ และผู้เจาะน้ำบาดาล"
+      imageAlt="Poster โครงการรักษ์น้ำบาดาล แสดงโครงสร้าง Governance น้ำบาดาล"
+      imageSrc={imageSrc}
+      downloadLabel="ดาวน์โหลดโปสเตอร์"
+    />
   )
 }

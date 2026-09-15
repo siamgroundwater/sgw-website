@@ -2,6 +2,7 @@ import Projects from '../home/projects/projects'
 import { createThaiPageMetadata } from '@/lib/site-metadata'
 import { toProjectSummary } from '@/lib/project-summaries'
 import { listPublicProjects } from '@/server/public-projects'
+import LegacyProjectMapSection from '@/components/LegacyProjectMapSection/LegacyProjectMapSection'
 
 export const revalidate = 60
 
@@ -17,7 +18,12 @@ export default async function ProjectsPage() {
   return (
     <main className="projects-page" style={{ padding: '1rem' }}>
       {/* Reuse the Home projects section */}
-      <Projects projects={projects} showHistoryMap headingLevel="h1" />
+      <Projects
+        projects={projects}
+        showHistoryMap
+        headingLevel="h1"
+        historyMap={<LegacyProjectMapSection />}
+      />
     </main>
   )
 }

@@ -36,6 +36,7 @@ export type LegacyMapViewerCopy = {
 
 type LegacyProjectMapViewerProps = {
   copy: LegacyMapViewerCopy
+  fallbackImagePath: string
   imageAlt: string
   imagePath: string
 }
@@ -80,9 +81,13 @@ function midpointBetween(first: Point, second: Point): Point {
 
 export default function LegacyProjectMapViewer({
   copy,
+  fallbackImagePath,
   imageAlt,
   imagePath,
 }: LegacyProjectMapViewerProps) {
+  const [activeImagePath, setActiveImagePath] = useState(
+    imagePath || fallbackImagePath
+  )
   const [isOpen, setIsOpen] = useState(false)
   const [isInteracting, setIsInteracting] = useState(false)
   const [isHoverPreviewActive, setIsHoverPreviewActive] = useState(false)
@@ -105,6 +110,14 @@ export default function LegacyProjectMapViewer({
   const lastTouchToggleAtRef = useRef(0)
   const titleId = useId()
   const instructionsId = useId()
+
+  const showFallbackImage = useCallback(() => {
+    hoverPreviewActiveRef.current = false
+    setIsHoverPreviewActive(false)
+    setActiveImagePath((current) =>
+      current === fallbackImagePath ? current : fallbackImagePath
+    )
+  }, [fallbackImagePath])
 
   const constrainTransform = useCallback((candidate: Transform): Transform => {
     const scale = boundValue(candidate.scale, MIN_SCALE, MAX_SCALE)
@@ -628,13 +641,14 @@ export default function LegacyProjectMapViewer({
         >
           <Image
             ref={previewImageRef}
-            src={imagePath}
+            src={activeImagePath}
             alt={imageAlt}
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}
             sizes="(width <= 760px) 88vw, (width <= 1100px) 92vw, 1100px"
             className={styles.mapImage}
             draggable={false}
+            onError={showFallbackImage}
             priority
           />
           <span
@@ -650,7 +664,7 @@ export default function LegacyProjectMapViewer({
           className={styles.hoverPreview}
           data-active={isHoverPreviewActive}
           style={{
-            backgroundImage: `url("${imagePath}")`,
+            backgroundImage: `url("${activeImagePath}")`,
           }}
           aria-hidden="true"
         />
@@ -724,7 +738,7 @@ export default function LegacyProjectMapViewer({
                   </button>
 
                   <a
-                    href={imagePath}
+                    href={activeImagePath}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.iconButton}
@@ -770,12 +784,13 @@ export default function LegacyProjectMapViewer({
                   }}
                 >
                   <Image
-                    src={imagePath}
+                    src={activeImagePath}
                     alt=""
                     fill
                     sizes="100vw"
                     className={styles.modalImage}
                     draggable={false}
+                    onError={showFallbackImage}
                     quality={90}
                     priority
                   />

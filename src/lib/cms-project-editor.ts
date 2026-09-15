@@ -1,5 +1,19 @@
 import { CMS_PROJECT_CATEGORIES, CMS_PROJECT_WORK_TYPES, type CmsProjectInput, type CmsProjectTranslation } from '../types/cms.ts'
 
+export const CMS_MAX_PENDING_IMAGES_PER_SAVE = 12
+
+export function availableCmsImageSelections(
+  savedCount: number,
+  pendingCount: number,
+  imageLimit: number,
+  pendingLimit = CMS_MAX_PENDING_IMAGES_PER_SAVE
+) {
+  return Math.max(0, Math.min(
+    imageLimit - savedCount - pendingCount,
+    pendingLimit - pendingCount
+  ))
+}
+
 /** A stable content marker, not a security hash. Normalized like saved project text. */
 export function thaiProjectContentHash(project: Pick<CmsProjectInput, 'title' | 'location' | 'summary' | 'details'>) {
   const content = JSON.stringify([

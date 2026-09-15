@@ -5,10 +5,14 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
 
 if (process.argv.includes('--help')) {
-  console.log('Use npm run test:e2e:cms for isolated browser tests, or npm run test:e2e:cms:media for temporary provider upload tests. Both allocate and remove their own test database. CMS_E2E_PORT selects an unused local port.')
+  console.log('Use npm run test:e2e:cms for isolated browser tests, optionally --browser=firefox or --browser=webkit, or npm run test:e2e:cms:media for temporary provider upload tests. All allocate and remove their own test database. Run these suites sequentially; CMS_E2E_PORT selects an unused local port.')
   process.exit(0)
 }
-if (process.argv.slice(2).some(value => value !== '--media')) throw new Error('Unknown argument. Use --help.')
+const flags = process.argv.slice(2)
+if (flags.some(value => value !== '--media' && !/^--browser=(chromium|firefox|webkit)$/.test(value))) throw new Error('Unknown argument. Use --help.')
+if (flags.filter(value => value.startsWith('--browser=')).length > 1) throw new Error('Select only one browser.')
+if (flags.includes('--media') && flags.some(value => value.startsWith('--browser='))) throw new Error('The real-provider suite uses its own Chromium workflow; do not combine --media and --browser.')
+const browserName = flags.find(value => value.startsWith('--browser='))?.slice('--browser='.length) || 'chromium'
 try { process.loadEnvFile('.env.local') } catch {}
 if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is required. Tests create a NEW isolated database.')
 const sourceDatabase = process.env.MONGODB_DB
@@ -59,7 +63,7 @@ try {
     MONGODB_DB: database, CMS_SESSION_SECRET: secret, CMS_COOKIE_SECURE: 'false',
     SGW_CI_SKIP_DATABASE: 'false', SGW_CMS_TEST_BUILD: 'true',
     CLOUDINARY_CLOUD_NAME: 'isolated-test-no-provider', CLOUDINARY_API_KEY: 'isolated-test-key', CLOUDINARY_API_SECRET: 'isolated-test-secret',
-    CLOUDINARY_ROOT_FOLDER: 'sgw-test/cms', CMS_E2E_BASE_URL: baseURL,
+    CLOUDINARY_ROOT_FOLDER: 'sgw-test/cms', CMS_E2E_BASE_URL: baseURL, CMS_E2E_BROWSER: browserName,
     CMS_E2E_PASSWORD: password, CMS_E2E_SOURCE_ID: String(projects[0]._id),
     CMS_E2E_DATABASE: database, CMS_E2E_ADMIN_ID: String(users[0]._id),
     CRON_SECRET: randomBytes(36).toString('base64url'), CMS_E2E_SOURCE_DATABASE: sourceDatabase || '',
@@ -77,7 +81,7 @@ try {
   }
   if (!ready) { console.error(output); throw new Error('Isolated CMS server did not become ready.') }
   console.log('Running CMS checks against isolated database ' + database + (mediaMode ? ' (temporary Cloudinary test images only).' : ' (no Cloudinary writes).'))
-  try { await done(start(mediaMode ? ['scripts/e2e-cms-project-workflow.mjs'] : ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.cms.config.ts'], env)) }
+  try { await done(start(mediaMode ? ['scripts/e2e-cms-project-workflow.mjs'] : ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.cms.config.ts', '--output', 'test-results/cms-workflows-' + browserName], env)) }
   catch (error) { console.error(output); throw error }
 } finally {
   await Promise.all([...children].map(child => new Promise(resolve => { child.once('exit', resolve); child.kill() })))

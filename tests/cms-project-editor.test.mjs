@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
-import { hasRecoverableProjectShape, moveProjectImage, orderedProjectImages, projectTemplate, reconnectProjectImageDescriptions, thaiProjectContentHash, translationCompletion } from '../src/lib/cms-project-editor.ts'
+import { availableCmsImageSelections, hasRecoverableProjectShape, moveProjectImage, orderedProjectImages, projectTemplate, reconnectProjectImageDescriptions, thaiProjectContentHash, translationCompletion } from '../src/lib/cms-project-editor.ts'
 
 const thai = { title: 'โครงการ', location: 'เชียงใหม่', summary: 'รายละเอียด', details: ['ส่วนที่หนึ่ง'] }
 
@@ -33,6 +34,17 @@ test('templates omit project identity and image data', () => {
 test('saved and newly selected gallery images share one stable order', () => {
   assert.deepEqual(orderedProjectImages(['saved-a', 'saved-b'], ['pending-a'], ['pending-a', 'saved-b', 'saved-a']), ['pending-a', 'saved-b', 'saved-a'])
   assert.deepEqual(orderedProjectImages(['saved-a'], ['pending-b'], ['removed', 'saved-a', 'saved-a']), ['saved-a', 'pending-b'])
+})
+
+test('new image selection stays within one staged-media batch without reducing persisted capacity', () => {
+  assert.equal(availableCmsImageSelections(0, 0, 120), 12)
+  assert.equal(availableCmsImageSelections(118, 0, 120), 2)
+  assert.equal(availableCmsImageSelections(100, 10, 120), 2)
+  assert.equal(availableCmsImageSelections(100, 12, 120), 0)
+  assert.equal(availableCmsImageSelections(120, 0, 120), 0)
+  assert.equal(availableCmsImageSelections(0, 0, 12), 12)
+  const selector = readFileSync(new URL('../src/components/cms/CmsDeferredProjectImages.tsx', import.meta.url), 'utf8')
+  assert.match(selector, /availableCmsImageSelections\(values\.length, pending\.length, imageLimit, pendingLimit\)/)
 })
 
 test('recovery allows unfinished text but rejects malformed arrays before rendering', () => {

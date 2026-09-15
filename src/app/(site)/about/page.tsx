@@ -2,6 +2,10 @@
 
 import Image from 'next/image'
 import { createThaiPageMetadata } from '@/lib/site-metadata'
+import { getPublicSiteMediaImages } from '@/server/cms/site-media'
+import { getPublicTeamDirectory } from '@/server/cms/teams'
+
+export const revalidate = 60
 import './page.css'
 
 export const metadata = createThaiPageMetadata({
@@ -37,7 +41,11 @@ const AWARDS = [
   },
 ]
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const personnelGroupsPromise = getPublicTeamDirectory('th')
+  const heroImages = await getPublicSiteMediaImages('about-hero')
+  const personnelGroups = await personnelGroupsPromise
+
   return (
     <main className="about-container">
       <section className="about-hero">
@@ -45,7 +53,7 @@ export default function AboutPage() {
       </section>
 
       {/* 🔹 Hero image slider (moved) */}
-      <HeroSlide />
+      <HeroSlide images={heroImages} locale="th" />
 
       <section className="about-content">
         <div className="about-content-Introduction">
@@ -112,7 +120,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <Teams />
+        <Teams personnelGroups={personnelGroups} />
       </section>
     </main>
   )

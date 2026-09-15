@@ -1,5 +1,10 @@
 import { defineConfig } from '@playwright/test'
 
+const browserName = process.env.CMS_E2E_BROWSER || 'chromium'
+if (browserName !== 'chromium' && browserName !== 'firefox' && browserName !== 'webkit') {
+  throw new Error('CMS_E2E_BROWSER must be chromium, firefox, or webkit.')
+}
+
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: 'cms*.spec.ts',
@@ -12,7 +17,7 @@ export default defineConfig({
   reporter: [['list']],
   use: {
     baseURL: process.env.CMS_E2E_BASE_URL,
-    browserName: 'chromium',
+    browserName,
     viewport: { width: 1280, height: 900 },
     reducedMotion: 'reduce',
     trace: 'retain-on-failure',

@@ -8,6 +8,7 @@ const retentionDays = 30
 const referenceCollections = [
   'cmsProjects', 'cmsProjectRevisions', 'cmsRecoveryArchives', 'cmsServices',
   'cmsLearning', 'cmsStagedProjectMedia', 'cmsProjectOperations',
+  'cmsSiteMedia', 'cmsTeamDirectory',
 ]
 
 /** Conservative matching also recognizes versioned and transformed delivery URLs. */

@@ -38,6 +38,8 @@ test('CMS roles expose least-privilege permissions', () => {
   assert.equal(canCmsRole('editor', 'projects:delete'), false)
   assert.equal(canCmsRole('viewer', 'learning:view'), true)
   assert.equal(canCmsRole('viewer', 'learning:write'), false)
+  assert.equal(canCmsRole('viewer', 'media:view'), true)
+  assert.equal(canCmsRole('viewer', 'media:write'), false)
 })
 
 test('CMS language defaults to Thai and keeps complete English labels', () => {
@@ -96,7 +98,7 @@ test('CMS session tokens reject tampering and expiry', () => {
   assert.equal(verifyCmsSessionTokenValue(token, secret, now + 3_600_001), null)
 })
 
-test('staged project media tokens bind uploads to a user and submission', () => {
+test('staged media tokens bind uploads to a user, submission, and target', () => {
   const secret = 'test-secret-that-is-long-enough-for-cms-tests'
   const now = 1_800_000_000_000
   const input = {
@@ -110,6 +112,7 @@ test('staged project media tokens bind uploads to a user and submission', () => 
       width: 1200,
     },
     submissionId: 'submission_12345678',
+    target: 'site-about-hero',
     userId: '507f1f77bcf86cd799439011',
   }
   const token = createCmsStagedMediaTokenValue(input, secret, now, 1800)
@@ -243,10 +246,11 @@ test('service and learning validation enforce structured content', () => {
 })
 
 test('CMS routes exist and mutation APIs require same-origin checks', () => {
-  const pages = ['login', 'dashboard', 'projects', 'users', 'users/add', 'users/edit', 'audit-logs']
+  const pages = ['login', 'dashboard', 'projects', 'media', 'users', 'users/add', 'users/edit', 'audit-logs']
   for (const page of pages) {
     assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', page, 'page.tsx')), true, page)
   }
+  assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', 'media', '[section]', 'page.tsx')), true)
   assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', 'services', 'page.tsx')), false)
   assert.equal(existsSync(path.join(root, 'src', 'app', 'cms', 'learning', 'page.tsx')), false)
 
@@ -255,6 +259,8 @@ test('CMS routes exist and mutation APIs require same-origin checks', () => {
     'auth/logout',
     'projects',
     'projects/media',
+    'media',
+    'media/upload',
     'account/password',
     'users',
   ]
@@ -276,6 +282,8 @@ test('CMS stylesheet follows SGW sizing rules', () => {
   assert.match(css, /\.cms-shell\s*\{[\s\S]*?--cms-navbar-height:\s*68px[\s\S]*?padding-top:\s*var\(--cms-navbar-height\)/i)
   assert.match(css, /\.cms-navbar\s*\{[\s\S]*?position:\s*fixed[\s\S]*?display:\s*grid[\s\S]*?grid-template-columns:\s*44px minmax\(0,\s*1fr\) 44px/i)
   assert.match(css, /\.cms-navigation-drawer\s*\{[\s\S]*?position:\s*absolute[\s\S]*?height:\s*100dvh[\s\S]*?overflow-y:\s*auto/i)
+  assert.match(css, /\.cms-navigation-drawer\s*\{[\s\S]*?scrollbar-width:\s*none/i)
+  assert.match(css, /\.cms-navigation-drawer::\-webkit-scrollbar\s*\{[\s\S]*?display:\s*none/i)
   assert.doesNotMatch(css, /\.cms-sidebar-desktop|\.cms-mobile-bar|\.cms-mobile-drawer/i)
   assert.match(css, /\.cms-select-pill\s*\{[\s\S]*?overflow-wrap:\s*anywhere/i)
   assert.match(css, /\.cms-editor\s*\{[\s\S]*?touch-action:\s*pan-y pinch-zoom/i)
@@ -355,7 +363,7 @@ test('project architecture keeps one live-save workflow and dedicated pages', ()
   assert.doesNotMatch(route, /publishCmsProject|restoreCmsProjectRevision/)
   assert.match(css, /\.cms-project-grid\s*{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/)
   assert.doesNotMatch(css, /\.cms-project-card-heading h3\s*{[^}]*(?:min-height|max-height)/)
-  for (const name of ['services', 'learning', 'media', 'import']) {
+  for (const name of ['services', 'learning', 'import']) {
     assert.equal(existsSync(path.join(root, 'src/app/api/cms', name, 'route.ts')), false)
   }
   // Browser tests verify rendering, mobile interactions, actual database mutation,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ChangeEvent } from 'react'
+import { useState, type ChangeEvent, type ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -14,7 +14,6 @@ import {
   PROJECT_CATEGORY_KEYS,
   getLocalizedProjectPresentation,
 } from '@/i18n/projects'
-import LegacyProjectMapSection from '@/components/LegacyProjectMapSection/LegacyProjectMapSection'
 import './projects.css'
 
 type FilterCategory = 'all' | ProjectCategory
@@ -107,6 +106,7 @@ export default function ProjectsSection({
   showHistoryMap = false,
   showIntro = true,
   headingLevel = 'h2',
+  historyMap,
   featured = false,
   initialItemsPerPage = 10,
 }: {
@@ -116,6 +116,7 @@ export default function ProjectsSection({
   showHistoryMap?: boolean
   showIntro?: boolean
   headingLevel?: 'h1' | 'h2'
+  historyMap?: ReactNode
   featured?: boolean
   initialItemsPerPage?: Exclude<ItemsPerPage, 'all'>
 }) {
@@ -163,9 +164,7 @@ export default function ProjectsSection({
         </Heading>
         {showIntro && copy?.intro && <p className="projects-intro">{copy.intro}</p>}
 
-        {showHistoryMap && (
-          <LegacyProjectMapSection locale={locale ?? 'th'} />
-        )}
+        {showHistoryMap && historyMap}
 
         <div className="projects-filter-buttons">
           <button

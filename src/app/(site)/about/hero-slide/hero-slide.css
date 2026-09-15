@@ -41,8 +41,9 @@ margin: 1rem auto 2.5rem;
 
 .about-hero-slide {
   flex: 0 0 100%;
-  aspect-ratio: 16 / 6;
+  aspect-ratio: 3 / 1;
   scroll-snap-align: center;
+  position: relative;
 
   border-radius: 1.2rem;
   overflow: hidden;
@@ -62,6 +63,7 @@ margin: 1rem auto 2.5rem;
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center;
 }
 
 .about-hero-slider-dots {
@@ -111,7 +113,7 @@ margin: 1rem auto 2.5rem;
 
 @media (width <= 768px) {
   .about-hero-slide {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     border-radius: 0.9rem;
   }
 }

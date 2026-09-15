@@ -6,7 +6,9 @@ import {
   getCmsProjectRevisionsCollection,
   getCmsProjectsCollection,
   getCmsServicesCollection,
+  getCmsSiteMediaCollection,
   getCmsStagedProjectMediaCollection,
+  getCmsTeamDirectoryCollection,
 } from '@/server/db'
 import type {
   CmsLearningDocument,
@@ -338,6 +340,24 @@ export async function getCmsProjectMediaUrlsInUse(urls: string[]) {
   for (const row of revisions) {
     for (const src of [row.content.coverImage, ...row.content.galleryImages]) {
       if (uniqueUrls.includes(src)) inUse.add(src)
+    }
+  }
+  const siteMedia = await (await getCmsSiteMediaCollection()).find(
+    { 'images.src': { $in: uniqueUrls } },
+    { projection: { images: 1 } }
+  ).toArray()
+  for (const row of siteMedia) {
+    for (const image of row.images) {
+      if (uniqueUrls.includes(image.src)) inUse.add(image.src)
+    }
+  }
+  const teamDirectory = await (await getCmsTeamDirectoryCollection()).findOne(
+    { _id: 'about-teams', 'teams.members.image.src': { $in: uniqueUrls } },
+    { projection: { 'teams.members.image.src': 1 } }
+  )
+  for (const team of teamDirectory?.teams || []) {
+    for (const member of team.members || []) {
+      if (uniqueUrls.includes(member.image.src)) inUse.add(member.image.src)
     }
   }
   return inUse

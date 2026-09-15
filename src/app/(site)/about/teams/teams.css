@@ -35,7 +35,7 @@
 
 .teams-selector {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.75rem;
   width: 100%;
   margin-top: 1.5rem;
@@ -43,6 +43,7 @@
 
 .teams-selector-button {
   display: grid;
+  grid-column: span 2;
   grid-template-columns: auto 1fr auto;
   gap: 0.85rem;
   align-items: center;
@@ -55,6 +56,12 @@
   text-align: left;
   cursor: pointer;
   transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+@media (width > 900px) {
+  .teams-selector-button:nth-last-child(2):nth-child(3n + 1) {
+    grid-column: 2 / span 2;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -276,6 +283,12 @@
   margin-top: 1rem;
 }
 
+.personnel-empty {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
 .personnel-team {
   padding: 1rem;
   border: 1px solid rgba(165, 243, 252, 0.14);
@@ -374,6 +387,7 @@
   }
 
   .teams-selector-button {
+    grid-column: auto;
     grid-template-columns: auto 1fr auto;
   }
 }

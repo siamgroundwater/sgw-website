@@ -11,6 +11,9 @@ import type {
   CmsUserDocument,
   CmsProjectOperationDocument,
   CmsOperationalEventDocument,
+  CmsSiteMediaDocument,
+  CmsTeamDirectoryDocument,
+  CmsTeamOperationDocument,
 } from './types'
 
 export const cmsCollectionNames = {
@@ -19,7 +22,10 @@ export const cmsCollectionNames = {
   projects: 'cmsProjects',
   projectRevisions: 'cmsProjectRevisions',
   services: 'cmsServices',
+  siteMedia: 'cmsSiteMedia',
   stagedProjectMedia: 'cmsStagedProjectMedia',
+  teamDirectory: 'cmsTeamDirectory',
+  teamOperations: 'cmsTeamOperations',
   users: 'cmsUsers',
   projectOperations: 'cmsProjectOperations',
   operationalEvents: 'cmsOperationalEvents',
@@ -55,6 +61,18 @@ export function getCmsStagedProjectMediaCollection() {
 
 export function getCmsServicesCollection() {
   return getMongoCollection<CmsServiceDocument>(cmsCollectionNames.services)
+}
+
+export function getCmsSiteMediaCollection() {
+  return getMongoCollection<CmsSiteMediaDocument>(cmsCollectionNames.siteMedia)
+}
+
+export function getCmsTeamDirectoryCollection() {
+  return getMongoCollection<CmsTeamDirectoryDocument>(cmsCollectionNames.teamDirectory)
+}
+
+export function getCmsTeamOperationsCollection() {
+  return getMongoCollection<CmsTeamOperationDocument>(cmsCollectionNames.teamOperations)
 }
 
 export function getCmsUsersCollection() {

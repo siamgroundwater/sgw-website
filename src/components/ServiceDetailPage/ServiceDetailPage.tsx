@@ -1,8 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight,
-  ChartNoAxesColumnIncreasing,
   CheckCircle2,
   ChevronRight,
   CircleGauge,
@@ -18,6 +16,7 @@ import {
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
+import FallbackImage from '@/components/media/FallbackImage'
 import ServiceGallery from './ServiceGallery'
 import ServiceProjectSelector from './ServiceProjectSelector'
 import ServiceTabs from './ServiceTabs'
@@ -34,6 +33,8 @@ import {
 } from '@/data/service-page-details'
 import { toProjectSummary } from '@/lib/project-summaries'
 import { selectServiceProjects } from '@/lib/service-projects'
+import { serviceMediaSectionKey, siteMediaFallbacks } from '@/lib/site-media'
+import { getPublicServiceMedia } from '@/server/cms/site-media'
 import { listPublicProjects } from '@/server/public-projects'
 import './ServiceDetailPage.css'
 
@@ -47,7 +48,6 @@ type ServiceDetailPageProps = {
 type ServiceUiCopy = {
   chooseService: string
   scopeIntro: string
-  processIntro: string
   detailsEyebrow: string
   detailsTitle: string
   galleryEyebrow: string
@@ -63,8 +63,6 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
     chooseService: 'เลือกบริการ',
     scopeIntro:
       'ขอบเขตงานเชื่อมต่อข้อมูลภาคสนาม การออกแบบ และการใช้งานจริง เพื่อให้ทุกขั้นตอนตรวจสอบและส่งต่อกันได้',
-    processIntro:
-      'เริ่มจากโจทย์ของพื้นที่ เก็บข้อมูลที่จำเป็น แล้วจึงเลือกวิธีทำงานและเกณฑ์ตรวจรับที่เหมาะสมกับโครงการ',
     detailsEyebrow: 'ความเชี่ยวชาญเฉพาะงาน',
     detailsTitle: 'รายละเอียดบริการ',
     galleryEyebrow: 'จากพื้นที่ปฏิบัติงาน',
@@ -78,8 +76,6 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
     chooseService: 'Choose a service',
     scopeIntro:
       'Field evidence, design decisions and operating needs stay connected, giving each stage a clear purpose and handover.',
-    processIntro:
-      'We begin with the site objective, collect the evidence that matters, then define a suitable method and measurable acceptance criteria.',
     detailsEyebrow: 'Specialist capability',
     detailsTitle: 'Service details',
     galleryEyebrow: 'From the field',
@@ -93,8 +89,6 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
     chooseService: '选择服务',
     scopeIntro:
       '将现场证据、设计决策与实际运行需求贯通，让每个阶段都有明确目标和可追溯交付。',
-    processIntro:
-      '从场地目标出发，收集关键资料，再确定合适的工作方法和可衡量的验收标准。',
     detailsEyebrow: '专项能力',
     detailsTitle: '服务详情',
     galleryEyebrow: '现场实录',
@@ -108,8 +102,6 @@ const serviceUiCopy: Record<LocalizedLocale, ServiceUiCopy> = {
     chooseService: 'サービスを選ぶ',
     scopeIntro:
       '現場データ、設計判断、実際の運用条件を一貫してつなぎ、各工程の目的と引渡し内容を明確にします。',
-    processIntro:
-      '敷地の目的から始め、必要な根拠を集めたうえで、適切な方法と測定可能な検収基準を定めます。',
     detailsEyebrow: '専門技術',
     detailsTitle: 'サービス詳細',
     galleryEyebrow: '現場から',
@@ -275,44 +267,6 @@ const serviceScopeCopy: Record<
   },
 }
 
-const serviceAssets: Record<
-  ServiceKey,
-  { hero: string; gallery: [string, string, string] }
-> = {
-  survey: {
-    hero: '/images/services/survey/legacy-01.jpg',
-    gallery: [
-      '/images/services/survey/legacy-01.jpg',
-      '/images/services/survey/legacy-02.jpg',
-      '/images/services/survey/legacy-03.jpg',
-    ],
-  },
-  drilling: {
-    hero: '/images/services/drilling/legacy-01.jpg',
-    gallery: [
-      '/images/services/drilling/legacy-01.jpg',
-      '/images/services/drilling/legacy-02.jpg',
-      '/images/services/drilling/legacy-03.jpg',
-    ],
-  },
-  maintenance: {
-    hero: '/images/services/maintenance/legacy-01.jpg',
-    gallery: [
-      '/images/services/maintenance/legacy-01.jpg',
-      '/images/services/maintenance/legacy-02.jpg',
-      '/images/services/maintenance/legacy-03.jpg',
-    ],
-  },
-  consult: {
-    hero: '/images/services/consult/legacy-03.jpg',
-    gallery: [
-      '/images/services/consult/legacy-03.jpg',
-      '/images/services/consult/legacy-02.jpg',
-      '/images/services/consult/legacy-01.jpg',
-    ],
-  },
-}
-
 function buildLocalizedDetails(
   service: LocalizedContent['services']['items'][ServiceKey]
 ): ServiceDetailBlock[] {
@@ -331,7 +285,7 @@ export default async function ServiceDetailPage({
 }: ServiceDetailPageProps) {
   const service = content.services.items[serviceKey]
   const ui = serviceUiCopy[locale]
-  const assets = serviceAssets[serviceKey]
+  const fallbackImages = siteMediaFallbacks[serviceMediaSectionKey(serviceKey)]
   const ServiceIcon = serviceIcons[serviceKey]
   const details =
     locale === 'th'
@@ -340,8 +294,12 @@ export default async function ServiceDetailPage({
   const promise =
     locale === 'th' ? recoveredThaiServicePromises[serviceKey] : service.short
   const scopeCards = serviceScopeCopy[locale][serviceKey]
+  const [assets, projects] = await Promise.all([
+    getPublicServiceMedia(serviceKey),
+    listPublicProjects(),
+  ])
   const exampleProjects = selectServiceProjects(
-    await listPublicProjects(),
+    projects,
     serviceKey,
     'all'
   ).map((project) => toProjectSummary(project, locale))
@@ -460,8 +418,9 @@ export default async function ServiceDetailPage({
           </div>
 
           <figure className="service-detail-hero-media">
-            <Image
+            <FallbackImage
               src={assets.hero}
+              fallbackSrc={fallbackImages[0]}
               alt={`${ui.fieldPhoto}: ${service.title}`}
               fill
               priority
@@ -497,57 +456,6 @@ export default async function ServiceDetailPage({
                 </article>
               )
             })}
-          </div>
-        </section>
-
-        <section
-          className="service-detail-process"
-          aria-labelledby="service-process"
-        >
-          <div className="service-detail-process-media">
-            <figure className="service-detail-process-image service-detail-process-image--large">
-              <Image
-                src={assets.gallery[1]}
-                alt={`${ui.fieldPhoto}: ${service.highlights[0]}`}
-                fill
-                quality={90}
-                sizes="(width <= 900px) 100vw, 42vw"
-              />
-            </figure>
-            <figure className="service-detail-process-image service-detail-process-image--small">
-              <Image
-                src={assets.gallery[2]}
-                alt={`${ui.fieldPhoto}: ${service.highlights[1] ?? service.title}`}
-                fill
-                quality={90}
-                sizes="(width <= 900px) 45vw, 18vw"
-              />
-            </figure>
-            <div className="service-detail-process-badge" aria-hidden="true">
-              <ChartNoAxesColumnIncreasing />
-            </div>
-          </div>
-
-          <div className="service-detail-process-copy">
-            <p className="service-detail-kicker">
-              {content.services.processTitle}
-            </p>
-            <h2 id="service-process">{content.services.processTitle}</h2>
-            <p className="service-detail-section-lead">{ui.processIntro}</p>
-
-            <ol>
-              {service.process.map((item, index) => (
-                <li key={item}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h3>{item}</h3>
-                    <p>
-                      {service.highlights[index] ?? service.short}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
@@ -596,6 +504,7 @@ export default async function ServiceDetailPage({
 
           <ServiceGallery
             images={assets.gallery}
+            fallbackImages={fallbackImages.slice(1)}
             label={ui.fieldPhoto}
             serviceTitle={service.title}
           />

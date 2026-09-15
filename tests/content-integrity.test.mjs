@@ -11,6 +11,7 @@ import { sortProjectsNewestFirst } from '../src/lib/project-sort.ts'
 import { toProjectSummary } from '../src/lib/project-summaries.ts'
 import { localizeProjectWorkTypes, normalizeProjectWorkTypes, projectWorkTypeLabel } from '../src/lib/project-work-types.ts'
 import { SERVICE_PROJECT_WORK_TYPES, selectServiceProjects } from '../src/lib/service-projects.ts'
+import { siteMediaFallbacks } from '../src/lib/site-media.ts'
 import { CMS_PROJECT_WORK_TYPES } from '../src/types/cms.ts'
 import { companyContact, directContactCopy } from '../src/lib/company-contact.ts'
 
@@ -283,7 +284,7 @@ test('facility owner guide is interactive, localized and includes its planning i
   assert.match(guideSource, /https:\/\/smartgis\.dgr\.go\.th/)
 })
 
-test('service detail pages have complete recovered copy and local field imagery', () => {
+test('service detail pages use managed media with complete public fallbacks', () => {
   const serviceKeys = ['survey', 'drilling', 'maintenance', 'consult']
   const servicePageSource = readFileSync(
     path.join(
@@ -325,51 +326,26 @@ test('service detail pages have complete recovered copy and local field imagery'
     ),
     'utf8'
   )
+  const publicServiceMediaSource = readFileSync(
+    path.join(root, 'src', 'server', 'cms', 'site-media.ts'),
+    'utf8'
+  )
   for (const serviceKey of serviceKeys) {
     const details = recoveredThaiServiceDetails[serviceKey]
     assert.equal(details.length, 4, serviceKey)
     assert.ok(details.every((detail) => detail.title.length > 4))
     assert.ok(details.every((detail) => detail.text.length > 40))
 
-    for (let imageNumber = 1; imageNumber <= 3; imageNumber += 1) {
-      const legacyImagePath = path.join(
-        root,
-        'public',
-        'images',
-        'services',
-        serviceKey,
-        `legacy-${String(imageNumber).padStart(2, '0')}.jpg`
-      )
-      const restoredImagePath = path.join(
-        root,
-        'public',
-        'images',
-        'services',
-        serviceKey,
-        `restored-${String(imageNumber).padStart(2, '0')}.webp`
-      )
-      const ppeImagePath = path.join(
-        root,
-        'public',
-        'images',
-        'services',
-        serviceKey,
-        `gallery-ppe-${String(imageNumber).padStart(2, '0')}.webp`
-      )
-      assert.ok(existsSync(legacyImagePath), legacyImagePath)
-      assert.ok(existsSync(restoredImagePath), restoredImagePath)
-      assert.ok(existsSync(ppeImagePath), ppeImagePath)
-    }
-
-    const heroImagePath = path.join(
-      root,
-      'public',
-      'images',
-      'services',
-      serviceKey,
-      'hero-ppe.webp'
+    const fallbackNumbers = serviceKey === 'consult' ? [3, 3, 2, 1] : [1, 1, 2, 3]
+    const expectedFallbacks = fallbackNumbers.map(
+      (imageNumber) => `/images/services/${serviceKey}/legacy-${String(imageNumber).padStart(2, '0')}.jpg`
     )
-    assert.ok(existsSync(heroImagePath), heroImagePath)
+    const fallbacks = siteMediaFallbacks[`service-${serviceKey}`]
+    assert.deepEqual(fallbacks, expectedFallbacks)
+    for (const fallback of fallbacks) {
+      const fallbackPath = path.join(root, 'public', fallback.replace(/^\//, ''))
+      assert.ok(existsSync(fallbackPath), fallbackPath)
+    }
   }
 
   const helmetLogoPath = path.join(
@@ -388,8 +364,10 @@ test('service detail pages have complete recovered copy and local field imagery'
   )
   assert.ok(existsSync(helmetLogoPath), helmetLogoPath)
   assert.ok(existsSync(helmetLogoRasterPath), helmetLogoRasterPath)
-  assert.doesNotMatch(servicePageSource, /gallery-ppe-|restored-/)
-  assert.match(servicePageSource, /padStart\(2, '0'\)/)
+  assert.doesNotMatch(servicePageSource, /gallery-ppe-|restored-|serviceAssets/)
+  assert.doesNotMatch(servicePageSource, /service-detail-process|processIntro|ChartNoAxesColumnIncreasing/)
+  assert.doesNotMatch(servicePageStyles, /service-detail-process/)
+  assert.match(servicePageSource, /bullets: service\.process\[index\]/)
   assert.doesNotMatch(servicePageSource, /0[1-4] \/ \{/)
   assert.match(
     servicePageStyles,
@@ -434,7 +412,7 @@ test('service detail pages have complete recovered copy and local field imagery'
   assert.doesNotMatch(servicePageSource, /<span>\{ui\.detailsIntro\}<\/span>/)
   assert.match(
     servicePageSource,
-    /<ServiceGallery[\s\S]*?images=\{assets\.gallery\}[\s\S]*?serviceTitle=\{service\.title\}/
+    /<ServiceGallery[\s\S]*?images=\{assets\.gallery\}[\s\S]*?fallbackImages=\{fallbackImages\.slice\(1\)\}[\s\S]*?serviceTitle=\{service\.title\}/
   )
   assert.match(
     servicePageSource,
@@ -447,11 +425,16 @@ test('service detail pages have complete recovered copy and local field imagery'
   assert.match(serviceGallerySource, /setPointerCapture/)
   assert.match(serviceGallerySource, /track\.scrollLeft =/)
   assert.match(serviceGallerySource, /onKeyDown=\{handleKeyDown\}/)
+  assert.match(serviceGallerySource, /<FallbackImage[\s\S]*?fallbackSrc=\{fallbackSrc\}/)
   assert.match(serviceGallerySource, /quality=\{90\}/)
-  assert.equal((servicePageSource.match(/quality=\{90\}/g) ?? []).length, 3)
+  assert.equal((servicePageSource.match(/quality=\{90\}/g) ?? []).length, 1)
   assert.match(
     servicePageStyles,
-    /\.service-detail-gallery-grid figure\s*\{[\s\S]*?aspect-ratio:\s*5 \/ 4;[\s\S]*?box-shadow:/
+    /\.service-detail-hero-media\s*\{[\s\S]*?aspect-ratio:\s*16 \/ 9;/
+  )
+  assert.match(
+    servicePageStyles,
+    /\.service-detail-gallery-grid figure\s*\{[\s\S]*?aspect-ratio:\s*4 \/ 3;[\s\S]*?box-shadow:/
   )
   assert.match(
     servicePageStyles,
@@ -463,7 +446,11 @@ test('service detail pages have complete recovered copy and local field imagery'
   )
   assert.match(
     servicePageSource,
-    /selectServiceProjects\([\s\S]*?await listPublicProjects\(\)[\s\S]*?serviceKey[\s\S]*?'all'[\s\S]*?\)\.map\(\(project\) => toProjectSummary\(project, locale\)\)/
+    /const \[assets, projects\] = await Promise\.all\(\[[\s\S]*?getPublicServiceMedia\(serviceKey\)[\s\S]*?listPublicProjects\(\)[\s\S]*?\]\)/
+  )
+  assert.match(
+    servicePageSource,
+    /selectServiceProjects\([\s\S]*?projects,[\s\S]*?serviceKey,[\s\S]*?'all'[\s\S]*?\)\.map\(\(project\) => toProjectSummary\(project, locale\)\)/
   )
   assert.match(
     servicePageSource,
@@ -482,10 +469,13 @@ test('service detail pages have complete recovered copy and local field imagery'
   )
   assert.doesNotMatch(servicePageSource, /service-detail-cta/)
   assert.doesNotMatch(servicePageStyles, /\.service-detail-cta/)
-  assert.equal(
-    (servicePageSource.match(/hero: '\/images\/services\/[^']+\/legacy-/g) ?? [])
-      .length,
-    4
+  assert.match(
+    servicePageSource,
+    /<FallbackImage[\s\S]*?src=\{assets\.hero\}[\s\S]*?fallbackSrc=\{fallbackImages\[0\]\}/
+  )
+  assert.match(
+    publicServiceMediaSource,
+    /export async function getPublicServiceMedia[\s\S]*?getPublicSiteMediaImages\(`service-\$\{serviceKey\}`\)[\s\S]*?hero:[\s\S]*?gallery:/
   )
 })
 
@@ -493,6 +483,7 @@ test('historical customer and project assets are available locally', () => {
   const historicalAssets = [
     path.join(root, 'public', 'images', 'customers', 'legacy-customer-logos.png'),
     path.join(root, 'public', 'images', 'customers', 'legacy-project-map.jpg'),
+    path.join(root, 'public', 'images', 'governance', 'Poster_โครงการรักษ์น้ำบาดาล.png'),
   ]
 
   for (const asset of historicalAssets) {
@@ -519,6 +510,16 @@ test('historical customer and project assets are available locally', () => {
     /\.section\s*\{[\s\S]*?grid-template-columns:\s*1fr;/
   )
   assert.match(legacyMapComponent, /<LegacyProjectMapViewer/)
+  assert.match(legacyMapComponent, /getPublicSiteMediaImages\('project-map'\)/)
+  assert.match(legacyMapComponent, /fallbackImagePath=\{fallbackImagePath\}/)
+  assert.equal(
+    siteMediaFallbacks['project-map'][0],
+    '/images/customers/legacy-project-map.jpg'
+  )
+  assert.equal(
+    siteMediaFallbacks.governance[0],
+    '/images/governance/Poster_โครงการรักษ์น้ำบาดาล.png'
+  )
   assert.doesNotMatch(legacyMapComponent, /target="_blank"/)
   assert.match(legacyMapViewer, /createPortal/)
   assert.match(legacyMapViewer, /aria-modal="true"/)
@@ -540,6 +541,10 @@ test('historical customer and project assets are available locally', () => {
   )
   assert.match(legacyMapViewer, /onPointerCancel=\{hideHoverPreview\}/)
   assert.match(legacyMapViewer, /onPointerUp=\{hideHoverPreview\}/)
+  assert.match(legacyMapViewer, /src=\{activeImagePath\}/)
+  assert.match(legacyMapViewer, /backgroundImage: `url\("\$\{activeImagePath\}"\)`/)
+  assert.match(legacyMapViewer, /href=\{activeImagePath\}/)
+  assert.match(legacyMapViewer, /onError=\{showFallbackImage\}/)
   assert.match(legacyMapViewer, /<div\s+ref=\{mapPanelRef\}/)
   assert.doesNotMatch(legacyMapViewer, /<button\s+ref=\{mapPanelRef\}/)
   assert.doesNotMatch(legacyMapViewer, /magnifierLabel|hoverPreviewLabel|previewHint|zoomCue/)
@@ -741,7 +746,11 @@ test('Thai routes keep localized search metadata and page-level headings', () =>
   assert.match(structuredData, /'@type': 'Organization'/)
   assert.match(structuredData, /'@type': 'WebSite'/)
   assert.match(servicesPage, /<Services headingLevel="h1" \/>/)
-  assert.match(projectsPage, /<Projects projects=\{projects\} showHistoryMap headingLevel="h1" \/>/)
+  assert.match(projectsPage, /import LegacyProjectMapSection/)
+  assert.match(
+    projectsPage,
+    /<Projects[\s\S]*?projects=\{projects\}[\s\S]*?showHistoryMap[\s\S]*?headingLevel="h1"[\s\S]*?historyMap=\{<LegacyProjectMapSection \/>\}/
+  )
 })
 
 test('Thai and translated project routes share one page structure', () => {
@@ -770,7 +779,10 @@ test('Thai and translated project routes share one page structure', () => {
   )
   assert.doesNotMatch(detailView, /content\.projects\.typeLabel/)
   assert.match(projectBrowser, /showIntro && copy\?\.intro/)
-  assert.match(localizedPage, /showHistoryMap showIntro=\{false\} headingLevel="h1"/)
+  assert.match(
+    localizedPage,
+    /showHistoryMap showIntro=\{false\} headingLevel="h1" historyMap=\{<LegacyProjectMapSection locale=\{locale\} \/>\}/
+  )
 })
 
 test('Thai and translated governance pages both expose their title as the page heading', () => {
@@ -782,9 +794,20 @@ test('Thai and translated governance pages both expose their title as the page h
     path.join(root, 'src', 'app', '[locale]', '[[...slug]]', 'page.tsx'),
     'utf8'
   )
+  const governanceView = readFileSync(
+    path.join(root, 'src', 'components', 'GovernancePage', 'GovernancePageView.tsx'),
+    'utf8'
+  )
 
-  assert.match(thaiGovernance, /<h1 className="governance-title-th">/)
-  assert.match(localizedPage, /<h1 className="governance-title-th">\{content\.governance\.title\}<\/h1>/)
+  assert.match(thaiGovernance, /getPublicSiteMediaImages\('governance'\)/)
+  assert.match(thaiGovernance, /<GovernancePageView/)
+  assert.match(localizedPage, /getPublicSiteMediaImages\('governance'\)/)
+  assert.match(localizedPage, /<GovernancePageView/)
+  assert.match(governanceView, /<h1 className="governance-title-th">\{title\}<\/h1>/)
+  assert.match(governanceView, /<FallbackImage[\s\S]*?fallbackSrc=\{fallbackPoster\}/)
+  assert.match(governanceView, /onFallback=\{\(\) => setFailedSrc\(requestedSrc\)\}/)
+  assert.match(governanceView, /failedSrc === requestedSrc \? fallbackPoster : requestedSrc/)
+  assert.match(governanceView, /fl_attachment:siam-groundwater-governance-poster/)
 })
 
 test('home project cards and map popup actions open details in a new tab', () => {

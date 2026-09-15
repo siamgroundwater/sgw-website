@@ -2,37 +2,63 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import FallbackImage from '@/components/media/FallbackImage'
+import type { SiteLocale } from '@/i18n/config'
+import { siteMediaFallbacks } from '@/lib/site-media'
 import './hero-slide.css'
 
-const REAL_SLIDES = [
+const ABOUT_HERO_FALLBACKS = siteMediaFallbacks['about-hero']
+
+const SLIDE_ALT: Record<SiteLocale, readonly string[]> = {
+  th: [
+    'ภาพรวมการทำงานของบริษัท สยามกราวด์วอเตอร์',
+    'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+    'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+    'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+  ],
+  en: [
+    'Siam Groundwater field team and drilling vehicles',
+    'Siam Groundwater field team carrying out drilling work',
+    'Siam Groundwater field operations',
+    'Siam Groundwater field operations',
+  ],
+  zh: [
+    '暹罗地下水公司的现场团队和钻井车辆',
+    '暹罗地下水公司的现场钻井团队',
+    '暹罗地下水公司的现场作业',
+    '暹罗地下水公司的现场作业',
+  ],
+  ja: [
+    'サイアム・グラウンドウォーターの現場チームと掘削車両',
+    '掘削作業を行うサイアム・グラウンドウォーターの現場チーム',
+    'サイアム・グラウンドウォーターの現場作業',
+    'サイアム・グラウンドウォーターの現場作業',
+  ],
+}
+
+const DOT_LABEL: Record<SiteLocale, (position: number) => string> = {
+  th: (position) => `ไปยังสไลด์ที่ ${position}`,
+  en: (position) => `Go to slide ${position}`,
+  zh: (position) => `前往第 ${position} 张幻灯片`,
+  ja: (position) => `スライド${position}へ移動`,
+}
+
+const FALLBACK_SLIDES = [
   {
     id: 'about-slide-1',
-    src: '/images/about/slide/about-slide-1.jpg',
-    width: 4608,
-    height: 3456,
-    alt: 'ภาพรวมการทำงานของบริษัท สยามกราวด์วอเตอร์',
+    fallbackSrc: ABOUT_HERO_FALLBACKS[0],
   },
   {
     id: 'about-slide-2',
-    src: '/images/about/slide/about-slide-2.jpg',
-    width: 1299,
-    height: 974,
-    alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+    fallbackSrc: ABOUT_HERO_FALLBACKS[1],
   },
   {
     id: 'about-slide-3',
-    src: '/images/about/slide/about-slide-3.jpg',
-    width: 1920,
-    height: 420,
-    alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+    fallbackSrc: ABOUT_HERO_FALLBACKS[2],
   },
   {
     id: 'about-slide-4',
-    src: '/images/about/slide/about-slide-4.jpg',
-    width: 1280,
-    height: 280,
-    alt: 'ภาพทีมงานภาคสนามของบริษัท สยามกราวด์วอเตอร์',
+    fallbackSrc: ABOUT_HERO_FALLBACKS[3],
   },
 ]
 
@@ -48,38 +74,50 @@ function prefersReducedMotion() {
 type RenderSlide = {
   key: string
   src: string
-  width: number
-  height: number
+  fallbackSrc: string
   alt: string
   isClone?: boolean
 }
 
-export default function HeroSlide() {
-  const n = REAL_SLIDES.length
+type HeroSlideProps = {
+  images: readonly string[]
+  locale?: SiteLocale
+}
+
+export default function HeroSlide({ images, locale = 'th' }: HeroSlideProps) {
+  const sources = images.length ? images : ABOUT_HERO_FALLBACKS
+  const realSlides = sources.map((src, index) => {
+    const fallback = FALLBACK_SLIDES[index]
+    const fallbackIndex = index % FALLBACK_SLIDES.length
+    return {
+      id: fallback?.id || `about-slide-${index + 1}`,
+      src,
+      fallbackSrc: fallback?.fallbackSrc || FALLBACK_SLIDES[fallbackIndex].fallbackSrc,
+      alt: SLIDE_ALT[locale][index] || `${SLIDE_ALT[locale][0]} ${index + 1}`,
+    }
+  })
+  const n = realSlides.length
 
   // render: [lastClone] + real + [firstClone]
   const renderSlides: RenderSlide[] = [
     {
-      key: `clone-start-${REAL_SLIDES[n - 1].id}`,
-      src: REAL_SLIDES[n - 1].src,
-      width: REAL_SLIDES[n - 1].width,
-      height: REAL_SLIDES[n - 1].height,
-      alt: REAL_SLIDES[n - 1].alt,
+      key: `clone-start-${realSlides[n - 1].id}`,
+      src: realSlides[n - 1].src,
+      fallbackSrc: realSlides[n - 1].fallbackSrc,
+      alt: realSlides[n - 1].alt,
       isClone: true,
     },
-    ...REAL_SLIDES.map((s) => ({
+    ...realSlides.map((s) => ({
       key: s.id,
       src: s.src,
-      width: s.width,
-      height: s.height,
+      fallbackSrc: s.fallbackSrc,
       alt: s.alt,
     })),
     {
-      key: `clone-end-${REAL_SLIDES[0].id}`,
-      src: REAL_SLIDES[0].src,
-      width: REAL_SLIDES[0].width,
-      height: REAL_SLIDES[0].height,
-      alt: REAL_SLIDES[0].alt,
+      key: `clone-end-${realSlides[0].id}`,
+      src: realSlides[0].src,
+      fallbackSrc: realSlides[0].fallbackSrc,
+      alt: realSlides[0].alt,
       isClone: true,
     },
   ]
@@ -295,21 +333,21 @@ export default function HeroSlide() {
             className="about-hero-slide"
             aria-hidden={slide.isClone}
           >
-            <Image
+            <FallbackImage
               src={slide.src}
+              fallbackSrc={slide.fallbackSrc}
               alt={slide.alt}
-              width={slide.width}
-              height={slide.height}
+              fill
               className="about-hero-slide-image"
-              sizes="(width <= 1080px) 100vw, 1080px"
-              priority={slide.key === REAL_SLIDES[0].id}
+              sizes="(width <= 768px) calc(100vw - 2.5rem), calc(100vw - 3rem)"
+              priority={slide.key === realSlides[0].id}
             />
           </div>
         ))}
       </div>
 
       <div className="about-hero-slider-dots">
-        {REAL_SLIDES.map((slide, index) => (
+        {realSlides.map((slide, index) => (
           <button
             key={slide.id}
             type="button"
@@ -317,7 +355,7 @@ export default function HeroSlide() {
             className={
               'about-hero-slider-dot' + (index === activeIndex ? ' active' : '')
             }
-            aria-label={`ไปยังสไลด์ที่ ${index + 1}`}
+            aria-label={DOT_LABEL[locale](index + 1)}
           />
         ))}
       </div>

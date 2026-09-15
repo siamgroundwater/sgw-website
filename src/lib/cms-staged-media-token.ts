@@ -6,6 +6,7 @@ export type CmsStagedMediaTokenPayload = {
   expiresAt: number
   issuedAt: number
   submissionId: string
+  target?: string
   userId: string
 }
 
@@ -79,6 +80,7 @@ export function verifyCmsStagedMediaTokenValue(
       !validAsset(payload.asset) ||
       !validIdentifier(payload.userId, 100) ||
       !validIdentifier(payload.submissionId, 100) ||
+      (payload.target !== undefined && !validIdentifier(payload.target, 100)) ||
       typeof payload.issuedAt !== 'number' ||
       typeof payload.expiresAt !== 'number' ||
       payload.issuedAt > now + 60_000 ||

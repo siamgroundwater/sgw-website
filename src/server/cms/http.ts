@@ -44,7 +44,7 @@ export async function readCmsJsonBody(request: Request) {
   }
 }
 
-export function cmsApiError(error: unknown, fallback: string) {
+export function cmsApiError(error: unknown, fallback: string, details: Record<string, unknown> = {}) {
   const configurationMessage =
     error instanceof Error && error.message.includes('MONGODB_URI')
       ? 'CMS database is not configured.'
@@ -52,10 +52,10 @@ export function cmsApiError(error: unknown, fallback: string) {
         ? 'CMS authentication is not configured.'
         : null
   if (configurationMessage) {
-    return NextResponse.json({ error: configurationMessage }, { status: 500 })
+    return NextResponse.json({ error: configurationMessage, ...details }, { status: 500 })
   }
 
   console.error(fallback, error)
   const message = fallback
-  return NextResponse.json({ error: message }, { status: 500 })
+  return NextResponse.json({ error: message, ...details }, { status: 500 })
 }

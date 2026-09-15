@@ -1,4 +1,4 @@
-export const cmsMediaFolders = ['projects', 'services', 'learning'] as const
+export const cmsMediaFolders = ['projects', 'services', 'learning', 'site', 'teams'] as const
 
 export type CmsMediaFolder = (typeof cmsMediaFolders)[number]
 

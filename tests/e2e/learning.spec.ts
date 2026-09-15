@@ -155,6 +155,7 @@ test('quiz answers expose selection and feedback, and retry clears answers', asy
 test('buttons, disclosures and links have visible non-hover click cues', async ({ page }) => {
   await page.goto(calculatorPath)
   const button = page.locator('#gw-tab-storage')
+  await expect(button).toBeVisible()
   expect(await button.evaluate((element) => Number.parseFloat(getComputedStyle(element).borderTopWidth))).toBeGreaterThanOrEqual(1)
   expect(await button.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44)
   await button.focus()

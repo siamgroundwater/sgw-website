@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import { BriefcaseBusiness, CheckCircle2, ChevronRight, HardHat, Megaphone, UsersRound, Wrench } from 'lucide-react'
-import { useState } from 'react'
+import { type KeyboardEvent, useRef, useState } from 'react'
+import FallbackImage from '@/components/media/FallbackImage'
+import type { PublicPersonnelGroup } from '@/lib/team-directory'
 import './teams.css'
-import teamGroupsJson from './teams.json'
 
 type SupportedLocale = 'th' | 'en' | 'zh' | 'ja'
 
@@ -34,26 +35,6 @@ type SectionCopy = {
   groups: FieldGroup[]
 }
 
-type Person = {
-  name: string
-  role: 'leader' | 'member'
-  title?: string
-  certificates: string[]
-  imageSrc: string
-}
-
-type PersonnelTeam = {
-  name: string
-  people: Person[]
-}
-
-type PersonnelGroup = {
-  id: string
-  label: string
-  summary: string
-  teams: PersonnelTeam[]
-}
-
 type UnifiedTeamId = FieldGroup['id'] | 'management' | 'marketing'
 
 type SupportNavigation = {
@@ -64,9 +45,8 @@ type SupportNavigation = {
   icon: 'management' | 'marketing'
 }
 
-const PERSONNEL_GROUPS = teamGroupsJson as PersonnelGroup[]
-
 const IMAGE_ROOT = '/images/about/teams'
+const PERSONNEL_FALLBACK_IMAGE = '/images/personnel/user.png'
 
 const localizedCopy: Record<SupportedLocale, SectionCopy> = {
   th: {
@@ -215,7 +195,22 @@ const personnelHeadings: Record<SupportedLocale, string> = {
   ja: 'チームメンバー',
 }
 
-export default function Teams({ title, locale = 'th' }: { title?: string; locale?: string } = {}) {
+const personnelEmpty: Record<SupportedLocale, string> = {
+  th: 'ยังไม่มีข้อมูลบุคลากรในทีมนี้',
+  en: 'Team-member information is being prepared.',
+  zh: '该团队的成员资料正在准备中。',
+  ja: 'このチームのメンバー情報は準備中です。',
+}
+
+export default function Teams({
+  locale = 'th',
+  personnelGroups,
+  title,
+}: {
+  locale?: string
+  personnelGroups: PublicPersonnelGroup[]
+  title?: string
+}) {
   const safeLocale: SupportedLocale = locale === 'en' || locale === 'zh' || locale === 'ja' ? locale : 'th'
   const copy = localizedCopy[safeLocale]
   const fieldGroups = safeLocale === 'th' ? copy.groups : translatedGroups[safeLocale]
@@ -226,9 +221,31 @@ export default function Teams({ title, locale = 'th' }: { title?: string; locale
     ...supportGroups.filter((group) => group.id === 'marketing').map((group) => ({ ...group, kind: 'support' as const })),
   ]
   const [activeId, setActiveId] = useState<UnifiedTeamId>('management')
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
   const activeNavigation = navigation.find((group) => group.id === activeId) ?? navigation[0]
   const activeFieldGroup = fieldGroups.find((group) => group.id === activeId)
-  const activePersonnelGroup = PERSONNEL_GROUPS.find((group) => group.id === activeId)
+  const activePersonnelGroup = personnelGroups.find((group) => group.id === activeId)
+
+  const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, currentIndex: number) => {
+    let nextIndex: number | null = null
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % navigation.length
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + navigation.length) % navigation.length
+    } else if (event.key === 'Home') {
+      nextIndex = 0
+    } else if (event.key === 'End') {
+      nextIndex = navigation.length - 1
+    }
+
+    if (nextIndex === null) return
+    event.preventDefault()
+    const nextGroup = navigation[nextIndex]
+    if (!nextGroup) return
+    setActiveId(nextGroup.id as UnifiedTeamId)
+    tabRefs.current[nextIndex]?.focus()
+  }
 
   return (
     <section className="teams-section" aria-labelledby="teams-section-title">
@@ -239,18 +256,23 @@ export default function Teams({ title, locale = 'th' }: { title?: string; locale
       </header>
 
       <div className="teams-selector" role="tablist" aria-label={copy.selectorLabel}>
-        {navigation.map((group) => {
+        {navigation.map((group, index) => {
           const isActive = group.id === activeNavigation.id
           return (
             <button
               key={group.id}
+              ref={(node) => {
+                tabRefs.current[index] = node
+              }}
               type="button"
               className={isActive ? 'teams-selector-button is-active' : 'teams-selector-button'}
               role="tab"
               aria-selected={isActive}
-              aria-controls={`team-panel-${group.id}`}
+              aria-controls="team-panel"
               id={`team-tab-${group.id}`}
+              tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveId(group.id as UnifiedTeamId)}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
             >
               <span className="teams-selector-icon" aria-hidden="true">
                 {group.kind === 'field'
@@ -269,7 +291,7 @@ export default function Teams({ title, locale = 'th' }: { title?: string; locale
 
       <article
         className="teams-panel"
-        id={`team-panel-${activeNavigation.id}`}
+        id="team-panel"
         role="tabpanel"
         aria-labelledby={`team-tab-${activeNavigation.id}`}
       >
@@ -302,7 +324,7 @@ export default function Teams({ title, locale = 'th' }: { title?: string; locale
   )
 }
 
-function PersonnelStructure({ group, locale }: { group: PersonnelGroup; locale: SupportedLocale }) {
+function PersonnelStructure({ group, locale }: { group: PublicPersonnelGroup; locale: SupportedLocale }) {
   return (
     <section className="teams-personnel" aria-labelledby={`personnel-title-${group.id}`}>
       <div className="teams-personnel-heading">
@@ -310,13 +332,15 @@ function PersonnelStructure({ group, locale }: { group: PersonnelGroup; locale: 
         <h4 id={`personnel-title-${group.id}`}>{personnelHeadings[locale]}</h4>
       </div>
       <div className="personnel-group-body">
-        {group.teams.map((team) => <PersonnelTeamCard team={team} key={team.name} />)}
+        {group.teams.length
+          ? group.teams.map((team) => <PersonnelTeamCard team={team} locale={locale} key={team.id} />)
+          : <p className="personnel-empty">{personnelEmpty[locale]}</p>}
       </div>
     </section>
   )
 }
 
-function PersonnelTeamCard({ team }: { team: PersonnelTeam }) {
+function PersonnelTeamCard({ team, locale }: { team: PublicPersonnelGroup['teams'][number]; locale: SupportedLocale }) {
   const leader = team.people.find((person) => person.role === 'leader')
   const members = team.people.filter((person) => person.role === 'member')
 
@@ -324,13 +348,14 @@ function PersonnelTeamCard({ team }: { team: PersonnelTeam }) {
     <section className="personnel-team">
       <h4>{team.name}</h4>
       <div className="personnel-team-chart">
+        {team.people.length === 0 && <p className="personnel-empty">{personnelEmpty[locale]}</p>}
         {leader && <PersonCard person={leader} />}
         {leader && members.length > 0 && <span className="personnel-connector-vertical" aria-hidden="true" />}
         {members.length > 0 && (
           <>
             <span className="personnel-connector-horizontal" aria-hidden="true" />
             <div className="personnel-members">
-              {members.map((member) => <PersonCard person={member} key={`${team.name}-${member.name}`} />)}
+              {members.map((member) => <PersonCard person={member} key={member.id} />)}
             </div>
           </>
         )}
@@ -339,16 +364,25 @@ function PersonnelTeamCard({ team }: { team: PersonnelTeam }) {
   )
 }
 
-function PersonCard({ person }: { person: Person }) {
+function PersonCard({ person }: { person: PublicPersonnelGroup['teams'][number]['people'][number] }) {
   return (
     <article className={person.role === 'leader' ? 'personnel-person is-leader' : 'personnel-person'}>
-      <Image src={person.imageSrc} alt={person.name} width={72} height={72} />
+      <FallbackImage
+        src={person.imageSrc || PERSONNEL_FALLBACK_IMAGE}
+        fallbackSrc={PERSONNEL_FALLBACK_IMAGE}
+        alt={person.name}
+        width={72}
+        height={72}
+        sizes="72px"
+      />
       <div>
         <strong>{person.name}</strong>
         {person.title && <p>{person.title}</p>}
         {person.certificates.length > 0 && (
           <ul>
-            {person.certificates.map((certificate) => <li key={certificate}>{certificate}</li>)}
+            {person.certificates.map((certificate, index) => (
+              <li key={`${person.id}-certificate-${index}`}>{certificate}</li>
+            ))}
           </ul>
         )}
       </div>

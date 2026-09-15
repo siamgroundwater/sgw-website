@@ -1,5 +1,13 @@
 import type { ObjectId } from 'mongodb'
+import type { SiteMediaSectionKey } from '@/lib/site-media'
+import type { CmsMediaAsset } from '@/types/cms-media'
 import type { CmsProjectRecord } from '@/types/cms'
+import type {
+  CmsTeamMemberTranslations,
+  CmsTeamTranslations,
+  TeamDepartment,
+  TeamMemberRole,
+} from '@/lib/team-directory'
 import type {
   CmsProjectCategory,
   CmsProjectTranslation,
@@ -16,7 +24,7 @@ export type {
 
 export type CmsDocumentStatus = 'draft' | 'active' | 'archived'
 export type CmsUserRole = 'admin' | 'editor' | 'viewer'
-export type CmsContentType = 'project' | 'service' | 'learning'
+export type CmsContentType = 'project' | 'service' | 'learning' | 'team' | 'team-member'
 
 export type CmsTimestampedDocument = {
   _id?: ObjectId
@@ -85,8 +93,71 @@ export type CmsStagedProjectMediaDocument = {
   createdAt: Date
   expiresAt: Date
   submissionId: string
+  target?: string
   userId: string
   cleanupClaimedAt?: Date
+}
+
+export type CmsSiteMediaItem = {
+  asset?: CmsMediaAsset
+  src: string
+}
+
+export type CmsSiteMediaDocument = {
+  _id: SiteMediaSectionKey
+  createdAt: Date
+  images: CmsSiteMediaItem[]
+  updatedAt: Date
+  updatedBy: string
+}
+
+export type CmsTeamMemberDocument = {
+  certificates: string[]
+  createdAt: Date
+  id: string
+  image: CmsSiteMediaItem
+  name: string
+  order: number
+  role: TeamMemberRole
+  title: string
+  translations: CmsTeamMemberTranslations
+  updatedAt: Date
+}
+
+export type CmsTeamDocument = {
+  createdAt: Date
+  department: TeamDepartment
+  id: string
+  members: CmsTeamMemberDocument[]
+  name: string
+  order: number
+  translations: CmsTeamTranslations
+  updatedAt: Date
+}
+
+export type CmsTeamDirectoryDocument = {
+  _id: 'about-teams'
+  createdAt: Date
+  revision: number
+  schemaVersion: 1
+  teams: CmsTeamDocument[]
+  updatedAt: Date
+  updatedBy: string
+}
+
+export type CmsTeamOperationResult = {
+  memberId?: string
+  revision: number
+  teamId?: string
+}
+
+export type CmsTeamOperationDocument = {
+  _id?: ObjectId
+  createdAt: Date
+  fingerprint: string
+  operationId: string
+  result: CmsTeamOperationResult
+  userId: string
 }
 
 export type CmsProjectOperationDocument = {

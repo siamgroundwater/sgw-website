@@ -20,6 +20,9 @@
     "test:e2e:loading": "node scripts/check-route-loading.mjs",
     "test:e2e:contact": "playwright test --config playwright.contact.config.ts",
     "test:e2e:cms": "node scripts/run-e2e-cms-project-workflow.mjs",
+    "test:e2e:cms:firefox": "node scripts/run-e2e-cms-project-workflow.mjs --browser=firefox",
+    "test:e2e:cms:webkit": "node scripts/run-e2e-cms-project-workflow.mjs --browser=webkit",
+    "test:e2e:compatibility": "playwright test --config playwright.compatibility.config.ts",
     "test:e2e:cms:media": "node scripts/run-e2e-cms-project-workflow.mjs --media",
     "backup:cms": "node scripts/cms-backup.mjs backup",
     "backup:cms:verify": "node scripts/cms-backup.mjs verify",
@@ -31,10 +34,13 @@
     "cleanup:media:remote": "node scripts/trigger-media-cleanup.mjs",
     "check": "npm run check:hover && npm run lint && npm run typecheck && npm test && npm run build",
     "migrate:projects": "node scripts/migrate-projects-to-cloudinary.mjs",
+    "migrate:site-media": "node scripts/migrate-site-media-to-cloudinary.mjs",
     "migrate:project-translations": "node scripts/migrate-project-translations.mjs",
     "seed:cms-admin": "node scripts/seed-cms-admin.mjs"
   },
   "dependencies": {
+    "@dnd-kit/dom": "^0.5.0",
+    "@dnd-kit/react": "^0.5.0",
     "cloudinary": "^2.10.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

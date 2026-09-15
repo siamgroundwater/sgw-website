@@ -23,6 +23,18 @@ const collection = {
     let limit = Infinity
     return { sort() { return this }, limit(value) { limit = value; return this }, async toArray() { return state.rows.filter((row) => matches(row, query)).slice(0, limit) } }
   },
+  async insertOne(document) {
+    if (state.rows.some((item) => item.asset.publicId === document.asset.publicId)) {
+      const error = new Error('duplicate')
+      error.code = 11000
+      throw error
+    }
+    state.rows.push(document)
+    return { insertedId: document.asset.publicId }
+  },
+  async findOne(query) {
+    return state.rows.find((item) => matches(item, query)) || null
+  },
   async findOneAndUpdate(query, update) {
     const row = state.rows.find((item) => matches(item, query))
     if (!row) return null
@@ -74,6 +86,24 @@ function staged(id, extra = {}) {
 }
 test.beforeEach(() => {
   state.rows = []; state.inUse = new Set(); state.deleted = []; state.events = []; state.deleteLimit = Infinity
+})
+
+test('staged upload registration is idempotent for the same asset and save context', async () => {
+  const asset = {
+    bytes: 123,
+    createdAt: '2026-09-14T00:00:00.000Z',
+    format: 'webp',
+    height: 1200,
+    publicId: 'cms/retry-safe',
+    src: 'https://example.com/retry-safe.webp',
+    width: 1600,
+  }
+  await media.registerStagedProjectMedia(asset, 'save-retry', 'user1', 'site-service-survey')
+  await media.registerStagedProjectMedia(asset, 'save-retry', 'user1', 'site-service-survey')
+
+  assert.equal(state.rows.length, 1)
+  assert.equal(state.rows[0].asset.publicId, asset.publicId)
+  assert.equal(state.rows[0].target, 'site-service-survey')
 })
 
 test('rollback cannot delete a saved asset after its staging record was committed', async () => {

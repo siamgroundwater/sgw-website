@@ -68,7 +68,6 @@
   display: block;
   justify-self: end;
   min-width: 0;
-  max-width: 100%;
   padding: 8px 12px;
   border: 1px solid #c7dfe1;
   border-radius: 12px;
@@ -86,7 +85,7 @@
 }
 
 .label::-webkit-scrollbar { display: none; }
-.emailLabel { padding-inline: 8px; font-size: 0.8125rem; }
+.emailLabel { padding-inline: 8px; font-size: var(--fs-sm); }
 
 .icon {
   display: grid;
