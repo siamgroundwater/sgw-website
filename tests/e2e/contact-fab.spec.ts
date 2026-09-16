@@ -5,6 +5,7 @@ const locales = ['th', 'en', 'zh', 'ja'] as const
 const screens = [
   { width: 320, height: 740, touch: true },
   { width: 390, height: 844, touch: true },
+  { width: 458, height: 844, touch: true },
   { width: 768, height: 1024, touch: true },
   { width: 1440, height: 1000, touch: false },
 ]
@@ -101,8 +102,9 @@ for (const screen of screens) {
         }
         const emailLabel = panel.locator(`a[href="${companyContact.email.href}"] > span`).first()
         expect(await emailLabel.evaluate(element => element.scrollWidth <= element.clientWidth + 1), 'The email text should fit its label without clipping or horizontal scrolling.').toBe(true)
+        await expect(emailLabel).toHaveCSS('white-space', 'normal')
         await expect(panel.locator('strong, small')).toHaveCount(0)
-        for (const label of await panel.locator('a > span:first-child').all()) {
+        for (const label of await panel.locator(`a:not([href="${companyContact.email.href}"]) > span:first-child`).all()) {
           await expect(label).toHaveCSS('white-space', 'nowrap')
         }
         const iconSizes = await panel.locator('a > span:last-child').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width))

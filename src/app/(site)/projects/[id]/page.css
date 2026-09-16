@@ -128,8 +128,7 @@
   margin-top: 1rem;
 }
 
-.project-detail-primary,
-.project-detail-secondary {
+.project-detail-primary {
   display: inline-flex;
   min-height: 46px;
   align-items: center;
@@ -145,8 +144,7 @@
   flex: 0 0 auto;
 }
 
-.project-detail-primary,
-.project-detail-secondary {
+.project-detail-primary {
   gap: 0.5rem;
 }
 
@@ -155,9 +153,69 @@
   background: #67e8f9;
 }
 
-.project-detail-secondary {
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+.project-detail-nearby {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(165, 243, 252, 0.18);
+  border-radius: 1.5rem;
+  background: rgba(7, 30, 43, 0.72);
+}
+
+.project-detail-nearby h2 {
+  color: #fff;
+  font-size: var(--fs-fluid-heading-md);
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.project-detail-nearby-grid {
+  margin-top: 1.5rem;
+}
+
+.project-detail-nearby-more {
+  min-height: 2.875rem;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 1.5rem auto 0;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  color: #052c33;
+  font: inherit;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  background: #67e8f9;
+  box-shadow: 0 8px 22px rgba(3, 20, 31, 0.24);
+  cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.project-detail-nearby-more svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.project-detail-nearby-more:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-detail-nearby-more:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail-nearby-more {
+    transition: none;
+  }
 }
 
 @media (width <= 900px) {
@@ -183,8 +241,13 @@
     min-height: auto;
   }
 
-  .project-detail-primary,
-  .project-detail-secondary {
+  .project-detail-primary {
     width: 100%;
+  }
+
+  .project-detail-nearby {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
   }
 }

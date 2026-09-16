@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { MapPin, MessageCircle } from 'lucide-react'
+import { MapPin } from 'lucide-react'
+import NearbyProjectsSection from './NearbyProjectsSection'
 import ProjectMediaSlider from '@/components/ProjectMediaSlider/ProjectMediaSlider'
 import { localePath, type LocalizedLocale } from '@/i18n/config'
 import {
@@ -8,6 +9,7 @@ import {
 } from '@/i18n/projects'
 import type { LocalizedContent } from '@/i18n/localized-content'
 import { getProjectMapUrl, type Project } from '@/lib/projects'
+import type { ProjectSummary } from '@/lib/project-summaries'
 import { projectDetailSections } from '@/lib/project-translations'
 
 type ProjectDetailLabels = {
@@ -21,19 +23,27 @@ type ProjectDetailLabels = {
   storyTitle: string
   sourceNote: string
   mapAction: string
-  enquiryAction: string
+}
+
+const nearbyProjectTitles: Record<LocalizedLocale, string> = {
+  th: 'โครงการใกล้เคียง',
+  en: 'Nearby projects',
+  zh: '附近项目',
+  ja: '周辺のプロジェクト',
 }
 
 export default function ProjectDetailView({
   locale,
   content,
   project: rawProject,
+  nearbyProjects = [],
   labelOverrides,
   embedded = false,
 }: {
   locale: LocalizedLocale
   content: LocalizedContent
   project: Project
+  nearbyProjects?: ProjectSummary[]
   labelOverrides?: Partial<ProjectDetailLabels>
   embedded?: boolean
 }) {
@@ -52,7 +62,6 @@ export default function ProjectDetailView({
     storyTitle: content.projects.projectStoryTitle,
     sourceNote: content.projects.recoveredRecordNote,
     mapAction: content.projects.mapCta,
-    enquiryAction: content.projects.enquiryCta,
     ...labelOverrides,
   }
   const Container = embedded ? 'div' : 'main'
@@ -72,7 +81,6 @@ export default function ProjectDetailView({
           images={[project.coverImage, ...project.galleryImages].filter(Boolean)}
           metadata={project.mediaMetadata}
           locale={locale}
-          projectNumber={project._id}
           title={project.title}
         />
 
@@ -116,8 +124,8 @@ export default function ProjectDetailView({
             <p className="project-detail-source">{labels.sourceNote}</p>
           </section>
 
-          <div className="project-detail-actions">
-            {mapUrl && (
+          {mapUrl && (
+            <div className="project-detail-actions">
               <a
                 href={mapUrl}
                 target="_blank"
@@ -127,17 +135,19 @@ export default function ProjectDetailView({
                 <MapPin aria-hidden="true" />
                 {labels.mapAction}
               </a>
-            )}
-            <Link
-              href={localePath('/contact', locale)}
-              className="project-detail-secondary"
-            >
-              <MessageCircle aria-hidden="true" />
-              {labels.enquiryAction}
-            </Link>
-          </div>
+            </div>
+          )}
         </div>
       </article>
+
+      {nearbyProjects.length > 0 && (
+        <NearbyProjectsSection
+          projects={nearbyProjects}
+          locale={locale}
+          copy={content.projects}
+          title={nearbyProjectTitles[locale]}
+        />
+      )}
     </Container>
   )
 }

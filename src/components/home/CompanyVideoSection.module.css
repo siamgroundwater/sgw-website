@@ -1,7 +1,8 @@
 .section {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(16rem, 0.7fr) minmax(0, 1.3fr);
+  grid-template-columns: minmax(0, 64rem);
+  justify-content: center;
   align-items: center;
   gap: 1.5rem;
   margin: 1rem auto 4rem;
@@ -15,7 +16,8 @@
 .copy {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 .eyebrow {
@@ -30,38 +32,6 @@
   color: #fff;
   font-size: var(--fs-fluid-heading-md);
   line-height: 1.2;
-}
-
-.text {
-  margin-top: 0.8rem;
-  color: rgba(255, 255, 255, 0.74);
-  line-height: 1.75;
-}
-
-.youtubeLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 1rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid rgba(165, 243, 252, 0.26);
-  border-radius: 0.7rem;
-  color: #d9fbff;
-  font-weight: 600;
-  background: rgba(103, 232, 249, 0.06);
-}
-
-@media (hover: hover) and (pointer: fine) {
-
-.youtubeLink:hover {
-  border-color: rgba(165, 243, 252, 0.6);
-  background: rgba(103, 232, 249, 0.12);
-}
-}
-
-.youtubeLink svg {
-  width: 1rem;
-  height: 1rem;
 }
 
 .videoFrame {
@@ -136,12 +106,6 @@
   left: 1rem;
   font-weight: 700;
   text-align: center;
-}
-
-@media (width <= 900px) {
-  .section {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (width <= 640px) {

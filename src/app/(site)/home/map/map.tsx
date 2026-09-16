@@ -49,8 +49,6 @@ const mapCopy: Record<
   {
     eyebrow: string
     intro: string
-    mapped: string
-    total: string
     filterLabel: string
     loading: string
     empty: string
@@ -70,8 +68,6 @@ const mapCopy: Record<
     locationDenied: 'กรุณาอนุญาตให้เว็บไซต์เข้าถึงตำแหน่งของคุณ',
     eyebrow: 'แผนที่ผลงาน',
     intro: 'ค้นหาผลงานตามพื้นที่และประเภทโครงการ แล้วเปิดดูรายละเอียด ภาพ และขอบเขตงานของแต่ละโครงการ',
-    mapped: 'โครงการบนแผนที่',
-    total: 'โครงการทั้งหมด',
     filterLabel: 'กรองโครงการบนแผนที่ตามหมวดหมู่',
     loading: 'กำลังโหลดแผนที่โครงการ…',
     empty: 'ไม่พบโครงการที่มีตำแหน่งในหมวดหมู่นี้',
@@ -85,8 +81,6 @@ const mapCopy: Record<
     locationDenied: 'Allow location access to use this feature.',
     eyebrow: 'Project map',
     intro: 'Explore work by location and project type, then open each record for its images, scope and details.',
-    mapped: 'projects on the map',
-    total: 'total projects',
     filterLabel: 'Filter map projects by category',
     loading: 'Loading project map…',
     empty: 'No mapped projects were found in this category.',
@@ -100,8 +94,6 @@ const mapCopy: Record<
     locationDenied: '请允许网站访问您的位置。',
     eyebrow: '项目地图',
     intro: '按地区和项目类型查看案例，并打开项目记录了解图片、范围和详细信息。',
-    mapped: '地图项目',
-    total: '全部项目',
     filterLabel: '按类别筛选地图项目',
     loading: '正在加载项目地图…',
     empty: '此类别中没有带地图位置的项目。',
@@ -115,8 +107,6 @@ const mapCopy: Record<
     locationDenied: '位置情報へのアクセスを許可してください。',
     eyebrow: '実績マップ',
     intro: '地域と案件種別から実績を探し、画像、業務範囲、詳細情報をご覧いただけます。',
-    mapped: '地図掲載案件',
-    total: '全案件',
     filterLabel: 'カテゴリで地図の案件を絞り込む',
     loading: '実績マップを読み込んでいます…',
     empty: 'このカテゴリには位置情報付きの案件がありません。',
@@ -370,17 +360,6 @@ export default function HomeMap({
             {heading}
           </h2>
           <p className="home-map-intro">{copy.intro}</p>
-        </div>
-
-        <div className="home-map-stats" aria-label={heading}>
-          <div>
-            <strong>{validProjects.length}</strong>
-            <span>{copy.mapped}</span>
-          </div>
-          <div>
-            <strong>{data.length}</strong>
-            <span>{copy.total}</span>
-          </div>
         </div>
       </div>
 

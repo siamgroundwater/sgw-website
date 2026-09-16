@@ -1,6 +1,6 @@
 .footer {
   position: relative;
-  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 1rem;
   overflow: hidden;
   border-top: 1px solid rgba(125, 211, 252, 0.22);
   background:

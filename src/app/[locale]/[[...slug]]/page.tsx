@@ -50,6 +50,7 @@ import {
   type ServiceKey,
 } from '@/i18n/localized-content'
 import { localizeProject } from '@/i18n/projects'
+import { selectNearbyProjects } from '@/lib/nearby-projects'
 import type { Project } from '@/lib/projects'
 import { toProjectSummary, type ProjectSummary } from '@/lib/project-summaries'
 import type { PublicPersonnelGroup } from '@/lib/team-directory'
@@ -382,8 +383,8 @@ function LocalizedProjects({ locale, content, projects }: { locale: LocalizedLoc
   )
 }
 
-function LocalizedProjectDetail({ locale, content, project }: { locale: LocalizedLocale; content: LocalizedContent; project: Project }) {
-  return <ProjectDetailView locale={locale} content={content} project={project} />
+function LocalizedProjectDetail({ locale, content, project, nearbyProjects }: { locale: LocalizedLocale; content: LocalizedContent; project: Project; nearbyProjects: ProjectSummary[] }) {
+  return <ProjectDetailView locale={locale} content={content} project={project} nearbyProjects={nearbyProjects} />
 }
 
 async function LocalizedGovernance({ locale, content }: { locale: LocalizedLocale; content: LocalizedContent }) {
@@ -482,10 +483,16 @@ export default async function LocalizedPage({ params }: LocalizedPageProps) {
     return <LocalizedProjects locale={locale} content={content} projects={projects} />
   }
   if (slug.length === 2 && first === 'projects' && second) {
-    const project = await resolveProject(second)
+    const [project, projects] = await Promise.all([
+      resolveProject(second),
+      listPublicProjects(),
+    ])
     if (!project) notFound()
     if (second !== project._id) permanentRedirect(localePath(`/projects/${project._id}`, locale))
-    return <LocalizedProjectDetail locale={locale} content={content} project={project} />
+    const nearbyProjects = selectNearbyProjects(project, projects, projects.length).map((nearbyProject) =>
+      toProjectSummary(nearbyProject, locale)
+    )
+    return <LocalizedProjectDetail locale={locale} content={content} project={project} nearbyProjects={nearbyProjects} />
   }
   if (slug.length === 1 && first === 'governance') return <LocalizedGovernance locale={locale} content={content} />
   if (slug.length === 1 && first === 'groundwater-learning') return <LocalizedLearning locale={locale} content={content} />

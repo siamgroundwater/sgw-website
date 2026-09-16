@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import ProjectDetailView from '@/components/ProjectDetailView/ProjectDetailView'
 import { getLocalizedContent } from '@/i18n/localized-content'
+import { selectNearbyProjects } from '@/lib/nearby-projects'
+import { toProjectSummary } from '@/lib/project-summaries'
 import { createThaiPageMetadata } from '@/lib/site-metadata'
 import { getPublicProjectById, listPublicProjects } from '@/server/public-projects'
 import './page.css'
@@ -36,20 +38,27 @@ export async function generateMetadata({
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { id } = await params
-  const project = await resolveProject(id)
+  const [project, projects] = await Promise.all([
+    resolveProject(id),
+    listPublicProjects(),
+  ])
   if (!project) notFound()
   if (id !== project._id) permanentRedirect(`/projects/${project._id}`)
+  const nearbyProjects = selectNearbyProjects(project, projects, projects.length).map((nearbyProject) =>
+    toProjectSummary(nearbyProject, 'th')
+  )
+
   return <ProjectDetailView
     locale="th"
     content={getLocalizedContent('th')}
     project={project}
+    nearbyProjects={nearbyProjects}
     labelOverrides={{
       breadcrumb: 'เส้นทางนำทาง',
       home: 'หน้าแรก',
       projects: 'ผลงานของเรา',
       category: 'หมวดหมู่',
       mapAction: 'ดูตำแหน่งบนแผนที่',
-      enquiryAction: 'ขอข้อมูลโครงการใกล้เคียง',
     }}
   />
 }

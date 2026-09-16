@@ -9,49 +9,43 @@ import './ProjectMediaSlider.css'
 type ProjectMediaSliderProps = {
   images: string[]
   locale: LocalizedLocale
-  projectNumber: number | string
   title: string
   metadata?: Record<string, { alt: string; caption: string }>
 }
 
 const sliderCopy: Record<
   LocalizedLocale,
-  { gallery: string; image: string; next: string; previous: string; project: string }
+  { gallery: string; image: string; next: string; previous: string }
 > = {
   th: {
     gallery: 'ภาพโครงการ',
     image: 'ภาพที่',
     next: 'ภาพถัดไป',
     previous: 'ภาพก่อนหน้า',
-    project: 'โครงการ',
   },
   en: {
     gallery: 'Project gallery',
     image: 'Image',
     next: 'Next image',
     previous: 'Previous image',
-    project: 'Project',
   },
   zh: {
     gallery: '项目图片',
     image: '图片',
     next: '下一张图片',
     previous: '上一张图片',
-    project: '项目',
   },
   ja: {
     gallery: 'プロジェクト画像',
     image: '画像',
     next: '次の画像',
     previous: '前の画像',
-    project: 'プロジェクト',
   },
 }
 
 export default function ProjectMediaSlider({
   images,
   locale,
-  projectNumber,
   title,
   metadata,
 }: ProjectMediaSliderProps) {
@@ -143,8 +137,8 @@ export default function ProjectMediaSlider({
       </div>
 
       <div className="project-detail-media-controls">
-        <span className="project-detail-media-project">
-          {copy.project} #{String(projectNumber).padStart(3, '0')}
+        <span className="project-detail-media-label">
+          {copy.gallery}
         </span>
 
         {showDots && (

@@ -758,6 +758,10 @@ test('Thai and translated project routes share one page structure', () => {
     path.join(root, 'src', 'components', 'ProjectDetailView', 'ProjectDetailView.tsx'),
     'utf8'
   )
+  const nearbyProjectsSection = readFileSync(
+    path.join(root, 'src', 'components', 'ProjectDetailView', 'NearbyProjectsSection.tsx'),
+    'utf8'
+  )
   const thaiDetailPage = readFileSync(
     path.join(root, 'src', 'app', '(site)', 'projects', '[id]', 'page.tsx'),
     'utf8'
@@ -772,7 +776,17 @@ test('Thai and translated project routes share one page structure', () => {
   )
 
   assert.match(thaiDetailPage, /<ProjectDetailView/)
-  assert.match(localizedPage, /<ProjectDetailView locale=\{locale\} content=\{content\} project=\{project\} \/>/)
+  assert.match(thaiDetailPage, /nearbyProjects=\{nearbyProjects\}/)
+  assert.match(thaiDetailPage, /selectNearbyProjects\(project, projects, projects\.length\)/)
+  assert.match(localizedPage, /<ProjectDetailView locale=\{locale\} content=\{content\} project=\{project\} nearbyProjects=\{nearbyProjects\} \/>/)
+  assert.match(localizedPage, /selectNearbyProjects\(project, projects, projects\.length\)/)
+  assert.match(detailView, /<NearbyProjectsSection[\s\S]*?projects=\{nearbyProjects\}/)
+  assert.match(nearbyProjectsSection, /const PROJECTS_PER_PAGE = 6/)
+  assert.match(nearbyProjectsSection, /projects\.slice\(0, visibleCount\)/)
+  assert.match(nearbyProjectsSection, /count \+ PROJECTS_PER_PAGE/)
+  assert.match(nearbyProjectsSection, /<ProjectCards/)
+  assert.match(nearbyProjectsSection, /copy\.loadMore/)
+  assert.doesNotMatch(detailView, /project-detail-secondary|MessageCircle/)
   assert.ok(
     detailView.indexOf('<ProjectMediaSlider') <
       detailView.indexOf('<div className="project-detail-content">')

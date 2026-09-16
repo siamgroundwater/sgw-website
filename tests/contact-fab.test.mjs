@@ -10,7 +10,7 @@ test('the old footer scroll button and its scroll listener are removed', () => {
   const css = read('src/components/Footer/Footer.css')
   assert.doesNotMatch(component + css, /footer-back-to-top|handleBackToTop|showBackToTop/)
   assert.doesNotMatch(component, /addEventListener\('scroll'/)
-  assert.match(css, /padding-bottom:\s*calc\(72px \+ env\(safe-area-inset-bottom/)
+  assert.match(css, /padding-bottom:\s*1rem;/)
 })
 
 test('one floating contact control is mounted in each public layout, never in CMS', () => {
@@ -36,6 +36,7 @@ test('the contact disclosure uses shared details, localization and safe keyboard
   assert.doesNotMatch(source, /<strong>|<small>|hideLabel|directContactCopy/)
   for (const label of ['LINE', 'สำนักงาน', 'คุณวศิน', 'คุณเติ้ง', 'อีเมล', 'ตำแหน่งที่ตั้ง']) assert.ok(source.includes(label))
   assert.match(css, /white-space:\s*nowrap/)
+  assert.match(css, /\.emailLabel\s*\{[^}]*overflow-wrap:\s*anywhere;[^}]*white-space:\s*normal;/s)
   assert.match(css, /\.emailLabel\s*\{[^}]*font-size:\s*var\(--fs-sm\)/s)
   assert.match(css, /\.iconPadded\s*\{\s*padding:\s*4px/)
   assert.match(css, /\.icon\s*\{[^}]*width:\s*56px;[^}]*height:\s*56px;/s)

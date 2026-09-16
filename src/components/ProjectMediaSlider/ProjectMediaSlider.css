@@ -96,7 +96,7 @@
   background: rgba(4, 28, 39, 0.96);
 }
 
-.project-detail-media-project,
+.project-detail-media-label,
 .project-detail-media-count {
   color: rgba(255, 255, 255, 0.76);
   font-size: var(--fs-sm);
@@ -112,7 +112,7 @@
   white-space: nowrap;
 }
 
-.project-detail-media-project {
+.project-detail-media-label {
   min-width: 0;
   overflow-wrap: anywhere;
 }
