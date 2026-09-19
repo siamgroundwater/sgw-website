@@ -12,7 +12,6 @@ import {
   FolderKanban,
   House,
   Menu,
-  MessageCircle,
   Phone,
   ShieldCheck,
   Wrench,
@@ -251,22 +250,6 @@ export default function NavbarMobile() {
           </nav>
         </div>
 
-        <div className="navbar-mobile-drawer-footer">
-          <a href="tel:0898954757" className="navbar-mobile-quick-contact">
-            <Phone aria-hidden="true" />
-            <span><small>{copy.phone}</small><strong>089-895-4757</strong></span>
-          </a>
-          <a
-            href="https://line.me/R/ti/p/@sgw_th?from=page&searchId=sgw_th"
-            className="navbar-mobile-line"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LINE Official @SGW_TH"
-          >
-            <MessageCircle aria-hidden="true" />
-            <span>LINE</span>
-          </a>
-        </div>
       </aside>
     </div>
   )
