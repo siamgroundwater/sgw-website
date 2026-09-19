@@ -178,7 +178,6 @@ export default function NavbarMobile() {
         </div>
 
         <div className="navbar-mobile-drawer-body">
-          <p className="navbar-mobile-drawer-label">{copy.mobileLabel}</p>
           <nav aria-label={copy.mobileLabel}>
             <ul className="navbar-mobile-list">
               {navItems.map((item, index) => {
